@@ -1,0 +1,5 @@
+{
+  "$schema": "https://dev.wix.com/wix-cli/schemas/wix-config.json",
+  "appId": "11fdbb63-813c-48b7-af11-2522e767ea52",
+  "projectId": "agile-ceremonies"
+}
