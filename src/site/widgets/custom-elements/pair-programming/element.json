@@ -1,0 +1,22 @@
+{
+  "$schema": "https://dev.wix.com/wix-cli/schemas/custom-element.json",
+  "id": "cc5120aa-0d13-48d0-9d76-f4c0ab12757f",
+  "name": "Pair Programming",
+  "width": {
+    "defaultWidth": 450,
+    "allowStretch": true
+  },
+  "height": {
+    "defaultHeight": 250
+  },
+  "installation": {
+    "autoAddToSite": true
+  },
+  "presets": [
+    {
+      "id": "e6a38efd-a683-4b73-8039-96ccbbea6dd7",
+      "thumbnailUrl": "../../../../assets/pair-programming/thumbnail.png"
+    }
+  ]
+}
+
