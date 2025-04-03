@@ -13,7 +13,6 @@ interface WrapperProps {
   displayName?: string;
 }
 
-
 const PairProgrammingWrapper: FC<WrapperProps> = ({ displayName }) => {
   return (
     <DndProvider backend={HTML5Backend}>

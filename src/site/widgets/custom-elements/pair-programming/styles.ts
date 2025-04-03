@@ -109,8 +109,8 @@ export const DeskGrid = styled.div`
 export const Desk = styled.div<{ solid?: boolean }>`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    // Updated to add four rows: two for the seats, one for the task, one for the endcap
-    grid-template-rows: 1fr 1fr 1fr 1fr;
+    // Updated to add five rows: two for the seats, one for the task, two for the endcap
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
     border: 2px solid ${props => props.solid ? '#000' : '#ccc'};
     padding: 0;
 `;
@@ -156,15 +156,14 @@ export const RequirementDropdown = styled.div`
 
 export const EndcapCell = styled.div`
     grid-column: 1 / span 2;
-    // Moved to row 4 for the endcap row
-    grid-row: 4 / span 1;
+    // Updated: Endcap now takes up two rows starting from row 4
+    grid-row: 4 / span 2;
     background: #f0f0f0;
     border-top: 1px solid #ccc;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 5px;
-    // Rounded bottom corners for the endcap
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
 `;
