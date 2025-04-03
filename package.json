@@ -9,7 +9,8 @@
     "@wix/editor": "^1.356.0",
     "@wix/wix-ui-icons-common": "^3.0.0",
     "node-fetch": "^2.6.1",
-    "react-to-webcomponent": "^2.0.0"
+    "react-to-webcomponent": "^2.0.0",
+    "styled-components": "^6.1.17"
   },
   "devDependencies": {
     "@types/react": "^16.0.0",
