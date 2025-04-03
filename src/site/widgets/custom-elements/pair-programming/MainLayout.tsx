@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import DeveloperSection from "./DeveloperSection";
 import { LayoutContainer, Content, Sidebar, BacklogContainer, BacklogTitle, TaskItem, OfficeContainer, DeskGrid, Desk, EmptyDesk, EmptyDeskOverlay, SeatCell, TaskDropdown, EndcapCell } from "./styles";
+import { fullDesks, partialDesks } from "./demoData";
+import { tasks } from "./datastore/tasks"; // updated import
 
 // New InteractiveTaskItem component for showing task detail on hover/click.
 const InteractiveTaskItem: React.FC<{ title: string; detail: string }> = ({ title, detail }) => {
@@ -20,10 +22,6 @@ const InteractiveTaskItem: React.FC<{ title: string; detail: string }> = ({ titl
 };
 
 const MainLayout: React.FC = () => {
-    // Demo arrays for desks demo:
-    const fullDesks = [1, 2, 3, 4, 5, 6];
-    const partialDesks = [7, 8, 9];
-
     // Constants for scaling limits.
     const MIN_SCALE = 0.8; // zoom out limit - ensures padding around desks
     const MAX_SCALE = 2;   // zoom in limit
@@ -32,6 +30,10 @@ const MainLayout: React.FC = () => {
     const [scale, setScale] = useState(1);
     const [pinchInitialDistance, setPinchInitialDistance] = useState<number | null>(null);
     const [pinchBaseScale, setPinchBaseScale] = useState(1);
+
+    // Modal state for task detail
+    const [modalVisible, setModalVisible] = useState(false);
+    const [modalTask, setModalTask] = useState<{ title: string; description: string } | null>(null);
 
     const handleTouchStart = (e: React.TouchEvent) => {
         if (e.touches.length === 2) {
@@ -60,23 +62,41 @@ const MainLayout: React.FC = () => {
         }
     };
 
+    const handleTaskDoubleClick = (title: string, description: string) => {
+        setModalTask({ title, description });
+        setModalVisible(true);
+    };
+
+    const closeModal = () => {
+        setModalVisible(false);
+        setModalTask(null);
+    };
+
     return (
         <LayoutContainer>
             <Sidebar>
-                {/* Developer carousel at the top */}
-                <DeveloperSection />
-                {/* Backlog section */}
-                <BacklogContainer>
-                    <BacklogTitle>Task Backlog</BacklogTitle>
-                    <ul>
-                        <InteractiveTaskItem title="Task 1" detail="Refactor code" />
-                        <InteractiveTaskItem title="Task 2" detail="Write tests" />
-                        <InteractiveTaskItem title="Task 3" detail="Update documentation" />
-                        <InteractiveTaskItem title="Task 4" detail="Fix bug #123" />
-                        <InteractiveTaskItem title="Task 5" detail="Code review" />
-                        {/* ...additional demo tasks... */}
-                    </ul>
-                </BacklogContainer>
+                <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                    {/* Fixed height for the developer section */}
+                    <div style={{ height: '150px', width: '100%' }}>
+                        <DeveloperSection />
+                    </div>
+                    {/* Backlog fills remaining space */}
+                    <div style={{ flex: 1, width: '100%' }}>
+                        <BacklogContainer>
+                            <BacklogTitle>Task Backlog</BacklogTitle>
+                            <ul>
+                                {tasks.map(task => (
+                                    <TaskItem
+                                        key={task.id}
+                                        onDoubleClick={() => handleTaskDoubleClick(task.title, task.description)}
+                                    >
+                                        {task.title}
+                                    </TaskItem>
+                                ))}
+                            </ul>
+                        </BacklogContainer>
+                    </div>
+                </div>
             </Sidebar>
             <Content>
                 <div
@@ -92,7 +112,10 @@ const MainLayout: React.FC = () => {
                                 <Desk key={id} solid>
                                     <SeatCell>Seat 1</SeatCell>
                                     <SeatCell>Seat 2</SeatCell>
-                                    <TaskDropdown onClick={() => {/* ...toggle task detail... */}}>
+                                    <TaskDropdown
+                                        onDoubleClick={() => handleTaskDoubleClick(`Task ${id}`, `Description for task ${id}`)}
+                                        onClick={() => {/* ...toggle task detail... */}}
+                                    >
                                         <div className="task-title">Task {id}</div>
                                         <div className="task-description">Description for task {id}</div>
                                     </TaskDropdown>
@@ -103,7 +126,10 @@ const MainLayout: React.FC = () => {
                                 <Desk key={id}>
                                     <SeatCell>Seat 1</SeatCell>
                                     <SeatCell>Seat 2</SeatCell>
-                                    <TaskDropdown onClick={() => {/* ...toggle task detail... */}}>
+                                    <TaskDropdown
+                                        onDoubleClick={() => handleTaskDoubleClick(`Task ${id}`, `Description for task ${id}`)}
+                                        onClick={() => {/* ...toggle task detail... */}}
+                                    >
                                         <div className="task-title">Task {id}</div>
                                         <div className="task-description">Description for task {id}</div>
                                     </TaskDropdown>
@@ -119,10 +145,46 @@ const MainLayout: React.FC = () => {
                         </DeskGrid>
                     </OfficeContainer>
                 </div>
+
+                {modalVisible && modalTask && (
+                    <div
+                        style={{
+                            position: "fixed",
+                            top: 0,
+                            left: 0,
+                            width: "100%",
+                            height: "100%",
+                            background: "rgba(0, 0, 0, 0.5)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            zIndex: 1000
+                        }}
+                        onClick={closeModal}
+                    >
+                        <div
+                            style={{
+                                background: "#fff",
+                                padding: "20px",
+                                borderRadius: "4px",
+                                minWidth: "300px"
+                            }}
+                            onClick={e => e.stopPropagation()}
+                        >
+                            <div style={{ marginBottom: "10px", fontSize: "0.9em", color: "#555" }}>
+                                Home &gt; Office &gt; {modalTask.title}
+                            </div>
+                            <h2>{modalTask.title}</h2>
+                            <p>{modalTask.description}</p>
+                            {/* ...additional task details... */}
+                            <button onClick={closeModal}>Close</button>
+                        </div>
+                    </div>
+                )}
+
             </Content>
         </LayoutContainer>
     );
 };
 
 export default MainLayout;
-

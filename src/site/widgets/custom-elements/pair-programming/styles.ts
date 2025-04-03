@@ -14,9 +14,10 @@ export const Content = styled.div`
 
 // DeveloperSection styles
 export const Section = styled.section`
-    margin: 0 0 20px 0;
+    margin: 0; // removed extra margin
+    color: #ddd; // added lighter text color for non-background
     h2 {
-         margin-bottom: 20px;
+         margin-bottom: 0; // removed spacing below heading
     }
 `;
 
@@ -50,6 +51,7 @@ export const DevelopersList = styled.div`
 
 export const DeveloperCard = styled.div`
     background: #333;
+    color: #ddd; // added lighter text for content
     padding: 10px;
     border-radius: 4px;
     flex-shrink: 0;
@@ -62,12 +64,19 @@ export const Sidebar = styled.div`
     width: 300px;
     background: #f4f4f4;
     padding: 20px;
+    /* Added for vertical layout */
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 `;
 
 export const BacklogContainer = styled.div`
-    margin-top: 20px;
+    margin-top: 0; // removed top margin
     padding: 10px;
     background: #fff;
+    /* Added to stretch tasks to fill remaining height */
+    flex: 1; // make grow to fill available height
+    overflow-y: auto;
 `;
 
 export const BacklogTitle = styled.h2`
@@ -79,10 +88,13 @@ export const TaskItem = styled.li`
     list-style: none;
     padding: 5px;
     border-bottom: 1px solid #ccc;
+    width: 100%; // added to span full width
 `;
 
 export const OfficeContainer = styled.div`
     padding: 10px;
+    background: linear-gradient(to bottom, #fff, #f0f0f0); // skylight effect
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.8); // simulate looking down through a skylight
     overflow-y: hidden; // disable vertical scroll on office view
 `;
 
@@ -95,30 +107,31 @@ export const DeskGrid = styled.div`
 export const Desk = styled.div<{ solid?: boolean }>`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-auto-rows: auto; // rows will be sized automatically
+    /* Removed grid-auto-rows and set fixed three equal rows */
+    grid-template-rows: repeat(3, 1fr);
     border: 2px solid ${props => props.solid ? '#000' : '#ccc'};
     padding: 0;
 `;
 
-// New styled component for seat cells (developer allowed)
 export const SeatCell = styled.div`
-    background: #e0f7fa; // light color indicating developer-only seating
+    background: #e0f7fa;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 5px;
-    grid-row: span 2; // occupies two rows
+    /* Place SeatCells in the first row */
+    grid-row: 1 / 2;
     &:first-child {
         border-right: 1px solid #ccc;
     }
 `;
 
-// New styled component for task dropdown cell
 export const TaskDropdown = styled.div`
     grid-column: 1 / span 2;
-    grid-row: span 2; // occupies two rows
+    /* Place TaskDropdown in the second row */
+    grid-row: 2 / 3;
     display: grid;
-    grid-template-rows: auto auto; // task title and description
+    grid-template-rows: auto auto;
     background: #fff;
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
@@ -134,11 +147,11 @@ export const TaskDropdown = styled.div`
     }
 `;
 
-// New styled component for endcap cell (non-developer seating)
 export const EndcapCell = styled.div`
     grid-column: 1 / span 2;
-    grid-row: span 2; // occupies two rows
-    background: #f0f0f0; // distinct color to indicate non-developers
+    /* Place EndcapCell in the third row */
+    grid-row: 3 / 4;
+    background: #f0f0f0;
     border-top: 1px solid #ccc;
     display: flex;
     align-items: center;
