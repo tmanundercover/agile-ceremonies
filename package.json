@@ -28,16 +28,13 @@
   "scripts": {
     "wix": "wix",
     "build": "wix app build",
-    "clean": "rimraf \"**/*.js\"; rimraf .wix; rimraf package-lock.json",
-    "clean-logs": "node scripts/clean-logs.js",
-    "cleaner": "npm run clean; rimraf node_modules;",
-    "cleanest": "npm run cleaner && npm run clean-logs",
+    "clean": "npx rimraf .wix; npx rimraf package-lock.json",
     "release": "wix app release",
-    "dev": "node scripts/dev-log.js",
+    "dev": "wix app dev",
     "preview": "wix app preview",
     "serve": "wix app serve",
     "generate": "wix app generate",
-    "update-uuid": "node scripts/manage-uuid.js",
+    "update-uuid": "npm install uuid && node scripts/replace-uuid.js",
     "logs": "wix app logs",
     "typecheck": "tsc --noEmit"
   }
