@@ -1,12 +1,20 @@
 import React from 'react';
-import { LayoutContainer, Sidebar, Content, OfficeContainer, DeskGrid, Desk, SeatCell, RequirementDropdown, EndcapCell } from "./styles";
+import { LayoutContainer, Sidebar, Content, OfficeContainer, DeskGrid, Desk, SeatCell, RequirementDropdown, EndcapCell, BacklogContainer, BacklogTitle } from "./styles";
 // ...existing imports...
 
 const MainLayout: React.FC = () => {
     return (
         <LayoutContainer>
             <Sidebar>
-              {/* Sidebar intentionally left empty */}
+                <div style={{ flex: "0 0 auto", padding: "10px", borderBottom: "1px solid #ccc" }}>
+                    {/* Developer Section */}
+                    <h3>Developers</h3>
+                    {/* ...additional developer section content... */}
+                </div>
+                <BacklogContainer style={{ flex: 1 }}>
+                    <BacklogTitle>Backlog</BacklogTitle>
+                    {/* ...backlog items... */}
+                </BacklogContainer>
             </Sidebar>
             <Content>
               {/* Office floor with 10 desks */}

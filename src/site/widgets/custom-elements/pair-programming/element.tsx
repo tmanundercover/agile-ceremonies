@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import ReactDOM from 'react-dom';
 import reactToWebComponent from 'react-to-webcomponent';
-import PairProgrammingWrapper from './PairProgrammingWrapper';
+import App from './App';
 
 interface Props {
   displayName?: string;
@@ -13,7 +13,7 @@ const CustomElement: FC<Props> = ({
   return (
     <>
       {/*hi*/}
-      <PairProgrammingWrapper />
+      <App />
     </>
   );
 };
