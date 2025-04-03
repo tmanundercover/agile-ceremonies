@@ -5,7 +5,7 @@ const path = require('path');
 
 // Function to dynamically import Octokit
 async function getOctokit() {
-    const { Octokit } = await import("@octokit/core");
+    const {Octokit} = await import("@octokit/core");
     return Octokit;
 }
 
@@ -62,12 +62,12 @@ async function createIssue(issue, octokit, owner, repo) {
         } else {
             console.log(`Failed to create issue "${issue.title}". Status code: ${response.status}`);
             failureCount++;
-            failureDetails.push({ title: issue.title, status: response.status });
+            failureDetails.push({title: issue.title, status: response.status});
         }
     } catch (error) {
         console.error(`Error creating issue "${issue.title}":`, error);
         failureCount++;
-        failureDetails.push({ title: issue.title, status: error.status });
+        failureDetails.push({title: issue.title, status: error.status});
     }
 }
 
@@ -94,7 +94,7 @@ async function main() {
     const filename = config.jsonFile || await promptForInput('Please enter the filename of the issues JSON file: ');
 
     const Octokit = await getOctokit();
-    const octokit = new Octokit({ auth: token });
+    const octokit = new Octokit({auth: token});
 
     fs.readFile(filename, 'utf8', async (err, data) => {
         if (err) {
@@ -111,23 +111,24 @@ async function main() {
             await createIssueWithDelay(issue, octokit, username, repo, delay);
         }
 
-        // Print stats table
-        console.log("\nIssue Creation Summary:");
-        console.log(`Successful: ${successCount}`);
-        console.log(`Failed: ${failureCount}`);
-        if (failureCount > 0) {
-            console.log("Failure Details:");
-            failureDetails.forEach(detail => {
-                console.log(`- Issue "${detail.title}" failed with status code: ${detail.status}`);
-            });
-        }
-
         // Print input summary
         console.log("\nInput Summary:");
         console.log(`Username: ${config.username ? 'From config' : 'Entered manually'}`);
         console.log(`Repository: ${config.repository ? 'From config' : 'Entered manually'}`);
         console.log(`Token: ${config.token ? 'From config' : 'Entered manually'}`);
         console.log(`Issues JSON File: ${config.jsonFile ? 'From config' : 'Entered manually'}`);
+
+        // Print stats table
+        console.log("\nIssue Creation Summary:");
+        console.log(`Successful: ${successCount}`);
+        console.log(`Failed: ${failureCount}`);
+        console.log(`Total: ${successCount + failureCount}`);
+        if (failureCount > 0) {
+            console.log("Failure Details:");
+            failureDetails.forEach(detail => {
+                console.log(`- Issue "${detail.title}" failed with status code: ${detail.status}`);
+            });
+        }
     });
 }
 

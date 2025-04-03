@@ -10,4 +10,4 @@ npm-debug.log*
 # Misc
 .DS_Store
 out
-/scripts/.github-script/*.config.json
+.env
