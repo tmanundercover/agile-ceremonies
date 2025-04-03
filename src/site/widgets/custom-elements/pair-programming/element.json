@@ -1,6 +1,6 @@
 {
   "$schema": "https://dev.wix.com/wix-cli/schemas/custom-element.json",
-  "id": "2b06e708-f80d-4ebb-bfc0-ad6be5a25550",
+  "id": "4d69a6a4-0cab-4546-9220-89257befd30a",
   "name": "Pair Programming",
   "width": {
     "defaultWidth": 450,
@@ -19,4 +19,3 @@
     }
   ]
 }
-

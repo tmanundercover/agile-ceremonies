@@ -1,9 +1,13 @@
-import React from 'react';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import App from './App';
-const PairProgrammingWrapper = ({ displayName }) => {
-    return (React.createElement(DndProvider, { backend: HTML5Backend },
-        React.createElement(App, null)));
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var react_1 = require("react");
+var react_dnd_1 = require("react-dnd");
+var react_dnd_html5_backend_1 = require("react-dnd-html5-backend");
+var App_1 = require("./App");
+var PairProgrammingWrapper = function (_a) {
+    var displayName = _a.displayName;
+    return (<react_dnd_1.DndProvider backend={react_dnd_html5_backend_1.HTML5Backend}>
+      <App_1.default />
+    </react_dnd_1.DndProvider>);
 };
-export default PairProgrammingWrapper;
+exports.default = PairProgrammingWrapper;

@@ -1,9 +1,16 @@
-import React from "react";
-import { Section, DevelopersList, DeveloperCard } from "./styles";
-import { developers } from "./demoData"; // Import demo data
-const DeveloperSection = () => {
-    return (React.createElement(Section, null,
-        React.createElement("h2", null, "Developers"),
-        React.createElement(DevelopersList, null, developers.map(dev => (React.createElement(DeveloperCard, { key: dev.id }, dev.name))))));
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var react_1 = require("react");
+var styles_1 = require("./styles");
+var demoData_1 = require("./demoData"); // Import demo data
+var DeveloperSection = function () {
+    return (<styles_1.Section>
+            <h2>Developers</h2>
+            <styles_1.DevelopersList>
+                {demoData_1.developers.map(function (dev) { return (<styles_1.DeveloperCard key={dev.id}>
+                        {dev.name}
+                    </styles_1.DeveloperCard>); })}
+            </styles_1.DevelopersList>
+        </styles_1.Section>);
 };
-export default DeveloperSection;
+exports.default = DeveloperSection;

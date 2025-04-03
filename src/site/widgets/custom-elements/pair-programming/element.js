@@ -1,14 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import reactToWebComponent from 'react-to-webcomponent';
-import PairProgrammingWrapper from './PairProgrammingWrapper';
-const CustomElement = ({ displayName = `Your Widget's Title`, }) => {
-    return (React.createElement(React.Fragment, null,
-        React.createElement(PairProgrammingWrapper, null)));
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var react_1 = require("react");
+var react_dom_1 = require("react-dom");
+var react_to_webcomponent_1 = require("react-to-webcomponent");
+var PairProgrammingWrapper_1 = require("./PairProgrammingWrapper");
+var CustomElement = function (_a) {
+    var _b = _a.displayName, displayName = _b === void 0 ? "Your Widget's Title" : _b;
+    return (<>
+        {/*hi*/}
+        <PairProgrammingWrapper_1.default />
+        </>);
 };
-const customElement = reactToWebComponent(CustomElement, React, ReactDOM, {
+var customElement = (0, react_to_webcomponent_1.default)(CustomElement, react_1.default, react_dom_1.default, {
     props: {
         displayName: 'string',
     },
 });
-export default customElement;
+exports.default = customElement;

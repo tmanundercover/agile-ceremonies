@@ -1,7 +1,9 @@
-import React from "react";
-import MainLayout from "./MainLayout";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var react_1 = require("react");
+var MainLayout_1 = require("./MainLayout");
 // The old App.tsx implementation is available in App.old.tsx for reference.
-const App = () => {
-    return React.createElement(MainLayout, null);
+var App = function () {
+    return <MainLayout_1.default />;
 };
-export default App;
+exports.default = App;

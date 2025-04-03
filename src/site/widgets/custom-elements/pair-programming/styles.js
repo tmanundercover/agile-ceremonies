@@ -1,169 +1,30 @@
-import styled from "styled-components";
+"use strict";
+var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.EmptyDeskOverlay = exports.EmptyDesk = exports.EndcapCell = exports.RequirementDropdown = exports.SeatCell = exports.Desk = exports.DeskGrid = exports.OfficeContainer = exports.RequirementItem = exports.BacklogTitle = exports.BacklogContainer = exports.Sidebar = exports.DeveloperCard = exports.DevelopersList = exports.Section = exports.Content = exports.LayoutContainer = void 0;
+var styled_components_1 = require("styled-components");
 // MainLayout styles
-export const LayoutContainer = styled.div `
-    display: flex;
-    height: 100vh;
-`;
-export const Content = styled.div `
-    flex: 1;
-    padding: 20px;
-    overflow-x: auto;
-`;
+exports.LayoutContainer = styled_components_1.default.div(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n    display: flex;\n    height: 100vh;\n"], ["\n    display: flex;\n    height: 100vh;\n"])));
+exports.Content = styled_components_1.default.div(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n    flex: 1;\n    padding: 20px;\n    overflow-x: auto;\n"], ["\n    flex: 1;\n    padding: 20px;\n    overflow-x: auto;\n"])));
 // DeveloperSection styles
-export const Section = styled.section `
-    margin: 0; // removed extra margin
-    color: #ddd; // added lighter text color for non-background
-    h2 {
-         margin-bottom: 0; // removed spacing below heading
-    }
-`;
-export const DevelopersList = styled.div `
-    overflow-x: auto;
-    display: flex;
-    scroll-snap-type: x mandatory;
-    position: relative;
-    padding-right: 10px;
-    // Hide scrollbar on WebKit
-    &::-webkit-scrollbar {
-        display: none;
-    }
-    // Horizontal scroll indicator
-    &::after {
-        content: "";
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 40px;
-        height: 100%;
-        background: linear-gradient(to left, rgba(0,0,0,0.7), rgba(0,0,0,0));
-        pointer-events: none;
-        opacity: 0.5;
-        transition: opacity 0.3s;
-    }
-    &:hover::after {
-        opacity: 1;
-    }
-`;
-export const DeveloperCard = styled.div `
-    background: #333;
-    color: #ddd; // added lighter text for content
-    padding: 10px;
-    border-radius: 4px;
-    flex-shrink: 0;
-    width: 100%;
-    scroll-snap-align: center;
-    text-align: center;
-`;
-export const Sidebar = styled.div `
-    width: 300px;
-    background: #f4f4f4;
-    padding: 20px;
-    /* Added for vertical layout */
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-`;
-export const BacklogContainer = styled.div `
-    margin-top: 0; // removed top margin
-    padding: 10px;
-    background: #fff;
-    /* Added to stretch tasks to fill remaining height */
-    flex: 1; // make grow to fill available height
-    overflow-y: auto;
-`;
-export const BacklogTitle = styled.h2 `
-    font-size: 1.2em;
-    margin-bottom: 10px;
-`;
+exports.Section = styled_components_1.default.section(templateObject_3 || (templateObject_3 = __makeTemplateObject(["\n    margin: 0; // removed extra margin\n    color: #ddd; // added lighter text color for non-background\n    h2 {\n         margin-bottom: 0; // removed spacing below heading\n    }\n"], ["\n    margin: 0; // removed extra margin\n    color: #ddd; // added lighter text color for non-background\n    h2 {\n         margin-bottom: 0; // removed spacing below heading\n    }\n"])));
+exports.DevelopersList = styled_components_1.default.div(templateObject_4 || (templateObject_4 = __makeTemplateObject(["\n    overflow-x: auto;\n    display: flex;\n    scroll-snap-type: x mandatory;\n    position: relative;\n    padding-right: 10px;\n    // Hide scrollbar on WebKit\n    &::-webkit-scrollbar {\n        display: none;\n    }\n    // Horizontal scroll indicator\n    &::after {\n        content: \"\";\n        position: absolute;\n        right: 0;\n        top: 0;\n        width: 40px;\n        height: 100%;\n        background: linear-gradient(to left, rgba(0,0,0,0.7), rgba(0,0,0,0));\n        pointer-events: none;\n        opacity: 0.5;\n        transition: opacity 0.3s;\n    }\n    &:hover::after {\n        opacity: 1;\n    }\n"], ["\n    overflow-x: auto;\n    display: flex;\n    scroll-snap-type: x mandatory;\n    position: relative;\n    padding-right: 10px;\n    // Hide scrollbar on WebKit\n    &::-webkit-scrollbar {\n        display: none;\n    }\n    // Horizontal scroll indicator\n    &::after {\n        content: \"\";\n        position: absolute;\n        right: 0;\n        top: 0;\n        width: 40px;\n        height: 100%;\n        background: linear-gradient(to left, rgba(0,0,0,0.7), rgba(0,0,0,0));\n        pointer-events: none;\n        opacity: 0.5;\n        transition: opacity 0.3s;\n    }\n    &:hover::after {\n        opacity: 1;\n    }\n"])));
+exports.DeveloperCard = styled_components_1.default.div(templateObject_5 || (templateObject_5 = __makeTemplateObject(["\n    background: #333;\n    color: #ddd; // added lighter text for content\n    padding: 10px;\n    border-radius: 4px;\n    flex-shrink: 0;\n    width: 100%;\n    scroll-snap-align: center;\n    text-align: center;\n"], ["\n    background: #333;\n    color: #ddd; // added lighter text for content\n    padding: 10px;\n    border-radius: 4px;\n    flex-shrink: 0;\n    width: 100%;\n    scroll-snap-align: center;\n    text-align: center;\n"])));
+exports.Sidebar = styled_components_1.default.div(templateObject_6 || (templateObject_6 = __makeTemplateObject(["\n    width: 300px;\n    background: #f4f4f4;\n    padding: 20px;\n    /* Added for vertical layout */\n    display: flex;\n    flex-direction: column;\n    height: 100vh;\n"], ["\n    width: 300px;\n    background: #f4f4f4;\n    padding: 20px;\n    /* Added for vertical layout */\n    display: flex;\n    flex-direction: column;\n    height: 100vh;\n"])));
+exports.BacklogContainer = styled_components_1.default.div(templateObject_7 || (templateObject_7 = __makeTemplateObject(["\n    margin-top: 0; // removed top margin\n    padding: 10px;\n    background: #fff;\n    /* Added to stretch tasks to fill remaining height */\n    flex: 1; // make grow to fill available height\n    overflow-y: auto;\n"], ["\n    margin-top: 0; // removed top margin\n    padding: 10px;\n    background: #fff;\n    /* Added to stretch tasks to fill remaining height */\n    flex: 1; // make grow to fill available height\n    overflow-y: auto;\n"])));
+exports.BacklogTitle = styled_components_1.default.h2(templateObject_8 || (templateObject_8 = __makeTemplateObject(["\n    font-size: 1.2em;\n    margin-bottom: 10px;\n"], ["\n    font-size: 1.2em;\n    margin-bottom: 10px;\n"])));
 // Renamed from TaskItem to RequirementItem.
-export const RequirementItem = styled.li `
-    list-style: none;
-    padding: 5px;
-    border-bottom: 1px solid #ccc;
-    width: 100%; // added to span full width
-`;
-export const OfficeContainer = styled.div `
-    padding: 10px;
-    background: linear-gradient(to bottom, #fff, #f0f0f0); // skylight effect
-    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.8); // simulate looking down through a skylight
-    overflow-y: hidden; // disable vertical scroll on office view
-`;
-export const DeskGrid = styled.div `
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    grid-gap: 10px;
-`;
-export const Desk = styled.div `
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    /* Removed grid-auto-rows and set fixed three equal rows */
-    grid-template-rows: repeat(3, 1fr);
-    border: 2px solid ${props => props.solid ? '#000' : '#ccc'};
-    padding: 0;
-`;
-export const SeatCell = styled.div `
-    background: #e0f7fa;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 5px;
-    /* Place SeatCells in the first row */
-    grid-row: 1 / 2;
-    &:first-child {
-        border-right: 1px solid #ccc;
-    }
-`;
+exports.RequirementItem = styled_components_1.default.li(templateObject_9 || (templateObject_9 = __makeTemplateObject(["\n    list-style: none;\n    padding: 5px;\n    border-bottom: 1px solid #ccc;\n    width: 100%; // added to span full width\n"], ["\n    list-style: none;\n    padding: 5px;\n    border-bottom: 1px solid #ccc;\n    width: 100%; // added to span full width\n"])));
+exports.OfficeContainer = styled_components_1.default.div(templateObject_10 || (templateObject_10 = __makeTemplateObject(["\n    padding: 10px;\n    background: linear-gradient(to bottom, #fff, #f0f0f0); // skylight effect\n    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.8); // simulate looking down through a skylight\n    overflow-y: hidden; // disable vertical scroll on office view\n"], ["\n    padding: 10px;\n    background: linear-gradient(to bottom, #fff, #f0f0f0); // skylight effect\n    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.8); // simulate looking down through a skylight\n    overflow-y: hidden; // disable vertical scroll on office view\n"])));
+exports.DeskGrid = styled_components_1.default.div(templateObject_11 || (templateObject_11 = __makeTemplateObject(["\n    display: grid;\n    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));\n    grid-gap: 10px;\n"], ["\n    display: grid;\n    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));\n    grid-gap: 10px;\n"])));
+exports.Desk = styled_components_1.default.div(templateObject_12 || (templateObject_12 = __makeTemplateObject(["\n    display: grid;\n    grid-template-columns: repeat(2, 1fr);\n    /* Removed grid-auto-rows and set fixed three equal rows */\n    grid-template-rows: repeat(3, 1fr);\n    border: 2px solid ", ";\n    padding: 0;\n"], ["\n    display: grid;\n    grid-template-columns: repeat(2, 1fr);\n    /* Removed grid-auto-rows and set fixed three equal rows */\n    grid-template-rows: repeat(3, 1fr);\n    border: 2px solid ", ";\n    padding: 0;\n"])), function (props) { return props.solid ? '#000' : '#ccc'; });
+exports.SeatCell = styled_components_1.default.div(templateObject_13 || (templateObject_13 = __makeTemplateObject(["\n    background: #e0f7fa;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    padding: 5px;\n    /* Place SeatCells in the first row */\n    grid-row: 1 / 2;\n    &:first-child {\n        border-right: 1px solid #ccc;\n    }\n"], ["\n    background: #e0f7fa;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    padding: 5px;\n    /* Place SeatCells in the first row */\n    grid-row: 1 / 2;\n    &:first-child {\n        border-right: 1px solid #ccc;\n    }\n"])));
 // Renamed from TaskDropdown to RequirementDropdown.
-export const RequirementDropdown = styled.div `
-    grid-column: 1 / span 2;
-    /* Place RequirementDropdown in the second row */
-    grid-row: 2 / 3;
-    display: grid;
-    grid-template-rows: auto auto;
-    background: #fff;
-    border-top: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
-    align-items: center;
-    justify-content: center;
-    padding: 5px;
-    cursor: pointer;
-    
-    .requirement-description {
-        white-space: nowrap;
-        overflow-x: auto;
-        overflow-y: hidden;
-    }
-    
-    .requirement-title {
-        /* ...existing code if any... */
-    }
-`;
-export const EndcapCell = styled.div `
-    grid-column: 1 / span 2;
-    /* Place EndcapCell in the third row */
-    grid-row: 3 / 4;
-    background: #f0f0f0;
-    border-top: 1px solid #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 5px;
-`;
-export const EmptyDesk = styled.div `
-    border: 2px dashed #ccc;
-    padding: 10px;
-    text-align: center;
-    position: relative;
-`;
-export const EmptyDeskOverlay = styled.div `
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2em;
-    color: #aaa;
-`;
+exports.RequirementDropdown = styled_components_1.default.div(templateObject_14 || (templateObject_14 = __makeTemplateObject(["\n    grid-column: 1 / span 2;\n    /* Place RequirementDropdown in the second row */\n    grid-row: 2 / 3;\n    display: grid;\n    grid-template-rows: auto auto;\n    background: #fff;\n    border-top: 1px solid #ccc;\n    border-bottom: 1px solid #ccc;\n    align-items: center;\n    justify-content: center;\n    padding: 5px;\n    cursor: pointer;\n    \n    .requirement-description {\n        white-space: nowrap;\n        overflow-x: auto;\n        overflow-y: hidden;\n    }\n    \n    .requirement-title {\n        /* ...existing code if any... */\n    }\n"], ["\n    grid-column: 1 / span 2;\n    /* Place RequirementDropdown in the second row */\n    grid-row: 2 / 3;\n    display: grid;\n    grid-template-rows: auto auto;\n    background: #fff;\n    border-top: 1px solid #ccc;\n    border-bottom: 1px solid #ccc;\n    align-items: center;\n    justify-content: center;\n    padding: 5px;\n    cursor: pointer;\n    \n    .requirement-description {\n        white-space: nowrap;\n        overflow-x: auto;\n        overflow-y: hidden;\n    }\n    \n    .requirement-title {\n        /* ...existing code if any... */\n    }\n"])));
+exports.EndcapCell = styled_components_1.default.div(templateObject_15 || (templateObject_15 = __makeTemplateObject(["\n    grid-column: 1 / span 2;\n    /* Place EndcapCell in the third row */\n    grid-row: 3 / 4;\n    background: #f0f0f0;\n    border-top: 1px solid #ccc;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    padding: 5px;\n"], ["\n    grid-column: 1 / span 2;\n    /* Place EndcapCell in the third row */\n    grid-row: 3 / 4;\n    background: #f0f0f0;\n    border-top: 1px solid #ccc;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    padding: 5px;\n"])));
+exports.EmptyDesk = styled_components_1.default.div(templateObject_16 || (templateObject_16 = __makeTemplateObject(["\n    border: 2px dashed #ccc;\n    padding: 10px;\n    text-align: center;\n    position: relative;\n"], ["\n    border: 2px dashed #ccc;\n    padding: 10px;\n    text-align: center;\n    position: relative;\n"])));
+exports.EmptyDeskOverlay = styled_components_1.default.div(templateObject_17 || (templateObject_17 = __makeTemplateObject(["\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    font-size: 2em;\n    color: #aaa;\n"], ["\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    font-size: 2em;\n    color: #aaa;\n"])));
+var templateObject_1, templateObject_2, templateObject_3, templateObject_4, templateObject_5, templateObject_6, templateObject_7, templateObject_8, templateObject_9, templateObject_10, templateObject_11, templateObject_12, templateObject_13, templateObject_14, templateObject_15, templateObject_16, templateObject_17;

@@ -8,16 +8,39 @@ function generateUUID() {
 
 function updateElementJson() {
     const elementJsonPath = path.join(__dirname, '..', 'src', 'site', 'widgets', 'custom-elements', 'pair-programming', 'element.json');
+    let newUUID = null;
+
+    // Check for .uuid-error.log file in parent folder's logs directory
+    const logsDir = path.join(__dirname, '..', 'logs');
+    if (fs.existsSync(logsDir)) {
+      const logFiles = fs.readdirSync(logsDir).filter(file => file.endsWith('.uuid-error.log'));
+      if (logFiles.length > 0) {
+         for (const file of logFiles) {
+            const filePath = path.join(logsDir, file);
+            const content = fs.readFileSync(filePath, 'utf8');
+            const match = content.match(/Possible GUID:\s*(\S+)/);
+            if (match) {
+                newUUID = match[1];
+                break;
+            }
+         }
+      }
+    }
+
+    // Generate new UUID if none extracted from logs
+    if (!newUUID) {
+        newUUID = generateUUID();
+        console.log('UUID generated:', newUUID);
+    } else {
+        console.log('UUID extracted from logs:', newUUID);
+    }
 
     try {
         // Read the current element.json
         const elementJson = JSON.parse(fs.readFileSync(elementJsonPath, 'utf8'));
         
-        // Generate and store the old ID for logging
+        // Store the old id for logging
         const oldId = elementJson.id;
-        
-        // Generate new UUID
-        const newUUID = generateUUID();
         
         // Update the id field
         elementJson.id = newUUID;
@@ -38,3 +61,4 @@ function updateElementJson() {
 
 // Execute the update
 updateElementJson();
+

@@ -31,7 +31,7 @@
     "clean": "rimraf \"**/*.js\"; rimraf .wix; rimraf package-lock.json",
     "clean-logs": "node scripts/clean-logs.js",
     "cleaner": "npm run clean; rimraf node_modules;",
-    "cleanest": "npm run cleaner && npm run clear-logs",
+    "cleanest": "npm run cleaner && npm run clean-logs",
     "release": "wix app release",
     "dev": "node scripts/dev-log.js",
     "preview": "wix app preview",
