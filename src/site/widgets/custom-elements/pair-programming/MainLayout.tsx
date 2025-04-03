@@ -1,5 +1,6 @@
 // ...existing imports...
 import DeveloperCarousel from "./DeveloperCarousel";
+import InteractiveTaskItem from "./InteractiveTaskItem";
 import { LayoutContainer, Sidebar, Content, BacklogContainer } from "./styles";
 import { tasks } from "./mockData";
 // ...existing imports...
@@ -35,3 +36,4 @@ const MainLayout: React.FC = () => {
 };
 
 export default MainLayout;
+
