@@ -34,7 +34,7 @@
     "preview": "wix app preview",
     "serve": "wix app serve",
     "generate": "wix app generate",
-    "update-uuid": "npm install uuid && node scripts/replace-uuid.js",
+    "update-uuid": "node scripts/replace-uuid.js",
     "logs": "wix app logs",
     "typecheck": "tsc --noEmit"
   }

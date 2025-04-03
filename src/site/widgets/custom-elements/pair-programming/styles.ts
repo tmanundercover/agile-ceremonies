@@ -184,4 +184,3 @@ export const EmptyDeskOverlay = styled.div`
     font-size: 2em;
     color: #aaa;
 `;
-

@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, { FC } from 'react';
 import ReactDOM from 'react-dom';
 import reactToWebComponent from 'react-to-webcomponent';
 import PairProgrammingWrapper from './PairProgrammingWrapper';
@@ -8,13 +8,13 @@ interface Props {
 }
 
 const CustomElement: FC<Props> = ({
-                                      displayName = `Your Widget's Title`,
-                                  }) => {
+  displayName = `Your Widget's Title`,
+}) => {
   return (
     <>
-        {/*hi*/}
-        <PairProgrammingWrapper />
-        </>
+      {/*hi*/}
+      <PairProgrammingWrapper />
+    </>
   );
 };
 
