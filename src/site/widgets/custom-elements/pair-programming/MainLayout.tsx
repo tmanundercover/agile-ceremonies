@@ -1,32 +1,34 @@
-import React from "react";
+// ...existing imports...
 import DeveloperCarousel from "./DeveloperCarousel";
-import { tasks } from "./mockData";
 import { LayoutContainer, Sidebar, Content, BacklogContainer } from "./styles";
-
-// Added a simple placeholder for InteractiveTaskItem.
-const InteractiveTaskItem: React.FC<{ title: string; detail?: string }> = ({ title, detail }) => (
-  <div title={detail}>{title}</div>
-);
+import { tasks } from "./mockData";
+// ...existing imports...
 
 const MainLayout: React.FC = () => {
-    // ...existing state and handlers...
+    // ...existing state and handler for task selection...
     return (
         <LayoutContainer>
             <Sidebar>
-                {/* Developer Carousel moved to its own component */}
+                {/* Added DeveloperCarousel above tasks list */}
                 <DeveloperCarousel />
                 {/* Bottom part: List of tasks with updated styling */}
                 <div>
                     <h3>Tasks</h3>
                     <BacklogContainer>
                         {tasks.map((task, idx) => (
-                            <InteractiveTaskItem key={idx} title={task} detail={`Detail for ${task}`} />
+                            <div key={idx} onClick={() => handleTaskClick(task)}>
+                                <InteractiveTaskItem title={task} detail={`Detail for ${task}`} />
+                            </div>
                         ))}
                     </BacklogContainer>
                 </div>
             </Sidebar>
             <Content>
-                {/* ...existing content... */}
+                {/* Display for selected task */}
+                <div>
+                  <h2>Selected Task</h2>
+                  <p>{selectedTask}</p>
+                </div>
             </Content>
         </LayoutContainer>
     );

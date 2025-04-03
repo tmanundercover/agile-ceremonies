@@ -1,20 +1,30 @@
-import React from 'react';
-import { developers } from './mockData';
+import React, { useState } from 'react';
+import { developers } from "./mockData";
+import { DeveloperCard } from "./styles";
 
 const DeveloperCarousel: React.FC = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const totalDevelopers = developers.length;
+
+  const goPrevious = () => {
+    setCurrentIndex((currentIndex - 1 + totalDevelopers) % totalDevelopers);
+  };
+
+  const goNext = () => {
+    setCurrentIndex((currentIndex + 1) % totalDevelopers);
+  };
+
+  const developer = developers[currentIndex];
+
   return (
-    <div>
-      <h3>Developers</h3>
-      <div style={{ display: 'flex', overflowX: 'auto', gap: '0.5rem', padding: '0.5rem 0' }}>
-        {developers.map((dev) => (
-          <div key={dev.id} style={{ flex: '0 0 auto', border: '1px solid #ccc', borderRadius: '4px', padding: '0.5rem', minWidth: '80px', textAlign: 'center' }}>
-            <img src={dev.avatar} alt={dev.name} style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
-            <div>{dev.name}</div>
-            <div style={{ fontSize: '0.8em', color: '#666' }}>{dev.skills.join(", ")}</div>
-            <div style={{ fontSize: '0.8em', color: dev.status === "available" ? 'green' : 'red' }}>{dev.status}</div>
-          </div>
-        ))}
-      </div>
+    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+      <button onClick={goPrevious} style={{ marginRight: '10px' }}>{'<'}</button>
+      <DeveloperCard>
+        <img src={developer.avatar} alt={developer.name} style={{ borderRadius: '50%' }} />
+        <div>{developer.name}</div>
+        <div>{developer.status}</div>
+      </DeveloperCard>
+      <button onClick={goNext} style={{ marginLeft: '10px' }}>{'>'}</button>
     </div>
   );
 };

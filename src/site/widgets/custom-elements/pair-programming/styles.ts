@@ -61,7 +61,7 @@ export const DeveloperCard = styled.div`
 `;
 
 export const Sidebar = styled.div`
-    width: 300px;
+    width: 100px; // updated from 300px to match one developer card
     background: #f4f4f4;
     padding: 20px;
     /* Added for vertical layout */
@@ -184,3 +184,4 @@ export const EmptyDeskOverlay = styled.div`
     font-size: 2em;
     color: #aaa;
 `;
+
