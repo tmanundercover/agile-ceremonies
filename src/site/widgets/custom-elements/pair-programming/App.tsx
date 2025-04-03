@@ -1,5 +1,5 @@
+// Polyfill useInsertionEffect so that framer-motion functions correctly
 import React from "react";
-// Polyfill for React.useInsertionEffect if not available.
 if (!React.useInsertionEffect) {
   React.useInsertionEffect = React.useLayoutEffect;
 }
@@ -12,3 +12,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+

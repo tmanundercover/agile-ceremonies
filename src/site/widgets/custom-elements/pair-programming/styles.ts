@@ -21,6 +21,7 @@ export const Section = styled.section`
     }
 `;
 
+
 export const DevelopersList = styled.div`
     overflow-x: auto;
     display: flex;

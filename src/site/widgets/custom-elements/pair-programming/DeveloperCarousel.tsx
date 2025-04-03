@@ -16,11 +16,14 @@ const DeveloperCarousel: React.FC = () => {
 
   const developer = developers[currentIndex];
 
+  // Ensure the URL contains a protocol.
+  const avatarUrl = developer.avatar.includes("://") ? developer.avatar : `https://${developer.avatar}`;
+
   return (
     <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
       <button onClick={goPrevious} style={{ marginRight: '10px' }}>{'<'}</button>
       <DeveloperCard>
-        <img src={developer.avatar} alt={developer.name} style={{ borderRadius: '50%' }} />
+        <img src={avatarUrl} alt={developer.name} style={{ borderRadius: '50%' }} />
         <div>{developer.name}</div>
         <div>{developer.status}</div>
       </DeveloperCard>
@@ -30,3 +33,4 @@ const DeveloperCarousel: React.FC = () => {
 };
 
 export default DeveloperCarousel;
+
