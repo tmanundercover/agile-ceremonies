@@ -3,44 +3,36 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@types/react-slick": "^0.23.13",
+    "@octokit/core": "^6.1.4",
     "@wix/dashboard": "^1.3.33",
     "@wix/design-system": "^1.0.0",
     "@wix/editor": "^1.356.0",
     "@wix/wix-ui-icons-common": "^3.0.0",
-    "balanced-match": "^3.0.1",
-    "framer-motion": "12.6.3",
-    "react": "^18.2.0",                // added/updated
-    "react-dom": "^18.2.0",             // added/updated
-    "react-dnd": "^16.0.1",
-    "react-dnd-html5-backend": "^16.0.1",
-    "react-slick": "^0.29.0",
-    "slick-carousel": "^1.8.1",
-    "react-to-webcomponent": "^2.0.0",
-    "rimraf": "^5.0.10",
-    "styled-components": "^6.1.17"
-    // ...existing dependencies...
+    "node-fetch": "^2.6.1",
+    "react-to-webcomponent": "^2.0.0"
   },
   "devDependencies": {
-    // ...existing dev dependencies without react and react-dom...
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "^16.0.0",
+    "@types/react-dom": "^16.0.0",
     "@wix/cli": "^1.0.0",
     "@wix/cli-app": "^1.0.0",
+    "dotenv": "^16.4.7",
+    "react": "16.14.0",
+    "react-dom": "16.14.0",
     "typescript": "~5.8.2",
     "uuid": "^11.1.0"
   },
   "scripts": {
     "wix": "wix",
     "build": "wix app build",
-    "clean": "npx rimraf .wix; npx rimraf package-lock.json",
     "release": "wix app release",
     "dev": "wix app dev",
     "preview": "wix app preview",
     "serve": "wix app serve",
     "generate": "wix app generate",
-    "update-uuid": "node scripts/replace-uuid.js",
+    "new-uuid": "node scripts/generate-uuid.js",
     "logs": "wix app logs",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "add-issues": "node scripts/github-add-issues.js"
   }
 }

@@ -1,0 +1,8 @@
+[
+  {
+    "title": "Setup React Environment",
+    "body": "Initialize a new React project with necessary dependencies for UI components and mock data handling.",
+    "labels": ["frontend", "setup"],
+    "milestone": 1
+  }
+]
