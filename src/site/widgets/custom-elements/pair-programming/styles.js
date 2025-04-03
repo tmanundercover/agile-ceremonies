@@ -75,7 +75,8 @@ export const BacklogTitle = styled.h2 `
     font-size: 1.2em;
     margin-bottom: 10px;
 `;
-export const TaskItem = styled.li `
+// Renamed from TaskItem to RequirementItem.
+export const RequirementItem = styled.li `
     list-style: none;
     padding: 5px;
     border-bottom: 1px solid #ccc;
@@ -112,9 +113,10 @@ export const SeatCell = styled.div `
         border-right: 1px solid #ccc;
     }
 `;
-export const TaskDropdown = styled.div `
+// Renamed from TaskDropdown to RequirementDropdown.
+export const RequirementDropdown = styled.div `
     grid-column: 1 / span 2;
-    /* Place TaskDropdown in the second row */
+    /* Place RequirementDropdown in the second row */
     grid-row: 2 / 3;
     display: grid;
     grid-template-rows: auto auto;
@@ -126,10 +128,14 @@ export const TaskDropdown = styled.div `
     padding: 5px;
     cursor: pointer;
     
-    .task-description {
+    .requirement-description {
         white-space: nowrap;
         overflow-x: auto;
         overflow-y: hidden;
+    }
+    
+    .requirement-title {
+        /* ...existing code if any... */
     }
 `;
 export const EndcapCell = styled.div `

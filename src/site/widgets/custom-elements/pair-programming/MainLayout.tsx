@@ -1,23 +1,23 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import DeveloperSection from "./DeveloperSection";
-import { LayoutContainer, Content, Sidebar, BacklogContainer, BacklogTitle, TaskItem, OfficeContainer, DeskGrid, Desk, EmptyDesk, EmptyDeskOverlay, SeatCell, TaskDropdown, EndcapCell } from "./styles";
+import { LayoutContainer, Content, Sidebar, BacklogContainer, BacklogTitle, RequirementItem, OfficeContainer, DeskGrid, Desk, EmptyDesk, EmptyDeskOverlay, SeatCell, RequirementDropdown, EndcapCell } from "./styles";
 import { fullDesks, partialDesks } from "./demoData";
-import { tasks } from "./datastore/tasks"; // updated import
+import { tasks } from "./datastore"; // updated import
 
 // New InteractiveTaskItem component for showing task detail on hover/click.
 const InteractiveTaskItem: React.FC<{ title: string; detail: string }> = ({ title, detail }) => {
     const [showDetail, setShowDetail] = useState(false);
     const toggleDetail = () => setShowDetail(prev => !prev);
     return (
-        <TaskItem 
+        <RequirementItem 
             onMouseEnter={() => setShowDetail(true)}
             onMouseLeave={() => setShowDetail(false)}
             onClick={toggleDetail}
         >
             <div>{title}</div>
             {showDetail && <div style={{ fontSize: "0.9em", color: "#666" }}>{detail}</div>}
-        </TaskItem>
+        </RequirementItem>
     );
 };
 
@@ -31,9 +31,9 @@ const MainLayout: React.FC = () => {
     const [pinchInitialDistance, setPinchInitialDistance] = useState<number | null>(null);
     const [pinchBaseScale, setPinchBaseScale] = useState(1);
 
-    // Modal state for task detail
+    // Modal state for requirement detail
     const [modalVisible, setModalVisible] = useState(false);
-    const [modalTask, setModalTask] = useState<{ title: string; description: string } | null>(null);
+    const [modalRequirement, setModalRequirement] = useState<{ title: string; description: string } | null>(null);
 
     const handleTouchStart = (e: React.TouchEvent) => {
         if (e.touches.length === 2) {
@@ -62,14 +62,14 @@ const MainLayout: React.FC = () => {
         }
     };
 
-    const handleTaskDoubleClick = (title: string, description: string) => {
-        setModalTask({ title, description });
+    const handleRequirementDoubleClick = (title: string, description: string) => {
+        setModalRequirement({ title, description });
         setModalVisible(true);
     };
 
     const closeModal = () => {
         setModalVisible(false);
-        setModalTask(null);
+        setModalRequirement(null);
     };
 
     return (
@@ -83,15 +83,15 @@ const MainLayout: React.FC = () => {
                     {/* Backlog fills remaining space */}
                     <div style={{ flex: 1, width: '100%' }}>
                         <BacklogContainer>
-                            <BacklogTitle>Task Backlog</BacklogTitle>
+                            <BacklogTitle>Requirements Backlog</BacklogTitle>
                             <ul>
                                 {tasks.map(task => (
-                                    <TaskItem
+                                    <RequirementItem
                                         key={task.id}
-                                        onDoubleClick={() => handleTaskDoubleClick(task.title, task.description)}
+                                        onDoubleClick={() => handleRequirementDoubleClick(task.title, task.description)}
                                     >
                                         {task.title}
-                                    </TaskItem>
+                                    </RequirementItem>
                                 ))}
                             </ul>
                         </BacklogContainer>
@@ -112,13 +112,13 @@ const MainLayout: React.FC = () => {
                                 <Desk key={id} solid>
                                     <SeatCell>Seat 1</SeatCell>
                                     <SeatCell>Seat 2</SeatCell>
-                                    <TaskDropdown
-                                        onDoubleClick={() => handleTaskDoubleClick(`Task ${id}`, `Description for task ${id}`)}
-                                        onClick={() => {/* ...toggle task detail... */}}
+                                    <RequirementDropdown
+                                        onDoubleClick={() => handleRequirementDoubleClick(`Requirement ${id}`, `Description for requirement ${id}`)}
+                                        onClick={() => {/* ...toggle requirement detail... */}}
                                     >
-                                        <div className="task-title">Task {id}</div>
-                                        <div className="task-description">Description for task {id}</div>
-                                    </TaskDropdown>
+                                        <div className="requirement-title">Requirement {id}</div>
+                                        <div className="requirement-description">Description for requirement {id}</div>
+                                    </RequirementDropdown>
                                     <EndcapCell>Endcap</EndcapCell>
                                 </Desk>
                             ))}
@@ -126,19 +126,19 @@ const MainLayout: React.FC = () => {
                                 <Desk key={id}>
                                     <SeatCell>Seat 1</SeatCell>
                                     <SeatCell>Seat 2</SeatCell>
-                                    <TaskDropdown
-                                        onDoubleClick={() => handleTaskDoubleClick(`Task ${id}`, `Description for task ${id}`)}
-                                        onClick={() => {/* ...toggle task detail... */}}
+                                    <RequirementDropdown
+                                        onDoubleClick={() => handleRequirementDoubleClick(`Requirement ${id}`, `Description for requirement ${id}`)}
+                                        onClick={() => {/* ...toggle requirement detail... */}}
                                     >
-                                        <div className="task-title">Task {id}</div>
-                                        <div className="task-description">Description for task {id}</div>
-                                    </TaskDropdown>
+                                        <div className="requirement-title">Requirement {id}</div>
+                                        <div className="requirement-description">Description for requirement {id}</div>
+                                    </RequirementDropdown>
                                     <EndcapCell>Endcap</EndcapCell>
                                 </Desk>
                             ))}
                             <EmptyDesk>
                                 <div>2 Seats</div>
-                                <div>Task</div>
+                                <div>Requirement</div>
                                 <div>Endcap</div>
                                 <EmptyDeskOverlay>+</EmptyDeskOverlay>
                             </EmptyDesk>
@@ -146,7 +146,7 @@ const MainLayout: React.FC = () => {
                     </OfficeContainer>
                 </div>
 
-                {modalVisible && modalTask && (
+                {modalVisible && modalRequirement && (
                     <div
                         style={{
                             position: "fixed",
@@ -172,11 +172,11 @@ const MainLayout: React.FC = () => {
                             onClick={e => e.stopPropagation()}
                         >
                             <div style={{ marginBottom: "10px", fontSize: "0.9em", color: "#555" }}>
-                                Home &gt; Office &gt; {modalTask.title}
+                                Home &gt; Office &gt; {modalRequirement.title}
                             </div>
-                            <h2>{modalTask.title}</h2>
-                            <p>{modalTask.description}</p>
-                            {/* ...additional task details... */}
+                            <h2>{modalRequirement.title}</h2>
+                            <p>{modalRequirement.description}</p>
+                            {/* ...additional requirement details... */}
                             <button onClick={closeModal}>Close</button>
                         </div>
                     </div>
