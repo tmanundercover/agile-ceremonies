@@ -109,8 +109,8 @@ export const DeskGrid = styled.div`
 export const Desk = styled.div<{ solid?: boolean }>`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    /* Removed grid-auto-rows and set fixed three equal rows */
-    grid-template-rows: repeat(3, 1fr);
+    // Updated to add four rows: two for the seats, one for the task, one for the endcap
+    grid-template-rows: 1fr 1fr 1fr 1fr;
     border: 2px solid ${props => props.solid ? '#000' : '#ccc'};
     padding: 0;
 `;
@@ -121,8 +121,8 @@ export const SeatCell = styled.div`
     align-items: center;
     justify-content: center;
     padding: 5px;
-    /* Place SeatCells in the first row */
-    grid-row: 1 / 2;
+    // Update: Seat spans the top two rows
+    grid-row: 1 / span 2;
     &:first-child {
         border-right: 1px solid #ccc;
     }
@@ -131,8 +131,8 @@ export const SeatCell = styled.div`
 // Renamed from TaskDropdown to RequirementDropdown.
 export const RequirementDropdown = styled.div`
     grid-column: 1 / span 2;
-    /* Place RequirementDropdown in the second row */
-    grid-row: 2 / 3;
+    // Moved to row 3 for the task row
+    grid-row: 3 / span 1;
     display: grid;
     grid-template-rows: auto auto;
     background: #fff;
@@ -150,20 +150,23 @@ export const RequirementDropdown = styled.div`
     }
     
     .requirement-title {
-        /* ...existing code if any... */
+        // ...existing code...
     }
 `;
 
 export const EndcapCell = styled.div`
     grid-column: 1 / span 2;
-    /* Place EndcapCell in the third row */
-    grid-row: 3 / 4;
+    // Moved to row 4 for the endcap row
+    grid-row: 4 / span 1;
     background: #f0f0f0;
     border-top: 1px solid #ccc;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 5px;
+    // Rounded bottom corners for the endcap
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
 `;
 
 export const EmptyDesk = styled.div`
