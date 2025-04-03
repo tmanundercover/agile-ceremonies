@@ -1,18 +1,20 @@
-import React, { type FC } from 'react';
+import React, {FC} from 'react';
 import ReactDOM from 'react-dom';
 import reactToWebComponent from 'react-to-webcomponent';
-import styles from './element.module.css';
-import App from "./App";
+import PairProgrammingWrapper from './PairProgrammingWrapper';
 
 interface Props {
   displayName?: string;
 }
 
 const CustomElement: FC<Props> = ({
-  displayName = `Your Widget's Title`,
-}) => {
+                                      displayName = `Your Widget's Title`,
+                                  }) => {
   return (
-    <App />
+    <>
+        {/*hi*/}
+        <PairProgrammingWrapper />
+        </>
   );
 };
 

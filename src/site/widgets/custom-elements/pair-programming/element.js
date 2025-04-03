@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import reactToWebComponent from 'react-to-webcomponent';
-import App from "./App";
+import PairProgrammingWrapper from './PairProgrammingWrapper';
 const CustomElement = ({ displayName = `Your Widget's Title`, }) => {
-    return (React.createElement(App, null));
+    return (React.createElement(React.Fragment, null,
+        React.createElement(PairProgrammingWrapper, null)));
 };
 const customElement = reactToWebComponent(CustomElement, React, ReactDOM, {
     props: {
