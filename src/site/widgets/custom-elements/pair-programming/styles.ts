@@ -27,6 +27,7 @@ export const DevelopersList = styled.div`
     display: flex;
     scroll-snap-type: x mandatory;
     position: relative;
+    padding-left: 10px; // added left padding for backward scrolling
     padding-right: 10px;
     // Hide scrollbar on WebKit
     &::-webkit-scrollbar {
@@ -56,16 +57,15 @@ export const DeveloperCard = styled.div`
     padding: 10px;
     border-radius: 4px;
     flex-shrink: 0;
-    width: 100%;
+    min-width: 150px; // changed from width: 100% to allow horizontal scrolling backwards
     scroll-snap-align: center;
     text-align: center;
 `;
 
 export const Sidebar = styled.div`
-    width: 100px; // updated from 300px to match one developer card
+    width: 190px; // updated: one developer card (150px) + 2*20px padding
     background: #f4f4f4;
     padding: 20px;
-    /* Added for vertical layout */
     display: flex;
     flex-direction: column;
     height: 100vh;
