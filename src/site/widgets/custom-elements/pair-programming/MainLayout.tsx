@@ -1,11 +1,13 @@
-// ...existing imports...
-import DeveloperCarousel from "./DeveloperCarousel";
-import InteractiveTaskItem from "./InteractiveTaskItem";
-import { LayoutContainer, Sidebar, Content, BacklogContainer } from "./styles";
-import { tasks } from "./mockData";
+import React, { useState } from 'react'; // updated import to include useState
 // ...existing imports...
 
 const MainLayout: React.FC = () => {
+    // Added state and handler for task selection
+    const [selectedTask, setSelectedTask] = useState<string>("");
+    const handleTaskClick = (task: string) => {
+        setSelectedTask(task);
+    };
+
     // ...existing state and handler for task selection...
     return (
         <LayoutContainer>
@@ -36,4 +38,3 @@ const MainLayout: React.FC = () => {
 };
 
 export default MainLayout;
-
