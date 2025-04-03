@@ -1,5 +1,10 @@
 import React, { FC } from "react";
 
+// Polyfill useInsertionEffect so that framer-motion works correctly
+if (!React.useInsertionEffect) {
+  React.useInsertionEffect = React.useLayoutEffect;
+}
+
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import App from './App';
