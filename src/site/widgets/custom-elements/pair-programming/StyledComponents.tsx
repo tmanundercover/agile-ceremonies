@@ -134,6 +134,11 @@ export const SwimlaneStyled = styled.div`
   }
 `;
 
+export const SwimlaneTitleStyled = styled.h3`
+  color: #333; /* Ensure contrast */
+  margin-bottom: 10px;
+`;
+
 export const VerticalLineStyled = styled.div`
   width: 1px;
   background-color: #ccc;
