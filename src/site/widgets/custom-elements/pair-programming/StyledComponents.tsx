@@ -1,12 +1,11 @@
 import styled from 'styled-components';
 
 export const ModalStyled = styled.div`
-  /* Modal styles */
   padding: 20px;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 800px; /* Increased width */
+  max-width: 800px;
   margin: 0 auto;
 `;
 
@@ -41,40 +40,47 @@ export const OfficeFloorStyled = styled.div`
 export const FormStyled = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
+  width: 100%;
 `;
 
 export const InputStyled = styled.input`
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
   font-size: 16px;
-  width: 100%; /* Added to make the input take up the whole row */
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 export const TextAreaStyled = styled.textarea`
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
   font-size: 16px;
   resize: vertical;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 export const SelectStyled = styled.select`
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
   font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 export const ButtonStyled = styled.button`
-  padding: 10px 15px;
+  padding: 12px 20px;
   background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 16px;
   cursor: pointer;
+  align-self: center;
 
   &:hover {
     background-color: #0056b3;
@@ -126,17 +132,12 @@ export const SwimlaneStyled = styled.div`
   max-height: 300px;
   overflow-y: auto;
   padding: 10px;
-  border-radius: 4px; /* Removed border */
+  border-radius: 4px;
   margin: 0 10px;
 
   h3 {
-    color: #333; /* Adjust the color to ensure contrast */
+    color: #333;
   }
-`;
-
-export const SwimlaneTitleStyled = styled.h3`
-  color: #333; /* Ensure contrast */
-  margin-bottom: 10px;
 `;
 
 export const VerticalLineStyled = styled.div`
@@ -167,7 +168,7 @@ export const DropdownStyled = styled.select`
   border-radius: 4px;
   font-size: 16px;
   margin-bottom: 10px;
-  width: 100%; /* Adjusted to be as wide as the swim lane */
+  width: 100%;
 `;
 
 export const AddTaskButtonStyled = styled.button`
@@ -192,15 +193,15 @@ export const ToggleSwitchStyled = styled.div`
 `;
 
 export const RadioButtonLabelStyled = styled.label`
-  font-size: 14px; /* Decreased font size for modern look */
+  font-size: 14px;
   margin-right: 10px;
   display: flex;
   align-items: center;
   padding: 5px 10px;
-  border-radius: 4px; /* Removed border */
+  border-radius: 4px;
   cursor: pointer;
   background-color: #f9f9f9;
-  color: #333; /* Ensure text color is visible */
+  color: #333;
 
   input {
     margin-right: 5px;
@@ -215,4 +216,3 @@ export const RadioButtonLabelStyled = styled.label`
     color: white;
   }
 `;
-

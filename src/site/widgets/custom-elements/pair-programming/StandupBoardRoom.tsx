@@ -1,5 +1,6 @@
 import React from 'react';
 import { BoardRoomStyled, SidebarStyled, TeammateStyled, MainContentStyled } from './StyledComponents';
+import { StandupData } from './models';
 
 interface StandupData {
   name: string;
@@ -28,3 +29,4 @@ const StandupBoardRoom: React.FC<StandupBoardRoomProps> = ({ standupData }) => {
 };
 
 export default StandupBoardRoom;
+

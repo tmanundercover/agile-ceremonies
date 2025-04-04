@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ModalStyled, FormStyled, InputStyled, TextAreaStyled, SelectStyled, ButtonStyled } from './StyledComponents';
 import BlockerSection from './BlockerSection';
 import Swimlanes from './Swimlanes';
-import { Teammate } from './models';
+import { Teammate, HelpRequest } from './models';
 
 interface HelpRequest {
   teammate: Teammate;

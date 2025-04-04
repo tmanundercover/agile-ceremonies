@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SwimlaneStyled, SwimlaneSectionStyled, TaskListStyled, TaskItemStyled, DropdownStyled, VerticalLineStyled, ToggleSwitchStyled, RadioButtonLabelStyled, SwimlaneTitleStyled } from './StyledComponents';
+import { SwimlaneStyled, SwimlaneSectionStyled, TaskListStyled, TaskItemStyled, DropdownStyled, VerticalLineStyled, ToggleSwitchStyled, RadioButtonLabelStyled } from './StyledComponents';
 
 interface SwimlanesProps {
   tasksCompleted: string[];
@@ -11,12 +11,10 @@ interface SwimlanesProps {
 }
 
 const Swimlanes: React.FC<SwimlanesProps> = ({ tasksCompleted, setTasksCompleted, tasksInProgress, setTasksInProgress, tasksPlanned, setTasksPlanned }) => {
-  const [newTaskCompleted, setNewTaskCompleted] = useState<string>('');
-  const [newTaskInProgress, setNewTaskInProgress] = useState<string>('');
-  const [newTaskPlanned, setNewTaskPlanned] = useState<string>('');
+  const [newTask, setNewTask] = useState<string>('');
   const [isTaskSelected, setIsTaskSelected] = useState<boolean>(true);
 
-  const handleAddTask = (setTasks: (value: string[]) => void, tasks: string[], newTask: string, setNewTask: (value: string) => void) => {
+  const handleAddTask = (setTasks: (value: string[]) => void, tasks: string[]) => {
     if (newTask.trim()) {
       setTasks([...tasks, newTask]);
       setNewTask('');
@@ -29,8 +27,6 @@ const Swimlanes: React.FC<SwimlanesProps> = ({ tasksCompleted, setTasksCompleted
         title="Completed"
         tasks={tasksCompleted}
         setTasks={setTasksCompleted}
-        newTask={newTaskCompleted}
-        setNewTask={setNewTaskCompleted}
         isTaskSelected={isTaskSelected}
         setIsTaskSelected={setIsTaskSelected}
         handleAddTask={handleAddTask}
@@ -40,8 +36,6 @@ const Swimlanes: React.FC<SwimlanesProps> = ({ tasksCompleted, setTasksCompleted
         title="In Progress"
         tasks={tasksInProgress}
         setTasks={setTasksInProgress}
-        newTask={newTaskInProgress}
-        setNewTask={setNewTaskInProgress}
         isTaskSelected={isTaskSelected}
         setIsTaskSelected={setIsTaskSelected}
         handleAddTask={handleAddTask}
@@ -51,8 +45,6 @@ const Swimlanes: React.FC<SwimlanesProps> = ({ tasksCompleted, setTasksCompleted
         title="Planned"
         tasks={tasksPlanned}
         setTasks={setTasksPlanned}
-        newTask={newTaskPlanned}
-        setNewTask={setNewTaskPlanned}
         isTaskSelected={isTaskSelected}
         setIsTaskSelected={setIsTaskSelected}
         handleAddTask={handleAddTask}
@@ -65,23 +57,21 @@ interface SwimlaneProps {
   title: string;
   tasks: string[];
   setTasks: (value: string[]) => void;
-  newTask: string;
-  setNewTask: (value: string) => void;
   isTaskSelected: boolean;
   setIsTaskSelected: (value: boolean) => void;
-  handleAddTask: (setTasks: (value: string[]) => void, tasks: string[], newTask: string, setNewTask: (value: string) => void) => void;
+  handleAddTask: (setTasks: (value: string[]) => void, tasks: string[]) => void;
 }
 
-const Swimlane: React.FC<SwimlaneProps> = ({ title, tasks, setTasks, newTask, setNewTask, isTaskSelected, setIsTaskSelected, handleAddTask }) => (
+const Swimlane: React.FC<SwimlaneProps> = ({ title, tasks, setTasks, isTaskSelected, setIsTaskSelected, handleAddTask }) => (
   <SwimlaneStyled>
-    <SwimlaneTitleStyled>{title}</SwimlaneTitleStyled>
+    <h3>{title}</h3>
     <ToggleSwitch isTaskSelected={isTaskSelected} setIsTaskSelected={setIsTaskSelected} />
     <TaskListStyled>
       {tasks.map((task, index) => (
         <TaskItemStyled key={index}>{task}</TaskItemStyled>
       ))}
     </TaskListStyled>
-    <DropdownStyled onChange={(e) => handleAddTask(setTasks, tasks, e.target.value, setNewTask)}>
+    <DropdownStyled onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleAddTask(setTasks, [...tasks, e.target.value])}>
       <option value="">Select {isTaskSelected ? 'Task' : 'Requirement'}</option>
       {/* Add task or requirement options here */}
     </DropdownStyled>

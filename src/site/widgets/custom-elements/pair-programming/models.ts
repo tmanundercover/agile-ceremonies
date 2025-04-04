@@ -1,4 +1,3 @@
-
 export interface Task {
   id: string;
   title: string;
@@ -28,4 +27,19 @@ export interface Desk {
   developerSeats: [Teammate, Teammate];
   endcapSeat: Teammate;
   taskDropdown: Task[];
+}
+
+export interface HelpRequest {
+  teammate: Teammate;
+  comment: string;
+}
+
+export interface StandupData {
+  name: string;
+  status: string;
+  blockers: string[];
+  helpRequest: HelpRequest;
+  tasksCompleted: string[];
+  tasksInProgress: string[];
+  tasksPlanned: string[];
 }
