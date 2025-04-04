@@ -1,7 +1,16 @@
 import React from 'react';
 import { BoardRoomStyled, SidebarStyled, TeammateStyled, MainContentStyled } from './StyledComponents';
 
-const StandupBoardRoom = ({ standupData }) => {
+interface StandupData {
+  name: string;
+  // Add other properties if needed
+}
+
+interface StandupBoardRoomProps {
+  standupData: StandupData[];
+}
+
+const StandupBoardRoom: React.FC<StandupBoardRoomProps> = ({ standupData }) => {
   return (
     <BoardRoomStyled>
       <SidebarStyled>
