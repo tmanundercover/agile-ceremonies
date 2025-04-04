@@ -1,10 +1,18 @@
+import * as React from "react";
+import {DateProps} from "@wix/wix-ui-icons-common/dist/types/general/dist/components/Date";
+
 export interface Task {
   id: string;
   title: string;
   description: string;
+  comments: string[];
   type: 'feature' | 'bug' | 'wireframe' | 'spike';
-  assignedTo: Teammate;
+  assignedTeammates: Teammate[];
   requirementId: string;
+  dependencies: (Task | Requirement)[];
+  status: 'To Do' | 'In Progress' | 'Done';
+  priority: 'Low' | 'Medium' | 'High';
+  icon: React.FC<DateProps>
 }
 
 export interface Requirement {
@@ -14,6 +22,8 @@ export interface Requirement {
   tasks: Task[];
   dependencies: Requirement[];
   assignedTo: Teammate;
+  status: 'Open' | 'In Progress' | 'Closed';
+  priority: 'Low' | 'Medium' | 'High';
 }
 
 export interface Teammate {
@@ -30,8 +40,13 @@ export interface Desk {
 }
 
 export interface HelpRequest {
-  teammate: Teammate;
-  comment: string;
+  comments: [];
+  description: string;
+  helperId: string;
+  id: string;
+  requesterId: string;
+  status: 'Pending' | 'Resolved'| 'Obsolete';
+  taskId: string;
 }
 
 export interface StandupData {

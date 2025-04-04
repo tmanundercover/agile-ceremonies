@@ -2,31 +2,29 @@ import React from 'react';
 import { BoardRoomStyled, SidebarStyled, TeammateStyled, MainContentStyled } from './StyledComponents';
 import { StandupData } from './models';
 
-interface StandupData {
-  name: string;
-  // Add other properties if needed
-}
-
 interface StandupBoardRoomProps {
   standupData: StandupData[];
 }
 
 const StandupBoardRoom: React.FC<StandupBoardRoomProps> = ({ standupData }) => {
   return (
-    <BoardRoomStyled>
-      <SidebarStyled>
-        {standupData.map((data, index) => (
-          <TeammateStyled key={index}>
-            {data.name}
-          </TeammateStyled>
-        ))}
-      </SidebarStyled>
-      <MainContentStyled>
-        {/* Display tasks and requirements */}
-      </MainContentStyled>
-    </BoardRoomStyled>
+    <div>
+      <BoardRoomStyled>
+        <SidebarStyled>
+          {standupData.map((data, index) => (
+            <TeammateStyled key={index}>
+              <div>{data.name}</div>
+              <div>Status: {data.status}</div>
+              <div>Blockers: {data.blockers.join(', ')}</div>
+            </TeammateStyled>
+          ))}
+        </SidebarStyled>
+        <MainContentStyled>
+          {/* Display tasks and requirements */}
+        </MainContentStyled>
+      </BoardRoomStyled>
+    </div>
   );
 };
 
 export default StandupBoardRoom;
-

@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 export const ModalStyled = styled.div`
   padding: 20px;
@@ -51,6 +53,12 @@ export const InputStyled = styled.input`
   font-size: 16px;
   width: 100%;
   box-sizing: border-box;
+  transition: border-color 0.3s;
+
+  &:focus {
+    border-color: #007bff;
+    outline: none;
+  }
 `;
 
 export const TextAreaStyled = styled.textarea`
@@ -61,6 +69,12 @@ export const TextAreaStyled = styled.textarea`
   resize: vertical;
   width: 100%;
   box-sizing: border-box;
+  transition: border-color 0.3s;
+
+  &:focus {
+    border-color: #007bff;
+    outline: none;
+  }
 `;
 
 export const SelectStyled = styled.select`
@@ -70,6 +84,12 @@ export const SelectStyled = styled.select`
   font-size: 16px;
   width: 100%;
   box-sizing: border-box;
+  transition: border-color 0.3s;
+
+  &:focus {
+    border-color: #007bff;
+    outline: none;
+  }
 `;
 
 export const ButtonStyled = styled.button`
@@ -81,6 +101,7 @@ export const ButtonStyled = styled.button`
   font-size: 16px;
   cursor: pointer;
   align-self: center;
+  transition: background-color 0.3s;
 
   &:hover {
     background-color: #0056b3;
@@ -125,6 +146,18 @@ export const SwimlaneSectionStyled = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 15px;
+
+  .slick-slider {
+    margin-bottom: 15px;
+  }
+
+  .slick-dots {
+    bottom: -30px;
+  }
+
+  .slick-prev, .slick-next {
+    z-index: 1;
+  }
 `;
 
 export const SwimlaneStyled = styled.div`
@@ -169,6 +202,13 @@ export const DropdownStyled = styled.select`
   font-size: 16px;
   margin-bottom: 10px;
   width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+
+  &:focus {
+    border-color: #007bff;
+    outline: none;
+  }
 `;
 
 export const AddTaskButtonStyled = styled.button`
@@ -179,6 +219,9 @@ export const AddTaskButtonStyled = styled.button`
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
+  margin-top: 10px;
+  width: 100%;
+  transition: background-color 0.3s;
 
   &:hover {
     background-color: #218838;
@@ -216,3 +259,4 @@ export const RadioButtonLabelStyled = styled.label`
     color: white;
   }
 `;
+

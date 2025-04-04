@@ -3,14 +3,16 @@ import { OfficeViewStyled, SidebarStyled, OfficeFloorStyled } from './StyledComp
 
 const OfficeView: React.FC = () => {
   return (
-    <OfficeViewStyled>
-      <SidebarStyled>
-        {/* Teammates and backlog */}
-      </SidebarStyled>
-      <OfficeFloorStyled>
-        {/* Grid of desks */}
-      </OfficeFloorStyled>
-    </OfficeViewStyled>
+    <div>
+      <OfficeViewStyled>
+        <SidebarStyled>
+          {/* Teammates and backlog */}
+        </SidebarStyled>
+        <OfficeFloorStyled>
+          {/* Grid of desks */}
+        </OfficeFloorStyled>
+      </OfficeViewStyled>
+    </div>
   );
 };
 

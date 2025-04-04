@@ -5,12 +5,17 @@
   "dependencies": {
     "@faker-js/faker": "^9.6.0",
     "@octokit/core": "^6.1.4",
+    "@types/react-slick": "^0.23.13",
     "@wix/dashboard": "^1.3.33",
     "@wix/design-system": "^1.0.0",
     "@wix/editor": "^1.356.0",
     "@wix/wix-ui-icons-common": "^3.0.0",
     "node-fetch": "^2.6.1",
+    "react": "16.14.0",
+    "react-dom": "16.14.0",
+    "react-slick": "^0.30.3",
     "react-to-webcomponent": "^2.0.0",
+    "slick-carousel": "^1.8.1",
     "styled-components": "^6.1.17"
   },
   "devDependencies": {
@@ -19,8 +24,6 @@
     "@wix/cli": "^1.0.0",
     "@wix/cli-app": "^1.0.0",
     "dotenv": "^16.4.7",
-    "react": "16.14.0",
-    "react-dom": "16.14.0",
     "typescript": "~5.8.2",
     "uuid": "^11.1.0"
   },
@@ -32,7 +35,7 @@
     "preview": "wix app preview",
     "serve": "wix app serve",
     "generate": "wix app generate",
-    "new-uuid": "node scripts/generate-uuid.js",
+    "replace-uuid": "node scripts/replace-uuid.js",
     "logs": "wix app logs",
     "typecheck": "tsc --noEmit",
     "add-issues": "node scripts/github-add-issues.js"
