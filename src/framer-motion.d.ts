@@ -1,1 +1,0 @@
-import {AnimatePresence, motion, type MotionProps} from "framer-motion/dist/framer-motion";

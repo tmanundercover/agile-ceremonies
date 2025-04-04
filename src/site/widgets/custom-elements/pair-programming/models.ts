@@ -5,7 +5,7 @@ export interface Task {
   id: string;
   title: string;
   description: string;
-  comments: string[];
+  comments: Comment[];
   type: 'feature' | 'bug' | 'wireframe' | 'spike';
   assignedTeammates: Teammate[];
   requirementId: string;
@@ -30,13 +30,15 @@ export interface Teammate {
   id: string;
   name: string;
   role: 'PM' | 'Developer' | 'Graphic Designer' | 'Marketing';
+  helpRequests: HelpRequest[];
 }
 
 export interface Desk {
   id: string;
-  developerSeats: [Teammate, Teammate];
-  endcapSeat: Teammate;
+  developerSeats: [Teammate| null, Teammate| null];
+  endcapSeat: Teammate | null;
   taskDropdown: Task[];
+  assignedTask: Task | null;
 }
 
 export interface HelpRequest {

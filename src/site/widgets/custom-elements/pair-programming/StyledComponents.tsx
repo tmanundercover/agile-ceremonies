@@ -260,3 +260,11 @@ export const RadioButtonLabelStyled = styled.label`
   }
 `;
 
+export const ModalContent = styled.div`
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 600px;
+`;
+
