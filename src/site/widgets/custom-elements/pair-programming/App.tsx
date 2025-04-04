@@ -1,6 +1,18 @@
 // App.tsx
 import React, {useEffect, useState} from 'react';
-import styled from 'styled-components';
+import {
+    AppContainer,
+    OfficeContainer,
+    Sidebar,
+    TeammateCarousel,
+    BacklogSection,
+    OfficeFloor,
+    DeskContainer,
+    Seat,
+    SeatOccupied,
+    DraggableTeammate,
+    TaskDropdown
+} from './StyledComponents';
 import DeskDetailsModal from "./DeskDetailsModal";
 import {Desk, Teammate} from "./models"
 
@@ -44,120 +56,6 @@ interface Comment {
     content: string;
     timestamp: Date;
 }
-
-// Styled Components
-const AppContainer = styled.div`
-    width: 100vw;
-    height: 100vh;
-    background: #ffffff;
-    color: #000000;
-`;
-
-const OfficeContainer = styled.div`
-    display: grid;
-    grid-template-columns: 250px 1fr;
-    height: 100vh;
-    background: #f5f5f5;
-`;
-
-const Sidebar = styled.div`
-    display: flex;
-    flex-direction: column;
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 1rem;
-`;
-
-// think about styled(motion.div)?
-const TeammateCarousel = styled.div`
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    padding: 1rem;
-    gap: 1rem;
-    height: 40%;
-`;
-
-const BacklogSection = styled.div`
-    height: 60%;
-    overflow-y: auto;
-    padding: 1rem;
-`;
-
-const OfficeFloor = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    padding: 2rem;
-    background: white;
-    overflow: auto;
-`;
-
-const DeskContainer = styled.div`
-    background: rgba(200, 200, 200, 0.1);
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    padding: 1rem;
-    display: grid;
-    grid-template-areas:
-    "dev1 task endcap"
-    "dev2 task endcap";
-    gap: 1rem;
-    height: 200px;
-`;
-
-// const Seat = styled.div<{ occupied: boolean }>`
-const Seat = styled.div`
-    background: 'rgba(0, 0, 0, 0.1)';
-    border-radius: 8px;
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-`;
-
-const SeatOccupied = styled.div`
-    background: 'rgba(0, 255, 0, 0.1)';
-    border-radius: 8px;
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-`;
-
-const DraggableTeammate = styled.div`
-    background: black;
-    color: white;
-    padding: 1rem;
-    border-radius: 8px;
-    cursor: move;
-    scroll-snap-align: start;
-`;
-
-
-const TaskDropdown = styled.select`
-    grid-area: task;
-    padding: 0.5rem;
-    border-radius: 8px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-`;
-
-// const Modal = styled(motion.div)`
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   width: 100vw;
-//   height: 100vh;
-//   background: rgba(0, 0, 0, 0.5);
-//   backdrop-filter: blur(5px);
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-// `;
-//
 
 // Main App Component
 export const App: React.FC = () => {
