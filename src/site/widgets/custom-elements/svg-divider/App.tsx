@@ -21,6 +21,7 @@ const App: React.FC = () => {
         parentSvgProps,
     } = useProcessSvg();
 
+
     return (
         <AppContainer className={isDarkTheme ? 'dark' : ''}>
             <SidePanel>
@@ -30,6 +31,7 @@ const App: React.FC = () => {
                 <ThumbnailGrid
                     thumbnails={thumbnails}
                     onThumbnailClick={handleThumbnailClick}
+                    parentSvgProps={parentSvgProps}
                 />
             </SidePanel>
 

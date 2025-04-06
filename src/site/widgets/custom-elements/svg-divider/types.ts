@@ -1,26 +1,16 @@
 export interface SvgThumbnail {
-  id: string;
-  name: string;
-  src: string;
-  disabled: boolean;
-}
-
-export interface SubThumbnailMap {
-  [parentId: string]: string[];
-}
-
-export interface SvgProcessorProps {
-  onFileSelect: (file: File) => void;
-  loading: boolean;
-  error: string | null;
+    id: string;
+    name: string;
+    src: string;
+    width: number;
+    height: number;
+    x: number;
+    y: number;
+    disabled: boolean;
 }
 
 export interface ThumbnailsProps {
-  thumbnails: SvgThumbnail[];
-  onThumbnailClick: (index: number) => void;
-}
-
-export interface SvgPreviewProps {
-  svgContent: string | null;
-  componentCount: number;
+    thumbnails: SvgThumbnail[];
+    onThumbnailClick: (index: number) => void;
+    parentSvgProps: {[key: string]: string};
 }
