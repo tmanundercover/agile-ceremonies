@@ -1,0 +1,21 @@
+{
+  "$schema": "https://dev.wix.com/wix-cli/schemas/custom-element.json",
+  "id": "e4a3b42f-88fa-4277-a9d7-426e2d9e3ae4",
+  "name": "SVG to PNG",
+  "width": {
+    "defaultWidth": 450,
+    "allowStretch": true
+  },
+  "height": {
+    "defaultHeight": 250
+  },
+  "installation": {
+    "autoAddToSite": true
+  },
+  "presets": [
+    {
+      "id": "207ace1a-1ed7-4d73-901d-0788b065f1a6",
+      "thumbnailUrl": "../../../../assets/svg-to-png/thumbnail.png"
+    }
+  ]
+}
