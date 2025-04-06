@@ -1,222 +1,60 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {
-    Badge,
-    Button,
-    Container,
-    Error,
-    InputSection,
-    ModalToggle,
-    SelectedThumbnailsWrapper,
-    SettingsButton,
-    Sidebar,
-    SvgPreview,
-    SvgPreviewContainer,
-    SvgPreviewTitle,
-    Thumbnail,
-    MainSection,
-    SelectedThumbnailsSection,
-    SubThumbnailsFooter
-} from './styledComponents';
-import {ReactSVG} from 'react-svg';
+import React, {useState} from 'react';
 import {Settings} from '@wix/wix-ui-icons-common';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import {ActionButton, AppContainer, MainLayout, SidePanel} from './styledComponents';
+import SvgProcessor from './components/SvgProcessor';
+import SvgPreview from './components/SvgPreview';
+import ThumbnailGrid from './components/ThumbnailGrid';
+import SelectedThumbnails from './components/SelectedThumbnails';
+import {useProcessSvg} from './hooks/useProcessSvg';
 
 const App: React.FC = () => {
-    const [inputFile, setInputFile] = useState<File | null>(null);
-    const [inputFileContent, setInputFileContent] = useState<string | null>(null);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
-    const svgPreviewRef = useRef<HTMLDivElement>(null);
-    const [componentCount, setComponentCount] = useState<number>(0);
-    const [isDarkTheme, setIsDarkTheme] = useState<boolean>(true);
-    const [thumbnails, setThumbnails] = useState<string[]>([]);
-    const [disabledThumbnails, setDisabledThumbnails] = useState<number[]>([]);
-    const [subThumbnails, setSubThumbnails] = useState<{ [key: number]: string[] }>({});
-    const [selectedThumbnails, setSelectedThumbnails] = useState<string[]>([]);
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [isSelectedThumbnailsVisible, setIsSelectedThumbnailsVisible] = useState<boolean>(true);
-
-    useEffect(() => {
-        if (inputFileContent) {
-            const svgPreviewElement = svgPreviewRef.current;
-            if (svgPreviewElement) {
-                svgPreviewElement.innerHTML = inputFileContent;
-                const svgElement = svgPreviewElement.querySelector('svg');
-                if (svgElement) {
-                    svgPreviewElement.style.width = svgElement.getAttribute('width') || '100%';
-                    svgPreviewElement.style.height = svgElement.getAttribute('height') || 'auto';
-                    const elements = Array.from(svgElement.children);
-                    const svgContainer = `<svg xmlns="http://www.w3.org/2000/svg" width="${svgElement.getAttribute('width')}" height="${svgElement.getAttribute('height')}" viewBox="${svgElement.getAttribute('viewBox')}">`;
-                    setComponentCount(elements.length);
-                    setThumbnails(elements.map((el, index) => `data:image/svg+xml;utf8,${encodeURIComponent(svgContainer + el.outerHTML + '</svg>')}`));
-                }
-            }
-        }
-    }, [inputFileContent]);
-
-    useEffect(() => {
-        if (inputFile) {
-            const fileReader = new FileReader();
-            fileReader.onload = (event) => {
-                const svgData = event.target?.result as string;
-                setInputFileContent(svgData);
-            };
-            fileReader.readAsText(inputFile);
-        }
-    }, [inputFile]);
-
-    const handleProcessSVG = () => {
-        if (!inputFile) {
-            alert('Please provide an input SVG file.');
-            return;
-        }
-
-        setLoading(true);
-        setError(null);
-
-        try {
-            const fileReader = new FileReader();
-            fileReader.onload = (event) => {
-                const svgData = event.target?.result as string;
-                setInputFileContent(svgData);
-            };
-            fileReader.readAsText(inputFile);
-        } catch (error) {
-            console.error('Error processing SVG file:', error);
-            setError('Error processing SVG file.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleSubThumbnailClick = (index: number, subIndex: number) => {
-        const svgElement = svgPreviewRef.current?.querySelector('svg');
-        if (svgElement) {
-            const elements = Array.from(svgElement.children);
-            const clickedElement = elements[index];
-            const subElements = Array.from(clickedElement.children);
-            const clickedSubElement = subElements[subIndex];
-            const svgContainer = `<svg xmlns="http://www.w3.org/2000/svg" width="${svgElement.getAttribute('width')}" height="${svgElement.getAttribute('height')}" viewBox="${svgElement.getAttribute('viewBox')}">`;
-            const newThumbnail = `data:image/svg+xml;utf8,${encodeURIComponent(svgContainer + clickedSubElement.outerHTML + '</svg>')}`;
-            if (!selectedThumbnails.includes(newThumbnail)) {
-                setSelectedThumbnails([...selectedThumbnails, newThumbnail]);
-            }
-        }
-    };
-    
-    const handleThumbnailClick = (index: number) => {
-        if (disabledThumbnails.includes(index)) {
-            setDisabledThumbnails(disabledThumbnails.filter(i => i !== index));
-            setSubThumbnails(prev => {
-                const newSubThumbnails = { ...prev };
-                delete newSubThumbnails[index];
-                return newSubThumbnails;
-            });
-        } else {
-            const svgElement = svgPreviewRef.current?.querySelector('svg');
-            if (svgElement) {
-                const elements = Array.from(svgElement.children);
-                const clickedElement = elements[index];
-                const subElements = Array.from(clickedElement.children);
-                const svgContainer = `<svg xmlns="http://www.w3.org/2000/svg" width="${svgElement.getAttribute('width')}" height="${svgElement.getAttribute('height')}" viewBox="${svgElement.getAttribute('viewBox')}">`;
-                setSubThumbnails(prev => ({
-                    ...prev,
-                    [index]: subElements.map((el, subIndex) => `data:image/svg+xml;utf8,${encodeURIComponent(svgContainer + el.outerHTML + '</svg>')}`)
-                }));
-                setDisabledThumbnails([...disabledThumbnails, index]);
-            }
-        }
-    };
+    const [isDarkTheme, setIsDarkTheme] = useState(true);
+    const {
+        svgContent,
+        thumbnails,
+        selectedThumbnails,
+        componentCount,
+        loading,
+        error,
+        handleFileSelect,
+        handleThumbnailClick,
+        handleThumbnailRemove,
+        handleSubThumbnailClick
+    } = useProcessSvg();
 
     return (
-        <Container className={isDarkTheme ? 'dark' : ''}>
-            <Sidebar>
-                <SettingsButton onClick={() => setIsDarkTheme(!isDarkTheme)}>
+        <AppContainer className={isDarkTheme ? 'dark' : ''}>
+            <SidePanel>
+                <ActionButton onClick={() => setIsDarkTheme(!isDarkTheme)}>
                     <Settings/>
-                </SettingsButton>
-                <h2>Thumbnails</h2>
-                <div className="thumbnails-wrapper">
-                    <TransitionGroup>
-                        {thumbnails.map((thumbnail, index) => (
-                            <CSSTransition key={index} timeout={300} classNames="thumbnail">
-                                <Thumbnail
-                                    src={thumbnail}
-                                    alt={`Thumbnail ${index + 1}`}
-                                    onClick={() => handleThumbnailClick(index)}
-                                    className={disabledThumbnails.includes(index) ? 'disabled' : ''}
-                                />
-                            </CSSTransition>
-                        ))}
-                    </TransitionGroup>
-                </div>
-            </Sidebar>
-            <MainSection>
-                <div className="main-content">
-                    <h1>SVG Processor</h1>
-                    <InputSection>
-                        <label htmlFor="fileInput">
-                            Input File:
-                        </label>
-                        <input id="fileInput" type="file" accept=".svg"
-                               onChange={(e) => setInputFile(e.target.files?.[0] || null)}/>
-                        <Button onClick={handleProcessSVG} disabled={loading}>
-                            {loading ? 'Processing...' : 'Process SVG'}
-                        </Button>
-                        {error && <Error>{error}</Error>}
-                    </InputSection>
-                </div>
-                {inputFileContent && (
-                    <SvgPreviewContainer>
-                        <SvgPreviewTitle>SVG Preview</SvgPreviewTitle>
-                        <SvgPreview ref={svgPreviewRef}>
-                            <ReactSVG src={`data:image/svg+xml;utf8,${encodeURIComponent(inputFileContent)}`} />
-                        </SvgPreview>
-                        <p>Number of logical components: {componentCount}</p>
-                    </SvgPreviewContainer>
+                </ActionButton>
+                <ThumbnailGrid
+                    thumbnails={thumbnails}
+                    onThumbnailClick={handleThumbnailClick}
+                />
+            </SidePanel>
+
+            <MainLayout>
+                <SvgProcessor
+                    onFileSelect={handleFileSelect}
+                    loading={loading}
+                    error={error}
+                />
+
+                {svgContent && (
+                    <SvgPreview
+                        svgContent={svgContent}
+                        componentCount={componentCount}
+                    />
                 )}
-                {inputFileContent && (
-                    <SubThumbnailsFooter>
-                        <div className="sub-thumbnails-wrapper">
-                            <TransitionGroup>
-                                {Object.keys(subThumbnails).map((key) => (
-                                    <div key={key}>
-                                        {subThumbnails[Number(key)].map((subThumbnail, subIndex) => (
-                                            <CSSTransition key={subIndex} timeout={300} classNames="thumbnail">
-                                                <Thumbnail
-                                                    src={subThumbnail}
-                                                    alt={`Sub-thumbnail ${subIndex + 1}`}
-                                                    onClick={() => handleSubThumbnailClick(Number(key), subIndex)}
-                                                />
-                                            </CSSTransition>
-                                        ))}
-                                    </div>
-                                ))}
-                            </TransitionGroup>
-                        </div>
-                    </SubThumbnailsFooter>
-                )}
-            </MainSection>
-            <ModalToggle onClick={() => setIsSelectedThumbnailsVisible(!isSelectedThumbnailsVisible)}>
-                {isSelectedThumbnailsVisible ? 'Hide' : 'Show'} Selected Thumbnails
-                <Badge>{selectedThumbnails.length}</Badge>
-            </ModalToggle>
-            {isSelectedThumbnailsVisible && (
-                <SelectedThumbnailsSection className={isSelectedThumbnailsVisible ? 'open' : ''}>
-                    <h2>Selected Thumbnails</h2>
-                    <SelectedThumbnailsWrapper>
-                        <TransitionGroup>
-                            {selectedThumbnails.map((thumbnail, index) => (
-                                <CSSTransition key={index} timeout={300} classNames="thumbnail">
-                                    <Thumbnail key={index} src={thumbnail} alt={`Selected Thumbnail ${index + 1}`} />
-                                </CSSTransition>
-                            ))}
-                        </TransitionGroup>
-                    </SelectedThumbnailsWrapper>
-                </SelectedThumbnailsSection>
-            )}
-        </Container>
+            </MainLayout>
+
+            <SelectedThumbnails
+                thumbnails={selectedThumbnails}
+                onRemove={handleThumbnailRemove}
+            />
+        </AppContainer>
     );
 };
 
 export default App;
-
