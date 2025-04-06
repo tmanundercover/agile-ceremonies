@@ -8,7 +8,9 @@ import {
     SvgPreview,
     SvgPreviewContainer,
     SvgPreviewTitle,
-    Thumbnail
+    Thumbnail,
+    Sidebar,
+    SelectedThumbnailsWrapper
 } from './styledComponents';
 import {ReactSVG} from 'react-svg';
 import {Settings} from '@wix/wix-ui-icons-common';
@@ -24,6 +26,7 @@ const App: React.FC = () => {
     const [thumbnails, setThumbnails] = useState<string[]>([]);
     const [disabledThumbnails, setDisabledThumbnails] = useState<number[]>([]);
     const [subThumbnails, setSubThumbnails] = useState<{ [key: number]: string[] }>({});
+    const [selectedThumbnails, setSelectedThumbnails] = useState<string[]>([]);
 
     useEffect(() => {
         if (inputFileContent) {
@@ -53,7 +56,7 @@ const App: React.FC = () => {
             fileReader.readAsText(inputFile);
         }
     }, [inputFile]);
-
+    
     const handleProcessSVG = () => {
         if (!inputFile) {
             alert('Please provide an input SVG file.');
@@ -75,6 +78,18 @@ const App: React.FC = () => {
             setError('Error processing SVG file.');
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleSubThumbnailClick = (index: number, subIndex: number) => {
+        const svgElement = svgPreviewRef.current?.querySelector('svg');
+        if (svgElement) {
+            const elements = Array.from(svgElement.children);
+            const clickedElement = elements[index];
+            const subElements = Array.from(clickedElement.children);
+            const clickedSubElement = subElements[subIndex];
+            const svgContainer = `<svg xmlns="http://www.w3.org/2000/svg" width="${svgElement.getAttribute('width')}" height="${svgElement.getAttribute('height')}" viewBox="${svgElement.getAttribute('viewBox')}">`;
+            setSelectedThumbnails([...selectedThumbnails, `data:image/svg+xml;utf8,${encodeURIComponent(svgContainer + clickedSubElement.outerHTML + '</svg>')}`]);
         }
     };
 
@@ -104,23 +119,31 @@ const App: React.FC = () => {
 
     return (
         <Container className={isDarkTheme ? 'dark' : ''}>
-            <h1>SVG Processor</h1>
-            <InputSection>
-                <label htmlFor="fileInput">
-                    Input File:
-                </label>
-                <input id="fileInput" type="file" accept=".svg"
-                       onChange={(e) => setInputFile(e.target.files?.[0] || null)}/>
-                <Button onClick={handleProcessSVG} disabled={loading}>
-                    {loading ? 'Processing...' : 'Process SVG'}
-                </Button>
-                {error && <Error>{error}</Error>}
-            </InputSection>
-            <SettingsButton onClick={() => setIsDarkTheme(!isDarkTheme)}>
-                <Settings/>
-            </SettingsButton>
-            {inputFileContent && (
-                <>
+            <Sidebar>
+                <SettingsButton onClick={() => setIsDarkTheme(!isDarkTheme)}>
+                    <Settings/>
+                </SettingsButton>
+                <h2>Selected Thumbnails</h2>
+                <SelectedThumbnailsWrapper>
+                    {selectedThumbnails.map((thumbnail, index) => (
+                        <Thumbnail key={index} src={thumbnail} alt={`Selected Thumbnail ${index + 1}`} />
+                    ))}
+                </SelectedThumbnailsWrapper>
+            </Sidebar>
+            <div className="main-content">
+                <h1>SVG Processor</h1>
+                <InputSection>
+                    <label htmlFor="fileInput">
+                        Input File:
+                    </label>
+                    <input id="fileInput" type="file" accept=".svg"
+                           onChange={(e) => setInputFile(e.target.files?.[0] || null)}/>
+                    <Button onClick={handleProcessSVG} disabled={loading}>
+                        {loading ? 'Processing...' : 'Process SVG'}
+                    </Button>
+                    {error && <Error>{error}</Error>}
+                </InputSection>
+                {inputFileContent && (
                     <SvgPreviewContainer>
                         <SvgPreviewTitle>SVG Preview</SvgPreviewTitle>
                         <SvgPreview ref={svgPreviewRef}>
@@ -141,16 +164,20 @@ const App: React.FC = () => {
                         {Object.keys(subThumbnails).map((key) => (
                             <div key={key} className="sub-thumbnails-wrapper">
                                 {subThumbnails[Number(key)].map((subThumbnail, subIndex) => (
-                                    <Thumbnail key={subIndex} src={subThumbnail} alt={`Sub-thumbnail ${subIndex + 1}`} />
+                                    <Thumbnail
+                                        key={subIndex}
+                                        src={subThumbnail}
+                                        alt={`Sub-thumbnail ${subIndex + 1}`}
+                                        onClick={() => handleSubThumbnailClick(Number(key), subIndex)}
+                                    />
                                 ))}
                             </div>
                         ))}
                     </SvgPreviewContainer>
-                </>
-            )}
+                )}
+            </div>
         </Container>
     );
 };
 
 export default App;
-
