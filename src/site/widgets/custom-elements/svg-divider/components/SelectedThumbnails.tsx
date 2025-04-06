@@ -1,6 +1,6 @@
 import React from 'react';
 import { SvgThumbnail } from '../types';
-import { SelectedPanel, SelectedThumbnailsWrapper } from '../styledComponents';
+import { SelectedThumbnailsWrapper } from '../styledComponents';
 
 interface SelectedThumbnailsProps {
     thumbnails: SvgThumbnail[];
@@ -9,7 +9,7 @@ interface SelectedThumbnailsProps {
 
 const SelectedThumbnails: React.FC<SelectedThumbnailsProps> = ({ thumbnails, parentSvgProps }) => {
     return (
-        <SelectedPanel className={thumbnails.length > 0 ? 'open' : ''}>
+        <div>
             <h3>Selected Components ({thumbnails.length})</h3>
             <SelectedThumbnailsWrapper>
                 <svg {...parentSvgProps}>
@@ -28,7 +28,7 @@ const SelectedThumbnails: React.FC<SelectedThumbnailsProps> = ({ thumbnails, par
                     })}
                 </svg>
             </SelectedThumbnailsWrapper>
-        </SelectedPanel>
+        </div>
     );
 };
 

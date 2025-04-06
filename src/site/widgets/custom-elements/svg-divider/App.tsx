@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Settings} from '@wix/wix-ui-icons-common';
-import {ActionButton, AppContainer, MainLayout, SidePanel} from './styledComponents';
+import {ActionButton, AppContainer, MainLayout, Modal, ModalContent, ModalToggle, SidePanel} from './styledComponents';
 import SvgProcessor from './components/SvgProcessor';
 import ThumbnailGrid from './components/ThumbnailGrid';
 import SelectedThumbnails from './components/SelectedThumbnails';
@@ -9,6 +9,7 @@ import {useProcessSvg} from './hooks/useProcessSvg';
 
 const App: React.FC = () => {
     const [isDarkTheme, setIsDarkTheme] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const {
         svgContent,
         thumbnails,
@@ -21,6 +22,8 @@ const App: React.FC = () => {
         parentSvgProps,
         originalSvgShell,
     } = useProcessSvg();
+
+    const toggleModal = () => setIsModalOpen(!isModalOpen);
 
     return (
         <AppContainer className={isDarkTheme ? 'dark' : ''}>
@@ -53,10 +56,21 @@ const App: React.FC = () => {
                 )}
             </MainLayout>
 
-            <SelectedThumbnails
-                thumbnails={selectedThumbnails}
-                parentSvgProps={parentSvgProps}
-            />
+            <Modal className={isModalOpen ? 'open' : ''}>
+                <ModalContent>
+                    <SelectedThumbnails
+                        thumbnails={selectedThumbnails}
+                        parentSvgProps={parentSvgProps}
+                    />
+                </ModalContent>
+            </Modal>
+
+            <ModalToggle 
+                onClick={toggleModal}
+                className={isModalOpen ? 'open' : ''}
+            >
+                Selected Components ({selectedThumbnails.length})
+            </ModalToggle>
         </AppContainer>
     );
 };

@@ -123,33 +123,6 @@ export const SidePanel = styled.div`
     }
 `;
 
-// Selected Thumbnails Components
-export const SelectedPanel = styled.div`
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 300px;
-    height: 100%;
-    background-color: #f9f9f9;
-    border-left: 2px solid #ddd;
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-    transform: translateX(100%);
-    transition: transform 0.3s ease-in-out;
-    z-index: 1000;
-    padding: 20px;
-    overflow-y: auto;
-
-    &.open {
-        transform: translateX(0);
-    }
-
-    .dark & {
-        background-color: #333;
-        color: #f9f9f9;
-        border-color: #555;
-    }
-`;
-
 // Form Components
 export const FileInput = styled.div`
     margin-bottom: 20px;
@@ -297,14 +270,17 @@ export const Modal = styled.div`
     bottom: 0;
     left: 0;
     width: 100%;
+    height: 50vh;
     background-color: #fff;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
     transform: translateY(100%);
     transition: transform 0.3s ease-in-out;
     z-index: 1000;
+    
     &.open {
         transform: translateY(0);
     }
+
     .dark & {
         background-color: #333;
     }
@@ -312,29 +288,60 @@ export const Modal = styled.div`
 
 export const ModalContent = styled.div`
     padding: 20px;
-    max-height: 300px;
+    height: 100%;
     overflow-y: auto;
+
+    h3 {
+        margin: 0 0 20px 0;
+        font-size: 1.2em;
+    }
 `;
 
 export const ModalToggle = styled.button`
     position: fixed;
-    bottom: 10px;
-    right: 10px;
-    padding: 10px 20px;
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 24px;
     background-color: #007BFF;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    z-index: 1200;
+    z-index: 1500; // Higher than modal's z-index
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, background-color 0.3s;
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: auto;
-    height: auto;
+    gap: 8px;
+    font-weight: 500;
+
+    &:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+    }
+
+    &.open {
+        background-color: #dc3545;
+        
+        &:hover {
+            background-color: #c82333;
+        }
+    }
 
     .dark & {
         background-color: #0056b3;
+        
+        &:hover {
+            background-color: #003d80;
+        }
+        
+        &.open {
+            background-color: #c82333;
+            
+            &:hover {
+                background-color: #bd2130;
+            }
+        }
     }
 `;
 
@@ -412,3 +419,4 @@ export const ThumbnailImage = styled.div`
         }
     }
 `;
+
