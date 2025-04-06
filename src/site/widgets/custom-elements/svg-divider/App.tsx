@@ -7,7 +7,8 @@ import {
     SettingsButton,
     SvgPreview,
     SvgPreviewContainer,
-    SvgPreviewTitle
+    SvgPreviewTitle,
+    Thumbnail
 } from './styledComponents';
 import {ReactSVG} from 'react-svg';
 import {Settings} from '@wix/wix-ui-icons-common';
@@ -20,6 +21,7 @@ const App: React.FC = () => {
     const svgPreviewRef = useRef<HTMLDivElement>(null);
     const [componentCount, setComponentCount] = useState<number>(0);
     const [isDarkTheme, setIsDarkTheme] = useState<boolean>(true);
+    const [thumbnails, setThumbnails] = useState<string[]>([]);
 
     useEffect(() => {
         if (inputFileContent) {
@@ -31,7 +33,9 @@ const App: React.FC = () => {
                     svgPreviewElement.style.width = svgElement.getAttribute('width') || '100%';
                     svgPreviewElement.style.height = svgElement.getAttribute('height') || 'auto';
                     const elements = Array.from(svgElement.children);
+                    const svgContainer = `<svg xmlns="http://www.w3.org/2000/svg" width="${svgElement.getAttribute('width')}" height="${svgElement.getAttribute('height')}" viewBox="${svgElement.getAttribute('viewBox')}">`;
                     setComponentCount(elements.length);
+                    setThumbnails(elements.map((el, index) => `data:image/svg+xml;utf8,${encodeURIComponent(svgContainer + el.outerHTML + '</svg>')}`));
                 }
             }
         }
@@ -90,16 +94,24 @@ const App: React.FC = () => {
                 <Settings/>
             </SettingsButton>
             {inputFileContent && (
-                <SvgPreviewContainer>
-                    <SvgPreviewTitle>SVG Preview</SvgPreviewTitle>
-                    <SvgPreview ref={svgPreviewRef}>
-                        <ReactSVG src={`data:image/svg+xml;utf8,${encodeURIComponent(inputFileContent)}`} responsive/>
-                    </SvgPreview>
-                    <p>Number of logical components: {componentCount}</p>
-                </SvgPreviewContainer>
+                <>
+                    <SvgPreviewContainer>
+                        <SvgPreviewTitle>SVG Preview</SvgPreviewTitle>
+                        <SvgPreview ref={svgPreviewRef}>
+                            <ReactSVG src={`data:image/svg+xml;utf8,${encodeURIComponent(inputFileContent)}`} responsive/>
+                        </SvgPreview>
+                        <p>Number of logical components: {componentCount}</p>
+                    </SvgPreviewContainer>
+                    <div className="thumbnails-wrapper">
+                        {thumbnails.map((thumbnail, index) => (
+                            <Thumbnail key={index} src={thumbnail} alt={`Thumbnail ${index + 1}`} />
+                        ))}
+                    </div>
+                </>
             )}
         </Container>
     );
 };
 
 export default App;
+

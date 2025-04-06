@@ -14,6 +14,13 @@ export const Container = styled.div`
         background-color: #333;
         color: #f9f9f9;
     }
+
+    .thumbnails-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
 `;
 
 export const InputSection = styled.div`
@@ -76,22 +83,12 @@ export const Error = styled.p`
     }
 `;
 
-export const ThumbnailsSection = styled.div`
-    margin-bottom: 20px;
-`;
-
-export const ThumbnailsContainer = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-`;
-
 export const Thumbnail = styled.img`
     border: 2px solid gray;
     margin: 5px;
     cursor: pointer;
-    width: 150px;  // Increased width
-    height: 150px; // Increased height
+    width: 150px;
+    height: 150px;
     object-fit: cover;
     transition: border-color 0.3s;
 
@@ -109,6 +106,28 @@ export const Thumbnail = styled.img`
         &.selected {
             border-color: #1e90ff;
         }
+
+        &:hover {
+            border-color: #1e90ff;
+        }
+    }
+`;
+
+export const SelectedThumbnail = styled.img`
+    border: 2px solid blue;
+    margin: 5px;
+    cursor: pointer;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    transition: border-color 0.3s;
+
+    &:hover {
+        border-color: #007BFF;
+    }
+
+    .dark & {
+        border-color: #1e90ff;
 
         &:hover {
             border-color: #1e90ff;
