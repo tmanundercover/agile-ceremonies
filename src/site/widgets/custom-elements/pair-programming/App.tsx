@@ -14,7 +14,7 @@ import {
     TaskDropdown
 } from './StyledComponents';
 import DeskDetailsModal from "./DeskDetailsModal";
-import {Date as DateIcon} from "@wix/wix-ui-icons-common/dist/types/general/dist";
+import {Date as DateIcon} from "@wix/wix-ui-icons-common";
 import {Desk, Teammate, Requirement, StandupStatus, HelpRequest, Comment, Task} from "./models"
 
 // Main App Component

@@ -1,0 +1,227 @@
+import styled from 'styled-components';
+
+export const Container = styled.div`
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+
+    &.dark {
+        background-color: #333;
+        color: #f9f9f9;
+    }
+`;
+
+export const InputSection = styled.div`
+    margin-bottom: 20px;
+
+    label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    input {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .dark & {
+        input {
+            background-color: #555;
+            color: #f9f9f9;
+            border-color: #444;
+        }
+    }
+`;
+
+export const Button = styled.button`
+    padding: 10px 20px;
+    margin-top: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: ${props => (props.disabled ? '#ccc' : '#007BFF')};
+    color: white;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: ${props => (props.disabled ? '#ccc' : '#0056b3')};
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+    }
+
+    .dark & {
+        background-color: ${props => (props.disabled ? '#555' : '#0056b3')};
+    }
+`;
+
+export const Error = styled.p`
+    color: red;
+    margin-top: 10px;
+
+    .dark & {
+        color: #ff6b6b;
+    }
+`;
+
+export const ThumbnailsSection = styled.div`
+    margin-bottom: 20px;
+`;
+
+export const ThumbnailsContainer = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+`;
+
+export const Thumbnail = styled.img`
+    border: 2px solid gray;
+    margin: 5px;
+    cursor: pointer;
+    width: 150px;  // Increased width
+    height: 150px; // Increased height
+    object-fit: cover;
+    transition: border-color 0.3s;
+
+    &.selected {
+        border-color: blue;
+    }
+
+    &:hover {
+        border-color: #007BFF;
+    }
+
+    .dark & {
+        border-color: #888;
+
+        &.selected {
+            border-color: #1e90ff;
+        }
+
+        &:hover {
+            border-color: #1e90ff;
+        }
+    }
+`;
+
+export const OutputSection = styled.div`
+    text-align: left;
+
+    img {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100px;
+        margin: 5px;
+        border: 1px solid #ddd;
+    }
+
+    .dark & {
+        img {
+            border-color: #555;
+        }
+    }
+`;
+
+export const SvgPreview = styled.div`
+    width: 100%;
+    height: auto;
+    overflow: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    touch-action: none;
+    transform-origin: center;
+    background-color: white;
+    border-radius: 8px;
+
+    .dark & {
+        background-color: #444;
+        border-color: #555;
+    }
+`;
+
+export const SvgPreviewContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+`;
+
+export const SvgPreviewTitle = styled.h2`
+    margin-bottom: 10px;
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+
+    .dark & {
+        color: #f9f9f9;
+    }
+`;
+
+export const SettingsButton = styled.button`
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    svg {
+        width: 24px;
+        height: 24px;
+        fill: ${props => (props.theme === 'dark' ? '#f9f9f9' : '#333')};
+    }
+`;
+
+export const GridContainer = styled.div`
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+`;
+
+export const GridItem = styled.div`
+    border: 2px solid gray;
+    padding: 10px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.selected {
+        border-color: blue;
+    }
+
+    &:hover {
+        border-color: #007BFF;
+    }
+
+    .dark & {
+        border-color: #888;
+
+        &.selected {
+            border-color: #1e90ff;
+        }
+
+        &:hover {
+            border-color: #1e90ff;
+        }
+    }
+`;
+
