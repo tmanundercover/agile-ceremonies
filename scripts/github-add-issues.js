@@ -79,19 +79,10 @@ async function createIssueWithDelay(issue, octokit, owner, repo, delay) {
 
 // Create each issue with throttling
 async function main() {
-    const configPath = path.join(__dirname, '.github-script/github-scripts.config.json');
-    let config = {};
-
-    try {
-        config = await readConfig(configPath);
-    } catch (err) {
-        console.error(`Error reading config file "${configPath}":`, err);
-    }
-
-    const username = config.username || await promptForInput('Please enter your GitHub username: ');
-    const repo = config.repository || await promptForInput('Please enter your repository name: ');
+    const username = process.env.GITHUB_USERNAME || await promptForInput('Please enter your GitHub username: ');
+    const repo = process.env.GITHUB_REPOSITORY || await promptForInput('Please enter your repository name: ');
     const token = process.env.GITHUB_TOKEN || await promptForInput('Please enter your GitHub personal access token: ');
-    const filename = config.jsonFile || await promptForInput('Please enter the filename of the issues JSON file: ');
+    const filename = process.env.WIX_WIDGET_JSON || await promptForInput('Please enter the filename of the issues JSON file: ');
 
     const Octokit = await getOctokit();
     const octokit = new Octokit({auth: token});
@@ -113,10 +104,10 @@ async function main() {
 
         // Print input summary
         console.log("\nInput Summary:");
-        console.log(`Username: ${config.username ? 'From config' : 'Entered manually'}`);
-        console.log(`Repository: ${config.repository ? 'From config' : 'Entered manually'}`);
-        console.log(`Token: ${config.token ? 'From config' : 'Entered manually'}`);
-        console.log(`Issues JSON File: ${config.jsonFile ? 'From config' : 'Entered manually'}`);
+        console.log(`Username: ${config.username ? 'From environment' : 'Entered manually'}`);
+        console.log(`Repository: ${config.repository ? 'From environment' : 'Entered manually'}`);
+        console.log(`Token: ${config.token ? 'From environment' : 'Entered manually'}`);
+        console.log(`Issues JSON File: ${config.jsonFile ? 'From environment' : 'Entered manually'}`);
 
         // Print stats table
         console.log("\nIssue Creation Summary:");
