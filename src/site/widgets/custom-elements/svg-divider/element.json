@@ -1,0 +1,21 @@
+{
+  "$schema": "https://dev.wix.com/wix-cli/schemas/custom-element.json",
+  "id": "52fe8213-ede7-4de2-aa17-41b6b83b281d",
+  "name": "SVG Divider",
+  "width": {
+    "defaultWidth": 450,
+    "allowStretch": true
+  },
+  "height": {
+    "defaultHeight": 250
+  },
+  "installation": {
+    "autoAddToSite": true
+  },
+  "presets": [
+    {
+      "id": "b408934f-f4b3-4b60-ae23-0df51e3ed904",
+      "thumbnailUrl": "../../../../assets/svg-divider/thumbnail.png"
+    }
+  ]
+}
