@@ -1,23 +1,25 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {
+    Badge,
     Button,
     Container,
     Error,
     InputSection,
+    ModalToggle,
+    SelectedThumbnailsWrapper,
     SettingsButton,
+    Sidebar,
     SvgPreview,
     SvgPreviewContainer,
     SvgPreviewTitle,
     Thumbnail,
-    Sidebar,
-    SelectedThumbnailsWrapper,
-    Modal,
-    ModalContent,
-    ModalToggle,
-    Badge
+    MainSection,
+    SelectedThumbnailsSection,
+    SubThumbnailsFooter
 } from './styledComponents';
 import {ReactSVG} from 'react-svg';
 import {Settings} from '@wix/wix-ui-icons-common';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 const App: React.FC = () => {
     const [inputFile, setInputFile] = useState<File | null>(null);
@@ -32,6 +34,7 @@ const App: React.FC = () => {
     const [subThumbnails, setSubThumbnails] = useState<{ [key: number]: string[] }>({});
     const [selectedThumbnails, setSelectedThumbnails] = useState<string[]>([]);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [isSelectedThumbnailsVisible, setIsSelectedThumbnailsVisible] = useState<boolean>(true);
 
     useEffect(() => {
         if (inputFileContent) {
@@ -66,7 +69,6 @@ const App: React.FC = () => {
         if (!inputFile) {
             alert('Please provide an input SVG file.');
             return;
-
         }
 
         setLoading(true);
@@ -134,31 +136,35 @@ const App: React.FC = () => {
                 </SettingsButton>
                 <h2>Thumbnails</h2>
                 <div className="thumbnails-wrapper">
-                    {thumbnails.map((thumbnail, index) => (
-                        <Thumbnail
-                            key={index}
-                            src={thumbnail}
-                            alt={`Thumbnail ${index + 1}`}
-                            onClick={() => handleThumbnailClick(index)}
-                            className={disabledThumbnails.includes(index) ? 'disabled' : ''}
-                        />
-                    ))}
+                    <TransitionGroup>
+                        {thumbnails.map((thumbnail, index) => (
+                            <CSSTransition key={index} timeout={300} classNames="thumbnail">
+                                <Thumbnail
+                                    src={thumbnail}
+                                    alt={`Thumbnail ${index + 1}`}
+                                    onClick={() => handleThumbnailClick(index)}
+                                    className={disabledThumbnails.includes(index) ? 'disabled' : ''}
+                                />
+                            </CSSTransition>
+                        ))}
+                    </TransitionGroup>
                 </div>
-                {/* Removed Selected Thumbnails section from Sidebar */}
             </Sidebar>
-            <div className="main-content">
-                <h1>SVG Processor</h1>
-                <InputSection>
-                    <label htmlFor="fileInput">
-                        Input File:
-                    </label>
-                    <input id="fileInput" type="file" accept=".svg"
-                           onChange={(e) => setInputFile(e.target.files?.[0] || null)}/>
-                    <Button onClick={handleProcessSVG} disabled={loading}>
-                        {loading ? 'Processing...' : 'Process SVG'}
-                    </Button>
-                    {error && <Error>{error}</Error>}
-                </InputSection>
+            <MainSection>
+                <div className="main-content">
+                    <h1>SVG Processor</h1>
+                    <InputSection>
+                        <label htmlFor="fileInput">
+                            Input File:
+                        </label>
+                        <input id="fileInput" type="file" accept=".svg"
+                               onChange={(e) => setInputFile(e.target.files?.[0] || null)}/>
+                        <Button onClick={handleProcessSVG} disabled={loading}>
+                            {loading ? 'Processing...' : 'Process SVG'}
+                        </Button>
+                        {error && <Error>{error}</Error>}
+                    </InputSection>
+                </div>
                 {inputFileContent && (
                     <SvgPreviewContainer>
                         <SvgPreviewTitle>SVG Preview</SvgPreviewTitle>
@@ -166,37 +172,48 @@ const App: React.FC = () => {
                             <ReactSVG src={`data:image/svg+xml;utf8,${encodeURIComponent(inputFileContent)}`} />
                         </SvgPreview>
                         <p>Number of logical components: {componentCount}</p>
-                        <div className="sub-thumbnails-wrapper">
-                            {Object.keys(subThumbnails).map((key) => (
-                                <div key={key}>
-                                    {subThumbnails[Number(key)].map((subThumbnail, subIndex) => (
-                                        <Thumbnail
-                                            key={subIndex}
-                                            src={subThumbnail}
-                                            alt={`Sub-thumbnail ${subIndex + 1}`}
-                                            onClick={() => handleSubThumbnailClick(Number(key), subIndex)}
-                                        />
-                                    ))}
-                                </div>
-                            ))}
-                        </div>
                     </SvgPreviewContainer>
                 )}
-            </div>
-            <ModalToggle onClick={() => setIsModalOpen(!isModalOpen)}>
-                {isModalOpen ? 'Hide Exported Elements' : 'Show Exported Elements'}
+                {inputFileContent && (
+                    <SubThumbnailsFooter>
+                        <div className="sub-thumbnails-wrapper">
+                            <TransitionGroup>
+                                {Object.keys(subThumbnails).map((key) => (
+                                    <div key={key}>
+                                        {subThumbnails[Number(key)].map((subThumbnail, subIndex) => (
+                                            <CSSTransition key={subIndex} timeout={300} classNames="thumbnail">
+                                                <Thumbnail
+                                                    src={subThumbnail}
+                                                    alt={`Sub-thumbnail ${subIndex + 1}`}
+                                                    onClick={() => handleSubThumbnailClick(Number(key), subIndex)}
+                                                />
+                                            </CSSTransition>
+                                        ))}
+                                    </div>
+                                ))}
+                            </TransitionGroup>
+                        </div>
+                    </SubThumbnailsFooter>
+                )}
+            </MainSection>
+            <ModalToggle onClick={() => setIsSelectedThumbnailsVisible(!isSelectedThumbnailsVisible)}>
+                {isSelectedThumbnailsVisible ? 'Hide' : 'Show'} Selected Thumbnails
                 <Badge>{selectedThumbnails.length}</Badge>
             </ModalToggle>
-            <Modal className={isModalOpen ? 'open' : ''}>
-                <ModalContent>
+            {isSelectedThumbnailsVisible && (
+                <SelectedThumbnailsSection className={isSelectedThumbnailsVisible ? 'open' : ''}>
                     <h2>Selected Thumbnails</h2>
                     <SelectedThumbnailsWrapper>
-                        {selectedThumbnails.map((thumbnail, index) => (
-                            <Thumbnail key={index} src={thumbnail} alt={`Selected Thumbnail ${index + 1}`} />
-                        ))}
+                        <TransitionGroup>
+                            {selectedThumbnails.map((thumbnail, index) => (
+                                <CSSTransition key={index} timeout={300} classNames="thumbnail">
+                                    <Thumbnail key={index} src={thumbnail} alt={`Selected Thumbnail ${index + 1}`} />
+                                </CSSTransition>
+                            ))}
+                        </TransitionGroup>
                     </SelectedThumbnailsWrapper>
-                </ModalContent>
-            </Modal>
+                </SelectedThumbnailsSection>
+            )}
         </Container>
     );
 };

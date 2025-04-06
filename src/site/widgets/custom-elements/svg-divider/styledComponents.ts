@@ -1,4 +1,25 @@
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
+
+export const GlobalStyle = createGlobalStyle`
+    .thumbnail-enter {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    .thumbnail-enter-active {
+        opacity: 1;
+        transform: scale(1);
+        transition: opacity 300ms, transform 300ms;
+    }
+    .thumbnail-exit {
+        opacity: 1;
+        transform: scale(1);
+    }
+    .thumbnail-exit-active {
+        opacity: 0;
+        transform: scale(0.9);
+        transition: opacity 300ms, transform 300ms;
+    }
+`;
 
 export const Container = styled.div`
     display: flex;
@@ -17,7 +38,7 @@ export const Container = styled.div`
     .main-content {
         flex: 1;
         padding: 20px;
-        margin-left: 0; /* Ensure the content section is next to the sidebar */
+        margin-left: 0;
         overflow: auto;
     }
 
@@ -203,6 +224,7 @@ export const SvgPreviewContainer = styled.div`
     flex-direction: column;
     align-items: center;
     margin-bottom: 20px;
+    flex: 1;
 `;
 
 export const SvgPreviewTitle = styled.h2`
@@ -233,13 +255,13 @@ export const Sidebar = styled.div`
     padding: 20px;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
-    border-right: 2px solid #ddd; /* Add border to separate sidebar */
-    transition: background-color 0.3s, border-color 0.3s; /* Smooth transition for theme change */
+    border-right: 2px solid #ddd;
+    transition: background-color 0.3s, border-color 0.3s;
 
     .dark & {
         background-color: #333;
         color: #f9f9f9;
-        border-color: #555; /* Dark theme border color */
+        border-color: #555;
     }
 
     .thumbnails-wrapper {
@@ -313,5 +335,58 @@ export const Badge = styled.span`
     padding: 5px 10px;
     margin-left: 10px;
     font-size: 14px;
+`;
+
+export const MainSection = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 20px;
+    overflow: auto;
+
+    .dark & {
+        background-color: #444;
+        color: #f9f9f9;
+    }
+`;
+
+export const SelectedThumbnailsSection = styled.div`
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100%;
+    background-color: #f9f9f9;
+    border-left: 2px solid #ddd;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+    padding: 20px;
+    overflow-y: auto;
+
+    &.open {
+        transform: translateX(0);
+    }
+
+    .dark & {
+        background-color: #333;
+        color: #f9f9f9;
+        border-color: #555;
+    }
+`;
+
+export const SubThumbnailsFooter = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-top: 1px solid #ddd;
+
+    .dark & {
+        background-color: #333;
+        border-color: #555;
+    }
 `;
 
