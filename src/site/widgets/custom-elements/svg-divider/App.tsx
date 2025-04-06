@@ -56,7 +56,7 @@ const App: React.FC = () => {
             fileReader.readAsText(inputFile);
         }
     }, [inputFile]);
-    
+
     const handleProcessSVG = () => {
         if (!inputFile) {
             alert('Please provide an input SVG file.');
@@ -89,7 +89,10 @@ const App: React.FC = () => {
             const subElements = Array.from(clickedElement.children);
             const clickedSubElement = subElements[subIndex];
             const svgContainer = `<svg xmlns="http://www.w3.org/2000/svg" width="${svgElement.getAttribute('width')}" height="${svgElement.getAttribute('height')}" viewBox="${svgElement.getAttribute('viewBox')}">`;
-            setSelectedThumbnails([...selectedThumbnails, `data:image/svg+xml;utf8,${encodeURIComponent(svgContainer + clickedSubElement.outerHTML + '</svg>')}`]);
+            const newThumbnail = `data:image/svg+xml;utf8,${encodeURIComponent(svgContainer + clickedSubElement.outerHTML + '</svg>')}`;
+            if (!selectedThumbnails.includes(newThumbnail)) {
+                setSelectedThumbnails([...selectedThumbnails, newThumbnail]);
+            }
         }
     };
 
@@ -181,3 +184,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+

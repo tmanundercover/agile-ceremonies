@@ -2,9 +2,8 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
     display: flex;
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px;
+    width: 100%;
+    height: 100vh;
     font-family: 'Roboto', sans-serif;
     background-color: #f9f9f9;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -18,6 +17,7 @@ export const Container = styled.div`
     .main-content {
         flex: 1;
         padding: 20px;
+        margin-left: 0; /* Ensure the content section is next to the sidebar */
     }
 
     .thumbnails-wrapper {
@@ -222,7 +222,7 @@ export const SettingsButton = styled.button`
 `;
 
 export const Sidebar = styled.div`
-    width: 250px;
+    width: 160px; /* Slightly wider than a thumbnail */
     background-color: #f9f9f9;
     padding: 20px;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
@@ -244,3 +244,4 @@ export const SelectedThumbnailsWrapper = styled.div`
         margin-bottom: 10px;
     }
 `;
+
