@@ -18,8 +18,7 @@ const App: React.FC = () => {
         error,
         handleFileSelect,
         handleThumbnailClick,
-        handleThumbnailRemove,
-        handleSubThumbnailClick
+        parentSvgProps,
     } = useProcessSvg();
 
     return (
@@ -51,10 +50,11 @@ const App: React.FC = () => {
 
             <SelectedThumbnails
                 thumbnails={selectedThumbnails}
-                onRemove={handleThumbnailRemove}
+                parentSvgProps={parentSvgProps}
             />
         </AppContainer>
     );
 };
 
 export default App;
+

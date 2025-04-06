@@ -99,49 +99,6 @@ export const PreviewWindow = styled.div`
     }
 `;
 
-// Thumbnail Components
-export const ThumbnailGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 10px;
-    padding: 20px;
-`;
-
-export const ThumbnailImage = styled.img`
-    border: 2px solid gray;
-    margin: 5px;
-    cursor: pointer;
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    transition: border-color 0.3s;
-
-    &.selected {
-        border-color: blue;
-    }
-
-    &:hover {
-        border-color: #007BFF;
-    }
-
-    .dark & {
-        border-color: #888;
-
-        &.selected {
-            border-color: #1e90ff;
-        }
-
-        &:hover {
-            border-color: #1e90ff;
-        }
-    }
-
-    &.disabled {
-        opacity: 0.5;
-        pointer-events: none;
-    }
-`;
-
 // Sidebar Components
 export const SidePanel = styled.div`
     width: 200px;
@@ -404,3 +361,54 @@ export const SubThumbnailsFooter = styled.div`
     }
 `;
 
+export const ThumbnailGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+    padding: 16px;
+    overflow-y: auto;
+`;
+
+export const ThumbnailImage = styled.div`
+    aspect-ratio: 1;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    cursor: pointer;
+    background: white;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+
+    &:hover {
+        border-color: #666;
+    }
+
+    &.selected {
+        border-color: #0066cc;
+        background: #f0f7ff;
+    }
+
+    svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        height: 80%;
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    .dark & {
+        background: #444;
+        border-color: #555;
+
+        &:hover {
+            border-color: #777;
+        }
+    }
+`;

@@ -1,7 +1,6 @@
 import React, { type FC } from 'react';
 import ReactDOM from 'react-dom';
 import reactToWebComponent from 'react-to-webcomponent';
-import styles from './element.module.css';
 import App from "./App";
 
 interface Props {

@@ -1,6 +1,6 @@
 import React from 'react';
-import { ThumbnailsProps } from '../types';
-import { ThumbnailGrid as StyledThumbnailGrid, ThumbnailImage } from '../styledComponents';
+import {ThumbnailsProps} from '../types';
+import {ThumbnailGrid as StyledThumbnailGrid, ThumbnailImage} from '../styledComponents';
 
 const ThumbnailGrid: React.FC<ThumbnailsProps> = ({ thumbnails, onThumbnailClick }) => {
     return (
@@ -8,11 +8,17 @@ const ThumbnailGrid: React.FC<ThumbnailsProps> = ({ thumbnails, onThumbnailClick
             {thumbnails.map((thumbnail, index) => (
                 <ThumbnailImage
                     key={thumbnail.id}
-                    src={thumbnail.src}
                     onClick={() => onThumbnailClick(index)}
-                    className={thumbnail.disabled ? 'disabled' : ''}
-                    alt={`Thumbnail ${index + 1}`}
-                />
+                    className={`${thumbnail.disabled ? 'selected' : ''}`}
+                    role="button"
+                    tabIndex={0}
+                >
+                    <div
+                        dangerouslySetInnerHTML={{
+                            __html: decodeURIComponent(thumbnail.src.split(',')[1])
+                        }}
+                    />
+                </ThumbnailImage>
             ))}
         </StyledThumbnailGrid>
     );

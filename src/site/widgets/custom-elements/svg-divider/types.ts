@@ -1,5 +1,6 @@
 export interface SvgThumbnail {
   id: string;
+  name: string;
   src: string;
   disabled: boolean;
 }
