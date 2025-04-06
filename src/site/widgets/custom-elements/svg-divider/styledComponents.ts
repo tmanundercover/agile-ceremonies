@@ -233,10 +233,13 @@ export const Sidebar = styled.div`
     padding: 20px;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
+    border-right: 2px solid #ddd; /* Add border to separate sidebar */
+    transition: background-color 0.3s, border-color 0.3s; /* Smooth transition for theme change */
 
     .dark & {
         background-color: #333;
         color: #f9f9f9;
+        border-color: #555; /* Dark theme border color */
     }
 
     .thumbnails-wrapper {
@@ -248,13 +251,67 @@ export const Sidebar = styled.div`
 `;
 
 export const SelectedThumbnailsWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
     margin-top: 20px;
 
     img {
         margin-bottom: 10px;
     }
+`;
+
+export const Modal = styled.div`
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    transform: translateY(100%);
+    transition: transform 0.3s ease-in-out;
+    &.open {
+        transform: translateY(0);
+    }
+    .dark & {
+        background-color: #333;
+    }
+`;
+
+export const ModalContent = styled.div`
+    padding: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+`;
+
+export const ModalToggle = styled.button`
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    height: auto;
+
+    .dark & {
+        background-color: #0056b3;
+    }
+`;
+
+export const Badge = styled.span`
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 5px 10px;
+    margin-left: 10px;
+    font-size: 14px;
 `;
 

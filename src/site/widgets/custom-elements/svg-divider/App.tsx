@@ -10,7 +10,11 @@ import {
     SvgPreviewTitle,
     Thumbnail,
     Sidebar,
-    SelectedThumbnailsWrapper
+    SelectedThumbnailsWrapper,
+    Modal,
+    ModalContent,
+    ModalToggle,
+    Badge
 } from './styledComponents';
 import {ReactSVG} from 'react-svg';
 import {Settings} from '@wix/wix-ui-icons-common';
@@ -27,6 +31,7 @@ const App: React.FC = () => {
     const [disabledThumbnails, setDisabledThumbnails] = useState<number[]>([]);
     const [subThumbnails, setSubThumbnails] = useState<{ [key: number]: string[] }>({});
     const [selectedThumbnails, setSelectedThumbnails] = useState<string[]>([]);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     useEffect(() => {
         if (inputFileContent) {
@@ -61,6 +66,7 @@ const App: React.FC = () => {
         if (!inputFile) {
             alert('Please provide an input SVG file.');
             return;
+
         }
 
         setLoading(true);
@@ -138,12 +144,7 @@ const App: React.FC = () => {
                         />
                     ))}
                 </div>
-                <h2>Selected Thumbnails</h2>
-                <SelectedThumbnailsWrapper>
-                    {selectedThumbnails.map((thumbnail, index) => (
-                        <Thumbnail key={index} src={thumbnail} alt={`Selected Thumbnail ${index + 1}`} />
-                    ))}
-                </SelectedThumbnailsWrapper>
+                {/* Removed Selected Thumbnails section from Sidebar */}
             </Sidebar>
             <div className="main-content">
                 <h1>SVG Processor</h1>
@@ -182,6 +183,20 @@ const App: React.FC = () => {
                     </SvgPreviewContainer>
                 )}
             </div>
+            <ModalToggle onClick={() => setIsModalOpen(!isModalOpen)}>
+                {isModalOpen ? 'Hide Exported Elements' : 'Show Exported Elements'}
+                <Badge>{selectedThumbnails.length}</Badge>
+            </ModalToggle>
+            <Modal className={isModalOpen ? 'open' : ''}>
+                <ModalContent>
+                    <h2>Selected Thumbnails</h2>
+                    <SelectedThumbnailsWrapper>
+                        {selectedThumbnails.map((thumbnail, index) => (
+                            <Thumbnail key={index} src={thumbnail} alt={`Selected Thumbnail ${index + 1}`} />
+                        ))}
+                    </SelectedThumbnailsWrapper>
+                </ModalContent>
+            </Modal>
         </Container>
     );
 };
