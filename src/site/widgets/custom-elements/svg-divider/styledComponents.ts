@@ -18,6 +18,7 @@ export const Container = styled.div`
         flex: 1;
         padding: 20px;
         margin-left: 0; /* Ensure the content section is next to the sidebar */
+        overflow: auto;
     }
 
     .thumbnails-wrapper {
@@ -186,6 +187,11 @@ export const SvgPreview = styled.div`
     background-color: white;
     border-radius: 8px;
 
+    svg {
+        max-width: 100%;
+        height: auto;
+    }
+
     .dark & {
         background-color: #444;
         border-color: #555;
@@ -222,7 +228,7 @@ export const SettingsButton = styled.button`
 `;
 
 export const Sidebar = styled.div`
-    width: 160px; /* Slightly wider than a thumbnail */
+    width: 200px;
     background-color: #f9f9f9;
     padding: 20px;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
@@ -231,6 +237,13 @@ export const Sidebar = styled.div`
     .dark & {
         background-color: #333;
         color: #f9f9f9;
+    }
+
+    .thumbnails-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
     }
 `;
 

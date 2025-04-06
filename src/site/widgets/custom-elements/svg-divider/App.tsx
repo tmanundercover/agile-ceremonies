@@ -95,7 +95,7 @@ const App: React.FC = () => {
             }
         }
     };
-
+    
     const handleThumbnailClick = (index: number) => {
         if (disabledThumbnails.includes(index)) {
             setDisabledThumbnails(disabledThumbnails.filter(i => i !== index));
@@ -126,6 +126,18 @@ const App: React.FC = () => {
                 <SettingsButton onClick={() => setIsDarkTheme(!isDarkTheme)}>
                     <Settings/>
                 </SettingsButton>
+                <h2>Thumbnails</h2>
+                <div className="thumbnails-wrapper">
+                    {thumbnails.map((thumbnail, index) => (
+                        <Thumbnail
+                            key={index}
+                            src={thumbnail}
+                            alt={`Thumbnail ${index + 1}`}
+                            onClick={() => handleThumbnailClick(index)}
+                            className={disabledThumbnails.includes(index) ? 'disabled' : ''}
+                        />
+                    ))}
+                </div>
                 <h2>Selected Thumbnails</h2>
                 <SelectedThumbnailsWrapper>
                     {selectedThumbnails.map((thumbnail, index) => (
@@ -150,32 +162,23 @@ const App: React.FC = () => {
                     <SvgPreviewContainer>
                         <SvgPreviewTitle>SVG Preview</SvgPreviewTitle>
                         <SvgPreview ref={svgPreviewRef}>
-                            <ReactSVG src={`data:image/svg+xml;utf8,${encodeURIComponent(inputFileContent)}`} responsive/>
+                            <ReactSVG src={`data:image/svg+xml;utf8,${encodeURIComponent(inputFileContent)}`} />
                         </SvgPreview>
                         <p>Number of logical components: {componentCount}</p>
-                        <div className="thumbnails-wrapper">
-                            {thumbnails.map((thumbnail, index) => (
-                                <Thumbnail
-                                    key={index}
-                                    src={thumbnail}
-                                    alt={`Thumbnail ${index + 1}`}
-                                    onClick={() => handleThumbnailClick(index)}
-                                    className={disabledThumbnails.includes(index) ? 'disabled' : ''}
-                                />
+                        <div className="sub-thumbnails-wrapper">
+                            {Object.keys(subThumbnails).map((key) => (
+                                <div key={key}>
+                                    {subThumbnails[Number(key)].map((subThumbnail, subIndex) => (
+                                        <Thumbnail
+                                            key={subIndex}
+                                            src={subThumbnail}
+                                            alt={`Sub-thumbnail ${subIndex + 1}`}
+                                            onClick={() => handleSubThumbnailClick(Number(key), subIndex)}
+                                        />
+                                    ))}
+                                </div>
                             ))}
                         </div>
-                        {Object.keys(subThumbnails).map((key) => (
-                            <div key={key} className="sub-thumbnails-wrapper">
-                                {subThumbnails[Number(key)].map((subThumbnail, subIndex) => (
-                                    <Thumbnail
-                                        key={subIndex}
-                                        src={subThumbnail}
-                                        alt={`Sub-thumbnail ${subIndex + 1}`}
-                                        onClick={() => handleSubThumbnailClick(Number(key), subIndex)}
-                                    />
-                                ))}
-                            </div>
-                        ))}
                     </SvgPreviewContainer>
                 )}
             </div>
