@@ -5,6 +5,7 @@ import SvgProcessor from './components/SvgProcessor';
 import SvgPreview from './components/SvgPreview';
 import ThumbnailGrid from './components/ThumbnailGrid';
 import SelectedThumbnails from './components/SelectedThumbnails';
+import LayeredPreview from './components/LayeredPreview';
 import {useProcessSvg} from './hooks/useProcessSvg';
 
 const App: React.FC = () => {
@@ -19,9 +20,10 @@ const App: React.FC = () => {
         handleFileSelect,
         handleThumbnailClick,
         parentSvgProps,
+        originalSvgShell,
     } = useProcessSvg();
 
-
+    
     return (
         <AppContainer className={isDarkTheme ? 'dark' : ''}>
             <SidePanel>
@@ -43,10 +45,17 @@ const App: React.FC = () => {
                 />
 
                 {svgContent && (
-                    <SvgPreview
-                        svgContent={svgContent}
-                        componentCount={componentCount}
-                    />
+                    <>
+                        <SvgPreview
+                            svgContent={svgContent}
+                            componentCount={componentCount}
+                        />
+                        <LayeredPreview
+                            originalSvgShell={originalSvgShell}
+                            selectedThumbnails={selectedThumbnails}
+                            parentSvgProps={parentSvgProps}
+                        />
+                    </>
                 )}
             </MainLayout>
 

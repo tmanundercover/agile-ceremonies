@@ -10,6 +10,7 @@ export const useProcessSvg = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [parentSvgProps, setParentSvgProps] = useState<{[key: string]: string}>({});
+    const [originalSvgShell, setOriginalSvgShell] = useState<string | null>(null);
 
     const cleanupSvg = useCallback((svgElement: SVGSVGElement) => {
         // Remove empty groups
@@ -87,6 +88,12 @@ export const useProcessSvg = () => {
                     return acc;
                 }, {} as {[key: string]: string});
                 setParentSvgProps(props);
+
+                // Create SVG shell by removing all paths, rects, circles, etc.
+                const shellElement = svgElement.cloneNode(true) as SVGSVGElement;
+                const removeElements = shellElement.querySelectorAll('path, rect, circle, ellipse, polygon, polyline, line');
+                removeElements.forEach(el => el.remove());
+                setOriginalSvgShell(shellElement.innerHTML);
 
                 // Hide parent SVG before processing
                 svgElement.style.display = 'none';
@@ -174,7 +181,9 @@ export const useProcessSvg = () => {
         loading,
         error,
         parentSvgProps,
+        originalSvgShell,
         handleFileSelect,
         handleThumbnailClick
     };
 };
+
