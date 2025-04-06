@@ -19,11 +19,41 @@ export interface Requirement {
   id: string;
   title: string;
   description: string;
+  assignedPM: string;
   tasks: Task[];
   dependencies: Requirement[];
   assignedTo: Teammate;
   status: 'Open' | 'In Progress' | 'Closed';
   priority: 'Low' | 'Medium' | 'High';
+  deadline: Date;
+  acceptanceCriteria: string[];
+}
+
+export interface StandupStatus {
+  id: string;
+  teammateId: string;
+  date: Date;
+  status: string;
+  blockers: string[];
+  helpRequests: HelpRequest[];
+}
+
+export interface HelpRequest {
+  id: string;
+  requesterId: string;
+  helperId: string;
+  taskId: string;
+  description: string;
+  status: 'Pending' | 'Approved' | 'Rejected';
+  rejectionReason?: string;
+  comments: Comment[];
+}
+
+export interface Comment {
+  id: string;
+  authorId: string;
+  content: string;
+  timestamp: Date;
 }
 
 export interface Teammate {
@@ -38,16 +68,17 @@ export interface Desk {
   developerSeats: [Teammate| null, Teammate| null];
   endcapSeat: Teammate | null;
   taskDropdown: Task[];
-  assignedTask: Task | null;
+  // assignedTask: Task | null;
+  assignedTask: string | null;
 }
 
 export interface HelpRequest {
-  comments: [];
+  comments: Comment[];
   description: string;
   helperId: string;
   id: string;
   requesterId: string;
-  status: 'Pending' | 'Resolved'| 'Obsolete';
+  statusAcknowledgement: 'Pending' | 'Resolved'| 'Obsolete';
   taskId: string;
 }
 
@@ -60,3 +91,4 @@ export interface StandupData {
   tasksInProgress: string[];
   tasksPlanned: string[];
 }
+

@@ -14,48 +14,8 @@ import {
     TaskDropdown
 } from './StyledComponents';
 import DeskDetailsModal from "./DeskDetailsModal";
-import {Desk, Teammate} from "./models"
-
-// Types
-interface Requirement {
-    id: string;
-    title: string;
-    description: string;
-    status: 'New' | 'InProgress' | 'Complete';
-    dependencies: string[];
-    assignedPM: string;
-    tasks: Task[];
-    priority: 'Low' | 'Medium' | 'High';
-    deadline: Date;
-    acceptanceCriteria: string[];
-}
-
-interface StandupStatus {
-    id: string;
-    teammateId: string;
-    date: Date;
-    status: string;
-    blockers: string[];
-    helpRequests: HelpRequest[];
-}
-
-interface HelpRequest {
-    id: string;
-    requesterId: string;
-    helperId: string;
-    taskId: string;
-    description: string;
-    status: 'Pending' | 'Approved' | 'Rejected';
-    rejectionReason?: string;
-    comments: Comment[];
-}
-
-interface Comment {
-    id: string;
-    authorId: string;
-    content: string;
-    timestamp: Date;
-}
+import {Date as DateIcon} from "@wix/wix-ui-icons-common/dist/types/general/dist";
+import {Desk, Teammate, Requirement, StandupStatus, HelpRequest, Comment, Task} from "./models"
 
 // Main App Component
 export const App: React.FC = () => {
@@ -66,32 +26,34 @@ export const App: React.FC = () => {
     const [desks, setDesks] = useState<Desk[]>([
         {
             id: '1',
-            developerSeat1: null,
-            developerSeat2: null,
+            developerSeats: [null,null],
             endcapSeat: null,
-            assignedTask: null
+            assignedTask: null,
+            taskDropdown: []
         },
         {
             id: '2',
-            developerSeat1: null,
-            developerSeat2: null,
+            developerSeats: [null,null],
             endcapSeat: null,
-            assignedTask: null
+            assignedTask: null,
+            taskDropdown: []
         },
     ]);
     //
     const [teammates, setTeammates] = useState<Teammate[]>([
-        {id: '1', name: 'John Dev', role: 'Developer', helpRequests: []},
+        {id: '1', name: 'John Dev',  role: 'Developer', helpRequests: []},
         {id: '2', name: 'Jane PM', role: 'PM', helpRequests: []},
-        {id: '3', name: 'Bob Designer', role: 'GraphicDesigner', helpRequests: []},
+        {id: '3', name: 'Bob Designer', role: 'Graphic Designer', helpRequests: []},
     ]);
     //
     const [tasks, setTasks] = useState<Task[]>([
         {
             id: '1',
+            priority: 'Low',
+            icon: DateIcon,
             title: 'Implement Login',
-            type: 'Feature',
-            status: 'New',
+            type: 'feature',
+            status: 'To Do',
             requirementId: '1',
             assignedTeammates: [],
             dependencies: [],
@@ -122,14 +84,14 @@ export const App: React.FC = () => {
         if (!targetDesk) return;
 
         if (teammate.role === 'Developer') {
-            if (!targetDesk.developerSeat1) {
-                targetDesk.developerSeat1 = teammate.id;
-            } else if (!targetDesk.developerSeat2) {
-                targetDesk.developerSeat2 = teammate.id;
+            if (!targetDesk.developerSeats[0]) {
+                targetDesk.developerSeats[0] = teammate;
+            } else if (!targetDesk.developerSeats[1]) {
+                targetDesk.developerSeats[1] = teammate;
             }
-        } else if (['PM', 'GraphicDesigner'].includes(teammate.type)) {
-            if (!targetDesk.endcapSeat) {
-                targetDesk.endcapSeat = teammate.id;
+        } else if (['PM', 'GraphicDesigner'].includes(teammate.role)) {
+            if (!!targetDesk && !targetDesk.endcapSeat) {
+                targetDesk.endcapSeat = teammate;
             }
         }
 
@@ -168,7 +130,7 @@ export const App: React.FC = () => {
                             {!!desk.developerSeats[0] ? <Seat
                                 style={{gridArea: 'dev1'}}
                             >
-                                {teammates.find(t => t.id === desk.developerSeats[0])?.name}
+                                {teammates.find(t => t.id === desk.developerSeats[0]?.id)?.name}
                             </Seat> : <SeatOccupied
                                 style={{gridArea: 'dev1'}}
                             >
@@ -180,7 +142,7 @@ export const App: React.FC = () => {
                             {!!desk.developerSeats[1] ? <Seat
                                 style={{gridArea: 'dev1'}}
                             >
-                                {teammates.find(t => t.id === desk.developerSeats[1])?.name}
+                                {teammates.find(t => t.id === desk.developerSeats[1]?.id)?.name}
                             </Seat> : <SeatOccupied
                                 style={{gridArea: 'dev1'}}
                             >
@@ -191,10 +153,16 @@ export const App: React.FC = () => {
 
 
                             <TaskDropdown
-                                value={desk.assignedTask?.title || ''}
+                                value={desk.assignedTask || ''}
                                 onChange={(e) => {
-                                    const updatedDesks = desks.map(d =>
-                                        d.id === desk.id ? {...d, assignedTask: e.target.value} : d
+                                    const updatedDesks: Desk[] = desks.map((d:Desk) => {
+
+                                        const aDesk:Desk = {
+                                            ...d,
+                                            assignedTask: e.target.value
+                                        }
+                                        return d.id === desk.id ? aDesk : d
+                                        }
                                     );
                                     setDesks(updatedDesks);
                                 }}
@@ -210,7 +178,7 @@ export const App: React.FC = () => {
                             {!!desk.endcapSeat ? <Seat
                                 style={{gridArea: 'dev1'}}
                             >
-                                {teammates.find(t => t.id === desk.endcapSeat)?.name}
+                                {teammates.find(t => t.id === desk.endcapSeat?.id)?.name}
                             </Seat> : <SeatOccupied
                                 style={{gridArea: 'dev1'}}
                             >
