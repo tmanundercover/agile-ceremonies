@@ -22,6 +22,8 @@ const App: React.FC = () => {
     const [componentCount, setComponentCount] = useState<number>(0);
     const [isDarkTheme, setIsDarkTheme] = useState<boolean>(true);
     const [thumbnails, setThumbnails] = useState<string[]>([]);
+    const [disabledThumbnails, setDisabledThumbnails] = useState<number[]>([]);
+    const [subThumbnails, setSubThumbnails] = useState<{ [key: number]: string[] }>({});
 
     useEffect(() => {
         if (inputFileContent) {
@@ -76,6 +78,30 @@ const App: React.FC = () => {
         }
     };
 
+    const handleThumbnailClick = (index: number) => {
+        if (disabledThumbnails.includes(index)) {
+            setDisabledThumbnails(disabledThumbnails.filter(i => i !== index));
+            setSubThumbnails(prev => {
+                const newSubThumbnails = { ...prev };
+                delete newSubThumbnails[index];
+                return newSubThumbnails;
+            });
+        } else {
+            const svgElement = svgPreviewRef.current?.querySelector('svg');
+            if (svgElement) {
+                const elements = Array.from(svgElement.children);
+                const clickedElement = elements[index];
+                const subElements = Array.from(clickedElement.children);
+                const svgContainer = `<svg xmlns="http://www.w3.org/2000/svg" width="${svgElement.getAttribute('width')}" height="${svgElement.getAttribute('height')}" viewBox="${svgElement.getAttribute('viewBox')}">`;
+                setSubThumbnails(prev => ({
+                    ...prev,
+                    [index]: subElements.map((el, subIndex) => `data:image/svg+xml;utf8,${encodeURIComponent(svgContainer + el.outerHTML + '</svg>')}`)
+                }));
+                setDisabledThumbnails([...disabledThumbnails, index]);
+            }
+        }
+    };
+
     return (
         <Container className={isDarkTheme ? 'dark' : ''}>
             <h1>SVG Processor</h1>
@@ -101,12 +127,25 @@ const App: React.FC = () => {
                             <ReactSVG src={`data:image/svg+xml;utf8,${encodeURIComponent(inputFileContent)}`} responsive/>
                         </SvgPreview>
                         <p>Number of logical components: {componentCount}</p>
-                    </SvgPreviewContainer>
-                    <div className="thumbnails-wrapper">
-                        {thumbnails.map((thumbnail, index) => (
-                            <Thumbnail key={index} src={thumbnail} alt={`Thumbnail ${index + 1}`} />
+                        <div className="thumbnails-wrapper">
+                            {thumbnails.map((thumbnail, index) => (
+                                <Thumbnail
+                                    key={index}
+                                    src={thumbnail}
+                                    alt={`Thumbnail ${index + 1}`}
+                                    onClick={() => handleThumbnailClick(index)}
+                                    className={disabledThumbnails.includes(index) ? 'disabled' : ''}
+                                />
+                            ))}
+                        </div>
+                        {Object.keys(subThumbnails).map((key) => (
+                            <div key={key} className="sub-thumbnails-wrapper">
+                                {subThumbnails[Number(key)].map((subThumbnail, subIndex) => (
+                                    <Thumbnail key={subIndex} src={subThumbnail} alt={`Sub-thumbnail ${subIndex + 1}`} />
+                                ))}
+                            </div>
                         ))}
-                    </div>
+                    </SvgPreviewContainer>
                 </>
             )}
         </Container>

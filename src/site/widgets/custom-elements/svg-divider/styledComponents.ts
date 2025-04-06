@@ -111,6 +111,18 @@ export const Thumbnail = styled.img`
             border-color: #1e90ff;
         }
     }
+
+    &.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+`;
+
+export const SubThumbnailsWrapper = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
 `;
 
 export const SelectedThumbnail = styled.img`
