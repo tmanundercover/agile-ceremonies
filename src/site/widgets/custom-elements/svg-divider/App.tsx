@@ -22,6 +22,10 @@ const App: React.FC = () => {
         parentSvgProps,
         originalSvgShell,
         originalContainer,
+        processedResult,
+        processLayeredView,
+        processOriginalSvg,
+        processIndividualComponents
     } = useProcessSvg();
 
     const toggleModal = () => setIsModalOpen(!isModalOpen);
@@ -63,9 +67,14 @@ const App: React.FC = () => {
                     <SelectedThumbnails
                         thumbnails={selectedThumbnails}
                         parentSvgProps={parentSvgProps}
+                        processedResult={processedResult}
+                        onProcessLayered={processLayeredView}
+                        onProcessOriginal={processOriginalSvg}
+                        onProcessIndividual={processIndividualComponents}
                     />
                 </ModalContent>
             </Modal>
+
             
             <ModalToggle 
                 onClick={toggleModal}
