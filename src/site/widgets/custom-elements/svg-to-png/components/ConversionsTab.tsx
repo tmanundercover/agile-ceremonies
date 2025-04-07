@@ -46,11 +46,11 @@ const ConversionsTab: React.FC<{ svgContent: string }> = ({ svgContent }) => {
                         <h3>{label}</h3>
                         <div className="actions">
                             <span className="size-info">{size}</span>
+                            <CopyButton content={content} label={`Copy ${label}`} />
                         </div>
                     </ConversionHeader>
-                    <ConversionContent className="language-plaintext parent-container">
+                    <ConversionContent>
                         {content}
-                        <CopyButton content={content} label={`Copy ${label}`} />
                     </ConversionContent>
                 </ConversionItem>
             ))}

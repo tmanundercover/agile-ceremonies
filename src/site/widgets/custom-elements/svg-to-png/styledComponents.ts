@@ -162,8 +162,8 @@ export const ButtonContainer = styled.button`
   top: 50%;
   right: 8px;
   transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.9);
-  border: none;
+  background: #f0f0f0;
+  border: 1px solid #e0e0e0;
   border-radius: 6px;
   width: 32px;
   height: 32px;
@@ -171,24 +171,20 @@ export const ButtonContainer = styled.button`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  backdrop-filter: blur(4px);
+  opacity: 1;
+  transition: all 0.2s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 10;
 
   &:hover {
-    background: rgba(255, 255, 255, 1);
+    background: #e0e0e0;
+    transform: translateY(-50%) scale(1.1);
   }
 
   svg {
     width: 18px;
     height: 18px;
     fill: #4a90e2;
-  }
-
-  .parent-container:hover & {
-    opacity: 1;
   }
 `;
 

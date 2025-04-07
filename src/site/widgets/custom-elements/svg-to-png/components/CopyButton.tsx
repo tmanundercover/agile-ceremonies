@@ -11,8 +11,8 @@ const ButtonContainer = styled.button`
   top: 8px;
   right: 8px;
   float: right;
-  background: rgba(255, 255, 255, 0.9);
-  border: none;
+  background: #f0f0f0;
+  border: 1px solid #e0e0e0;
   border-radius: 6px;
   width: 32px;
   height: 32px;
@@ -20,14 +20,12 @@ const ButtonContainer = styled.button`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  opacity: 0;
   transition: all 0.2s ease;
-  backdrop-filter: blur(4px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 10;
 
   &:hover {
-    background: rgba(255, 255, 255, 1);
+    background: #e0e0e0;
     transform: scale(1.1);
   }
 

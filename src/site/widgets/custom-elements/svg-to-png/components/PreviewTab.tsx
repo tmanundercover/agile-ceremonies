@@ -69,11 +69,12 @@ const PreviewTab: React.FC<PreviewTabProps> = ({ svgContent }) => {
                 <div className="preview-controls" style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
                     <span className="size-info">Size: {size}</span>
                     <span className="zoom-info">Zoom: {Math.round(scale * 100)}%</span>
+                    <CopyButton content={svgContent} label="Copy SVG" />
                 </div>
             </div>
             <div
                 ref={previewRef}
-                className="preview-container parent-container"
+                className="preview-container"
                 style={{
                     position: 'relative',
                     flex: 1,
@@ -84,7 +85,6 @@ const PreviewTab: React.FC<PreviewTabProps> = ({ svgContent }) => {
                     touchAction: 'none'
                 }}
             >
-                <CopyButton content={svgContent} label="Copy SVG" />
                 <div
                     className="svg-preview"
                     style={{

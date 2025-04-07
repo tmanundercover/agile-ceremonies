@@ -2,6 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-jsx';
 import 'prismjs/components/prism-typescript';
+import 'prismjs/components/prism-tsx';
 import 'prismjs/themes/prism.css';
 import CopyButton from './CopyButton';
 import { CodeBlock, CodeContainer } from '../styledComponents';
@@ -50,8 +51,10 @@ export default SvgComponent;
 
     return (
         <div className="react-component-tab">
-            <CodeContainer className="parent-container">
+            <div className="header-controls" style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '8px' }}>
                 <CopyButton content={componentCode} label="Copy React Component" />
+            </div>
+            <CodeContainer>
                 <CodeBlock className="language-tsx">
                     {componentCode}
                 </CodeBlock>
@@ -61,3 +64,4 @@ export default SvgComponent;
 };
 
 export default ReactComponentTab;
+
