@@ -1,7 +1,35 @@
 import { saveAs } from 'file-saver';
-import {Fragment} from "./types";
+import {Fragment, FragmentType} from "./types";
+
+const removeXmlDeclaration = (content: string): string => {
+    return content.replace(/^\s*<\?xml[^>]*\?>\s*/i, '');
+};
+
+const removeMarkdownWrapper = (content: string): string => {
+    return content
+        .replace(/```markdown\s*/g, '')
+        .replace(/```\s*$/g, '')
+        .trim();
+};
+
+const cleanSvgContent = (svgContent: string): string => {
+    return svgContent
+        .replace(/<!DOCTYPE.*?>/gi, '') // Remove DOCTYPE
+        .replace(/<!--.*?-->/gs, '') // Remove comments
+        .replace(/xmlns:xlink=".*?"/g, '') // Remove xlink namespace
+        .replace(/version=".*?"/g, '') // Remove version attribute
+        .replace(/encoding=".*?"/g, '') // Remove encoding attribute
+        .trim();
+};
 
 export const extractSvgContent = (content: string): { svg: string | null; remainingText: string } => {
+    // First remove XML declaration if present
+    content = removeXmlDeclaration(content);
+    
+    // Then remove markdown wrapper if present
+    content = removeMarkdownWrapper(content);
+    
+    // Extract SVG content
     const svgMatch = content.match(/<svg[\s\S]*?<\/svg>/i);
     if (!svgMatch) {
         return { svg: null, remainingText: content };
@@ -11,8 +39,10 @@ export const extractSvgContent = (content: string): { svg: string | null; remain
         .replace(svgMatch[0], '')
         .trim();
     
+    const cleanedSvg = cleanSvgContent(svgMatch[0]);
+    
     return {
-        svg: svgMatch[0],
+        svg: cleanedSvg,
         remainingText
     };
 };
@@ -63,10 +93,10 @@ export const convertSvgToPngDataUrl = (svgElement: SVGElement): Promise<string> 
         
         img.onload = () => {
             // Get SVG dimensions
-            const bbox = svgElement.getBBox();
+            const bbox = (svgElement as SVGGraphicsElement).getBBox();
             const width = bbox.width;
             const height = bbox.height;
-            
+
             // Set max width to viewport width or original width, whichever is smaller
             const maxWidth = Math.min(window.innerWidth, width);
             const scale = maxWidth / width;
@@ -104,11 +134,18 @@ const sanitizeFilename = (name: string): string => {
 export const processFragment = async (fragment: Fragment, allFragments?: Fragment[]): Promise<string> => {
     switch (fragment.type) {
         case 'SVG': {
-            const { svg: svgContent } = extractSvgContent(fragment.content);
-            if (!svgContent) return fragment.content;
-            return svgContent; // Simply return the SVG content directly
+            let content = fragment.content;
+            // Extract and clean SVG content
+            const { svg: svgContent } = extractSvgContent(content);
+            if (!svgContent) return '';
+            
+            // Clean up the SVG and return it directly 
+            const cleanedSvg = cleanSvgContent(svgContent)
+                .replace(/^\s*<\?xml[^>]*\?>\s*/i, '') // Remove XML declaration
+                .replace(/\n\s*/g, ' '); // Remove newlines and extra spaces
+            
+            return cleanedSvg;
         }
-        
         case 'CODE': {
             const language = detectLanguage(fragment.content);
             return `\`\`\`${language}\n${fragment.content}\n\`\`\``;
@@ -116,6 +153,11 @@ export const processFragment = async (fragment: Fragment, allFragments?: Fragmen
         
         case 'TEXT': {
             const content = fragment.content.trim();
+            // Skip URL processing if content contains an image
+            if (content.includes('<img') || content.includes('<svg')) {
+                return content;
+            }
+            
             // Enhanced text processing
             if (content.match(/^[#]{1,6}\s/)) return content; // Already a header
             if (content.match(/^\d+\.\s/)) return content; // Numbered list
@@ -132,6 +174,7 @@ export const processFragment = async (fragment: Fragment, allFragments?: Fragmen
         case 'LINK': {
             const url = fragment.content.trim();
             const title = extractUrlTitle(url);
+            // Links are rendered inline
             return `[${title}](${url})`;
         }
         
@@ -167,5 +210,128 @@ const extractUrlTitle = (url: string): string => {
 const detectHeaderLevel = (content: string): number => {
     const match = content.match(/^(#+)\s/);
     return match ? Math.min(match[1].length, 6) : 1;
+};
+
+export const parseMarkdownToFragments = (markdown: string): Omit<Fragment, 'id' | 'processed'>[] => {
+    const fragments: Omit<Fragment, 'id' | 'processed'>[] = [];
+    const lines = markdown.split('\n');
+    let currentBlock = '';
+    let currentType: FragmentType = 'TEXT';
+
+    const addFragment = () => {
+        if (currentBlock.trim()) {
+            fragments.push({
+                type: currentType,
+                content: currentBlock.trim()
+            });
+        }
+        currentBlock = '';
+        currentType = 'TEXT';
+    };
+
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        
+        if (line.startsWith('```')) {
+            if (currentType === 'CODE') {
+                addFragment();
+            } else {
+                addFragment();
+                currentType = 'CODE';
+            }
+            continue;
+        }
+
+        if (line.match(/^#{1,6}\s/)) {
+            addFragment();
+            currentType = 'HEADER';
+            currentBlock = line;
+            addFragment();
+            continue;
+        }
+
+        if (line.match(/<svg[\s\S]*?<\/svg>/i)) {
+            addFragment();
+            currentType = 'SVG';
+            currentBlock = line;
+            addFragment();
+            continue;
+        }
+
+        if (line.match(/^https?:\/\//)) {
+            addFragment();
+            currentType = 'LINK';
+            currentBlock = line;
+            addFragment();
+            continue;
+        }
+
+        currentBlock += (currentBlock ? '\n' : '') + line;
+    }
+
+    addFragment();
+    return fragments;
+};
+
+export const getSvgDimensions = (svgContent: string): { width: number; height: number } => {
+    const parser = new DOMParser();
+    const svgDoc = parser.parseFromString(svgContent, 'image/svg+xml');
+    const svgElement = svgDoc.documentElement;
+    
+    let width = parseInt(svgElement.getAttribute('width') || '0');
+    let height = parseInt(svgElement.getAttribute('height') || '0');
+    
+    if (!width || !height) {
+        const viewBox = svgElement.getAttribute('viewBox')?.split(' ');
+        if (viewBox) {
+            width = parseInt(viewBox[2]) || 300;
+            height = parseInt(viewBox[3]) || 200;
+        } else {
+            // Default dimensions if no width/height/viewBox is found
+            width = 300;
+            height = 200;
+        }
+    }
+    
+    return { width, height };
+};
+
+export const preprocessContent = (content: string): string => {
+    // Remove XML declaration
+    content = content.replace(/^\s*<\?xml[^>]*\?>\s*/i, '');
+    
+    // Remove markdown wrapper
+    content = content.replace(/```markdown\s*/g, '').replace(/```\s*$/g, '').trim();
+    
+    // Extract and process SVG if present
+    const { svg: svgContent } = extractSvgContent(content);
+    if (svgContent) {
+        const { width, height } = getSvgDimensions(svgContent);
+        const aspectRatio = height / width;
+        const newHeight = Math.round(550 * aspectRatio);
+        
+        // Convert SVG to data URL
+        const dataUrl = svgToDataUrl(svgContent);
+        return `<img src="${dataUrl}" width="550" height="${newHeight}" style="height:auto;" alt="SVG diagram" />`;
+    }
+    
+    return content;
+};
+
+export const svgToDataUrl = (svgContent: string): string => {
+    // Add XML declaration if not present
+    if (!svgContent.includes('<?xml')) {
+        svgContent = '<?xml version="1.0" encoding="UTF-8"?>' + svgContent;
+    }
+    
+    // URI encode the SVG content
+    const encodedSvg = encodeURIComponent(svgContent)
+        .replace(/%20/g, ' ')  // Keep spaces readable
+        .replace(/%3D/g, '=')  // Keep equals signs
+        .replace(/%3A/g, ':')  // Keep colons
+        .replace(/%2F/g, '/')  // Keep forward slashes
+        .replace(/%22/g, "'"); // Replace double quotes with single quotes
+    
+    return `data:image/svg+xml,${encodedSvg}`;
 };
 

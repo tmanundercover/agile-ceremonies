@@ -1,5 +1,10 @@
 import styled from 'styled-components';
 import { Theme } from './theme';
+import 'styled-components';
+
+declare module 'styled-components' {
+    export interface DefaultTheme extends Theme {}
+}
 
 export const AppContainer = styled.div`
   display: flex;
@@ -29,7 +34,7 @@ export const EditorContainer = styled.div`
 export const TopSection = styled.div`
   display: flex;
   gap: 16px;
-  height: 50vh;
+  height: calc(100vh - 32px);
   min-height: 500px;
 `;
 
@@ -38,14 +43,31 @@ export const FragmentManagement = styled.div`
   background: #2d2d2d;
   padding: 16px;
   border-right: 1px solid #404040;
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
 `;
 
 export const FragmentsList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  max-height: 400px;
+  flex: 1;
   overflow-y: auto;
+  margin-top: ${props => props.theme.spacing.large};
+  
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: ${props => props.theme.colors.primary};
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: ${props => props.theme.colors.border};
+    border-radius: 4px;
+  }
 `;
 
 export const FragmentItem = styled.div<{ theme: Theme }>`
@@ -91,9 +113,24 @@ export const EditorPane = styled.div`
 
 export const PreviewPane = styled.div`
   flex: 1;
-  margin-top: 16px;
-  max-height: 50vh;
   overflow-y: auto;
+  padding: 16px;
+  background: #ffffff;
+  border: 1px solid #404040;
+  border-radius: 4px;
+  
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+  }
 `;
 
 export const EditorWrapper = styled.div`
@@ -187,9 +224,17 @@ export const MarkdownContent = styled.div`
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
+  color: #000000;
   
   * {
     max-width: 100%;
+  }
+  
+  svg {
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 100%;
+    height: auto;
   }
   
   img {
@@ -197,6 +242,93 @@ export const MarkdownContent = styled.div`
     height: auto;
     display: block;
     margin: 1rem 0;
+  }
+
+  pre {
+    background: #f6f8fa;
+    padding: 16px;
+    border-radius: 4px;
+    overflow-x: auto;
+  }
+
+  code {
+    font-family: 'Consolas', 'Monaco', monospace;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #000000;
+    margin-top: 24px;
+    margin-bottom: 16px;
+  }
+
+  p {
+    margin: 16px 0;
+  }
+
+  a {
+    color: #0366d6;
+    text-decoration: none;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .svg-container {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 24px 0;
+    overflow: hidden;
+    
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+  }
+`;
+
+export const BottomSection = styled.div`
+  width: 100%;
+  margin-top: ${props => props.theme.spacing.large};
+`;
+
+export const RawMarkdownContainer = styled.div`
+  width: 100%;
+  background: ${props => props.theme.colors.secondary};
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius};
+  padding: ${props => props.theme.spacing.large};
+`;
+
+export const RawMarkdownTitle = styled.h3`
+  margin-bottom: ${props => props.theme.spacing.medium};
+  color: ${props => props.theme.colors.text};
+`;
+
+export const RawMarkdownContent = styled.pre`
+  width: 100%;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  color: ${props => props.theme.colors.text};
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.4;
+  
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: ${props => props.theme.colors.primary};
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: ${props => props.theme.colors.border};
+    border-radius: 4px;
   }
 `;
 

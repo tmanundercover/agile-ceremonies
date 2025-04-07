@@ -15,7 +15,12 @@ import {
     FragmentType,
     RemoveFragmentButton,
     SectionTitle,
-    TopSection
+    TopSection,
+    StyledTextArea,
+    BottomSection,
+    RawMarkdownContainer,
+    RawMarkdownTitle,
+    RawMarkdownContent
 } from './styles';
 
 interface AppProps {
@@ -29,8 +34,13 @@ const App: React.FC<AppProps> = ({initialValue = '# Hello, Markdown!'}) => {
         handleFragmentEdit,
         handleFragmentUpdate,
         removeFragment,
-        updateMarkdown
+        updateMarkdown,
+        parseMarkdown
     } = useShadowDocument(initialValue);
+
+    const handleRawMarkdownInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        parseMarkdown(e.target.value);
+    };
 
     return (
         <ThemeProvider theme={theme}>
@@ -39,7 +49,11 @@ const App: React.FC<AppProps> = ({initialValue = '# Hello, Markdown!'}) => {
                     <TopSection>
                         <FragmentManagement>
                             <SectionTitle>Add Fragment</SectionTitle>
-                            <FragmentInput onAddFragment={handleAddFragment}/>
+                            <FragmentInput onAddFragment={handleAddFragment} />
+                            <StyledTextArea
+                                placeholder="Or paste markdown here..."
+                                onChange={handleRawMarkdownInput}
+                            />
                             <FragmentsList>
                                 {shadowDoc.fragments.map(fragment => (
                                     <FragmentItem key={fragment.id}>
@@ -72,6 +86,14 @@ const App: React.FC<AppProps> = ({initialValue = '# Hello, Markdown!'}) => {
                             onUpdateMarkdown={updateMarkdown}
                         />
                     </TopSection>
+                    <BottomSection>
+                        <RawMarkdownContainer>
+                            <RawMarkdownTitle>Raw Markdown</RawMarkdownTitle>
+                            <RawMarkdownContent>
+                                {shadowDoc.markdown}
+                            </RawMarkdownContent>
+                        </RawMarkdownContainer>
+                    </BottomSection>
                 </EditorContainer>
             </AppContainer>
         </ThemeProvider>

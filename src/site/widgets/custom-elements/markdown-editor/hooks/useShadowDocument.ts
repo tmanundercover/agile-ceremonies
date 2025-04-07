@@ -1,43 +1,62 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Fragment, ShadowDocument, FragmentType } from '../types';
-import {extractSvgContent, processFragment} from '../utils';
+import { extractSvgContent, processFragment, parseMarkdownToFragments } from '../utils';
 
 export const useShadowDocument = (initialValue: string) => {
     const [shadowDoc, setShadowDoc] = useState<ShadowDocument>({
-        fragments: [
-            {
-                id: uuidv4(),
-                type: 'TEXT',
-                content: initialValue,
-                processed: initialValue,
-            }
-        ],
+        fragments: [],
         markdown: initialValue
     });
 
+    // Initialize fragments from initial value
+    useEffect(() => {
+        const initializeFragments = async () => {
+            const fragments = parseMarkdownToFragments(initialValue);
+            const processedFragments = await Promise.all(
+                fragments.map(async (f) => ({
+                    ...f,
+                    id: uuidv4(),
+                    processed: await processFragment({
+                        ...f,
+                        id: uuidv4(),
+                        processed: ''
+                    })
+                }))
+            );
+
+            setShadowDoc({
+                fragments: processedFragments,
+                markdown: processedFragments.map(f => f.processed).join('\n\n')
+            });
+        };
+
+        initializeFragments();
+    }, [initialValue]);
+
     const handleAddFragment = useCallback(async (fragment: Omit<Fragment, 'id' | 'processed'>) => {
+        const createNewFragment = async (type: FragmentType, content: string): Promise<Fragment> => {
+            const newFragment: Fragment = {
+                id: uuidv4(),
+                type,
+                content,
+                processed: content
+            };
+            newFragment.processed = await processFragment(newFragment);
+            return newFragment;
+        };
+
         if (fragment.type === 'SVG') {
             const { svg, remainingText } = extractSvgContent(fragment.content);
+            const fragments: Fragment[] = [];
 
-            // Create SVG fragment
-            const svgFragment: Fragment = {
-                id: uuidv4(),
-                type: 'SVG',
-                content: svg || fragment.content,
-                processed: ''
-            };
-            svgFragment.processed = await processFragment(svgFragment);
+            if (svg) {
+                const svgFragment = await createNewFragment('SVG', svg);
+                fragments.push(svgFragment);
+            }
 
-            // Create text fragment if there's remaining text
-            const fragments: Fragment[] = [svgFragment];
             if (remainingText) {
-                const textFragment: Fragment = {
-                    id: uuidv4(),
-                    type: 'TEXT',
-                    content: remainingText,
-                    processed: remainingText
-                };
+                const textFragment = await createNewFragment('TEXT', remainingText);
                 fragments.push(textFragment);
             }
 
@@ -49,12 +68,7 @@ export const useShadowDocument = (initialValue: string) => {
                 };
             });
         } else {
-            const newFragment: Fragment = {
-                ...fragment,
-                id: uuidv4(),
-                processed: fragment.content // Initialize with content for TEXT type
-            };
-
+            const newFragment = await createNewFragment(fragment.type, fragment.content);
             setShadowDoc(prev => {
                 const newFragments = [...prev.fragments, newFragment];
                 return {
@@ -117,13 +131,34 @@ export const useShadowDocument = (initialValue: string) => {
         }));
     }, []);
 
+    const parseMarkdown = useCallback(async (markdown: string) => {
+        const fragments = parseMarkdownToFragments(markdown);
+        const processedFragments = await Promise.all(
+            fragments.map(async (f) => ({
+                ...f,
+                id: uuidv4(),
+                processed: await processFragment({
+                    ...f,
+                    id: uuidv4(),
+                    processed: ''
+                })
+            }))
+        );
+
+        setShadowDoc({
+            fragments: processedFragments,
+            markdown: processedFragments.map(f => f.processed).join('\n\n')
+        });
+    }, []);
+
     return {
         shadowDoc,
         handleAddFragment,
         handleFragmentEdit,
         handleFragmentUpdate,
         removeFragment,
-        updateMarkdown
+        updateMarkdown,
+        parseMarkdown
     };
 };
 

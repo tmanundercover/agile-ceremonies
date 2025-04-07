@@ -38,7 +38,7 @@ function App() {
     const convertToImage = useCallback(() => {
         if (!cleanedSvg) return;
 
-        const blob = new Blob([cleanedSvg], { type: 'image/svg+xml;charset=utf-8' });
+        const blob = new Blob([cleanedSvg], { type: '[image/svg+xml;charset=utf-8]' });
         const url = URL.createObjectURL(blob);
         const img = new Image();
         
