@@ -21,6 +21,7 @@ const App: React.FC = () => {
         handleThumbnailClick,
         parentSvgProps,
         originalSvgShell,
+        originalContainer,
     } = useProcessSvg();
 
     const toggleModal = () => setIsModalOpen(!isModalOpen);
@@ -52,6 +53,7 @@ const App: React.FC = () => {
                         parentSvgProps={parentSvgProps}
                         svgContent={svgContent}
                         componentCount={componentCount}
+                        originalContainer={originalContainer}
                     />
                 )}
             </MainLayout>
@@ -64,6 +66,7 @@ const App: React.FC = () => {
                     />
                 </ModalContent>
             </Modal>
+
 
             <ModalToggle 
                 onClick={toggleModal}

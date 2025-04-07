@@ -1,6 +1,18 @@
 import {useCallback, useState } from 'react';
 import { SvgThumbnail } from '../types';
 
+const getComponentContainers = (element: Element): string[] => {
+    const containers: string[] = [];
+    let parent = element.parentElement;
+    
+    while (parent && parent.tagName !== 'svg') {
+        containers.unshift(parent.outerHTML.split('>')[0] + '>');
+        parent = parent.parentElement;
+    }
+    
+    return containers;
+};
+
 export const useProcessSvg = () => {
     const [svgContent, setSvgContent] = useState<string | null>(null);
     const [processedSvg, setProcessedSvg] = useState<SVGSVGElement | null>(null);
@@ -11,6 +23,7 @@ export const useProcessSvg = () => {
     const [error, setError] = useState<string | null>(null);
     const [parentSvgProps, setParentSvgProps] = useState<{[key: string]: string}>({});
     const [originalSvgShell, setOriginalSvgShell] = useState<string | null>(null);
+    const [originalContainer, setOriginalContainer] = useState<string | null>(null);
 
     const cleanupSvg = useCallback((svgElement: SVGSVGElement) => {
         // Remove empty groups
@@ -117,6 +130,9 @@ export const useProcessSvg = () => {
                 const newThumbnails: SvgThumbnail[] = Array.from(components).map((component, index) => {
                     const componentClone = component.cloneNode(true) as SVGElement;
                     const bbox = (component as SVGGraphicsElement).getBBox();
+                    
+                    // Get all parent containers
+                    const containers = getComponentContainers(component);
 
                     // Create a complete SVG wrapper with proper viewBox
                     const svgString = `
@@ -124,9 +140,11 @@ export const useProcessSvg = () => {
                              viewBox="${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}"
                              width="100%" 
                              height="100%">
-                            ${componentClone.outerHTML}
+                            ${containers.join('\n')}
+                                ${componentClone.outerHTML}
+                            ${Array(containers.length).fill('</g>').join('\n')}
                         </svg>
-                    `.trim().replace(/>\s+</g, '><').replace(/\s+/g, ' ');
+                    `.trim();
 
                     const componentName = componentClone.id ||
                         componentClone.getAttribute('class') ||
@@ -140,11 +158,26 @@ export const useProcessSvg = () => {
                         height: bbox.height,
                         x: bbox.x,
                         y: bbox.y,
-                        disabled: false
+                        disabled: false,
+                        containers: containers
                     };
                 });
 
                 setThumbnails(newThumbnails);
+
+                // Store original container
+                const containerElements = svgElement.querySelectorAll('g');
+                if (containerElements.length > 0) {
+                    // Find the outermost container that contains all paths
+                    const mainContainer = Array.from(containerElements).find(container => {
+                        const paths = container.querySelectorAll('path, rect, circle, ellipse, polygon, polyline, line');
+                        return paths.length === componentCount;
+                    });
+                    if (mainContainer) {
+                        setOriginalContainer(mainContainer.outerHTML.split('>')[0] + '>');
+                    }
+                }
+
                 setLoading(false);
 
                 setSvgContent(cleanedSvg.outerHTML);
@@ -182,6 +215,7 @@ export const useProcessSvg = () => {
         error,
         parentSvgProps,
         originalSvgShell,
+        originalContainer,
         handleFileSelect,
         handleThumbnailClick
     };

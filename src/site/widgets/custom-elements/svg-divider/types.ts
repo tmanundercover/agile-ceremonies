@@ -7,10 +7,7 @@ export interface SvgThumbnail {
     x: number;
     y: number;
     disabled: boolean;
+    containers: string[];
 }
 
-export interface ThumbnailsProps {
-    thumbnails: SvgThumbnail[];
-    onThumbnailClick: (index: number) => void;
-    parentSvgProps: {[key: string]: string};
-}
+// ...rest of existing code...
