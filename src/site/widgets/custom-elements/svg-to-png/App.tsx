@@ -4,6 +4,7 @@ import './App.css';
 import DiagnosticsPanel, { DiagnosticsInfo } from './DiagnosticsPanel';
 import { cleanSvgWithNewStrategy } from './svgUtils';
 import SvgComparisonPanel from './SvgComparisonPanel';
+import {AppContainer} from "./styledComponents";
 
 function App() {
     const [svgInput, setSvgInput] = useState('');
@@ -68,12 +69,15 @@ function App() {
     }, [cleanedSvg]);
 
     return (
-        <ErrorBoundary>
+        <AppContainer><ErrorBoundary>
             <div className="container">
-                <div className="tabs">
+                <div className="tabs" role="tablist">
                     <button 
                         className={`tab ${activeTab === 'input' ? 'active' : ''}`}
                         onClick={() => setActiveTab('input')}
+                        role="tab"
+                        aria-selected={activeTab === 'input'}
+                        aria-controls="input-panel"
                     >
                         Input
                     </button>
@@ -81,6 +85,9 @@ function App() {
                         className={`tab ${activeTab === 'comparison' ? 'active' : ''}`}
                         onClick={() => setActiveTab('comparison')}
                         disabled={!cleanedSvg}
+                        role="tab"
+                        aria-selected={activeTab === 'comparison'}
+                        aria-controls="comparison-panel"
                     >
                         Comparison
                     </button>
@@ -88,22 +95,27 @@ function App() {
                         className={`tab ${activeTab === 'preview' ? 'active' : ''}`}
                         onClick={() => setActiveTab('preview')}
                         disabled={!convertedImage}
+                        role="tab"
+                        aria-selected={activeTab === 'preview'}
+                        aria-controls="preview-panel"
                     >
                         PNG Preview
                     </button>
                 </div>
 
                 {activeTab === 'input' && (
-                    <div className="input-section">
+                    <div className="input-section" id="input-panel" role="tabpanel">
                         <textarea 
                             value={svgInput}
                             onChange={handleInputChange}
                             placeholder="Paste your SVG code here..."
+                            aria-label="SVG input"
                         />
                         <button 
                             className="convert-button"
                             onClick={handleClean}
                             disabled={!svgInput}
+                            aria-label="Clean SVG code"
                         >
                             Clean SVG
                         </button>
@@ -111,7 +123,7 @@ function App() {
                 )}
 
                 {activeTab === 'comparison' && (
-                    <div className="comparison-section">
+                    <div className="comparison-section" id="comparison-panel" role="tabpanel">
                         <SvgComparisonPanel 
                             originalSvg={svgInput}
                             cleanedSvg={cleanedSvg}
@@ -121,7 +133,7 @@ function App() {
                 )}
 
                 {activeTab === 'preview' && convertedImage && (
-                    <div className="preview-section">
+                    <div className="preview-section" id="preview-panel" role="tabpanel">
                         <div>
                             <img src={convertedImage} alt="Converted SVG" />
                             <a
@@ -134,12 +146,14 @@ function App() {
                         </div>
                     </div>
                 )}
-                
+
+
                 {error && <div className="error">{error}</div>}
                 <DiagnosticsPanel diagnostics={diagnostics} />
             </div>
-        </ErrorBoundary>
+        </ErrorBoundary></AppContainer>
     );
 }
 
 export default App;
+

@@ -1,7 +1,7 @@
 {
   "$schema": "https://dev.wix.com/wix-cli/schemas/custom-element.json",
-  "id": "4a7fe4e1-8374-49aa-8da7-aec9adaf2dec",
-  "name": "SVG to PNG",
+  "id": "03d5bf97-1cc2-46e8-96f2-5d691207aa05",
+  "name": "Markdown Editor",
   "width": {
     "defaultWidth": 450,
     "allowStretch": true
@@ -14,8 +14,8 @@
   },
   "presets": [
     {
-      "id": "207ace1a-1ed7-4d73-901d-0788b065f1a6",
-      "thumbnailUrl": "../../../../assets/svg-to-png/thumbnail.png"
+      "id": "9f8ac665-0fde-443f-bdb8-7bafb9de0f78",
+      "thumbnailUrl": "../../../../assets/markdown-editor/thumbnail.png"
     }
   ]
 }

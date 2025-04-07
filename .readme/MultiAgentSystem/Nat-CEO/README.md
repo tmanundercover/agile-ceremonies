@@ -148,3 +148,6 @@ System Requirements
 * Decision effectiveness
 
 CEO Agent of Agile Ceremonies - Orchestrating Excellence
+
+
+

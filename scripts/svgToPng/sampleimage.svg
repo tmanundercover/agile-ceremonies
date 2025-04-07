@@ -7,7 +7,7 @@
             <stop offset="100%" style="stop-color:#45D1A1;stop-opacity:1" />
         </linearGradient>
         <!-- Connector styles -->
-        <marker id="arrowhead" markerWidth="10" markerHeight="7"
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" 
                 refX="9" refY="3.5" orient="auto">
             <polygon points="0 0, 10 3.5, 0 7" fill="#4CAF50"/>
         </marker>
@@ -22,7 +22,7 @@
     <g transform="translate(50, 150)">
         <rect x="50" y="0" width="300" height="200" fill="#E8F5E9" rx="5" stroke="#4CAF50"/>
         <text x="200" y="30" text-anchor="middle" font-weight="bold" fill="#2E7D32">Frontend Development</text>
-
+        
         <!-- Frontend Tools -->
         <g transform="translate(70, 50)">
             <text x="0" y="0" font-size="14" font-weight="bold">Primary AI Tools:</text>
@@ -39,7 +39,7 @@
     <g transform="translate(400, 150)">
         <rect x="50" y="0" width="300" height="200" fill="#E8F5E9" rx="5" stroke="#4CAF50"/>
         <text x="200" y="30" text-anchor="middle" font-weight="bold" fill="#2E7D32">Backend Development</text>
-
+        
         <!-- Backend Tools -->
         <g transform="translate(70, 50)">
             <text x="0" y="0" font-size="14" font-weight="bold">Primary AI Tools:</text>
@@ -53,10 +53,10 @@
     </g>
 
     <!-- Testing & QA Section -->
-    <g transform="translate(750, 150)">
+    <g transform="translate(700, 150)">
         <rect x="50" y="0" width="300" height="200" fill="#E8F5E9" rx="5" stroke="#4CAF50"/>
         <text x="200" y="30" text-anchor="middle" font-weight="bold" fill="#2E7D32">Testing & QA</text>
-
+        
         <!-- Testing Tools -->
         <g transform="translate(70, 50)">
             <text x="0" y="0" font-size="14" font-weight="bold">Primary AI Tools:</text>
@@ -73,7 +73,7 @@
     <g transform="translate(50, 400)">
         <rect x="50" y="0" width="1000" height="180" fill="#F1F8E9" rx="5" stroke="#8BC34A"/>
         <text x="550" y="30" text-anchor="middle" font-weight="bold" fill="#558B2F">Development Workflows</text>
-
+        
         <!-- Workflow Steps -->
         <g transform="translate(70, 50)">
             <text x="0" y="0" font-size="14" font-weight="bold">Automated Process Flow:</text>

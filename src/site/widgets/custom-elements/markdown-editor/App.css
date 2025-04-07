@@ -1,0 +1,29 @@
+/* Add these new styles */
+.markdown-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px;
+    background-color: #2d2d2d;
+    border-bottom: 1px solid #404040;
+}
+
+.markdown-button {
+    padding: 4px 8px;
+    background-color: #3a3a3a;
+    border: 1px solid #505050;
+    border-radius: 4px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.markdown-button:hover {
+    background-color: #505050;
+}
+
+.markdown-button:active {
+    background-color: #606060;
+}
+
+/* Keep your existing styles below */
