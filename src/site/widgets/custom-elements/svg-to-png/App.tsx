@@ -1,157 +1,146 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
+import Prism from 'prismjs';
+import 'prismjs/components/prism-markup';
+import 'prismjs/themes/prism.css';
 import ErrorBoundary from './ErrorBoundary';
 import './App.css';
-import DiagnosticsPanel, { DiagnosticsInfo } from './DiagnosticsPanel';
-import { cleanSvgWithNewStrategy } from './svgUtils';
-import SvgComparisonPanel from './SvgComparisonPanel';
+import PreviewTab from './components/PreviewTab';
+import ReactComponentTab from './components/ReactComponentTab';
+import PngPreviewTab from './components/PngPreviewTab';
+import ConversionsTab from './components/ConversionsTab';
 import {AppContainer} from "./styledComponents";
+import ErrorPopup from './components/ErrorPopup';
+import {validateSvg} from './svgValidator';
+import DiagnosticsPanel, { DiagnosticsInfo } from './DiagnosticsPanel';
 
 function App() {
     const [svgInput, setSvgInput] = useState('');
-    const [cleanedSvg, setCleanedSvg] = useState('');
+    const [activeTab, setActiveTab] = useState<'preview' | 'react' | 'png' | 'conversions' | 'diagnostics'>('preview');
     const [error, setError] = useState<string | null>(null);
+    const [showError, setShowError] = useState(false);
     const [diagnostics, setDiagnostics] = useState<DiagnosticsInfo | null>(null);
-    const [activeTab, setActiveTab] = useState<'input' | 'comparison' | 'preview'>('input');
-    const [convertedImage, setConvertedImage] = useState<string | null>(null);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setSvgInput(event.target.value);
-        setCleanedSvg('');
-        setError(null);
-        setDiagnostics(null);
-        setConvertedImage(null);
+        const input = event.target.value;
+        setSvgInput(input);
+
+        // Generate diagnostics info
+        const newDiagnostics: DiagnosticsInfo = {
+            originalLength: input.length,
+            cleanedLength: input.trim().length,
+            hasSvgTag: /<svg[^>]*>/i.test(input),
+            hasXmlns: /xmlns=/.test(input),
+            parseSuccess: true,
+            svgElement: true,
+            processingStep: 'Initial validation',
+            operations: [
+                {
+                    step: 'Input received',
+                    success: true,
+                    timestamp: Date.now()
+                }
+            ]
+        };
+
+        // Validate input
+        const validation = validateSvg(input);
+        if (!validation.isValid) {
+            setError(validation.details.errors.join('\n'));
+            setShowError(true);
+            newDiagnostics.error = {
+                message: validation.details.errors.join('\n'),
+                timestamp: Date.now()
+            };
+            newDiagnostics.parseSuccess = false;
+        } else {
+            setError(null);
+            setShowError(false);
+        }
+
+        setDiagnostics(newDiagnostics);
     };
 
-    const handleClean = useCallback(() => {
-        try {
-            const { cleanedSvg, diagnostics } = cleanSvgWithNewStrategy(svgInput);
-            setCleanedSvg(cleanedSvg);
-            setDiagnostics(diagnostics);
-            setError(null);
-            setActiveTab('comparison');
-        } catch (err) {
-            setError(err instanceof Error ? err.message : 'An error occurred');
-            setDiagnostics(null);
-        }
-    }, [svgInput]);
+    const handleCloseError = () => {
+        setShowError(false);
+    };
 
-    const convertToImage = useCallback(() => {
-        if (!cleanedSvg) return;
-
-        const blob = new Blob([cleanedSvg], { type: '[image/svg+xml;charset=utf-8]' });
-        const url = URL.createObjectURL(blob);
-        const img = new Image();
-        
-        img.onload = () => {
-            const canvas = document.createElement('canvas');
-            canvas.width = img.width;
-            canvas.height = img.height;
-            
-            const ctx = canvas.getContext('2d');
-            if (ctx) {
-                ctx.drawImage(img, 0, 0);
-                canvas.toBlob((blob) => {
-                    if (blob) {
-                        setConvertedImage(URL.createObjectURL(blob));
-                        setActiveTab('preview');
-                    }
-                }, 'image/png');
-            }
-            URL.revokeObjectURL(url);
-        };
-
-        img.onerror = () => {
-            setError('Failed to convert SVG to PNG');
-            URL.revokeObjectURL(url);
-        };
-
-        img.src = url;
-    }, [cleanedSvg]);
+    useEffect(() => {
+        Prism.highlightAll();
+    }, [svgInput, activeTab]);
 
     return (
-        <AppContainer><ErrorBoundary>
-            <div className="container">
-                <div className="tabs" role="tablist">
-                    <button 
-                        className={`tab ${activeTab === 'input' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('input')}
-                        role="tab"
-                        aria-selected={activeTab === 'input'}
-                        aria-controls="input-panel"
-                    >
-                        Input
-                    </button>
-                    <button 
-                        className={`tab ${activeTab === 'comparison' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('comparison')}
-                        disabled={!cleanedSvg}
-                        role="tab"
-                        aria-selected={activeTab === 'comparison'}
-                        aria-controls="comparison-panel"
-                    >
-                        Comparison
-                    </button>
-                    <button 
-                        className={`tab ${activeTab === 'preview' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('preview')}
-                        disabled={!convertedImage}
-                        role="tab"
-                        aria-selected={activeTab === 'preview'}
-                        aria-controls="preview-panel"
-                    >
-                        PNG Preview
-                    </button>
-                </div>
-
-                {activeTab === 'input' && (
-                    <div className="input-section" id="input-panel" role="tabpanel">
-                        <textarea 
-                            value={svgInput}
-                            onChange={handleInputChange}
-                            placeholder="Paste your SVG code here..."
-                            aria-label="SVG input"
-                        />
-                        <button 
-                            className="convert-button"
-                            onClick={handleClean}
-                            disabled={!svgInput}
-                            aria-label="Clean SVG code"
-                        >
-                            Clean SVG
-                        </button>
-                    </div>
-                )}
-
-                {activeTab === 'comparison' && (
-                    <div className="comparison-section" id="comparison-panel" role="tabpanel">
-                        <SvgComparisonPanel 
-                            originalSvg={svgInput}
-                            cleanedSvg={cleanedSvg}
-                            onConvertToPng={convertToImage}
-                        />
-                    </div>
-                )}
-
-                {activeTab === 'preview' && convertedImage && (
-                    <div className="preview-section" id="preview-panel" role="tabpanel">
-                        <div>
-                            <img src={convertedImage} alt="Converted SVG" />
-                            <a
-                                href={convertedImage}
-                                download="converted.png"
-                                className="download-button"
-                            >
-                                Download PNG
-                            </a>
+        <AppContainer>
+            <ErrorBoundary>
+                <div className="container">
+                    <div className="editor-section">
+                        <div className="code-editor">
+                            <pre className="language-markup">
+                                <code className="language-markup">{svgInput}</code>
+                            </pre>
+                            <textarea
+                                value={svgInput}
+                                onChange={handleInputChange}
+                                placeholder="Paste your SVG code here..."
+                                aria-label="SVG input"
+                                spellCheck="false"
+                            />
                         </div>
                     </div>
-                )}
 
+                    <div className="preview-section">
+                        <nav className="tab-navigation">
+                            <div className="tab-list" role="tablist">
+                                <button
+                                    className={`tab-button ${activeTab === 'preview' ? 'active' : ''}`}
+                                    onClick={() => setActiveTab('preview')}
+                                    role="tab"
+                                >
+                                    SVG Preview
+                                </button>
+                                <button
+                                    className={`tab-button ${activeTab === 'react' ? 'active' : ''}`}
+                                    onClick={() => setActiveTab('react')}
+                                    role="tab"
+                                >
+                                    React Component
+                                </button>
+                                <button
+                                    className={`tab-button ${activeTab === 'png' ? 'active' : ''}`}
+                                    onClick={() => setActiveTab('png')}
+                                    role="tab"
+                                >
+                                    PNG Preview
+                                </button>
+                                <button
+                                    className={`tab-button ${activeTab === 'conversions' ? 'active' : ''}`}
+                                    onClick={() => setActiveTab('conversions')}
+                                    role="tab"
+                                >
+                                    Conversions
+                                </button>
+                                <button
+                                    className={`tab-button ${activeTab === 'diagnostics' ? 'active' : ''}`}
+                                    onClick={() => setActiveTab('diagnostics')}
+                                    role="tab"
+                                >
+                                    Diagnostics
+                                </button>
+                            </div>
+                        </nav>
 
-                {error && <div className="error">{error}</div>}
-                <DiagnosticsPanel diagnostics={diagnostics} />
-            </div>
-        </ErrorBoundary></AppContainer>
+                        <div className="tab-content-container">
+                            {activeTab === 'preview' && <PreviewTab svgContent={svgInput}/>}
+                            {activeTab === 'react' && <ReactComponentTab svgContent={svgInput}/>}
+                            {activeTab === 'png' && <PngPreviewTab svgContent={svgInput}/>}
+                            {activeTab === 'conversions' && <ConversionsTab svgContent={svgInput}/>}
+                            {activeTab === 'diagnostics' && <DiagnosticsPanel diagnostics={diagnostics}/>}
+                        </div>
+                    </div>
+
+                    {showError && <ErrorPopup error={error} onClose={handleCloseError}/>}
+                </div>
+            </ErrorBoundary>
+        </AppContainer>
     );
 }
 

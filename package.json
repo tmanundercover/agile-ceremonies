@@ -19,6 +19,7 @@
     "axios": "1.8.2",
     "fast-xml-parser": "^4.5.3",
     "file-saver": "^2.0.5",
+    "prism": "^4.1.2",
     "prompts": "^2.4.2",
     "react": "16.14.0",
     "react-dom": "^16.14.0",
@@ -37,7 +38,9 @@
     "svgo": "^3.2.0",
     "svgson": "^5.3.1",
     "uuid": "^9.0.1",
-    "xml2js": "^0.6.2"
+    "xml2js": "^0.6.2",
+    "prismjs": "^1.29.0",
+    "react-simple-code-editor": "^0.13.1"
   },
   "devDependencies": {
     "@types/file-saver": "^2.0.7",
@@ -51,7 +54,8 @@
     "@wix/cli-app": "^1.0.0",
     "dotenv": "^16.4.7",
     "typescript": "~5.8.2",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "@types/prismjs": "^1.26.3"
   },
   "scripts": {
     "wix": "wix",
