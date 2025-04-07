@@ -24,8 +24,7 @@ const App: React.FC = () => {
         originalContainer,
         processedResult,
         processLayeredView,
-        processOriginalSvg,
-        processIndividualComponents
+        processOriginalSvg
     } = useProcessSvg();
 
     const toggleModal = () => setIsModalOpen(!isModalOpen);
@@ -70,7 +69,6 @@ const App: React.FC = () => {
                         processedResult={processedResult}
                         onProcessLayered={processLayeredView}
                         onProcessOriginal={processOriginalSvg}
-                        onProcessIndividual={processIndividualComponents}
                     />
                 </ModalContent>
             </Modal>

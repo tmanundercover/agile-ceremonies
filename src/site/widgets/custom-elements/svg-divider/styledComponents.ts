@@ -151,30 +151,6 @@ export const FileInput = styled.div`
     }
 `;
 
-export const ActionButton = styled.button`
-    padding: 10px 20px;
-    margin-top: 10px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    background-color: ${props => (props.disabled ? '#ccc' : '#007BFF')};
-    color: white;
-    transition: background-color 0.3s;
-
-    &:hover {
-        background-color: ${props => (props.disabled ? '#ccc' : '#0056b3')};
-    }
-
-    &:disabled {
-        cursor: not-allowed;
-    }
-
-    .dark & {
-        background-color: ${props => (props.disabled ? '#555' : '#0056b3')};
-    }
-`;
-
 export const Error = styled.p`
     color: red;
     margin-top: 10px;
@@ -256,12 +232,24 @@ export const SettingsButton = styled.button`
 
 export const SelectedThumbnailsWrapper = styled.div`
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
     margin-top: 20px;
+    padding: 20px;
 
-    img {
-        margin-bottom: 10px;
+    svg {
+        width: 100%;
+        height: 100%;
+        min-height: 150px;
+        border: 1px solid #ddd;
+        padding: 10px;
+        border-radius: 4px;
+        background: white;
+
+        .dark & {
+            background: #444;
+            border-color: #555;
+        }
     }
 `;
 
@@ -417,6 +405,37 @@ export const ThumbnailImage = styled.div`
         &:hover {
             border-color: #777;
         }
+    }
+`;
+
+export const ActionButton = styled.button`
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background-color: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+        background-color: #f5f5f5;
+    }
+
+    .dark & {
+        background-color: #555;
+        border-color: #666;
+        color: white;
+
+        &:hover {
+            background-color: #666;
+        }
+    }
+
+    svg {
+        margin-right: 8px;
     }
 `;
 

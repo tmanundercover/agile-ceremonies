@@ -237,62 +237,6 @@ export const useProcessSvg = () => {
         setProcessedResult(svgContent);
     }, [svgContent]);
 
-    const processIndividualComponents = useCallback(() => {
-        if (!selectedThumbnails.length) return;
-        
-        const components = selectedThumbnails.map(thumbnail => {
-            // Create a new SVG wrapper with the parent SVG properties
-            const svgWrapper = document.createElement('svg');
-            Object.entries(parentSvgProps).forEach(([key, value]) => {
-                svgWrapper.setAttribute(key, value);
-            });
-            
-            // Set viewBox based on the component's dimensions
-            svgWrapper.setAttribute('viewBox', `${thumbnail.x} ${thumbnail.y} ${thumbnail.width} ${thumbnail.height}`);
-            
-            // Get the original content
-            const content = decodeURIComponent(thumbnail.src.split(',')[1]);
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(content, 'image/svg+xml');
-            const componentElement = doc.querySelector('svg > *:last-child');
-            
-            if (componentElement) {
-                // If there are container elements, add them hierarchically
-                if (thumbnail.containers && thumbnail.containers.length > 0) {
-                    let currentContainer: Element | null = null;
-                    
-                    // Create container hierarchy from outside in
-                    thumbnail.containers.forEach((containerHTML) => {
-                        const containerDoc = parser.parseFromString(containerHTML, 'text/html');
-                        const container = containerDoc.querySelector('g');
-                        
-                        if (container) {
-                            if (!currentContainer) {
-                                svgWrapper.appendChild(container);
-                                currentContainer = container;
-                            } else {
-                                currentContainer.appendChild(container);
-                                currentContainer = container;
-                            }
-                        }
-                    });
-                    
-                    // Add the component to the innermost container
-                    if (currentContainer) {
-                        currentContainer.appendChild(componentElement);
-                    }
-                } else {
-                    // If no containers, add component directly to SVG
-                    svgWrapper.appendChild(componentElement);
-                }
-            }
-            
-            return svgWrapper.outerHTML;
-        });
-        
-        setProcessedResult(components.join('\n'));
-    }, [selectedThumbnails, parentSvgProps]);
-
     return {
         svgContent,
         processedSvg,
@@ -308,8 +252,7 @@ export const useProcessSvg = () => {
         handleThumbnailClick,
         processedResult,
         processLayeredView,
-        processOriginalSvg,
-        processIndividualComponents
+        processOriginalSvg
     };
 };
 

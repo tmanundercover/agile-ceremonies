@@ -33,8 +33,7 @@ const OptionButton = styled.button`
 interface ProcessingOptionsProps {
     onProcessLayered: () => void;
     onProcessOriginal: () => void;
-    onProcessIndividual: () => void;
-    onSave: (type: 'layered' | 'original' | 'individual') => void;
+    onSave: (type: 'layered' | 'original') => void;
 }
 
 const ButtonGroup = styled.div`
@@ -65,7 +64,6 @@ const SaveButton = styled(OptionButton)`
 const ProcessingOptions: React.FC<ProcessingOptionsProps> = ({
     onProcessLayered,
     onProcessOriginal,
-    onProcessIndividual,
     onSave
 }) => {
     return (
@@ -85,15 +83,6 @@ const ProcessingOptions: React.FC<ProcessingOptionsProps> = ({
                 </OptionButton>
                 <SaveButton onClick={() => onSave('original')}>
                     Save Original SVG
-                </SaveButton>
-            </ButtonGroup>
-
-            <ButtonGroup>
-                <OptionButton onClick={onProcessIndividual}>
-                    Process Individual Components
-                </OptionButton>
-                <SaveButton onClick={() => onSave('individual')}>
-                    Save Individual Components
                 </SaveButton>
             </ButtonGroup>
         </OptionsContainer>
