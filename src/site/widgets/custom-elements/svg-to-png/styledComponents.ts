@@ -24,14 +24,30 @@ export const AppContainer = styled.div`
         .code-editor {
             height: 100%;
             position: relative;
-            overflow: auto;
             
             pre {
                 margin: 0;
                 height: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                padding: 12px;
+                background: transparent;
+                pointer-events: none;
+                overflow: hidden;
+                white-space: pre-wrap;
+                word-wrap: break-word;
+                box-sizing: border-box;
                 
                 code {
-                    height: 100%;
+                    background: transparent;
+                    pointer-events: none;
+                    white-space: pre-wrap;
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
+                    display: block;
+                    width: 100%;
                 }
             }
             
@@ -53,6 +69,10 @@ export const AppContainer = styled.div`
                 caret-color: #000;
                 white-space: pre-wrap;
                 word-wrap: break-word;
+                overflow-wrap: break-word;
+                z-index: 1;
+                box-sizing: border-box;
+                overflow: auto;
                 
                 &::selection {
                     background: rgba(74, 144, 226, 0.2);
@@ -130,6 +150,46 @@ export const CodeBlock = styled.pre`
 export const CodeContainer = styled.div`
     position: relative;
     margin: 16px 0;
+    overflow: hidden;
+    
+    &:hover .copy-button {
+        opacity: 1;
+    }
+`;
+
+export const ButtonContainer = styled.button`
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+
+  &:hover {
+    background: rgba(255, 255, 255, 1);
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+    fill: #4a90e2;
+  }
+
+  .parent-container:hover & {
+    opacity: 1;
+  }
 `;
 
 export const PreviewContainer = styled.div`
@@ -140,6 +200,11 @@ export const PreviewContainer = styled.div`
     margin: 16px 0;
     height: calc(100vh - 200px);
     background: #f8f8f8;
+    position: relative;
+    
+    &:hover .copy-button {
+        opacity: 1;
+    }
     
     .preview-controls {
         display: flex;
@@ -257,42 +322,40 @@ export const ConversionContent = styled.pre`
     border: 1px solid #e2e8f0;
     border-radius: 8px;
     padding: 16px;
+    padding-right: 48px;
     margin: 0;
+    overflow-y: hidden;
     overflow-x: auto;
     font-family: 'Fira Code', monospace;
     font-size: 14px;
     line-height: 1.6;
     color: #4a5568;
-    height: 8em;
-    resize: vertical;
-    min-height: 5em;
-    max-height: 20em;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    transition: border-color 0.2s ease;
+    height: 2.4em;
+    min-height: 2.4em;
+    max-height: 2.4em;
+    white-space: nowrap;
+    position: relative;
     
     &:hover {
         border-color: #cbd5e0;
     }
 
     &::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
+        width: 0;
+        height: 6px;
     }
 
     &::-webkit-scrollbar-track {
-        background: #f7fafc;
-        border-radius: 4px;
+        background: transparent;
     }
 
     &::-webkit-scrollbar-thumb {
+        background: transparent;
+    }
+
+    &:hover::-webkit-scrollbar-thumb {
         background: #cbd5e0;
-        border-radius: 4px;
-        
-        &:hover {
-            background: #a0aec0;
-        }
+        border-radius: 3px;
     }
 `;
 

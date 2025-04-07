@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-markup';
 import 'prismjs/themes/prism.css';
@@ -19,6 +19,18 @@ function App() {
     const [error, setError] = useState<string | null>(null);
     const [showError, setShowError] = useState(false);
     const [diagnostics, setDiagnostics] = useState<DiagnosticsInfo | null>(null);
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const preRef = useRef<HTMLPreElement>(null);
+
+    const syncScroll = (event: React.UIEvent<HTMLElement>) => {
+        const source = event.currentTarget;
+        const target = source === textareaRef.current ? preRef.current : textareaRef.current;
+        
+        if (target) {
+            target.scrollTop = source.scrollTop;
+            target.scrollLeft = source.scrollLeft;
+        }
+    };
 
     const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         const input = event.target.value;
@@ -74,12 +86,18 @@ function App() {
                 <div className="container">
                     <div className="editor-section">
                         <div className="code-editor">
-                            <pre className="language-markup">
+                            <pre 
+                                ref={preRef}
+                                className="language-markup" 
+                                onScroll={syncScroll}
+                            >
                                 <code className="language-markup">{svgInput}</code>
                             </pre>
                             <textarea
+                                ref={textareaRef}
                                 value={svgInput}
                                 onChange={handleInputChange}
+                                onScroll={syncScroll}
                                 placeholder="Paste your SVG code here..."
                                 aria-label="SVG input"
                                 spellCheck="false"

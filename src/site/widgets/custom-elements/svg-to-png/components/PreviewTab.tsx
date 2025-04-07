@@ -6,6 +6,7 @@ interface PreviewTabProps {
     svgContent: string;
 }
 
+
 const PreviewTab: React.FC<PreviewTabProps> = ({ svgContent }) => {
     const [scale, setScale] = useState(1);
     const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -53,7 +54,7 @@ const PreviewTab: React.FC<PreviewTabProps> = ({ svgContent }) => {
         element.addEventListener('touchstart', handleTouchStart);
         element.addEventListener('touchmove', handleTouchMove, { passive: false });
         element.addEventListener('touchend', handleTouchEnd);
-        
+
         return () => {
             element.removeEventListener('wheel', handleWheel);
             element.removeEventListener('touchstart', handleTouchStart);
@@ -68,13 +69,13 @@ const PreviewTab: React.FC<PreviewTabProps> = ({ svgContent }) => {
                 <div className="preview-controls" style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
                     <span className="size-info">Size: {size}</span>
                     <span className="zoom-info">Zoom: {Math.round(scale * 100)}%</span>
-                    <CopyButton content={svgContent} label="Copy SVG" />
                 </div>
             </div>
-            <div 
+            <div
                 ref={previewRef}
-                className="preview-container"
-                style={{ 
+                className="preview-container parent-container"
+                style={{
+                    position: 'relative',
                     flex: 1,
                     overflow: 'auto',
                     border: '1px solid #e0e0e0',
@@ -83,7 +84,8 @@ const PreviewTab: React.FC<PreviewTabProps> = ({ svgContent }) => {
                     touchAction: 'none'
                 }}
             >
-                <div 
+                <CopyButton content={svgContent} label="Copy SVG" />
+                <div
                     className="svg-preview"
                     style={{
                         transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`,
@@ -98,3 +100,4 @@ const PreviewTab: React.FC<PreviewTabProps> = ({ svgContent }) => {
 };
 
 export default PreviewTab;
+

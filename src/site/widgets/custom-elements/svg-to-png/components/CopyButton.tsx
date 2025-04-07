@@ -1,24 +1,46 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
-const Button = styled.button`
-    padding: 8px 16px;
-    background: #4a90e2;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background 0.2s;
+const fadeIn = keyframes`
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+`;
 
-    &:hover {
-        background: #357abd;
-    }
+const ButtonContainer = styled.button`
+  position: sticky;
+  top: 8px;
+  right: 8px;
+  float: right;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 10;
 
-    &:disabled {
-        background: #88b7e8;
-        cursor: default;
-    }
+  &:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+    fill: #4a90e2;
+    animation: ${fadeIn} 0.2s ease;
+  }
+
+  .parent-container:hover & {
+    opacity: 1;
+  }
 `;
 
 interface CopyButtonProps {
@@ -40,9 +62,17 @@ const CopyButton: React.FC<CopyButtonProps> = ({ content, label }) => {
     };
 
     return (
-        <Button onClick={handleCopy} disabled={isCopied}>
-            {isCopied ? 'Copied!' : label}
-        </Button>
+        <ButtonContainer onClick={handleCopy} aria-label={label} title={label}>
+            {isCopied ? (
+                <svg viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                </svg>
+            ) : (
+                <svg viewBox="0 0 24 24">
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                </svg>
+            )}
+        </ButtonContainer>
     );
 };
 

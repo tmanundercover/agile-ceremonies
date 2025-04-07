@@ -50,10 +50,8 @@ export default SvgComponent;
 
     return (
         <div className="react-component-tab">
-            <div className="actions">
+            <CodeContainer className="parent-container">
                 <CopyButton content={componentCode} label="Copy React Component" />
-            </div>
-            <CodeContainer>
                 <CodeBlock className="language-tsx">
                     {componentCode}
                 </CodeBlock>
