@@ -88,9 +88,32 @@
 </div>
 
 <script>
+    function validateSvg(svgString) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(svgString, 'image/svg+xml');
+        const parserError = doc.querySelector('parsererror');
+
+        if (parserError) {
+            console.error('Invalid SVG:', parserError.textContent);
+            return false;
+        }
+
+        const svgElement = doc.querySelector('svg');
+        if (!svgElement) {
+            console.error('Invalid SVG: No <svg> element found');
+            return false;
+        }
+
+        console.log('SVG is valid');
+        return true;
+    }
+
     function svgToPng(svgString, width, height) {
         return new Promise((resolve, reject) => {
             try {
+                if (!validateSvg(svgString)) {
+                    throw new Error('Invalid SVG format');
+                }
                 // Create a Blob from the SVG string
                 const svgBlob = new Blob([svgString], { type: 'image/svg+xml' });
                 const url = URL.createObjectURL(svgBlob);
@@ -151,21 +174,26 @@
         }
 
         try {
+            if (!validateSvg(svgInput)) {
+                errorDiv.textContent = 'Invalid SVG format';
+                return;
+            }
+
             // Show SVG preview
             svgPreview.innerHTML = `
-                    <h4>SVG Input:</h4>
-                    ${svgInput}
-                `;
+                <h4>SVG Input:</h4>
+                ${svgInput}
+            `;
 
             // Convert and show PNG preview
             svgToPng(svgInput, width, height)
                 .then(pngDataUrl => {
                     pngPreview.innerHTML = `
-                            <h4>PNG Output:</h4>
-                            <img src="${pngDataUrl}" alt="Converted PNG">
-                            <br><br>
-                            <button onclick="downloadPng('${pngDataUrl}')">Download PNG</button>
-                        `;
+                        <h4>PNG Output:</h4>
+                        <img src="${pngDataUrl}" alt="Converted PNG">
+                        <br><br>
+                        <button onclick="downloadPng('${pngDataUrl}')">Download PNG</button>
+                    `;
                 })
                 .catch(err => {
                     errorDiv.textContent = 'Error converting SVG to PNG: ' + err.message;

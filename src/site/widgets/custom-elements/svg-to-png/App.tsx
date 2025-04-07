@@ -1,139 +1,144 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
+import ErrorBoundary from './ErrorBoundary';
 import './App.css';
+import DiagnosticsPanel, { DiagnosticsInfo } from './DiagnosticsPanel';
+import { cleanSvgWithNewStrategy } from './svgUtils';
+import SvgComparisonPanel from './SvgComparisonPanel';
 
 function App() {
-    const [svgInput, setSvgInput] = useState(`<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">
-    <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red"/>
-</svg>`);
-    const [width, setWidth] = useState(200);
-    const [height, setHeight] = useState(200);
-    const [pngOutput, setPngOutput] = useState('');
-    const [error, setError] = useState('');
+    const [svgInput, setSvgInput] = useState('');
+    const [cleanedSvg, setCleanedSvg] = useState('');
+    const [error, setError] = useState<string | null>(null);
+    const [diagnostics, setDiagnostics] = useState<DiagnosticsInfo | null>(null);
+    const [activeTab, setActiveTab] = useState<'input' | 'comparison' | 'preview'>('input');
+    const [convertedImage, setConvertedImage] = useState<string | null>(null);
 
-    const svgToPng = (svgString: string, width: number, height: number) => {
-        return new Promise((resolve, reject) => {
-            try {
-                const svgBlob = new Blob([svgString], {type: 'image/svg+xml'});
-                const url = URL.createObjectURL(svgBlob);
-
-                const img = new Image();
-                img.onload = () => {
-                    try {
-                        const canvas = document.createElement('canvas');
-                        canvas.width = width || img.width;
-                        canvas.height = height || img.height;
-
-                        const ctx = canvas.getContext('2d');
-                        ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-                        const pngData = canvas.toDataURL('image/png');
-
-                        URL.revokeObjectURL(url);
-
-                        resolve(pngData);
-                    } catch (err) {
-                        reject(err);
-                    }
-                };
-
-                img.onerror = (err) => {
-                    URL.revokeObjectURL(url);
-                    reject(err);
-                };
-
-                img.src = url;
-            } catch (err) {
-                reject(err);
-            }
-        });
+    const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setSvgInput(event.target.value);
+        setCleanedSvg('');
+        setError(null);
+        setDiagnostics(null);
+        setConvertedImage(null);
     };
 
-    const handleConvert = async () => {
-        setError('');
-        setPngOutput('');
-
-        if (!svgInput.trim()) {
-            setError('Please enter SVG code');
-            return;
-        }
-
+    const handleClean = useCallback(() => {
         try {
-            const pngData: any = await svgToPng(svgInput, width, height);
-            setPngOutput(pngData);
-        } catch (err: any) {
-            setError('Error converting SVG to PNG: ' + err.message);
+            const { cleanedSvg, diagnostics } = cleanSvgWithNewStrategy(svgInput);
+            setCleanedSvg(cleanedSvg);
+            setDiagnostics(diagnostics);
+            setError(null);
+            setActiveTab('comparison');
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'An error occurred');
+            setDiagnostics(null);
         }
-    };
+    }, [svgInput]);
 
-    const handleDownload = () => {
-        if (pngOutput) {
-            const link = document.createElement('a');
-            link.download = 'converted-image.png';
-            link.href = pngOutput;
-            link.click();
-        }
-    };
+    const convertToImage = useCallback(() => {
+        if (!cleanedSvg) return;
+
+        const blob = new Blob([cleanedSvg], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const img = new Image();
+        
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+                ctx.drawImage(img, 0, 0);
+                canvas.toBlob((blob) => {
+                    if (blob) {
+                        setConvertedImage(URL.createObjectURL(blob));
+                        setActiveTab('preview');
+                    }
+                }, 'image/png');
+            }
+            URL.revokeObjectURL(url);
+        };
+
+        img.onerror = () => {
+            setError('Failed to convert SVG to PNG');
+            URL.revokeObjectURL(url);
+        };
+
+        img.src = url;
+    }, [cleanedSvg]);
 
     return (
-        <div className="container">
-            <h2>SVG to PNG Converter</h2>
-
-            <div className="input-section">
-                <label htmlFor="svgInput">Paste your SVG code here:</label>
-                <textarea
-                    id="svgInput"
-                    value={svgInput}
-                    onChange={(e) => setSvgInput(e.target.value)}
-                    placeholder="<svg>...</svg>"
-                />
-            </div>
-
-            <div className="dimensions">
-                <div className="input-group">
-                    <label htmlFor="width">Width:</label>
-                    <input
-                        type="number"
-                        id="width"
-                        value={width}
-                        onChange={(e) => setWidth(Number(e.target.value))}
-                    />
-                </div>
-                <div className="input-group">
-                    <label htmlFor="height">Height:</label>
-                    <input
-                        type="number"
-                        id="height"
-                        value={height}
-                        onChange={(e) => setHeight(Number(e.target.value))}
-                    />
-                </div>
-            </div>
-
-            <button onClick={handleConvert} className="convert-button">
-                Convert to PNG
-            </button>
-
-            {error && <div className="error">{error}</div>}
-
-            <div className="preview">
-                <h3>Preview:</h3>
-
-                <div className="preview-section">
-                    <h4>SVG Input:</h4>
-                    <div dangerouslySetInnerHTML={{__html: svgInput}}/>
+        <ErrorBoundary>
+            <div className="container">
+                <div className="tabs">
+                    <button 
+                        className={`tab ${activeTab === 'input' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('input')}
+                    >
+                        Input
+                    </button>
+                    <button 
+                        className={`tab ${activeTab === 'comparison' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('comparison')}
+                        disabled={!cleanedSvg}
+                    >
+                        Comparison
+                    </button>
+                    <button 
+                        className={`tab ${activeTab === 'preview' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('preview')}
+                        disabled={!convertedImage}
+                    >
+                        PNG Preview
+                    </button>
                 </div>
 
-                {pngOutput && (
-                    <div className="preview-section">
-                        <h4>PNG Output:</h4>
-                        <img src={pngOutput} alt="Converted PNG"/>
-                        <button onClick={handleDownload} className="download-button">
-                            Download PNG
+                {activeTab === 'input' && (
+                    <div className="input-section">
+                        <textarea 
+                            value={svgInput}
+                            onChange={handleInputChange}
+                            placeholder="Paste your SVG code here..."
+                        />
+                        <button 
+                            className="convert-button"
+                            onClick={handleClean}
+                            disabled={!svgInput}
+                        >
+                            Clean SVG
                         </button>
                     </div>
                 )}
+
+                {activeTab === 'comparison' && (
+                    <div className="comparison-section">
+                        <SvgComparisonPanel 
+                            originalSvg={svgInput}
+                            cleanedSvg={cleanedSvg}
+                            onConvertToPng={convertToImage}
+                        />
+                    </div>
+                )}
+
+                {activeTab === 'preview' && convertedImage && (
+                    <div className="preview-section">
+                        <div>
+                            <img src={convertedImage} alt="Converted SVG" />
+                            <a
+                                href={convertedImage}
+                                download="converted.png"
+                                className="download-button"
+                            >
+                                Download PNG
+                            </a>
+                        </div>
+                    </div>
+                )}
+                
+                {error && <div className="error">{error}</div>}
+                <DiagnosticsPanel diagnostics={diagnostics} />
             </div>
-        </div>
+        </ErrorBoundary>
     );
 }
 
