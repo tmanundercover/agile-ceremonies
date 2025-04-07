@@ -12,10 +12,11 @@ import {AppContainer} from "./styledComponents";
 import ErrorPopup from './components/ErrorPopup';
 import {validateSvg} from './svgValidator';
 import DiagnosticsPanel, { DiagnosticsInfo } from './DiagnosticsPanel';
+import ImagesTab from "./components/ImagesTab";
 
 function App() {
     const [svgInput, setSvgInput] = useState('');
-    const [activeTab, setActiveTab] = useState<'preview' | 'react' | 'png' | 'conversions' | 'diagnostics'>('preview');
+    const [activeTab, setActiveTab] = useState<'preview' | 'react' | 'png' | 'conversions' | 'diagnostics' | 'images'>('preview');
     const [error, setError] = useState<string | null>(null);
     const [showError, setShowError] = useState(false);
     const [diagnostics, setDiagnostics] = useState<DiagnosticsInfo | null>(null);
@@ -36,15 +37,19 @@ function App() {
         const input = event.target.value;
         setSvgInput(input);
 
-        // Generate diagnostics info
+        // Generate diagnostics info with enhanced validation
+        const validation = validateSvg(input);
         const newDiagnostics: DiagnosticsInfo = {
             originalLength: input.length,
             cleanedLength: input.trim().length,
-            hasSvgTag: /<svg[^>]*>/i.test(input),
-            hasXmlns: /xmlns=/.test(input),
-            parseSuccess: true,
-            svgElement: true,
+            hasSvgTag: validation.details.structure.hasSvgTag,
+            hasXmlns: validation.details.structure.hasValidNamespace,
+            parseSuccess: validation.isValid,
+            svgElement: validation.details.structure.hasSvgTag,
             processingStep: 'Initial validation',
+            metrics: validation.details.metrics,
+            security: validation.details.security,
+            workflow: validation.details.workflow,
             operations: [
                 {
                     step: 'Input received',
@@ -54,8 +59,6 @@ function App() {
             ]
         };
 
-        // Validate input
-        const validation = validateSvg(input);
         if (!validation.isValid) {
             setError(validation.details.errors.join('\n'));
             setShowError(true);
@@ -63,7 +66,6 @@ function App() {
                 message: validation.details.errors.join('\n'),
                 timestamp: Date.now()
             };
-            newDiagnostics.parseSuccess = false;
         } else {
             setError(null);
             setShowError(false);
@@ -143,6 +145,13 @@ function App() {
                                 >
                                     Diagnostics
                                 </button>
+                                <button
+                                    className={`tab-button ${activeTab === 'images' ? 'active' : ''}`}
+                                    onClick={() => setActiveTab('images')}
+                                    role="tab"
+                                >
+                                    Images
+                                </button>
                             </div>
                         </nav>
 
@@ -152,6 +161,7 @@ function App() {
                             {activeTab === 'png' && <PngPreviewTab svgContent={svgInput}/>}
                             {activeTab === 'conversions' && <ConversionsTab svgContent={svgInput}/>}
                             {activeTab === 'diagnostics' && <DiagnosticsPanel diagnostics={diagnostics}/>}
+                            {activeTab === 'images' && <ImagesTab svgContent={svgInput}/>}
                         </div>
                     </div>
 

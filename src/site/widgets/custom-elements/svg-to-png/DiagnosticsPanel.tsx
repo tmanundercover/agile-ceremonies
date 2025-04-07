@@ -9,6 +9,31 @@ export interface DiagnosticsInfo {
     svgElement: boolean;
     processingStep: string;
     cleanedSvg?: string;
+    metrics?: {
+        elementCount: number;
+        depth: number;
+        uniqueElements: string[];
+        attributeCount: number;
+        fileSize: number;
+    };
+    security?: {
+        hasScripts: boolean;
+        hasExternalRefs: boolean;
+        hasEventHandlers: boolean;
+        hasSuspiciousUrls: boolean;
+        suspiciousAttributes: string[];
+    };
+    workflow?: {
+        hasFrontend: boolean;
+        hasBackend: boolean;
+        hasTesting: boolean;
+        hasWorkflow: boolean;
+        sections: {
+            name: string;
+            found: boolean;
+            required: boolean;
+        }[];
+    };
     error?: {
         message: string;
         stack?: string;
