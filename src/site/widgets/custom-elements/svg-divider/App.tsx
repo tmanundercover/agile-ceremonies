@@ -66,8 +66,7 @@ const App: React.FC = () => {
                     />
                 </ModalContent>
             </Modal>
-
-
+            
             <ModalToggle 
                 onClick={toggleModal}
                 className={isModalOpen ? 'open' : ''}

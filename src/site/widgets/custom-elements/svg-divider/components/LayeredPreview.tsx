@@ -72,23 +72,6 @@ const LayeredPreview: React.FC<LayeredPreviewProps> = ({
 
     if (!originalSvgShell && !svgContent) return null;
 
-    // Create a template SVG element from the original SVG content
-    const parser = new DOMParser();
-    const originalDoc = parser.parseFromString(svgContent || '', 'image/svg+xml');
-    const originalSvg = originalDoc.querySelector('svg');
-    const svgTemplate = originalSvg ? originalSvg.outerHTML.split('>')[0] + '>' : '';
-
-    const renderNestedContent = (content: string, containers: string[]) => {
-        let wrappedContent = content;
-        
-        // Wrap the content in its container hierarchy
-        containers.forEach((container) => {
-            wrappedContent = `${container}${wrappedContent}</g>`;
-        });
-        
-        return wrappedContent;
-    };
-
     return (
         <LayeredPreviewContainer>
             <h3>
@@ -102,26 +85,21 @@ const LayeredPreview: React.FC<LayeredPreviewProps> = ({
                     <div dangerouslySetInnerHTML={{ __html: svgContent || '' }} />
                 ) : (
                     <svg {...parentSvgProps}>
-                        <g dangerouslySetInnerHTML={{ __html: originalSvgShell || '' }} />
+                        {originalSvgShell && (
+                            <g dangerouslySetInnerHTML={{ __html: originalSvgShell }} />
+                        )}
                         {selectedThumbnails.map((thumbnail) => {
                             const svgContent = decodeURIComponent(thumbnail.src.split(',')[1]);
                             const parser = new DOMParser();
                             const doc = parser.parseFromString(svgContent, 'image/svg+xml');
-                            const element = doc.querySelector('svg > *:last-child');
+                            const element = doc.querySelector('svg > *');
                             
-                            if (!element) return null;
-
-                            const nestedContent = renderNestedContent(
-                                element.outerHTML,
-                                thumbnail.containers
-                            );
-
-                            return (
+                            return element ? (
                                 <g 
                                     key={thumbnail.id}
-                                    dangerouslySetInnerHTML={{ __html: nestedContent }}
+                                    dangerouslySetInnerHTML={{ __html: element.outerHTML }}
                                 />
-                            );
+                            ) : null;
                         })}
                     </svg>
                 )}
@@ -131,4 +109,3 @@ const LayeredPreview: React.FC<LayeredPreviewProps> = ({
 };
 
 export default LayeredPreview;
-
