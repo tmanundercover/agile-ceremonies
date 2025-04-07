@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { CropSettings } from '../types';
 
 const OptionsContainer = styled.div`
     display: flex;
@@ -30,11 +31,45 @@ const OptionButton = styled.button`
     }
 `;
 
+const CropControls = styled.div`
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    
+    .dark & {
+        border-color: #555;
+    }
+`;
+
+const CropInputGroup = styled.div`
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 10px;
+`;
+
+const CropInput = styled.input`
+    width: 100%;
+    padding: 4px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    
+    .dark & {
+        background: #333;
+        border-color: #555;
+        color: white;
+    }
+`;
+
 interface ProcessingOptionsProps {
-    onProcessLayered: () => void;
-    onProcessOriginal: () => void;
-    onSave: (type: 'layered' | 'original') => void;
+    onProcessLayered: (cropSettings?: CropSettings) => void;
+    onProcessOriginal: (cropSettings?: CropSettings) => void;
+    onProcessCropped: (cropSettings?: CropSettings) => void;
+    onSave: (type: 'layered' | 'original' | 'cropped') => void;
 }
+
+// Remove CropSettings interface as it's now imported from types.ts
 
 const ButtonGroup = styled.div`
     display: flex;
@@ -64,28 +99,108 @@ const SaveButton = styled(OptionButton)`
 const ProcessingOptions: React.FC<ProcessingOptionsProps> = ({
     onProcessLayered,
     onProcessOriginal,
+    onProcessCropped,
     onSave
 }) => {
-    return (
-        <OptionsContainer>
-            <ButtonGroup>
-                <OptionButton onClick={onProcessLayered}>
-                    Process Layered View
-                </OptionButton>
-                <SaveButton onClick={() => onSave('layered')}>
-                    Save Layered View
-                </SaveButton>
-            </ButtonGroup>
+    const [cropEnabled, setCropEnabled] = useState(false);
+    const [cropSettings, setCropSettings] = useState<CropSettings>({
+        enabled: false,
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100
+    });
 
-            <ButtonGroup>
-                <OptionButton onClick={onProcessOriginal}>
-                    Process Original SVG
-                </OptionButton>
-                <SaveButton onClick={() => onSave('original')}>
-                    Save Original SVG
-                </SaveButton>
-            </ButtonGroup>
-        </OptionsContainer>
+    const handleCropChange = (field: keyof CropSettings, value: number | boolean) => {
+        setCropSettings((prev:any) => ({
+            ...prev,
+            [field]: value,
+            enabled: field === 'enabled' ? value : prev.enabled
+        }));
+    };
+
+    return (
+        <>
+            <OptionsContainer>
+                <ButtonGroup>
+                    <OptionButton onClick={() => onProcessLayered(cropSettings)}>
+                        Process Layered View
+                    </OptionButton>
+                    <SaveButton onClick={() => onSave('layered')}>
+                        Save Layered View
+                    </SaveButton>
+                </ButtonGroup>
+
+                <ButtonGroup>
+                    <OptionButton onClick={() => onProcessOriginal(cropSettings)}>
+                        Process Original SVG
+                    </OptionButton>
+                    <SaveButton onClick={() => onSave('original')}>
+                        Save Original SVG
+                    </SaveButton>
+                </ButtonGroup>
+
+                <ButtonGroup>
+                    <OptionButton onClick={() => onProcessCropped(cropSettings)}>
+                        Process Cropped SVG
+                    </OptionButton>
+                    <SaveButton onClick={() => onSave('cropped')}>
+                        Save Cropped SVG
+                    </SaveButton>
+                </ButtonGroup>
+            </OptionsContainer>
+
+            <CropControls>
+                <label>
+                    <input 
+                        type="checkbox" 
+                        checked={cropEnabled} 
+                        onChange={(e) => {
+                            setCropEnabled(e.target.checked);
+                            handleCropChange('enabled', e.target.checked);
+                        }}
+                    />
+                    Enable Cropping
+                </label>
+
+                {cropEnabled && (
+                    <CropInputGroup>
+                        <label>
+                            X:
+                            <CropInput
+                                type="number"
+                                value={cropSettings.x}
+                                onChange={(e) => handleCropChange('x', Number(e.target.value))}
+                            />
+                        </label>
+                        <label>
+                            Y:
+                            <CropInput
+                                type="number"
+                                value={cropSettings.y}
+                                onChange={(e) => handleCropChange('y', Number(e.target.value))}
+                            />
+                        </label>
+                        <label>
+                            Width:
+                            <CropInput
+                                type="number"
+                                value={cropSettings.width}
+                                onChange={(e) => handleCropChange('width', Number(e.target.value))}
+                            />
+                        </label>
+                        <label>
+                            Height:
+                            <CropInput
+                                type="number"
+                                value={cropSettings.height}
+                                onChange={(e) => handleCropChange('height', Number(e.target.value))}
+                            />
+                        </label>
+                    </CropInputGroup>
+                )}
+            </CropControls>
+        </>
     );
 };
 

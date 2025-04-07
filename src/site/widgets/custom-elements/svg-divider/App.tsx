@@ -10,6 +10,8 @@ import {useProcessSvg} from './hooks/useProcessSvg';
 const App: React.FC = () => {
     const [isDarkTheme, setIsDarkTheme] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [croppedComponents, setCroppedComponents] = useState<Array<{ id: string; svg: string }>>([]);
+    
     const {
         svgContent,
         thumbnails,
@@ -24,7 +26,9 @@ const App: React.FC = () => {
         originalContainer,
         processedResult,
         processLayeredView,
-        processOriginalSvg
+        processOriginalSvg,
+        processCroppedSvg,
+        handleTextInput,
     } = useProcessSvg();
 
     const toggleModal = () => setIsModalOpen(!isModalOpen);
@@ -39,12 +43,14 @@ const App: React.FC = () => {
                     thumbnails={thumbnails}
                     onThumbnailClick={handleThumbnailClick}
                     parentSvgProps={parentSvgProps}
+                    selectedThumbnails={selectedThumbnails}
                 />
             </SidePanel>
 
             <MainLayout>
                 <SvgProcessor
                     onFileSelect={handleFileSelect}
+                    onTextInput={handleTextInput}
                     loading={loading}
                     error={error}
                 />
@@ -57,6 +63,11 @@ const App: React.FC = () => {
                         svgContent={svgContent}
                         componentCount={componentCount}
                         originalContainer={originalContainer}
+                        croppedComponents={croppedComponents}
+                        onCropProcess={(cropArea) => {
+                            // Handle cropped components here
+                            // This is where you would process the SVG and update croppedComponents
+                        }}
                     />
                 )}
             </MainLayout>
@@ -69,6 +80,7 @@ const App: React.FC = () => {
                         processedResult={processedResult}
                         onProcessLayered={processLayeredView}
                         onProcessOriginal={processOriginalSvg}
+                        onProcessCropped={processCroppedSvg}
                     />
                 </ModalContent>
             </Modal>

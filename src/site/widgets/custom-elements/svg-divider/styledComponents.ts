@@ -21,6 +21,55 @@ export const GlobalStyle = createGlobalStyle`
     }
 `;
 
+export const ActionButton = styled.button`
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    background: ${({ theme }) => theme === 'dark' ? 'hsl(0 0% 0%)' : 'hsl(0 0% 90%)'};
+    box-shadow: -0.05em 0.1em 0.2em -0.2em white;
+
+    svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        border-radius: inherit;
+        box-shadow: 0em 0.075em 0.1em 0em white;
+        transition: opacity 0.2s ease;
+    }
+
+    &:hover {
+        background: ${({ theme }) => theme === 'dark' ? 'hsl(0 0% 10%)' : 'hsl(0 0% 85%)'};
+        
+        &::after {
+            opacity: 0.5;
+        }
+    }
+
+    .dark & {
+        background: hsl(0 0% 0%);
+        border-color: #666;
+        color: white;
+
+        &:hover {
+            background: hsl(0 0% 10%);
+        }
+    }
+`;
+
 // Layout Components
 export const AppContainer = styled.div`
     display: flex;
@@ -285,23 +334,16 @@ export const ModalContent = styled.div`
     }
 `;
 
-export const ModalToggle = styled.button`
+export const ModalToggle = styled(ActionButton)`
     position: fixed;
     bottom: 20px;
     right: 20px;
-    padding: 12px 24px;
     background-color: #007BFF;
     color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    z-index: 1500; // Higher than modal's z-index
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease, background-color 0.3s;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    z-index: 1500;
     font-weight: 500;
+    padding: 12px 24px;
+    border: none;
 
     &:hover {
         background-color: #0056b3;
@@ -408,51 +450,5 @@ export const ThumbnailImage = styled.div`
     }
 `;
 
-export const ActionButton = styled.button`
-    padding: 8px 16px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    background: ${({ theme }) => theme === 'dark' ? 'hsl(0 0% 0%)' : 'hsl(0 0% 90%)'};
-    box-shadow: -0.05em 0.1em 0.2em -0.2em white;
-    inset: 0;
 
-    &::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        opacity: 0;
-        border-radius: inherit;
-        box-shadow: 0em 0.075em 0.1em 0em white;
-        transition: opacity 0.2s ease;
-    }
-
-    &:hover {
-        background: ${({ theme }) => theme === 'dark' ? 'hsl(0 0% 10%)' : 'hsl(0 0% 85%)'};
-        
-        &::after {
-            opacity: 0.5;
-        }
-    }
-
-    svg {
-        margin-right: 8px;
-    }
-
-    .dark & {
-        background: hsl(0 0% 0%);
-        border-color: #666;
-        color: white;
-
-        &:hover {
-            background: hsl(0 0% 10%);
-        }
-    }
-`;
 

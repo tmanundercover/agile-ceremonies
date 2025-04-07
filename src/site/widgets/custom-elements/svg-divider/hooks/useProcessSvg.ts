@@ -1,5 +1,5 @@
 import {useCallback, useState } from 'react';
-import { SvgThumbnail } from '../types';
+import {CropSettings, SvgThumbnail} from '../types';
 
 const getComponentContainers = (element: Element): string[] => {
     const containers: string[] = [];
@@ -96,92 +96,7 @@ export const useProcessSvg = () => {
                     throw new Error('Invalid SVG file');
                 }
 
-                // Store parent SVG properties
-                const props = Array.from(svgElement.attributes).reduce((acc, attr) => {
-                    acc[attr.name] = attr.value;
-                    return acc;
-                }, {} as {[key: string]: string});
-                setParentSvgProps(props);
-
-                // Create SVG shell by removing all paths, rects, circles, etc.
-                const shellElement = svgElement.cloneNode(true) as SVGSVGElement;
-                const removeElements = shellElement.querySelectorAll('path, rect, circle, ellipse, polygon, polyline, line');
-                removeElements.forEach(el => el.remove());
-                setOriginalSvgShell(shellElement.innerHTML);
-
-                // Hide parent SVG before processing
-                svgElement.style.display = 'none';
-
-                const processedElement = svgElement.cloneNode(true) as SVGSVGElement;
-                const cleanedSvg = cleanupSvg(processedElement);
-
-                // Remove style attribute after cleaning
-                cleanedSvg.removeAttribute('style');
-
-                // Optimize SVG attributes
-                cleanedSvg.removeAttribute('xml:space');
-                cleanedSvg.removeAttribute('version');
-                cleanedSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-
-                setProcessedSvg(cleanedSvg);
-
-                const components = svgElement.querySelectorAll('path, rect, circle, ellipse, polygon, polyline, line');
-                setComponentCount(components.length);
-
-                const newThumbnails: SvgThumbnail[] = Array.from(components).map((component, index) => {
-                    const componentClone = component.cloneNode(true) as SVGElement;
-                    const bbox = (component as SVGGraphicsElement).getBBox();
-                    
-                    // Get all parent containers
-                    const containers = getComponentContainers(component);
-
-                    // Create a complete SVG wrapper with proper viewBox
-                    const svgString = `
-                        <svg xmlns="http://www.w3.org/2000/svg" 
-                             viewBox="${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}"
-                             width="100%" 
-                             height="100%">
-                            ${containers.join('\n')}
-                                ${componentClone.outerHTML}
-                            ${Array(containers.length).fill('</g>').join('\n')}
-                        </svg>
-                    `.trim();
-
-                    const componentName = componentClone.id ||
-                        componentClone.getAttribute('class') ||
-                        `${componentClone.tagName}-${index + 1}`;
-
-                    return {
-                        id: `thumb-${index}`,
-                        name: componentName,
-                        src: `data:image/svg+xml,${encodeURIComponent(svgString)}`,
-                        width: bbox.width,
-                        height: bbox.height,
-                        x: bbox.x,
-                        y: bbox.y,
-                        disabled: false,
-                        containers: containers
-                    };
-                });
-
-                setThumbnails(newThumbnails);
-
-                // Store original container
-                const containerElements = svgElement.querySelectorAll('g');
-                if (containerElements.length > 0) {
-                    // Find the outermost container that contains all paths
-                    const mainContainer = Array.from(containerElements).find(container => {
-                        const paths = container.querySelectorAll('path, rect, circle, ellipse, polygon, polyline, line');
-                        return paths.length === componentCount;
-                    });
-                    if (mainContainer) {
-                        setOriginalContainer(mainContainer.outerHTML.split('>')[0] + '>');
-                    }
-                }
-
-                setLoading(false);
-
-                setSvgContent(cleanedSvg.outerHTML);
+                handleSvgElement(svgElement);
             };
 
             reader.readAsText(file);
@@ -189,6 +104,119 @@ export const useProcessSvg = () => {
             setError('Error processing SVG file');
             setLoading(false);
         }
+    }, [cleanupSvg]);
+
+    const handleTextInput = useCallback((text: string) => {
+        setLoading(true);
+        setError(null);
+
+        try {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(text, 'image/svg+xml');
+            const svgElement = doc.querySelector('svg');
+
+            if (!svgElement) {
+                throw new Error('Invalid SVG content');
+            }
+
+            // Process the SVG content similar to file input
+            setSvgContent(text);
+            // ...rest of SVG processing logic...
+            handleSvgElement(svgElement);
+            setLoading(false);
+        } catch (err) {
+            setError('Error processing SVG content');
+            setLoading(false);
+        }
+    }, []);
+
+    const handleSvgElement = useCallback((svgElement: SVGElement) => {
+        // Store parent SVG properties
+        const props = Array.from(svgElement.attributes).reduce((acc, attr) => {
+            acc[attr.name] = attr.value;
+            return acc;
+        }, {} as {[key: string]: string});
+        setParentSvgProps(props);
+
+        // Create SVG shell by removing all paths, rects, circles, etc.
+        const shellElement = svgElement.cloneNode(true) as SVGSVGElement;
+        const removeElements = shellElement.querySelectorAll('path, rect, circle, ellipse, polygon, polyline, line');
+        removeElements.forEach(el => el.remove());
+        setOriginalSvgShell(shellElement.innerHTML);
+
+        // Hide parent SVG before processing
+        svgElement.style.display = 'none';
+
+        const processedElement = svgElement.cloneNode(true) as SVGSVGElement;
+        const cleanedSvg = cleanupSvg(processedElement);
+
+        // Remove style attribute after cleaning
+        cleanedSvg.removeAttribute('style');
+
+        // Optimize SVG attributes
+        cleanedSvg.removeAttribute('xml:space');
+        cleanedSvg.removeAttribute('version');
+        cleanedSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+
+        setProcessedSvg(cleanedSvg);
+
+        const components = svgElement.querySelectorAll('path, rect, circle, ellipse, polygon, polyline, line');
+        setComponentCount(components.length);
+
+        const newThumbnails: SvgThumbnail[] = Array.from(components).map((component, index) => {
+            const componentClone = component.cloneNode(true) as SVGElement;
+            const bbox = (component as SVGGraphicsElement).getBBox();
+            
+            // Get all parent containers
+            const containers = getComponentContainers(component);
+
+            // Create a complete SVG wrapper with proper viewBox
+            const svgString = `
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                     viewBox="${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}"
+                     width="100%" 
+                     height="100%">
+                    ${containers.join('\n')}
+                        ${componentClone.outerHTML}
+                    ${Array(containers.length).fill('</g>').join('\n')}
+                </svg>
+            `.trim();
+
+            const componentName = componentClone.id ||
+                componentClone.getAttribute('class') ||
+                `${componentClone.tagName}-${index + 1}`;
+
+            return {
+                id: `thumb-${index}`,
+                name: componentName,
+                src: `data:image/svg+xml,${encodeURIComponent(svgString)}`,
+                width: bbox.width,
+                height: bbox.height,
+                x: bbox.x,
+                y: bbox.y,
+                disabled: false,
+                containers: containers
+            };
+        });
+
+        setThumbnails(newThumbnails);
+
+        // Store original container
+        const containerElements = svgElement.querySelectorAll('g');
+        if (containerElements.length > 0) {
+            // Find the outermost container that contains all paths
+            const mainContainer = Array.from(containerElements).find(container => {
+                const paths = container.querySelectorAll('path, rect, circle, ellipse, polygon, polyline, line');
+                return paths.length === componentCount;
+            });
+            if (mainContainer) {
+                setOriginalContainer(mainContainer.outerHTML.split('>')[0] + '>');
+            }
+        }
+
+        setLoading(false);
+
+        setSvgContent(cleanedSvg.outerHTML);
     }, [cleanupSvg]);
 
     const handleThumbnailClick = useCallback((index: number) => {
@@ -206,15 +234,25 @@ export const useProcessSvg = () => {
         }
     }, [thumbnails]);
 
-    const processLayeredView = useCallback(() => {
+    const applyCropping = (svg: SVGSVGElement, cropSettings?: CropSettings) => {
+        if (!cropSettings?.enabled) return svg;
+    
+        const { x, y, width, height } = cropSettings;
+        svg.setAttribute('viewBox', `${x} ${y} ${width} ${height}`);
+        return svg;
+    };
+
+    const processLayeredView = useCallback((cropSettings?: CropSettings) => {
         if (!processedSvg || !selectedThumbnails.length) return;
-        const layeredSvg = document.createElement('svg');
+        // Create SVG element using createElementNS to get an SVGSVGElement
+        const layeredSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg") as SVGSVGElement;
         Object.entries(parentSvgProps).forEach(([key, value]) => {
             layeredSvg.setAttribute(key, value);
         });
         
         if (originalSvgShell) {
-            const shell = document.createElement('g');
+            // Also create group using createElementNS
+            const shell = document.createElementNS("http://www.w3.org/2000/svg", "g");
             shell.innerHTML = originalSvgShell;
             layeredSvg.appendChild(shell);
         }
@@ -229,12 +267,49 @@ export const useProcessSvg = () => {
             }
         });
 
-        setProcessedResult(layeredSvg.outerHTML);
+        const croppedSvg = applyCropping(layeredSvg, cropSettings);
+        setProcessedResult(croppedSvg.outerHTML);
     }, [processedSvg, selectedThumbnails, parentSvgProps, originalSvgShell]);
 
-    const processOriginalSvg = useCallback(() => {
+    const processOriginalSvg = useCallback((cropSettings?: CropSettings) => {
         if (!svgContent) return;
-        setProcessedResult(svgContent);
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(svgContent, 'image/svg+xml');
+        const svg = doc.querySelector('svg');
+        if (!svg) return;
+        
+        const croppedSvg = applyCropping(svg as SVGSVGElement, cropSettings);
+        setProcessedResult(croppedSvg.outerHTML);
+    }, [svgContent]);
+
+    const processCroppedSvg = useCallback((cropSettings?: CropSettings) => {
+        if (!svgContent || !cropSettings?.enabled) return;
+        
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(svgContent, 'image/svg+xml');
+        const svg = doc.querySelector('svg');
+        if (!svg) return;
+    
+        // Apply crop settings to viewBox
+        svg.setAttribute('viewBox', `${cropSettings.x} ${cropSettings.y} ${cropSettings.width} ${cropSettings.height}`);
+        
+        // Find and process only elements within the crop area
+        const elements = svg.querySelectorAll('path, rect, circle, ellipse, polygon, polyline, line');
+        elements.forEach(element => {
+            const bbox = (element as SVGGraphicsElement).getBBox();
+            const isInCropArea = (
+                bbox.x >= cropSettings.x &&
+                bbox.y >= cropSettings.y &&
+                (bbox.x + bbox.width) <= (cropSettings.x + cropSettings.width) &&
+                (bbox.y + bbox.height) <= (cropSettings.y + cropSettings.height)
+            );
+            
+            if (!isInCropArea) {
+                element.remove();
+            }
+        });
+    
+        setProcessedResult(svg.outerHTML);
     }, [svgContent]);
 
     return {
@@ -252,7 +327,9 @@ export const useProcessSvg = () => {
         handleThumbnailClick,
         processedResult,
         processLayeredView,
-        processOriginalSvg
+        processOriginalSvg,
+        processCroppedSvg,
+        handleTextInput,
     };
 };
 

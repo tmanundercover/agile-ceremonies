@@ -2,14 +2,14 @@ import React from 'react';
 import {ThumbnailsProps} from '../types';
 import {ThumbnailGrid as StyledThumbnailGrid, ThumbnailImage} from '../styledComponents';
 
-const ThumbnailGrid: React.FC<ThumbnailsProps> = ({ thumbnails, onThumbnailClick, parentSvgProps }) => {
+const ThumbnailGrid: React.FC<ThumbnailsProps> = ({ thumbnails, onThumbnailClick, parentSvgProps, selectedThumbnails }) => {
     return (
         <StyledThumbnailGrid>
             {thumbnails.map((thumbnail, index) => (
                 <ThumbnailImage
                     key={thumbnail.id}
                     onClick={() => onThumbnailClick(index)}
-                    className={`${thumbnail.disabled ? 'selected' : ''}`}
+                    className={`${selectedThumbnails.some(t => t.id === thumbnail.id) ? 'selected' : ''}`}
                     role="button"
                     tabIndex={0}
                 >

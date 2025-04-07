@@ -1,16 +1,8 @@
 import React, { useState } from 'react';
-import { SvgThumbnail } from '../types';
+import { SelectedThumbnailsProps } from '../types';
 import { SelectedThumbnailsWrapper } from '../styledComponents';
 import ProcessingOptions from './ProcessingOptions';
 import { saveSvgFile } from '../utils/fileSaver';
-
-interface SelectedThumbnailsProps {
-    thumbnails: SvgThumbnail[];
-    parentSvgProps: {[key: string]: string};
-    processedResult: string | null;
-    onProcessLayered: () => void;
-    onProcessOriginal: () => void;
-}
 
 const SelectedThumbnails: React.FC<SelectedThumbnailsProps> = ({
     thumbnails,
@@ -18,27 +10,38 @@ const SelectedThumbnails: React.FC<SelectedThumbnailsProps> = ({
     processedResult,
     onProcessLayered,
     onProcessOriginal,
+    onProcessCropped
 }) => {
     const [displayMode, setDisplayMode] = useState<'preview'>('preview');
 
-    const handleSave = (type: 'layered' | 'original') => {
+    const handleSave = (type: 'layered' | 'original' | 'cropped') => {
         if (!processedResult) return;
-        const filename = type === 'layered' ? 'layered.svg' : 'original.svg';
+        const filename = `${type}.svg`;
         saveSvgFile(processedResult, filename);
+    };
+
+    const handleProcessLayered = () => {
+        setDisplayMode('preview');
+        if (onProcessLayered) onProcessLayered();
+    };
+
+    const handleProcessOriginal = () => {
+        setDisplayMode('preview');
+        if (onProcessOriginal) onProcessOriginal();
+    };
+
+    const handleProcessCropped = () => {
+        setDisplayMode('preview');
+        if (onProcessCropped) onProcessCropped();
     };
 
     return (
         <div>
             <h3>Selected Components ({thumbnails.length})</h3>
             <ProcessingOptions
-                onProcessLayered={() => {
-                    setDisplayMode('preview');
-                    onProcessLayered();
-                }}
-                onProcessOriginal={() => {
-                    setDisplayMode('preview');
-                    onProcessOriginal();
-                }}
+                onProcessLayered={handleProcessLayered}
+                onProcessOriginal={handleProcessOriginal}
+                onProcessCropped={handleProcessCropped}
                 onSave={handleSave}
             />
             <SelectedThumbnailsWrapper>
