@@ -22,7 +22,6 @@ interface AppProps {
     initialValue?: string;
 }
 
-
 const App: React.FC<AppProps> = ({initialValue = '# Hello, Markdown!'}) => {
     const {
         shadowDoc,

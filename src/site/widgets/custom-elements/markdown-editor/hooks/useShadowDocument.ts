@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { Fragment, ShadowDocument } from '../types';
-import { processFragment } from '../utils';
+import { Fragment, ShadowDocument, FragmentType } from '../types';
+import {extractSvgContent, processFragment} from '../utils';
 
 export const useShadowDocument = (initialValue: string) => {
     const [shadowDoc, setShadowDoc] = useState<ShadowDocument>({
@@ -17,21 +17,52 @@ export const useShadowDocument = (initialValue: string) => {
     });
 
     const handleAddFragment = useCallback(async (fragment: Omit<Fragment, 'id' | 'processed'>) => {
-        const newFragment = {
-            ...fragment,
-            id: uuidv4(),
-            processed: ''
-        };
-        
-        newFragment.processed = await processFragment(newFragment);
+        if (fragment.type === 'SVG') {
+            const { svg, remainingText } = extractSvgContent(fragment.content);
 
-        setShadowDoc(prev => {
-            const newFragments = [...prev.fragments, newFragment];
-            return {
-                fragments: newFragments,
-                markdown: newFragments.map(f => f.processed).join('\n\n')
+            // Create SVG fragment
+            const svgFragment: Fragment = {
+                id: uuidv4(),
+                type: 'SVG',
+                content: svg || fragment.content,
+                processed: ''
             };
-        });
+            svgFragment.processed = await processFragment(svgFragment);
+
+            // Create text fragment if there's remaining text
+            const fragments: Fragment[] = [svgFragment];
+            if (remainingText) {
+                const textFragment: Fragment = {
+                    id: uuidv4(),
+                    type: 'TEXT',
+                    content: remainingText,
+                    processed: remainingText
+                };
+                fragments.push(textFragment);
+            }
+
+            setShadowDoc(prev => {
+                const newFragments = [...prev.fragments, ...fragments];
+                return {
+                    fragments: newFragments,
+                    markdown: newFragments.map(f => f.processed).join('\n\n')
+                };
+            });
+        } else {
+            const newFragment: Fragment = {
+                ...fragment,
+                id: uuidv4(),
+                processed: fragment.content // Initialize with content for TEXT type
+            };
+
+            setShadowDoc(prev => {
+                const newFragments = [...prev.fragments, newFragment];
+                return {
+                    fragments: newFragments,
+                    markdown: newFragments.map(f => f.processed).join('\n\n')
+                };
+            });
+        }
     }, []);
 
     const handleFragmentEdit = useCallback((id: string) => {

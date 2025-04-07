@@ -1,9 +1,20 @@
 import { saveAs } from 'file-saver';
 import {Fragment} from "./types";
 
-export const extractSvgContent = (content: string): string | null => {
+export const extractSvgContent = (content: string): { svg: string | null; remainingText: string } => {
     const svgMatch = content.match(/<svg[\s\S]*?<\/svg>/i);
-    return svgMatch ? svgMatch[0] : null;
+    if (!svgMatch) {
+        return { svg: null, remainingText: content };
+    }
+    
+    const remainingText = content
+        .replace(svgMatch[0], '')
+        .trim();
+    
+    return {
+        svg: svgMatch[0],
+        remainingText
+    };
 };
 
 export const saveSvgFile = async (svgContent: string, filename: string): Promise<string> => {
@@ -51,9 +62,20 @@ export const convertSvgToPngDataUrl = (svgElement: SVGElement): Promise<string> 
         const svgString = new XMLSerializer().serializeToString(svgElement);
         
         img.onload = () => {
-            canvas.width = img.width;
-            canvas.height = img.height;
-            ctx?.drawImage(img, 0, 0);
+            // Get SVG dimensions
+            const bbox = svgElement.getBBox();
+            const width = bbox.width;
+            const height = bbox.height;
+            
+            // Set max width to viewport width or original width, whichever is smaller
+            const maxWidth = Math.min(window.innerWidth, width);
+            const scale = maxWidth / width;
+            
+            // Set canvas dimensions maintaining aspect ratio
+            canvas.width = maxWidth;
+            canvas.height = height * scale;
+            
+            ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
             resolve(canvas.toDataURL('image/png'));
         };
         
@@ -82,17 +104,9 @@ const sanitizeFilename = (name: string): string => {
 export const processFragment = async (fragment: Fragment, allFragments?: Fragment[]): Promise<string> => {
     switch (fragment.type) {
         case 'SVG': {
-            const svgContent = extractSvgContent(fragment.content);
+            const { svg: svgContent } = extractSvgContent(fragment.content);
             if (!svgContent) return fragment.content;
-            
-            // Create temporary SVG element to convert to PNG
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = svgContent;
-            const svgElement = tempDiv.querySelector('svg');
-            if (!svgElement) return fragment.content;
-
-            const pngDataUrl = await convertSvgToPngDataUrl(svgElement as SVGElement);
-            return `![${fragment.filename || 'diagram'}](${pngDataUrl})`;
+            return svgContent; // Simply return the SVG content directly
         }
         
         case 'CODE': {

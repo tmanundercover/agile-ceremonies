@@ -1,0 +1,58 @@
+# The Handsomest Nerd, Inc. - AI Agent Organization 🤖
+
+## Overview
+The Handsomest Nerd, Inc. is an innovative multi-agent AI organization focused on automating software development and project management processes. Our system comprises specialized AI agents working in harmony to deliver efficient, high-quality software solutions.
+
+## Organization Structure
+
+````markdown
+```svg
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#9C27B0;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#BA68C8;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+
+    <!-- CEO - Nat -->
+    <rect x="500" y="20" width="200" height="80" fill="url(#headerGrad)" rx="10"/>
+    <text x="600" y="65" text-anchor="middle" fill="white" font-size="20">Nat (CEO)</text>
+    <text x="600" y="85" text-anchor="middle" fill="white" font-size="12">Agile Ceremonies Overseer</text>
+
+    <!-- First Tier -->
+    <g transform="translate(0, 150)">
+        <rect x="100" y="0" width="180" height="70" fill="#FF9800" rx="10"/>
+        <text x="190" y="35" text-anchor="middle" fill="white" font-size="16">Reqqy</text>
+        <text x="190" y="55" text-anchor="middle" fill="white" font-size="12">Requirements</text>
+
+        <rect x="300" y="0" width="180" height="70" fill="#2196F3" rx="10"/>
+        <text x="390" y="35" text-anchor="middle" fill="white" font-size="16">Brian</text>
+        <text x="390" y="55" text-anchor="middle" fill="white" font-size="12">Project Management</text>
+
+        <rect x="500" y="0" width="180" height="70" fill="#4CAF50" rx="10"/>
+        <text x="590" y="35" text-anchor="middle" fill="white" font-size="16">James & Terrell</text>
+        <text x="590" y="55" text-anchor="middle" fill="white" font-size="12">Development</text>
+
+        <rect x="700" y="0" width="180" height="70" fill="#E91E63" rx="10"/>
+        <text x="790" y="35" text-anchor="middle" fill="white" font-size="16">Josh</text>
+        <text x="790" y="55" text-anchor="middle" fill="white" font-size="12">Design</text>
+
+        <rect x="900" y="0" width="180" height="70" fill="#FF5722" rx="10"/>
+        <text x="990" y="35" text-anchor="middle" fill="white" font-size="16">Man-Man</text>
+        <text x="990" y="55" text-anchor="middle" fill="white" font-size="12">Operations</text>
+    </g>
+
+    <!-- Second Tier -->
+    <g transform="translate(0, 250)">
+        <rect x="300" y="0" width="180" height="70" fill="#673AB7" rx="10"/>
+        <text x="390" y="35" text-anchor="middle" fill="white" font-size="16">Antosh</text>
+        <text x="390" y="55" text-anchor="middle" fill="white" font-size="12">Testing</text>
+
+        <rect x="700" y="0" width="180" height="70" fill="#00BCD4" rx="10"/>
+        <text x="790" y="35" text-anchor="middle" fill="white" font-size="16">Lia</text>
+        <text x="790" y="55" text-anchor="middle" fill="white" font-size="12">Social Media</text>
+    </g>
+</svg>
+```

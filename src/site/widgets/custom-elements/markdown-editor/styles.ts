@@ -167,10 +167,36 @@ export const PreviewContainer = styled.div`
   svg {
     cursor: pointer;
     transition: opacity 0.2s ease;
+    max-width: 100%;
+    height: auto;
     
     &:hover {
       opacity: 0.8;
     }
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1rem 0;
+  }
+`;
+
+export const MarkdownContent = styled.div`
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  
+  * {
+    max-width: 100%;
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1rem 0;
   }
 `;
 
