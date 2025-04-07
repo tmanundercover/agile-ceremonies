@@ -79,11 +79,20 @@ export const useShadowDocument = (initialValue: string) => {
         });
     }, []);
 
+    const updateMarkdown = useCallback((newMarkdown: string) => {
+        setShadowDoc(prev => ({
+            ...prev,
+            markdown: newMarkdown
+        }));
+    }, []);
+
     return {
         shadowDoc,
         handleAddFragment,
         handleFragmentEdit,
         handleFragmentUpdate,
-        removeFragment
+        removeFragment,
+        updateMarkdown
     };
 };
+

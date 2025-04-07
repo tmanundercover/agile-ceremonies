@@ -22,13 +22,15 @@ interface AppProps {
     initialValue?: string;
 }
 
+
 const App: React.FC<AppProps> = ({initialValue = '# Hello, Markdown!'}) => {
     const {
         shadowDoc,
         handleAddFragment,
         handleFragmentEdit,
         handleFragmentUpdate,
-        removeFragment
+        removeFragment,
+        updateMarkdown
     } = useShadowDocument(initialValue);
 
     return (
@@ -66,7 +68,10 @@ const App: React.FC<AppProps> = ({initialValue = '# Hello, Markdown!'}) => {
                                 ))}
                             </FragmentsList>
                         </FragmentManagement>
-                        <Preview markdown={shadowDoc.markdown}/>
+                        <Preview 
+                            markdown={shadowDoc.markdown} 
+                            onUpdateMarkdown={updateMarkdown}
+                        />
                     </TopSection>
                 </EditorContainer>
             </AppContainer>
@@ -75,3 +80,4 @@ const App: React.FC<AppProps> = ({initialValue = '# Hello, Markdown!'}) => {
 };
 
 export default App;
+

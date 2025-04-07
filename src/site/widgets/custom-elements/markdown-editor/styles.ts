@@ -162,3 +162,15 @@ export const FragmentForm = styled.form<{ theme: Theme }>`
   gap: ${props => props.theme.spacing.medium};
   margin-bottom: ${props => props.theme.spacing.large};
 `;
+
+export const PreviewContainer = styled.div`
+  svg {
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+`;
+

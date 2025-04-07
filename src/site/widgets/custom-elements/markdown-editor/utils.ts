@@ -12,15 +12,87 @@ export const saveSvgFile = async (svgContent: string, filename: string): Promise
     return filename;
 };
 
-export const processFragment = async (fragment: Fragment): Promise<string> => {
+export const savePngFile = async (svgElement: SVGElement, filename: string): Promise<void> => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const svgString = new XMLSerializer().serializeToString(svgElement);
+    const img = new Image();
+    
+    return new Promise((resolve, reject) => {
+        img.onload = () => {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx?.drawImage(img, 0, 0);
+            
+            canvas.toBlob((blob) => {
+                if (blob) {
+                    saveAs(blob, filename);
+                    resolve();
+                } else {
+                    reject(new Error('Failed to create PNG'));
+                }
+            }, 'image/png');
+        };
+        
+        img.src = 'data:image/svg+xml;base64,' + btoa(svgString);
+    });
+};
+
+export const generateSvgDataUrl = (svgElement: SVGElement): string => {
+    const svgString = new XMLSerializer().serializeToString(svgElement);
+    return 'data:image/svg+xml;base64,' + btoa(svgString);
+};
+
+export const convertSvgToPngDataUrl = (svgElement: SVGElement): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        const svgString = new XMLSerializer().serializeToString(svgElement);
+        
+        img.onload = () => {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx?.drawImage(img, 0, 0);
+            resolve(canvas.toDataURL('image/png'));
+        };
+        
+        img.onerror = reject;
+        img.src = 'data:image/svg+xml;base64,' + btoa(svgString);
+    });
+};
+
+const findNearestHeader = (fragments: Fragment[], currentIndex: number): string | null => {
+    for (let i = currentIndex; i >= 0; i--) {
+        const fragment = fragments[i];
+        if (fragment.type === 'HEADER') {
+            return fragment.content.replace(/^#+\s*/, '').trim();
+        }
+    }
+    return null;
+};
+
+const sanitizeFilename = (name: string): string => {
+    return name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+};
+
+export const processFragment = async (fragment: Fragment, allFragments?: Fragment[]): Promise<string> => {
     switch (fragment.type) {
         case 'SVG': {
             const svgContent = extractSvgContent(fragment.content);
             if (!svgContent) return fragment.content;
             
-            const filename = fragment.filename || `svg-${fragment.id}.svg`;
-            await saveSvgFile(svgContent, filename);
-            return `![${filename}](${filename})`;
+            // Create temporary SVG element to convert to PNG
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = svgContent;
+            const svgElement = tempDiv.querySelector('svg');
+            if (!svgElement) return fragment.content;
+
+            const pngDataUrl = await convertSvgToPngDataUrl(svgElement as SVGElement);
+            return `![${fragment.filename || 'diagram'}](${pngDataUrl})`;
         }
         
         case 'CODE': {
@@ -82,3 +154,4 @@ const detectHeaderLevel = (content: string): number => {
     const match = content.match(/^(#+)\s/);
     return match ? Math.min(match[1].length, 6) : 1;
 };
+
