@@ -412,30 +412,47 @@ export const ActionButton = styled.button`
     padding: 8px 16px;
     border-radius: 4px;
     border: 1px solid #ddd;
-    background-color: white;
     cursor: pointer;
     font-size: 14px;
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    background: ${({ theme }) => theme === 'dark' ? 'hsl(0 0% 0%)' : 'hsl(0 0% 90%)'};
+    box-shadow: -0.05em 0.1em 0.2em -0.2em white;
+    inset: 0;
 
-    &:hover {
-        background-color: #f5f5f5;
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        border-radius: inherit;
+        box-shadow: 0em 0.075em 0.1em 0em white;
+        transition: opacity 0.2s ease;
     }
 
-    .dark & {
-        background-color: #555;
-        border-color: #666;
-        color: white;
-
-        &:hover {
-            background-color: #666;
+    &:hover {
+        background: ${({ theme }) => theme === 'dark' ? 'hsl(0 0% 10%)' : 'hsl(0 0% 85%)'};
+        
+        &::after {
+            opacity: 0.5;
         }
     }
 
     svg {
         margin-right: 8px;
+    }
+
+    .dark & {
+        background: hsl(0 0% 0%);
+        border-color: #666;
+        color: white;
+
+        &:hover {
+            background: hsl(0 0% 10%);
+        }
     }
 `;
 
