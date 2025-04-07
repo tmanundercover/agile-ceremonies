@@ -35,6 +35,7 @@
     "svg-parser": "^2.0.4",
     "svgo": "^3.2.0",
     "svgson": "^5.3.1",
+    "uuid": "^9.0.1",
     "xml2js": "^0.6.2"
   },
   "devDependencies": {
@@ -42,6 +43,8 @@
     "@types/react": "^16.0.0",
     "@types/react-dom": "^16.0.0",
     "@types/react-transition-group": "^4.4.12",
+    "@types/styled-components": "^5.1.34",
+    "@types/uuid": "^9.0.8",
     "@types/xml2js": "^0.4.14",
     "@wix/cli": "^1.0.0",
     "@wix/cli-app": "^1.0.0",
