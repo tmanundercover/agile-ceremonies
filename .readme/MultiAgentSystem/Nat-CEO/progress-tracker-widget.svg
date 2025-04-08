@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="1000" viewBox="0 0 1200 1000" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <!-- Gradients -->
+        <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#9333EA;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#A855F7;stop-opacity:1" />
+        </linearGradient>
+        
+        <linearGradient id="glassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:rgba(255,255,255,0.1)" />
+            <stop offset="100%" style="stop-color:rgba(255,255,255,0.05)" />
+        </linearGradient>
+
+        <!-- Graph Gradients -->
+        <linearGradient id="chartGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" style="stop-color:#9333EA;stop-opacity:0.1" />
+            <stop offset="100%" style="stop-color:#9333EA;stop-opacity:0.5" />
+        </linearGradient>
+    </defs>
+
+    <!-- Background -->
+    <rect width="1200" height="1000" fill="#F9FAFB"/>
+
+    <!-- Header -->
+    <rect x="0" y="0" width="1200" height="80" fill="url(#primaryGrad)"/>
+    <text x="40" y="45" fill="white" font-size="24" font-weight="bold">Progress Tracker</text>
+    
+    <!-- Quick Stats -->
+    <g transform="translate(400, 20)">
+        <text x="0" y="25" fill="white" font-size="14">Overall Progress: 68%</text>
+        <text x="200" y="25" fill="white" font-size="14">Tasks Completed: 45/76</text>
+        <text x="400" y="25" fill="white" font-size="14">Sprint Velocity: 24 pts/week</text>
+    </g>
+
+    <!-- Main Content Grid -->
+    <g transform="translate(20, 100)">
+        <!-- Overall Progress Card -->
+        <g transform="translate(0, 0)">
+            <rect width="360" height="200" fill="white" stroke="#E2E8F0" rx="10"/>
+            <text x="20" y="30" fill="#1A1A1A" font-size="16" font-weight="bold">Overall Progress</text>
+            
+            <!-- Progress Circle -->
+            <circle cx="100" cy="110" r="50" fill="none" stroke="#E2E8F0" stroke-width="10"/>
+            <path d="M 100 60 A 50 50 0 1 1 60 110" 
+                  fill="none" stroke="url(#primaryGrad)" stroke-width="10"/>
+            <text x="100" y="110" text-anchor="middle" fill="#1A1A1A" font-size="24" font-weight="bold">68%</text>
+            
+            <!-- Status Indicators -->
+            <g transform="translate(180, 80)">
+                <circle cx="10" cy="10" r="5" fill="#22C55E"/>
+                <text x="25" y="15" fill="#666" font-size="14">On Track</text>
+                
+                <circle cx="10" cy="40" r="5" fill="#EAB308"/>
+                <text x="25" y="45" fill="#666" font-size="14">At Risk: 3</text>
+            </g>
+        </g>
+
+        <!-- Velocity Chart -->
+        <g transform="translate(380, 0)">
+            <rect width="360" height="200" fill="white" stroke="#E2E8F0" rx="10"/>
+            <text x="20" y="30" fill="#1A1A1A" font-size="16" font-weight="bold">Team Velocity</text>
+            
+            <!-- Chart -->
+            <g transform="translate(20, 50)">
+                <path d="M 0 120 L 320 120" stroke="#E2E8F0" stroke-width="1"/>
+                <path d="M 0 80 L 320 80" stroke="#E2E8F0" stroke-width="1"/>
+                <path d="M 0 40 L 320 40" stroke="#E2E8F0" stroke-width="1"/>
+                
+                <path d="M 40 100 L 80 80 L 120 90 L 160 60 L 200 70 L 240 40 L 280 50" 
+                      fill="none" stroke="#9333EA" stroke-width="2"/>
+                <path d="M 40 100 L 80 80 L 120 90 L 160 60 L 200 70 L 240 40 L 280 50 L 280 120 L 40 120 Z" 
+                      fill="url(#chartGrad)"/>
+            </g>
+        </g>
+
+        <!-- Milestone Progress -->
+        <g transform="translate(760, 0)">
+            <rect width="400" height="200" fill="white" stroke="#E2E8F0" rx="10"/>
+            <text x="20" y="30" fill="#1A1A1A" font-size="16" font-weight="bold">Milestone Progress</text>
+            
+            <!-- Milestone Bars -->
+            <g transform="translate(20, 50)">
+                <text x="0" y="20" fill="#666" font-size="14">Design Phase</text>
+                <rect x="120" y="10" width="200" height="20" fill="#E2E8F0" rx="10"/>
+                <rect x="120" y="10" width="180" height="20" fill="#22C55E" rx="10"/>
+                
+                <text x="0" y="60" fill="#666" font-size="14">Development</text>
+                <rect x="120" y="50" width="200" height="20" fill="#E2E8F0" rx="10"/>
+                <rect x="120" y="50" width="120" height="20" fill="#9333EA" rx="10"/>
+                
+                <text x="0" y="100" fill="#666" font-size="14">Testing</text>
+                <rect x="120" y="90" width="200" height="20" fill="#E2E8F0" rx="10"/>
+                <rect x="120" y="90" width="80" height="20" fill="#EAB308" rx="10"/>
+            </g>
+        </g>
+
+        <!-- Team Performance -->
+        <g transform="translate(0, 220)">
+            <rect width="560" height="300" fill="white" stroke="#E2E8F0" rx="10"/>
+            <text x="20" y="30" fill="#1A1A1A" font-size="16" font-weight="bold">Team Performance</text>
+            
+            <!-- Team Member Progress -->
+            <g transform="translate(20, 50)">
+                <!-- Member 1 -->
+                <g transform="translate(0, 0)">
+                    <circle cx="20" cy="20" r="20" fill="#9333EA"/>
+                    <text x="50" y="15" fill="#1A1A1A" font-size="14">James Thompson</text>
+                    <text x="50" y="35" fill="#666" font-size="12">8/10 Tasks Complete</text>
+                    <rect x="200" y="10" width="300" height="10" fill="#E2E8F0" rx="5"/>
+                    <rect x="200" y="10" width="240" height="10" fill="#22C55E" rx="5"/>
+                </g>
+                
+                <!-- Member 2 -->
+                <g transform="translate(0, 50)">
+                    <circle cx="20" cy="20" r="20" fill="#9333EA"/>
+                    <text x="50" y="15" fill="#1A1A1A" font-size="14">Sarah Miller</text>
+                    <text x="50" y="35" fill="#666" font-size="12">6/8 Tasks Complete</text>
+                    <rect x="200" y="10" width="300" height="10" fill="#E2E8F0" rx="5"/>
+                    <rect x="200" y="10" width="225" height="10" fill="#22C55E" rx="5"/>
+                </g>
+                
+                <!-- Member 3 -->
+                <g transform="translate(0, 100)">
+                    <circle cx="20" cy="20" r="20" fill="#9333EA"/>
+                    <text x="50" y="15" fill="#1A1A1A" font-size="14">Mike Chen</text>
+                    <text x="50" y="35" fill="#666" font-size="12">5/7 Tasks Complete</text>
+                    <rect x="200" y="10" width="300" height="10" fill="#E2E8F0" rx="5"/>
+                    <rect x="200" y="10" width="214" height="10" fill="#EAB308" rx="5"/>
+                </g>
+            </g>
+        </g>
+
+        <!-- Burndown Chart -->
+        <g transform="translate(580, 220)">
+            <rect width="580" height="300" fill="white" stroke="#E2E8F0" rx="10"/>
+            <text x="20" y="30" fill="#1A1A1A" font-size="16" font-weight="bold">Sprint Burndown</text>
+            
+            <!-- Chart -->
+            <g transform="translate(40, 60)">
+                <path d="M 0 200 L 500 0" stroke="#E2E8F0" stroke-width="2" stroke-dasharray="5,5"/>
+                <path d="M 0 200 L 100 160 L 200 140 L 300 100 L 400 80" 
+                      fill="none" stroke="#9333EA" stroke-width="3"/>
+            </g>
+        </g>
+
+        <!-- Issues and Blockers -->
+        <g transform="translate(0, 540)">
+            <rect width="1160" height="200" fill="white" stroke="#E2E8F0" rx="10"/>
+            <text x="20" y="30" fill="#1A1A1A" font-size="16" font-weight="bold">Active Issues</text>
+            
+            <!-- Issue List -->
+            <g transform="translate(20, 50)">
+                <rect width="1120" height="40" fill="#FEF2F2" rx="5"/>
+                <text x="20" y="25" fill="#EF4444" font-size="14">API Integration Blocked</text>
+                <text x="300" y="25" fill="#666" font-size="14">Assigned: Mike Chen</text>
+                <text x="600" y="25" fill="#666" font-size="14">Due: Tomorrow</text>
+                
+                <rect y="50" width="1120" height="40" fill="#FEF3C7" rx="5"/>
+                <text x="20" y="75" fill="#EAB308" font-size="14">Performance Testing Pending</text>
+                <text x="300" y="75" fill="#666" font-size="14">Assigned: James Thompson</text>
+                <text x="600" y="75" fill="#666" font-size="14">Due: Next Week</text>
+            </g>
+        </g>
+    </g>
+
+    <!-- Action Buttons -->
+    <g transform="translate(20, 860)">
+        <rect width="180" height="40" fill="url(#primaryGrad)" rx="20"/>
+        <text x="90" y="25" text-anchor="middle" fill="white" font-size="14">Generate Report</text>
+        
+        <rect x="200" width="180" height="40" fill="white" stroke="#9333EA" rx="20"/>
+        <text x="290" y="25" text-anchor="middle" fill="#9333EA" font-size="14">Team Meeting</text>
+    </g>
+</svg>

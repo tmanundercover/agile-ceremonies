@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="900" viewBox="0 0 1200 900" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <!-- Gradients -->
+        <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#4CAF50;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#81C784;stop-opacity:1" />
+        </linearGradient>
+        
+        <!-- Arrow marker -->
+        <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#4CAF50"/>
+        </marker>
+    </defs>
+
+    <!-- Header -->
+    <rect x="50" y="20" width="1100" height="60" fill="url(#headerGrad)" rx="10"/>
+    <text x="600" y="55" text-anchor="middle" fill="white" font-size="24" font-family="Arial">Status Reporting Workflow - Nat (CEO)</text>
+
+    <!-- Daily Reports Section -->
+    <g transform="translate(50, 100)">
+        <rect width="1100" height="180" fill="#E8F5E9" stroke="#4CAF50" rx="5"/>
+        <text x="20" y="40" font-size="18" fill="#4CAF50" font-weight="bold">Daily Status Reports</text>
+
+        <!-- Team Updates -->
+        <g transform="translate(20, 60)">
+            <rect width="250" height="100" fill="white" stroke="#4CAF50" rx="5"/>
+            <text x="125" y="30" text-anchor="middle" font-size="16" font-weight="bold">Team Updates</text>
+            <text x="20" y="55" font-size="14">• Morning Standup Notes</text>
+            <text x="20" y="75" font-size="14">• Blockers Identified</text>
+            <text x="20" y="95" font-size="14">• Progress Highlights</text>
+        </g>
+
+        <!-- Task Progress -->
+        <g transform="translate(290, 60)">
+            <rect width="250" height="100" fill="white" stroke="#4CAF50" rx="5"/>
+            <text x="125" y="30" text-anchor="middle" font-size="16" font-weight="bold">Task Progress</text>
+            <text x="20" y="55" font-size="14">• Tasks Completed</text>
+            <text x="20" y="75" font-size="14">• In-Progress Items</text>
+            <text x="20" y="95" font-size="14">• Upcoming Tasks</text>
+        </g>
+
+        <!-- Resource Utilization -->
+        <g transform="translate(560, 60)">
+            <rect width="250" height="100" fill="white" stroke="#4CAF50" rx="5"/>
+            <text x="125" y="30" text-anchor="middle" font-size="16" font-weight="bold">Resource Status</text>
+            <text x="20" y="55" font-size="14">• Team Availability</text>
+            <text x="20" y="75" font-size="14">• Tool Usage</text>
+            <text x="20" y="95" font-size="14">• Resource Needs</text>
+        </g>
+
+        <!-- Immediate Actions -->
+        <g transform="translate(830, 60)">
+            <rect width="250" height="100" fill="white" stroke="#4CAF50" rx="5"/>
+            <text x="125" y="30" text-anchor="middle" font-size="16" font-weight="bold">Action Items</text>
+            <text x="20" y="55" font-size="14">• Urgent Issues</text>
+            <text x="20" y="75" font-size="14">• Required Decisions</text>
+            <text x="20" y="95" font-size="14">• Follow-ups</text>
+        </g>
+    </g>
+
+    <!-- Weekly Reports Section -->
+    <g transform="translate(50, 300)">
+        <rect width="1100" height="250" fill="#E8F5E9" stroke="#4CAF50" rx="5"/>
+        <text x="20" y="40" font-size="18" fill="#4CAF50" font-weight="bold">Weekly Status Reports</text>
+
+        <!-- Project Metrics -->
+        <g transform="translate(20, 60)">
+            <rect width="520" height="170" fill="white" stroke="#4CAF50" rx="5"/>
+            <text x="260" y="30" text-anchor="middle" font-size="16" font-weight="bold">Project Metrics</text>
+            <text x="20" y="60" font-size="14">1. Sprint Velocity</text>
+            <text x="20" y="85" font-size="14">2. Bug Resolution Rate</text>
+            <text x="20" y="110" font-size="14">3. Code Quality Metrics</text>
+            <text x="20" y="135" font-size="14">4. Team Performance Indicators</text>
+            <text x="20" y="160" font-size="14">5. Customer Feedback Summary</text>
+        </g>
+
+        <!-- Strategic Overview -->
+        <g transform="translate(560, 60)">
+            <rect width="520" height="170" fill="white" stroke="#4CAF50" rx="5"/>
+            <text x="260" y="30" text-anchor="middle" font-size="16" font-weight="bold">Strategic Overview</text>
+            <text x="20" y="60" font-size="14">1. Milestone Progress</text>
+            <text x="20" y="85" font-size="14">2. Risk Assessment</text>
+            <text x="20" y="110" font-size="14">3. Resource Allocation Status</text>
+            <text x="20" y="135" font-size="14">4. Budget Tracking</text>
+            <text x="20" y="160" font-size="14">5. Strategic Adjustments</text>
+        </g>
+    </g>
+
+    <!-- Monthly Reports Section -->
+    <g transform="translate(50, 570)">
+        <rect width="1100" height="300" fill="#E8F5E9" stroke="#4CAF50" rx="5"/>
+        <text x="20" y="40" font-size="18" fill="#4CAF50" font-weight="bold">Monthly Executive Summary</text>
+
+        <!-- Achievement Summary -->
+        <g transform="translate(20, 60)">
+            <rect width="340" height="220" fill="white" stroke="#4CAF50" rx="5"/>
+            <text x="170" y="30" text-anchor="middle" font-size="16" font-weight="bold">Achievements</text>
+            <text x="20" y="60" font-size="14">• Major Milestones Met</text>
+            <text x="20" y="85" font-size="14">• Key Deliverables</text>
+            <text x="20" y="110" font-size="14">• Innovation Highlights</text>
+            <text x="20" y="135" font-size="14">• Team Recognition</text>
+            <text x="20" y="160" font-size="14">• Process Improvements</text>
+            <text x="20" y="185" font-size="14">• Customer Success Stories</text>
+        </g>
+
+        <!-- Challenges &amp; Solutions -->
+        <g transform="translate(380, 60)">
+            <rect width="340" height="220" fill="white" stroke="#4CAF50" rx="5"/>
+            <text x="170" y="30" text-anchor="middle" font-size="16" font-weight="bold">Challenges &amp; Solutions</text>
+            <text x="20" y="60" font-size="14">• Technical Obstacles</text>
+            <text x="20" y="85" font-size="14">• Resource Constraints</text>
+            <text x="20" y="110" font-size="14">• Timeline Adjustments</text>
+            <text x="20" y="135" font-size="14">• Risk Mitigation</text>
+            <text x="20" y="160" font-size="14">• Lessons Learned</text>
+            <text x="20" y="185" font-size="14">• Preventive Measures</text>
+        </g>
+
+        <!-- Strategic Planning -->
+        <g transform="translate(740, 60)">
+            <rect width="340" height="220" fill="white" stroke="#4CAF50" rx="5"/>
+            <text x="170" y="30" text-anchor="middle" font-size="16" font-weight="bold">Strategic Planning</text>
+            <text x="20" y="60" font-size="14">• Next Month Goals</text>
+            <text x="20" y="85" font-size="14">• Resource Planning</text>
+            <text x="20" y="110" font-size="14">• Strategic Initiatives</text>
+            <text x="20" y="135" font-size="14">• Budget Forecasting</text>
+            <text x="20" y="160" font-size="14">• Team Development</text>
+            <text x="20" y="185" font-size="14">• Growth Opportunities</text>
+        </g>
+    </g>
+</svg>

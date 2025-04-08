@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <!-- Gradients -->
+        <linearGradient id="glassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:rgba(255,255,255,0.1)" />
+            <stop offset="100%" style="stop-color:rgba(255,255,255,0.05)" />
+        </linearGradient>
+        
+        <!-- Glass Effect Filter -->
+        <filter id="glass">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="10" />
+            <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" />
+        </filter>
+
+        <!-- Blur Effect -->
+        <filter id="blur">
+            <feGaussianBlur stdDeviation="5" />
+        </filter>
+
+        <!-- Background Pattern -->
+        <pattern id="gridPattern" width="50" height="50" patternUnits="userSpaceOnUse">
+            <rect width="50" height="50" fill="#f8f9fa" />
+            <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#edf2f7" stroke-width="1"/>
+        </pattern>
+    </defs>
+
+    <!-- Background -->
+    <rect width="1200" height="800" fill="url(#gridPattern)" />
+    
+    <!-- Main Container -->
+    <g transform="translate(20, 20)">
+        <!-- Glass Panel Container -->
+        <rect width="1160" height="760" rx="20" 
+              fill="rgba(255,255,255,0.7)" 
+              stroke="rgba(255,255,255,0.5)" 
+              filter="url(#glass)" />
+
+        <!-- Header Section -->
+        <g transform="translate(30, 30)">
+            <text x="0" y="35" font-size="24" font-weight="bold" fill="#1a202c">Project Dashboard</text>
+            <text x="0" y="60" font-size="14" fill="#4a5568">Active Projects: 3 | Team Members: 8 | Tasks: 12</text>
+        </g>
+
+        <!-- Team Section -->
+        <g transform="translate(30, 100)">
+            <rect width="350" height="300" rx="15" 
+                  fill="rgba(255,255,255,0.9)" 
+                  stroke="rgba(147,51,234,0.3)" />
+            <text x="20" y="35" font-size="18" font-weight="bold" fill="#1a202c">Team Members</text>
+            
+            <!-- Team Member Cards -->
+            <g transform="translate(20, 50)">
+                <!-- Member 1 -->
+                <rect width="310" height="60" rx="10" fill="rgba(147,51,234,0.1)" />
+                <circle cx="30" cy="30" r="20" fill="#9333EA" />
+                <text x="60" y="35" font-size="14" fill="#1a202c">James Thompson</text>
+                <rect x="250" y="20" width="40" height="20" rx="10" fill="#22C55E" />
+                <text x="270" y="35" font-size="12" fill="white" text-anchor="middle">Active</text>
+
+                <!-- Member 2 -->
+                <g transform="translate(0, 70)">
+                    <rect width="310" height="60" rx="10" fill="rgba(147,51,234,0.1)" />
+                    <circle cx="30" cy="30" r="20" fill="#9333EA" />
+                    <text x="60" y="35" font-size="14" fill="#1a202c">Sarah Miller</text>
+                    <rect x="250" y="20" width="40" height="20" rx="10" fill="#EAB308" />
+                    <text x="270" y="35" font-size="12" fill="white" text-anchor="middle">Away</text>
+                </g>
+            </g>
+        </g>
+
+        <!-- Task Queue -->
+        <g transform="translate(400, 100)">
+            <rect width="400" height="300" rx="15" 
+                  fill="rgba(255,255,255,0.9)" 
+                  stroke="rgba(147,51,234,0.3)" />
+            <text x="20" y="35" font-size="18" font-weight="bold" fill="#1a202c">Task Queue</text>
+
+            <!-- Task Items -->
+            <g transform="translate(20, 50)">
+                <!-- Task 1 -->
+                <rect width="360" height="70" rx="10" fill="rgba(147,51,234,0.1)" />
+                <text x="20" y="30" font-size="14" font-weight="bold" fill="#1a202c">Initialize Backend Services</text>
+                <text x="20" y="50" font-size="12" fill="#4a5568">Due: Tomorrow</text>
+                <rect x="290" y="25" width="50" height="20" rx="10" fill="#EF4444" />
+                <text x="315" y="40" font-size="12" fill="white" text-anchor="middle">High</text>
+
+                <!-- Task 2 -->
+                <g transform="translate(0, 80)">
+                    <rect width="360" height="70" rx="10" fill="rgba(147,51,234,0.1)" />
+                    <text x="20" y="30" font-size="14" font-weight="bold" fill="#1a202c">UI Component Library</text>
+                    <text x="20" y="50" font-size="12" fill="#4a5568">Due: Next Week</text>
+                    <rect x="290" y="25" width="50" height="20" rx="10" fill="#EAB308" />
+                    <text x="315" y="40" font-size="12" fill="white" text-anchor="middle">Med</text>
+                </g>
+            </g>
+        </g>
+
+        <!-- Notifications Panel -->
+        <g transform="translate(820, 100)">
+            <rect width="310" height="300" rx="15" 
+                  fill="rgba(255,255,255,0.9)" 
+                  stroke="rgba(147,51,234,0.3)" />
+            <text x="20" y="35" font-size="18" font-weight="bold" fill="#1a202c">Notifications</text>
+
+            <!-- Notification Items -->
+            <g transform="translate(20, 50)">
+                <!-- Notification 1 -->
+                <rect width="270" height="60" rx="10" fill="rgba(147,51,234,0.1)" />
+                <circle cx="30" cy="30" r="15" fill="#22C55E" />
+                <text x="60" y="35" font-size="12" fill="#1a202c">New team member joined</text>
+
+                <!-- Notification 2 -->
+                <g transform="translate(0, 70)">
+                    <rect width="270" height="60" rx="10" fill="rgba(147,51,234,0.1)" />
+                    <circle cx="30" cy="30" r="15" fill="#EF4444" />
+                    <text x="60" y="35" font-size="12" fill="#1a202c">Task deadline approaching</text>
+                </g>
+            </g>
+        </g>
+
+        <!-- Quick Actions -->
+        <g transform="translate(30, 420)">
+            <rect width="1100" height="80" rx="15" 
+                  fill="rgba(147,51,234,0.1)" 
+                  stroke="rgba(147,51,234,0.3)" />
+            
+            <!-- Action Buttons -->
+            <g transform="translate(20, 20)">
+                <rect width="150" height="40" rx="20" fill="#9333EA" />
+                <text x="75" y="25" font-size="14" fill="white" text-anchor="middle">New Project</text>
+
+                <rect x="170" width="150" height="40" rx="20" fill="#9333EA" />
+                <text x="245" y="25" font-size="14" fill="white" text-anchor="middle">Add Task</text>
+
+                <rect x="340" width="150" height="40" rx="20" fill="#9333EA" />
+                <text x="415" y="25" font-size="14" fill="white" text-anchor="middle">Team Meeting</text>
+            </g>
+        </g>
+
+        <!-- Capacity Metrics -->
+        <g transform="translate(30, 520)">
+            <rect width="1100" height="220" rx="15" 
+                  fill="rgba(255,255,255,0.9)" 
+                  stroke="rgba(147,51,234,0.3)" />
+            <text x="20" y="35" font-size="18" font-weight="bold" fill="#1a202c">Team Capacity</text>
+
+            <!-- Capacity Bars -->
+            <g transform="translate(20, 60)">
+                <rect width="1060" height="140" rx="10" fill="rgba(147,51,234,0.1)" />
+                <!-- Add capacity visualization here -->
+            </g>
+        </g>
+    </g>
+</svg>

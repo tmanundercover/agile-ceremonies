@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="900" viewBox="0 0 1200 900" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <!-- Gradients -->
+        <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#FF5722;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#FF8A65;stop-opacity:1" />
+        </linearGradient>
+        
+        <!-- Arrow marker -->
+        <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#FF5722"/>
+        </marker>
+    </defs>
+
+    <!-- Header -->
+    <rect x="50" y="20" width="1100" height="60" fill="url(#headerGrad)" rx="10"/>
+    <text x="600" y="55" text-anchor="middle" fill="white" font-size="24" font-family="Arial">Risk Management Framework</text>
+
+    <!-- Risk Identification -->
+    <g transform="translate(50, 100)">
+        <rect width="1100" height="180" fill="#FBE9E7" stroke="#FF5722" rx="5"/>
+        <text x="20" y="40" font-size="18" fill="#FF5722" font-weight="bold">Risk Identification</text>
+
+        <!-- Technical Risks -->
+        <g transform="translate(20, 60)">
+            <rect width="250" height="100" fill="white" stroke="#FF5722" rx="5"/>
+            <text x="125" y="30" text-anchor="middle" font-size="16" font-weight="bold">Technical Risks</text>
+            <text x="20" y="55" font-size="14">• System Failures</text>
+            <text x="20" y="75" font-size="14">• Integration Issues</text>
+            <text x="20" y="95" font-size="14">• Performance Problems</text>
+        </g>
+
+        <!-- Operational Risks -->
+        <g transform="translate(290, 60)">
+            <rect width="250" height="100" fill="white" stroke="#FF5722" rx="5"/>
+            <text x="125" y="30" text-anchor="middle" font-size="16" font-weight="bold">Operational Risks</text>
+            <text x="20" y="55" font-size="14">• Resource Shortages</text>
+            <text x="20" y="75" font-size="14">• Process Gaps</text>
+            <text x="20" y="95" font-size="14">• Communication Issues</text>
+        </g>
+
+        <!-- Strategic Risks -->
+        <g transform="translate(560, 60)">
+            <rect width="250" height="100" fill="white" stroke="#FF5722" rx="5"/>
+            <text x="125" y="30" text-anchor="middle" font-size="16" font-weight="bold">Strategic Risks</text>
+            <text x="20" y="55" font-size="14">• Market Changes</text>
+            <text x="20" y="75" font-size="14">• Competitive Threats</text>
+            <text x="20" y="95" font-size="14">• Regulatory Changes</text>
+        </g>
+
+        <!-- External Risks -->
+        <g transform="translate(830, 60)">
+            <rect width="250" height="100" fill="white" stroke="#FF5722" rx="5"/>
+            <text x="125" y="30" text-anchor="middle" font-size="16" font-weight="bold">External Risks</text>
+            <text x="20" y="55" font-size="14">• Vendor Dependencies</text>
+            <text x="20" y="75" font-size="14">• Economic Factors</text>
+            <text x="20" y="95" font-size="14">• Natural Events</text>
+        </g>
+    </g>
+
+    <!-- Risk Assessment -->
+    <g transform="translate(50, 300)">
+        <rect width="1100" height="200" fill="#FBE9E7" stroke="#FF5722" rx="5"/>
+        <text x="20" y="40" font-size="18" fill="#FF5722" font-weight="bold">Risk Assessment Matrix</text>
+
+        <!-- Impact Assessment -->
+        <g transform="translate(20, 60)">
+            <rect width="520" height="120" fill="white" stroke="#FF5722" rx="5"/>
+            <text x="260" y="30" text-anchor="middle" font-size="16" font-weight="bold">Impact Assessment</text>
+            <text x="20" y="60" font-size="14">1. Critical (Project Failure)</text>
+            <text x="20" y="85" font-size="14">2. High (Major Delays)</text>
+            <text x="20" y="110" font-size="14">3. Medium (Moderate Issues)</text>
+        </g>
+
+        <!-- Probability Assessment -->
+        <g transform="translate(560, 60)">
+            <rect width="520" height="120" fill="white" stroke="#FF5722" rx="5"/>
+            <text x="260" y="30" text-anchor="middle" font-size="16" font-weight="bold">Probability Assessment</text>
+            <text x="20" y="60" font-size="14">1. High (Likely to Occur)</text>
+            <text x="20" y="85" font-size="14">2. Medium (May Occur)</text>
+            <text x="20" y="110" font-size="14">3. Low (Unlikely to Occur)</text>
+        </g>
+    </g>
+
+    <!-- Mitigation Strategies -->
+    <g transform="translate(50, 520)">
+        <rect width="1100" height="180" fill="#FBE9E7" stroke="#FF5722" rx="5"/>
+        <text x="20" y="40" font-size="18" fill="#FF5722" font-weight="bold">Mitigation Strategies</text>
+
+        <!-- Prevention -->
+        <g transform="translate(20, 60)">
+            <rect width="340" height="100" fill="white" stroke="#FF5722" rx="5"/>
+            <text x="170" y="30" text-anchor="middle" font-size="16" font-weight="bold">Prevention</text>
+            <text x="20" y="55" font-size="14">• Regular Audits</text>
+            <text x="20" y="75" font-size="14">• Training Programs</text>
+            <text x="20" y="95" font-size="14">• Quality Controls</text>
+        </g>
+
+        <!-- Reduction -->
+        <g transform="translate(380, 60)">
+            <rect width="340" height="100" fill="white" stroke="#FF5722" rx="5"/>
+            <text x="170" y="30" text-anchor="middle" font-size="16" font-weight="bold">Reduction</text>
+            <text x="20" y="55" font-size="14">• Backup Systems</text>
+            <text x="20" y="75" font-size="14">• Alternative Plans</text>
+            <text x="20" y="95" font-size="14">• Resource Buffers</text>
+        </g>
+
+        <!-- Contingency -->
+        <g transform="translate(740, 60)">
+            <rect width="340" height="100" fill="white" stroke="#FF5722" rx="5"/>
+            <text x="170" y="30" text-anchor="middle" font-size="16" font-weight="bold">Contingency</text>
+            <text x="20" y="55" font-size="14">• Emergency Procedures</text>
+            <text x="20" y="75" font-size="14">• Crisis Management</text>
+            <text x="20" y="95" font-size="14">• Recovery Plans</text>
+        </g>
+    </g>
+
+    <!-- Monitoring and Review -->
+    <g transform="translate(50, 720)">
+        <rect width="1100" height="160" fill="#FBE9E7" stroke="#FF5722" rx="5"/>
+        <text x="20" y="40" font-size="18" fill="#FF5722" font-weight="bold">Monitoring and Review</text>
+
+        <!-- Regular Reviews -->
+        <g transform="translate(20, 60)">
+            <rect width="520" height="80" fill="white" stroke="#FF5722" rx="5"/>
+            <text x="260" y="30" text-anchor="middle" font-size="16" font-weight="bold">Regular Reviews</text>
+            <text x="20" y="55" font-size="14">• Weekly Risk Assessments</text>
+            <text x="260" y="55" font-size="14">• Monthly Status Reports</text>
+        </g>
+
+        <!-- Continuous Improvement -->
+        <g transform="translate(560, 60)">
+            <rect width="520" height="80" fill="white" stroke="#FF5722" rx="5"/>
+            <text x="260" y="30" text-anchor="middle" font-size="16" font-weight="bold">Continuous Improvement</text>
+            <text x="20" y="55" font-size="14">• Lessons Learned</text>
+            <text x="260" y="55" font-size="14">• Process Updates</text>
+        </g>
+    </g>
+</svg>

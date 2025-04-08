@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="1000" viewBox="0 0 1200 1000" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <!-- Gradients -->
+        <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#9333EA;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#A855F7;stop-opacity:1" />
+        </linearGradient>
+        
+        <linearGradient id="glassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:rgba(255,255,255,0.1)" />
+            <stop offset="100%" style="stop-color:rgba(255,255,255,0.05)" />
+        </linearGradient>
+
+        <!-- Glass Effect -->
+        <filter id="glassEffect">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="10" />
+            <feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 19 -9" />
+        </filter>
+    </defs>
+
+    <!-- Modal Overlay -->
+    <rect width="1200" height="1000" fill="rgba(0,0,0,0.5)"/>
+
+    <!-- Modal Container -->
+    <g transform="translate(200, 100)">
+        <rect width="800" height="800" fill="white" rx="20" filter="url(#glassEffect)"/>
+
+        <!-- Header -->
+        <rect x="0" y="0" width="800" height="80" fill="url(#primaryGrad)" rx="20"/>
+        <text x="40" y="45" fill="white" font-size="24" font-weight="bold">Project Manager Profile</text>
+        
+        <!-- Close Button -->
+        <circle cx="740" cy="40" r="20" fill="white" opacity="0.2"/>
+        <text x="740" y="48" text-anchor="middle" fill="white" font-size="20">×</text>
+
+        <!-- Breadcrumbs -->
+        <g transform="translate(40, 100)">
+            <text x="0" y="0" fill="#666" font-size="14">Team</text>
+            <text x="40" y="0" fill="#666" font-size="14">></text>
+            <text x="60" y="0" fill="#666" font-size="14">Support</text>
+            <text x="120" y="0" fill="#666" font-size="14">></text>
+            <text x="140" y="0" fill="#666" font-size="14">Project Manager</text>
+            <text x="250" y="0" fill="#666" font-size="14">></text>
+            <text x="270" y="0" fill="#9333EA" font-size="14">Brian Parker</text>
+        </g>
+
+        <!-- Profile Info -->
+        <g transform="translate(40, 140)">
+            <circle cx="50" cy="50" r="50" fill="#3B82F6"/>
+            <text x="50" y="60" text-anchor="middle" fill="white" font-size="24">BP</text>
+            
+            <text x="120" y="40" fill="#1A1A1A" font-size="24" font-weight="bold">Brian Parker</text>
+            <text x="120" y="70" fill="#666" font-size="16">Project Manager</text>
+            
+            <!-- Status Indicator -->
+            <rect x="120" y="85" width="120" height="24" fill="#22C55E" rx="12"/>
+            <text x="180" y="102" text-anchor="middle" fill="white" font-size="12">Active in Mob</text>
+        </g>
+
+        <!-- Current Sprint Overview -->
+        <g transform="translate(40, 260)">
+            <text x="0" y="0" fill="#1A1A1A" font-size="16" font-weight="bold">Current Sprint</text>
+            <rect x="0" y="20" width="720" height="100" fill="#F9FAFB" stroke="#E2E8F0" rx="10"/>
+            
+            <!-- Sprint Metrics -->
+            <g transform="translate(20, 40)">
+                <text x="0" y="0" fill="#1A1A1A" font-size="14" font-weight="bold">Sprint 7: Authentication & API</text>
+                <text x="0" y="25" fill="#666" font-size="14">Progress: 65% | Velocity: 24 pts/week</text>
+                <text x="0" y="50" fill="#666" font-size="14">Team Health: 92% | Blockers: 1</text>
+            </g>
+        </g>
+
+        <!-- Active Mobbing Sessions -->
+        <g transform="translate(40, 380)">
+            <text x="0" y="0" fill="#1A1A1A" font-size="16" font-weight="bold">Active Mobbing Sessions</text>
+            
+            <!-- Session Cards -->
+            <g transform="translate(0, 20)">
+                <!-- Session 1 -->
+                <rect width="350" height="120" fill="#F9FAFB" stroke="#E2E8F0" rx="10"/>
+                <text x="20" y="30" fill="#1A1A1A" font-size="14" font-weight="bold">API Integration</text>
+                <text x="20" y="55" fill="#666" font-size="14">Team: James, Terrell</text>
+                <text x="20" y="80" fill="#666" font-size="14">Duration: 1.5 hrs</text>
+                <rect x="20" y="90" width="100" height="20" fill="#22C55E" rx="10"/>
+                <text x="70" y="105" text-anchor="middle" fill="white" font-size="12">Active</text>
+
+                <!-- Session 2 -->
+                <rect x="370" width="350" height="120" fill="#F9FAFB" stroke="#E2E8F0" rx="10"/>
+                <text x="390" y="30" fill="#1A1A1A" font-size="14" font-weight="bold">Auth Service</text>
+                <text x="390" y="55" fill="#666" font-size="14">Team: Mike, Sarah</text>
+                <text x="390" y="80" fill="#666" font-size="14">Duration: 2 hrs</text>
+                <rect x="390" y="90" width="100" height="20" fill="#EAB308" rx="10"/>
+                <text x="440" y="105" text-anchor="middle" fill="white" font-size="12">Scheduled</text>
+            </g>
+        </g>
+
+        <!-- Team Support Metrics -->
+        <g transform="translate(40, 540)">
+            <text x="0" y="0" fill="#1A1A1A" font-size="16" font-weight="bold">Support Metrics</text>
+            
+            <!-- Metric Cards -->
+            <g transform="translate(0, 20)">
+                <!-- Mob Sessions -->
+                <rect width="230" height="100" fill="#F9FAFB" stroke="#E2E8F0" rx="10"/>
+                <text x="20" y="30" fill="#666" font-size="14">Mob Sessions</text>
+                <text x="20" y="60" fill="#1A1A1A" font-size="24">12</text>
+                <text x="20" y="80" fill="#22C55E" font-size="12">↑ 20% this sprint</text>
+
+                <!-- Blockers Resolved -->
+                <g transform="translate(250, 0)">
+                    <rect width="230" height="100" fill="#F9FAFB" stroke="#E2E8F0" rx="10"/>
+                    <text x="20" y="30" fill="#666" font-size="14">Blockers Resolved</text>
+                    <text x="20" y="60" fill="#1A1A1A" font-size="24">8</text>
+                    <text x="20" y="80" fill="#22C55E" font-size="12">Avg 2hr resolution</text>
+                </g>
+
+                <!-- Team Satisfaction -->
+                <g transform="translate(500, 0)">
+                    <rect width="220" height="100" fill="#F9FAFB" stroke="#E2E8F0" rx="10"/>
+                    <text x="20" y="30" fill="#666" font-size="14">Team Satisfaction</text>
+                    <text x="20" y="60" fill="#1A1A1A" font-size="24">92%</text>
+                    <text x="20" y="80" fill="#22C55E" font-size="12">↑ 5% vs last sprint</text>
+                </g>
+            </g>
+        </g>
+
+        <!-- Process Improvements -->
+        <g transform="translate(40, 680)">
+            <text x="0" y="0" fill="#1A1A1A" font-size="16" font-weight="bold">Process Improvements</text>
+            
+            <!-- Improvement List -->
+            <rect x="0" y="20" width="720" height="80" fill="#F9FAFB" stroke="#E2E8F0" rx="10"/>
+            
+            <g transform="translate(20, 40)">
+                <circle cx="10" cy="10" r="5" fill="#22C55E"/>
+                <text x="30" y="15" fill="#1A1A1A" font-size="14">Implemented daily mob programming rotations</text>
+                <text x="500" y="15" fill="#666" font-size="12">+15% knowledge sharing</text>
+
+                <circle cx="10" cy="40" r="5" fill="#22C55E"/>
+                <text x="30" y="45" fill="#1A1A1A" font-size="14">Introduced pair switching schedule</text>
+                <text x="500" y="45" fill="#666" font-size="12">+20% code review efficiency</text>
+            </g>
+        </g>
+    </g>
+</svg>

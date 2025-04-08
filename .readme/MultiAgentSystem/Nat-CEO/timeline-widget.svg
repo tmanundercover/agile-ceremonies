@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="1000" viewBox="0 0 1200 1000" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <!-- Gradients -->
+        <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#9333EA;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#A855F7;stop-opacity:1" />
+        </linearGradient>
+        
+        <linearGradient id="glassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:rgba(255,255,255,0.1)" />
+            <stop offset="100%" style="stop-color:rgba(255,255,255,0.05)" />
+        </linearGradient>
+
+        <!-- Glass Effect -->
+        <filter id="glassEffect">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="10" />
+            <feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 19 -9" />
+        </filter>
+
+        <!-- Milestone Diamond -->
+        <path id="milestone" d="M -6 0 L 0 -6 L 6 0 L 0 6 Z"/>
+    </defs>
+
+    <!-- Background -->
+    <rect width="1200" height="1000" fill="#F9FAFB"/>
+
+    <!-- Header Bar -->
+    <rect x="0" y="0" width="1200" height="80" fill="url(#primaryGrad)"/>
+    <text x="40" y="45" fill="white" font-size="24" font-weight="bold">Project Timeline</text>
+
+    <!-- View Controls -->
+    <g transform="translate(400, 20)">
+        <!-- Time Scale -->
+        <rect width="300" height="40" rx="20" fill="white"/>
+        <text x="20" y="25" fill="#666" font-size="14">View:</text>
+        <rect x="70" y="5" width="70" height="30" rx="15" fill="#9333EA"/>
+        <text x="105" y="25" text-anchor="middle" fill="white" font-size="14">Day</text>
+        <rect x="145" y="5" width="70" height="30" rx="15" fill="white"/>
+        <text x="180" y="25" text-anchor="middle" fill="#666" font-size="14">Week</text>
+        <rect x="220" y="5" width="70" height="30" rx="15" fill="white"/>
+        <text x="255" y="25" text-anchor="middle" fill="#666" font-size="14">Month</text>
+    </g>
+
+    <!-- Filters -->
+    <g transform="translate(720, 20)">
+        <rect width="200" height="40" rx="20" fill="white"/>
+        <text x="20" y="25" fill="#666" font-size="14">Department ▼</text>
+    </g>
+
+    <!-- Main Content Area -->
+    <g transform="translate(0, 80)">
+        <!-- Left Sidebar - Project List -->
+        <rect width="250" height="920" fill="white" stroke="#E2E8F0"/>
+        <text x="20" y="40" fill="#1A1A1A" font-size="16" font-weight="bold">Projects</text>
+        
+        <!-- Project List Items -->
+        <g transform="translate(10, 60)">
+            <rect width="230" height="50" fill="#F3E5F5" rx="5"/>
+            <text x="20" y="30" fill="#1A1A1A" font-size="14">Website Redesign</text>
+            
+            <rect y="60" width="230" height="50" fill="white" rx="5"/>
+            <text x="20" y="90" fill="#1A1A1A" font-size="14">Mobile App Development</text>
+            
+            <rect y="120" width="230" height="50" fill="white" rx="5"/>
+            <text x="20" y="150" fill="#1A1A1A" font-size="14">API Integration</text>
+        </g>
+
+        <!-- Timeline Grid -->
+        <g transform="translate(250, 0)">
+            <!-- Time Headers -->
+            <rect width="950" height="50" fill="#F8FAFC"/>
+            
+            <!-- Day Labels -->
+            <g transform="translate(0, 0)">
+                <text x="50" y="30" fill="#666" font-size="12">Mon 1</text>
+                <text x="130" y="30" fill="#666" font-size="12">Tue 2</text>
+                <text x="210" y="30" fill="#666" font-size="12">Wed 3</text>
+                <text x="290" y="30" fill="#666" font-size="12">Thu 4</text>
+                <text x="370" y="30" fill="#666" font-size="12">Fri 5</text>
+                <!-- Continue for more days -->
+            </g>
+
+            <!-- Grid Lines -->
+            <g transform="translate(0, 50)">
+                <path d="M 0 0 L 950 0" stroke="#E2E8F0" stroke-width="1"/>
+                <path d="M 80 0 L 80 870" stroke="#E2E8F0" stroke-width="1"/>
+                <path d="M 160 0 L 160 870" stroke="#E2E8F0" stroke-width="1"/>
+                <path d="M 240 0 L 240 870" stroke="#E2E8F0" stroke-width="1"/>
+                <path d="M 320 0 L 320 870" stroke="#E2E8F0" stroke-width="1"/>
+                <!-- Continue for more grid lines -->
+            </g>
+
+            <!-- Timeline Bars -->
+            <g transform="translate(0, 60)">
+                <!-- Website Redesign Timeline -->
+                <rect x="40" y="0" width="400" height="40" fill="#9333EA" rx="5" opacity="0.8"/>
+                <use href="#milestone" x="200" y="20" fill="#22C55E"/>
+                <text x="220" y="25" fill="#666" font-size="12">Design Complete</text>
+                
+                <!-- Mobile App Timeline -->
+                <rect x="120" y="60" width="300" height="40" fill="#9333EA" rx="5" opacity="0.8"/>
+                <use href="#milestone" x="280" y="80" fill="#22C55E"/>
+                <text x="300" y="85" fill="#666" font-size="12">Beta Release</text>
+
+                <!-- Dependency Arrows -->
+                <path d="M 440 20 L 480 20 L 480 80 L 420 80" 
+                      fill="none" stroke="#666" stroke-width="2" marker-end="url(#arrow)"/>
+            </g>
+        </g>
+    </g>
+
+    <!-- Today Marker -->
+    <line x1="330" y1="80" x2="330" y2="1000" stroke="#EF4444" stroke-width="2" stroke-dasharray="4"/>
+
+    <!-- Bottom Controls -->
+    <g transform="translate(250, 960)">
+        <!-- Zoom Controls -->
+        <rect width="100" height="30" rx="15" fill="white" stroke="#9333EA"/>
+        <text x="35" y="20" fill="#9333EA" font-size="14">Zoom</text>
+        <text x="70" y="20" fill="#9333EA" font-size="14">+</text>
+        <text x="90" y="20" fill="#9333EA" font-size="14">-</text>
+    </g>
+
+    <!-- Legend -->
+    <g transform="translate(900, 960)">
+        <circle cx="20" cy="15" r="5" fill="#22C55E"/>
+        <text x="35" y="20" fill="#666" font-size="12">Milestone</text>
+        
+        <circle cx="120" cy="15" r="5" fill="#EF4444"/>
+        <text x="135" y="20" fill="#666" font-size="12">Critical Path</text>
+        
+        <circle cx="220" cy="15" r="5" fill="#EAB308"/>
+        <text x="235" y="20" fill="#666" font-size="12">At Risk</text>
+    </g>
+</svg>

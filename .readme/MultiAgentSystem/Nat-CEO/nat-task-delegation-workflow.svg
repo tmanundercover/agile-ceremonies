@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <!-- Gradients -->
+        <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#2196F3;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#64B5F6;stop-opacity:1" />
+        </linearGradient>
+        
+        <!-- Arrow marker -->
+        <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#2196F3"/>
+        </marker>
+    </defs>
+
+    <!-- Header -->
+    <rect x="50" y="20" width="1100" height="60" fill="url(#headerGrad)" rx="10"/>
+    <text x="600" y="55" text-anchor="middle" fill="white" font-size="24" font-family="Arial">Task Delegation Workflow - Nat (CEO)</text>
+
+    <!-- Main Process -->
+    <g transform="translate(50, 100)">
+        <!-- Task Reception -->
+        <rect x="0" y="0" width="200" height="120" fill="#E3F2FD" stroke="#2196F3" rx="5"/>
+        <text x="100" y="30" text-anchor="middle" font-size="16" font-weight="bold">Task Reception</text>
+        <text x="100" y="60" text-anchor="middle" font-size="14">1. New Task Alert</text>
+        <text x="100" y="85" text-anchor="middle" font-size="14">2. Priority Check</text>
+        <text x="100" y="110" text-anchor="middle" font-size="14">3. Initial Review</text>
+
+        <!-- Task Analysis -->
+        <rect x="300" y="0" width="200" height="120" fill="#E3F2FD" stroke="#2196F3" rx="5"/>
+        <text x="400" y="30" text-anchor="middle" font-size="16" font-weight="bold">Task Analysis</text>
+        <text x="400" y="60" text-anchor="middle" font-size="14">1. Skill Requirements</text>
+        <text x="400" y="85" text-anchor="middle" font-size="14">2. Time Estimation</text>
+        <text x="400" y="110" text-anchor="middle" font-size="14">3. Resource Check</text>
+
+        <!-- Team Selection -->
+        <rect x="600" y="0" width="200" height="120" fill="#E3F2FD" stroke="#2196F3" rx="5"/>
+        <text x="700" y="30" text-anchor="middle" font-size="16" font-weight="bold">Team Selection</text>
+        <text x="700" y="60" text-anchor="middle" font-size="14">1. Match Skills</text>
+        <text x="700" y="85" text-anchor="middle" font-size="14">2. Check Availability</text>
+        <text x="700" y="110" text-anchor="middle" font-size="14">3. Assign Team</text>
+
+        <!-- Task Assignment -->
+        <rect x="900" y="0" width="200" height="120" fill="#E3F2FD" stroke="#2196F3" rx="5"/>
+        <text x="1000" y="30" text-anchor="middle" font-size="16" font-weight="bold">Task Assignment</text>
+        <text x="1000" y="60" text-anchor="middle" font-size="14">1. Set Deadlines</text>
+        <text x="1000" y="85" text-anchor="middle" font-size="14">2. Define Goals</text>
+        <text x="1000" y="110" text-anchor="middle" font-size="14">3. Delegate Authority</text>
+
+        <!-- Connecting Arrows -->
+        <line x1="200" y1="60" x2="300" y2="60" stroke="#2196F3" stroke-width="2" marker-end="url(#arrow)"/>
+        <line x1="500" y1="60" x2="600" y2="60" stroke="#2196F3" stroke-width="2" marker-end="url(#arrow)"/>
+        <line x1="800" y1="60" x2="900" y2="60" stroke="#2196F3" stroke-width="2" marker-end="url(#arrow)"/>
+    </g>
+
+    <!-- Monitoring Section -->
+    <g transform="translate(50, 300)">
+        <rect width="1100" height="200" fill="#E3F2FD" stroke="#2196F3" rx="5"/>
+        <text x="20" y="40" font-size="18" fill="#2196F3" font-weight="bold">Monitoring &amp; Oversight</text>
+
+        <!-- Progress Tracking -->
+        <g transform="translate(20, 60)">
+            <rect width="250" height="120" fill="white" stroke="#2196F3" rx="5"/>
+            <text x="125" y="30" text-anchor="middle" font-size="16" font-weight="bold">Progress Tracking</text>
+            <text x="20" y="60" font-size="14">• Daily Status Updates</text>
+            <text x="20" y="85" font-size="14">• Milestone Reviews</text>
+            <text x="20" y="110" font-size="14">• Performance Metrics</text>
+        </g>
+
+        <!-- Quality Control -->
+        <g transform="translate(290, 60)">
+            <rect width="250" height="120" fill="white" stroke="#2196F3" rx="5"/>
+            <text x="125" y="30" text-anchor="middle" font-size="16" font-weight="bold">Quality Control</text>
+            <text x="20" y="60" font-size="14">• Code Reviews</text>
+            <text x="20" y="85" font-size="14">• Testing Reports</text>
+            <text x="20" y="110" font-size="14">• Documentation Check</text>
+        </g>
+
+        <!-- Team Support -->
+        <g transform="translate(560, 60)">
+            <rect width="250" height="120" fill="white" stroke="#2196F3" rx="5"/>
+            <text x="125" y="30" text-anchor="middle" font-size="16" font-weight="bold">Team Support</text>
+            <text x="20" y="60" font-size="14">• Resource Allocation</text>
+            <text x="20" y="85" font-size="14">• Technical Guidance</text>
+            <text x="20" y="110" font-size="14">• Conflict Resolution</text>
+        </g>
+
+        <!-- Feedback Loop -->
+        <g transform="translate(830, 60)">
+            <rect width="250" height="120" fill="white" stroke="#2196F3" rx="5"/>
+            <text x="125" y="30" text-anchor="middle" font-size="16" font-weight="bold">Feedback Loop</text>
+            <text x="20" y="60" font-size="14">• Regular Check-ins</text>
+            <text x="20" y="85" font-size="14">• Performance Review</text>
+            <text x="20" y="110" font-size="14">• Process Improvement</text>
+        </g>
+    </g>
+
+    <!-- Escalation Path -->
+    <g transform="translate(50, 550)">
+        <rect width="1100" height="200" fill="#E3F2FD" stroke="#2196F3" rx="5"/>
+        <text x="20" y="40" font-size="18" fill="#2196F3" font-weight="bold">Escalation Path</text>
+
+        <!-- Technical Issues -->
+        <g transform="translate(20, 60)">
+            <rect width="520" height="120" fill="white" stroke="#2196F3" rx="5"/>
+            <text x="260" y="30" text-anchor="middle" font-size="16" font-weight="bold">Technical Escalation</text>
+            <text x="20" y="60" font-size="14">1. Team Lead Review</text>
+            <text x="20" y="85" font-size="14">2. Technical Committee Assessment</text>
+            <text x="20" y="110" font-size="14">3. Executive Decision if needed</text>
+        </g>
+
+        <!-- Administrative Issues -->
+        <g transform="translate(560, 60)">
+            <rect width="520" height="120" fill="white" stroke="#2196F3" rx="5"/>
+            <text x="260" y="30" text-anchor="middle" font-size="16" font-weight="bold">Administrative Escalation</text>
+            <text x="20" y="60" font-size="14">1. Project Manager Review</text>
+            <text x="20" y="85" font-size="14">2. Resource Reallocation</text>
+            <text x="20" y="110" font-size="14">3. Timeline Adjustment</text>
+        </g>
+    </g>
+</svg>

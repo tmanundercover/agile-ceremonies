@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="1000" viewBox="0 0 1200 1000" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <!-- Brand Gradients -->
+        <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#9333EA;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#A855F7;stop-opacity:1" />
+        </linearGradient>
+        
+        <linearGradient id="glassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:rgba(255,255,255,0.1)" />
+            <stop offset="100%" style="stop-color:rgba(255,255,255,0.05)" />
+        </linearGradient>
+
+        <!-- Glass Effect -->
+        <filter id="glassEffect">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="10" />
+            <feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 19 -9" />
+        </filter>
+    </defs>
+
+    <!-- Header -->
+    <rect x="50" y="20" width="1100" height="60" fill="url(#primaryGrad)" rx="10"/>
+    <text x="575" y="55" text-anchor="middle" fill="white" font-size="24">Style Guide - Colors and Typography</text>
+
+    <!-- Left Column -->
+    <g transform="translate(50, 100)">
+        <!-- Brand Colors -->
+        <text x="0" y="30" font-size="20" font-weight="bold">Brand Colors</text>
+        
+        <!-- Primary Colors -->
+        <g transform="translate(0, 50)">
+            <rect width="150" height="100" fill="#9333EA" rx="10"/>
+            <text x="75" y="130" text-anchor="middle" fill="#1A1A1A">Primary</text>
+            <text x="75" y="150" text-anchor="middle" fill="#666">#9333EA</text>
+        </g>
+
+        <g transform="translate(170, 50)">
+            <rect width="150" height="100" fill="#A855F7" rx="10"/>
+            <text x="75" y="130" text-anchor="middle" fill="#1A1A1A">Primary Light</text>
+            <text x="75" y="150" text-anchor="middle" fill="#666">#A855F7</text>
+        </g>
+
+        <g transform="translate(340, 50)">
+            <rect width="150" height="100" fill="#7928CA" rx="10"/>
+            <text x="75" y="130" text-anchor="middle" fill="#1A1A1A">Primary Dark</text>
+            <text x="75" y="150" text-anchor="middle" fill="#666">#7928CA</text>
+        </g>
+
+        <!-- Typography Section -->
+        <g transform="translate(0, 200)">
+            <text x="0" y="30" font-size="20" font-weight="bold">Typography</text>
+
+            <!-- Headings -->
+            <g transform="translate(0, 60)">
+                <text x="0" y="0" font-size="32" font-weight="bold">Heading 1 - 32px Bold</text>
+                <text x="0" y="50" font-size="24" font-weight="bold">Heading 2 - 24px Bold</text>
+                <text x="0" y="90" font-size="20" font-weight="bold">Heading 3 - 20px Bold</text>
+                <text x="0" y="120" font-size="18" font-weight="bold">Heading 4 - 18px Bold</text>
+            </g>
+
+            <!-- Body Text -->
+            <g transform="translate(0, 200)">
+                <text x="0" y="0" font-size="16">Body Large - 16px Regular</text>
+                <text x="0" y="30" font-size="14">Body Default - 14px Regular</text>
+                <text x="0" y="60" font-size="12">Body Small - 12px Regular</text>
+                <text x="0" y="90" font-size="11">Caption - 11px Regular</text>
+            </g>
+
+            <!-- Font Weights -->
+            <g transform="translate(0, 320)">
+                <text x="0" y="0" font-size="16" font-weight="300">Light - 300</text>
+                <text x="0" y="30" font-size="16" font-weight="400">Regular - 400</text>
+                <text x="0" y="60" font-size="16" font-weight="500">Medium - 500</text>
+                <text x="0" y="90" font-size="16" font-weight="600">Semibold - 600</text>
+                <text x="0" y="120" font-size="16" font-weight="700">Bold - 700</text>
+            </g>
+        </g>
+    </g>
+
+    <!-- Right Column -->
+    <g transform="translate(600, 100)">
+        <!-- UI Colors -->
+        <text x="0" y="30" font-size="20" font-weight="bold">UI Colors</text>
+
+        <g transform="translate(0, 50)">
+            <rect width="100" height="60" fill="#22C55E" rx="10"/>
+            <text x="50" y="90" text-anchor="middle" fill="#1A1A1A">Success</text>
+            <text x="50" y="110" text-anchor="middle" fill="#666">#22C55E</text>
+        </g>
+
+        <g transform="translate(120, 50)">
+            <rect width="100" height="60" fill="#EF4444" rx="10"/>
+            <text x="50" y="90" text-anchor="middle" fill="#1A1A1A">Error</text>
+            <text x="50" y="110" text-anchor="middle" fill="#666">#EF4444</text>
+        </g>
+
+        <g transform="translate(240, 50)">
+            <rect width="100" height="60" fill="#EAB308" rx="10"/>
+            <text x="50" y="90" text-anchor="middle" fill="#1A1A1A">Warning</text>
+            <text x="50" y="110" text-anchor="middle" fill="#666">#EAB308</text>
+        </g>
+
+        <g transform="translate(360, 50)">
+            <rect width="100" height="60" fill="#3B82F6" rx="10"/>
+            <text x="50" y="90" text-anchor="middle" fill="#1A1A1A">Info</text>
+            <text x="50" y="110" text-anchor="middle" fill="#666">#3B82F6</text>
+        </g>
+
+        <!-- Neutral Colors -->
+        <text x="0" y="180" font-size="20" font-weight="bold">Neutral Colors</text>
+
+        <g transform="translate(0, 200)">
+            <rect width="80" height="60" fill="#1A1A1A" rx="10"/>
+            <text x="40" y="90" text-anchor="middle" fill="#1A1A1A">900</text>
+            <text x="40" y="110" text-anchor="middle" fill="#666">#1A1A1A</text>
+        </g>
+
+        <g transform="translate(100, 200)">
+            <rect width="80" height="60" fill="#4A5568" rx="10"/>
+            <text x="40" y="90" text-anchor="middle" fill="#1A1A1A">700</text>
+            <text x="40" y="110" text-anchor="middle" fill="#666">#4A5568</text>
+        </g>
+
+        <g transform="translate(200, 200)">
+            <rect width="80" height="60" fill="#A0AEC0" rx="10"/>
+            <text x="40" y="90" text-anchor="middle" fill="#1A1A1A">500</text>
+            <text x="40" y="110" text-anchor="middle" fill="#666">#A0AEC0</text>
+        </g>
+
+        <g transform="translate(300, 200)">
+            <rect width="80" height="60" fill="#EDF2F7" rx="10"/>
+            <text x="40" y="90" text-anchor="middle" fill="#1A1A1A">200</text>
+            <text x="40" y="110" text-anchor="middle" fill="#666">#EDF2F7</text>
+        </g>
+
+        <!-- Glass Effects -->
+        <g transform="translate(0, 350)">
+            <text x="0" y="30" font-size="20" font-weight="bold">Glass Effects</text>
+
+            <rect x="0" y="50" width="200" height="100" fill="url(#glassGrad)" 
+                  stroke="rgba(255,255,255,0.5)" filter="url(#glassEffect)" rx="10"/>
+            <text x="100" y="180" text-anchor="middle" fill="#1A1A1A">Glass Panel</text>
+            <text x="100" y="200" text-anchor="middle" fill="#666">background: rgba(255,255,255,0.1)</text>
+            <text x="100" y="220" text-anchor="middle" fill="#666">backdrop-filter: blur(10px)</text>
+        </g>
+
+        <!-- CSS Variables -->
+        <g transform="translate(250, 350)">
+            <text x="0" y="30" font-size="20" font-weight="bold">CSS Variables</text>
+            <rect x="0" y="50" width="300" height="200" fill="#F8F9FA" rx="10"/>
+            <text x="20" y="80" font-size="14" fill="#666">--primary: #9333EA;</text>
+            <text x="20" y="105" font-size="14" fill="#666">--primary-light: #A855F7;</text>
+            <text x="20" y="130" font-size="14" fill="#666">--primary-dark: #7928CA;</text>
+            <text x="20" y="155" font-size="14" fill="#666">--success: #22C55E;</text>
+            <text x="20" y="180" font-size="14" fill="#666">--error: #EF4444;</text>
+            <text x="20" y="205" font-size="14" fill="#666">--warning: #EAB308;</text>
+            <text x="20" y="230" font-size="14" fill="#666">--info: #3B82F6;</text>
+        </g>
+    </g>
+
+    <!-- Bottom Section - Spacing Guidelines -->
+    <g transform="translate(50, 800)">
+        <text x="0" y="30" font-size="20" font-weight="bold">Spacing Guidelines</text>
+        <rect x="0" y="50" width="1100" height="120" fill="#F8F9FA" rx="10"/>
+        <text x="20" y="80" font-size="14" fill="#666">Base spacing unit: 4px</text>
+        <text x="20" y="105" font-size="14" fill="#666">Padding: 16px (4 units)</text>
+        <text x="20" y="130" font-size="14" fill="#666">Margin: 24px (6 units)</text>
+        <text x="20" y="155" font-size="14" fill="#666">Gap: 8px (2 units)</text>
+    </g>
+</svg>

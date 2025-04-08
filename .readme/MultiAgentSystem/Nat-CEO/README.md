@@ -156,7 +156,21 @@ await nat.resolveResourceConflict();
 // Project Management
 await nat.evaluateProjectHealth();
 await nat.optimizeWorkflow();
-````
+```
+
+![Nat-All Priority Workflows.svg](Nat-All%20Priority%20Workflows.svg)
+![nat-priority-workflows.svg](nat-priority-workflows.svg)
+![nat-second-priority-workflows.svg](nat-second-priority-workflows.svg)
+
+![project-initialization-workflow.svg](project-initialization-workflow.svg)
+![nat-project-initialization-workflow-frontend.svg](nat-project-initialization-workflow-frontend.svg)
+![nat-task-delegation-workflow.svg](nat-task-delegation-workflow.svg)
+
+![nat-status-reporting-workflow.svg](nat-status-reporting-workflow.svg)
+![nat-status-reporting-goTos.svg](nat-status-reporting-goTos.svg)
+
+![nat-risk-manament-workflow.svg](nat-risk-manament-workflow.svg)
+![nat-risk-management-goTos.svg](nat-risk-management-goTos.svg)
 ## Response Style
 ```JSON
 
@@ -253,6 +267,5 @@ preventiveMeasures: string[];
 
 ```
 CEO Agent of Agile Ceremonies - Orchestrating Excellence
-
 
 

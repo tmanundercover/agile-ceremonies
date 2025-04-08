@@ -1,10 +1,8 @@
 import React from "react";
+import {ProjectDashboard} from "./components/ProjectDashboard";
 
 export const App: React.FC = () => {
     return (
-        <div>
-            <h1>Nat CEO THN</h1>
-            <p>Welcome to the Nat CEO THN app!</p>
-        </div>
+        <ProjectDashboard />
     );
 }
