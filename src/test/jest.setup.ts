@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom';
+import React from 'react';
 
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
@@ -23,3 +24,81 @@ mockIntersectionObserver.mockImplementation((callback, options) => ({
   disconnect: jest.fn(),
 }));
 window.IntersectionObserver = mockIntersectionObserver;
+
+// Add required DOM methods for Radix UI
+Object.defineProperty(window, 'ResizeObserver', {
+  writable: true,
+  value: jest.fn().mockImplementation(() => ({
+    observe: jest.fn(),
+    unobserve: jest.fn(),
+    disconnect: jest.fn(),
+  })),
+});
+
+// Add required DOM properties for form validation
+Object.defineProperty(window.HTMLFormElement.prototype, 'checkValidity', {
+  writable: true,
+  value: () => true,
+});
+
+// Mock the ValidityState interface
+Object.defineProperty(window.HTMLInputElement.prototype, 'validity', {
+  writable: true,
+  value: {
+    valid: true,
+    badInput: false,
+    customError: false,
+    patternMismatch: false,
+    rangeOverflow: false,
+    rangeUnderflow: false,
+    stepMismatch: false,
+    tooLong: false,
+    tooShort: false,
+    typeMismatch: false,
+    valueMissing: false,
+  },
+});
+
+// Mock Radix Form components
+type FormComponentProps = {
+  children?: React.ReactNode;
+  onSubmit?: (e: React.FormEvent) => void;
+  name?: string;
+  asChild?: boolean;
+};
+
+jest.mock('@radix-ui/react-form', () => ({
+  Root: React.forwardRef<HTMLFormElement, FormComponentProps>(({ children, onSubmit }, ref) => (
+    React.createElement('form', { 
+      'data-testid': 'radix-form',
+      onSubmit,
+      ref 
+    }, children)
+  )),
+
+  Field: React.forwardRef<HTMLDivElement, FormComponentProps>(({ children, name }, ref) => (
+    React.createElement('div', { 
+      'data-field': name,
+      ref 
+    }, children)
+  )),
+
+  Label: React.forwardRef<HTMLLabelElement, FormComponentProps>(({ children }, ref) => (
+    React.createElement('label', { ref }, children)
+  )),
+
+  Control: React.forwardRef<HTMLInputElement, FormComponentProps>(({ children, asChild }, ref) => {
+    if (asChild && React.isValidElement(children)) {
+      return React.cloneElement(children, { ref });
+    }
+    return React.createElement('input', { ref }, children);
+  }),
+
+  Submit: React.forwardRef<HTMLButtonElement, FormComponentProps>(({ children }, ref) => (
+    React.createElement('button', { type: 'submit', ref }, children)
+  )),
+
+  Message: React.forwardRef<HTMLSpanElement, FormComponentProps>(({ children }, ref) => (
+    React.createElement('span', { role: 'alert', ref }, children)
+  ))
+}));

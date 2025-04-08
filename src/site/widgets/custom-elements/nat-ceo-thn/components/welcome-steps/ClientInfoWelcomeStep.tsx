@@ -18,7 +18,6 @@ interface FormData {
     zipCode: string;
 }
 
-
 interface FormErrors {
     companyName?: string;
     email?: string;
@@ -34,6 +33,7 @@ interface Props {
 const ErrorText = styled(Text)`
   color: var(--red-9);
   margin-top: 4px;
+  display: block; // Ensure consistent display
 `;
 
 const ErrorTextField = styled(TextField.Input)<{ $hasError: boolean }>`
@@ -128,7 +128,10 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (formRef.current?.checkValidity() && validateForm()) {
+        const isValid = validateForm();
+        
+        if (formRef.current?.checkValidity() && isValid) {
+            console.log('Form submitted:', formData);
             if (onNextStep) {
                 onNextStep(formData);
             }
@@ -169,6 +172,8 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
                                                         onChange={handleInputChange}
                                                         placeholder="Enter company name"
                                                         $hasError={!!errors.companyName}
+                                                        aria-label="Company Name *"
+                                                        name="companyName"
                                                     />
                                                 </Form.Control>
                                                 {errors.companyName && (
@@ -188,6 +193,8 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
                                                         value={formData.companyWebsite}
                                                         onChange={handleInputChange}
                                                         placeholder="Enter website URL"
+                                                        aria-label="Company Website"
+                                                        name="companyWebsite"
                                                     />
                                                 </Form.Control>
                                             </Form.Field>
@@ -210,6 +217,8 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
                                                             onChange={handleInputChange}
                                                             placeholder="Enter your full name"
                                                             $hasError={!!errors.fullName}
+                                                            aria-label="Your Name *"
+                                                            name="fullName"
                                                         />
                                                     </Form.Control>
                                                     {errors.fullName && (
@@ -230,6 +239,8 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
                                                             onChange={handleInputChange}
                                                             placeholder="Enter your role"
                                                             $hasError={!!errors.role}
+                                                            aria-label="Your Role *"
+                                                            name="role"
                                                         />
                                                     </Form.Control>
                                                     {errors.role && (
@@ -275,6 +286,8 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
                                                             onChange={handleInputChange}
                                                             placeholder="Enter phone number"
                                                             $hasError={!!errors.phone}
+                                                            aria-label="Phone Number *"
+                                                            name="phone"
                                                         />
                                                     </Form.Control>
                                                     {errors.phone && (
@@ -299,6 +312,8 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
                                                 value={formData.address}
                                                 onChange={handleInputChange}
                                                 placeholder="Enter street address"
+                                                aria-label="Address"
+                                                name="address"
                                             />
                                         </Form.Control>
                                     </Form.Field>
@@ -313,6 +328,8 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
                                                         value={formData.city}
                                                         onChange={handleInputChange}
                                                         placeholder="Enter city"
+                                                        aria-label="City"
+                                                        name="city"
                                                     />
                                                 </Form.Control>
                                             </Form.Field>
@@ -327,6 +344,8 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
                                                         value={formData.state}
                                                         onChange={handleInputChange}
                                                         placeholder="Enter state"
+                                                        aria-label="State"
+                                                        name="state"
                                                     />
                                                 </Form.Control>
                                             </Form.Field>
@@ -341,6 +360,8 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
                                                         value={formData.zipCode}
                                                         onChange={handleInputChange}
                                                         placeholder="Enter ZIP code"
+                                                        aria-label="ZIP Code"
+                                                        name="zipCode"
                                                     />
                                                 </Form.Control>
                                             </Form.Field>
@@ -369,3 +390,4 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
 };
 
 export default ClientInfoWelcomeStep;
+
