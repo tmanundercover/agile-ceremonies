@@ -1,0 +1,34 @@
+import type { Config } from '@jest/types';
+
+const config: Config.InitialOptions = {
+  preset: 'ts-jest',
+  testEnvironment: 'jsdom',
+  setupFilesAfterEnv: [
+    '<rootDir>/src/test/jest.setup.ts'
+  ],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  moduleNameMapper: {
+    '\\.(css|less|scss|sass)$': '<rootDir>/__mocks__/styleMock.ts',
+    '\\.(gif|ttf|eot|svg|png|jpg|jpeg)$': '<rootDir>/__mocks__/fileMock.ts',
+    '^@/(.*)$': '<rootDir>/src/$1'
+  },
+  transform: {
+    '^.+\\.(ts|tsx)$': ['ts-jest', {
+      tsconfig: 'tsconfig.json'
+    }]
+  },
+  transformIgnorePatterns: [
+    '/node_modules/(?!(@radix-ui|@testing-library)/)'
+  ],
+  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
+  coveragePathIgnorePatterns: [
+    '/node_modules/',
+    '/__tests__/',
+    '/dist/'
+  ],
+  testEnvironmentOptions: {
+    url: 'http://localhost'
+  }
+};
+
+export default config;
