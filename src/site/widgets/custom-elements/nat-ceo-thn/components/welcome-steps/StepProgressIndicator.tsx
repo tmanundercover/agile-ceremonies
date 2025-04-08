@@ -16,7 +16,7 @@ interface StepProgressIndicatorProps {
 const StyledProgressBar = styled.div`
   position: relative;
   width: 100%;
-  padding: 16px 0;
+  height: 32px;
   margin-bottom: 24px;
 
   &::before {
@@ -45,10 +45,21 @@ const StyledProgressBar = styled.div`
 `;
 
 const StepperContainer = styled.div`
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   justify-content: space-between;
-  margin: 0 16px;
+  margin: 0;
+  width: 100%;
+`;
+
+const StepIndicatorWrapper = styled.div<{ $position: number }>`
+  position: absolute;
+  left: ${props => props.$position}%;
+  transform: translateX(-50%);
 `;
 
 const StepIndicator = styled.div<{ $active: boolean }>`
@@ -80,20 +91,23 @@ export const StepProgressIndicator: React.FC<StepProgressIndicatorProps> = ({ st
         <StyledProgressBar progress={progress}>
             <div className="progress" />
             <StepperContainer>
-                {steps.map((step) => (
-                    <div key={step.number} style={{ position: 'relative' }}>
-                        <StepIndicator $active={step.active}>
-                            {step.number}
-                        </StepIndicator>
-                        <StepLabel
-                            size="2"
-                            weight={step.active ? "bold" : "regular"}
-                            color={step.active ? "purple" : "gray"}
-                        >
-                            {step.name}
-                        </StepLabel>
-                    </div>
-                ))}
+                {steps.map((step, index) => {
+                    const position = (index / (steps.length - 1)) * 100;
+                    return (
+                        <StepIndicatorWrapper key={step.number} $position={position}>
+                            <StepIndicator $active={step.active}>
+                                {step.number}
+                            </StepIndicator>
+                            <StepLabel
+                                size="2"
+                                weight={step.active ? "bold" : "regular"}
+                                color={step.active ? "purple" : "gray"}
+                            >
+                                {step.name}
+                            </StepLabel>
+                        </StepIndicatorWrapper>
+                    );
+                })}
             </StepperContainer>
         </StyledProgressBar>
     );
