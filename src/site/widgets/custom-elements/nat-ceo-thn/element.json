@@ -1,6 +1,6 @@
 {
   "$schema": "https://dev.wix.com/wix-cli/schemas/custom-element.json",
-  "id": "702b9ec7-d6b8-4a94-af66-cd74ac6c183f",
+  "id": "02ca4cef-19ff-4180-9a2d-f8eda11505c9",
   "name": "Nat-CEO@THN",
   "width": {
     "defaultWidth": 450,
@@ -19,4 +19,3 @@
     }
   ]
 }
-

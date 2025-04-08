@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Theme, Container, Flex, Text, Button, TextField } from '@radix-ui/themes';
 import * as Form from '@radix-ui/react-form';
 import styled from 'styled-components';
+import isEmail from 'validator/lib/isEmail';
 
 interface FormData {
     companyName: string;
@@ -113,7 +114,7 @@ export const ClientInfoWelcomeStep: React.FC = () => {
 
         if (!formData.email.trim()) {
             newErrors.email = 'Email is required';
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+        } else if (!isEmail(formData.email)) {
             newErrors.email = 'Invalid email format';
         }
 
@@ -213,7 +214,7 @@ export const ClientInfoWelcomeStep: React.FC = () => {
                                             />
                                         </Form.Control>
                                         {errors.companyName && (
-                                            <ErrorText size="1" as="p">
+                                            <ErrorText size="1" as="p" role="alert">
                                                 {errors.companyName}
                                             </ErrorText>
                                         )}
@@ -249,7 +250,7 @@ export const ClientInfoWelcomeStep: React.FC = () => {
                                             />
                                         </Form.Control>
                                         {errors.fullName && (
-                                            <ErrorText size="1" as="p">
+                                            <ErrorText size="1" as="p" role="alert">
                                                 {errors.fullName}
                                             </ErrorText>
                                         )}
@@ -267,7 +268,7 @@ export const ClientInfoWelcomeStep: React.FC = () => {
                                             />
                                         </Form.Control>
                                         {errors.role && (
-                                            <ErrorText size="1" as="p">
+                                            <ErrorText size="1" as="p" role="alert">
                                                 {errors.role}
                                             </ErrorText>
                                         )}
@@ -279,15 +280,16 @@ export const ClientInfoWelcomeStep: React.FC = () => {
                                             <ErrorTextField 
                                                 size="3"
                                                 type="email"
+                                                name="email"
                                                 value={formData.email}
                                                 onChange={handleInputChange}
                                                 placeholder="Enter your email"
                                                 $hasError={!!errors.email}
-                                                data-testid="email-input"
+                                                aria-label="Email Address *"
                                             />
                                         </Form.Control>
                                         {errors.email && (
-                                            <ErrorText size="1" as="p" data-testid="email-error">
+                                            <ErrorText size="1" as="p" role="alert">
                                                 {errors.email}
                                             </ErrorText>
                                         )}
@@ -305,7 +307,7 @@ export const ClientInfoWelcomeStep: React.FC = () => {
                                             />
                                         </Form.Control>
                                         {errors.phone && (
-                                            <ErrorText size="1" as="p">
+                                            <ErrorText size="1" as="p" role="alert">
                                                 {errors.phone}
                                             </ErrorText>
                                         )}
