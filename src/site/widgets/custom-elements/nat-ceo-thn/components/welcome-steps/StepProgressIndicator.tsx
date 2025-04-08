@@ -8,12 +8,11 @@ export interface Step {
     active: boolean;
 }
 
-interface StepProgressIndicatorProps {
-    steps: Step[];
+interface StyledProgressBarProps {
     progress?: number;
 }
 
-const StyledProgressBar = styled.div`
+const StyledProgressBar = styled.div<StyledProgressBarProps>`
   position: relative;
   width: 100%;
   height: 32px;
@@ -43,6 +42,11 @@ const StyledProgressBar = styled.div`
     transition: width 0.3s ease;
   }
 `;
+
+interface StepProgressIndicatorProps {
+    steps: Step[];
+    progress?: number;
+}
 
 const StepperContainer = styled.div`
   position: absolute;
