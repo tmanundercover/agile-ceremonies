@@ -1,7 +1,7 @@
 {
   "$schema": "https://dev.wix.com/wix-cli/schemas/custom-element.json",
-  "id": "03d5bf97-1cc2-46e8-96f2-5d691207aa05",
-  "name": "Markdown Editor",
+  "id": "702b9ec7-d6b8-4a94-af66-cd74ac6c183f",
+  "name": "Nat-CEO@THN",
   "width": {
     "defaultWidth": 450,
     "allowStretch": true
@@ -14,8 +14,9 @@
   },
   "presets": [
     {
-      "id": "9f8ac665-0fde-443f-bdb8-7bafb9de0f78",
-      "thumbnailUrl": "../../../../assets/markdown-editor/thumbnail.png"
+      "id": "489f958c-a475-496c-91f7-7a9e03e9fb56",
+      "thumbnailUrl": "../../../../assets/nat-ceo-thn/thumbnail.png"
     }
   ]
 }
+

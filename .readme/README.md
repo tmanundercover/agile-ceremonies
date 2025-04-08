@@ -1,8 +1,6 @@
 dashboard implementation with various components and real-time updates:
 
 ```TYPESCRIPT
-
-Collapse
 // components/dashboard/DashboardLayout.tsx
 import { Grid } from '@wix/design-system';
 import { useMetrics } from '../../hooks/useMetrics';
@@ -274,23 +272,22 @@ transition: transform 0.2s ease;
 height: 300px;
 padding: 16px;
 }
-`;```
+`;
+```
 
 This dashboard implementation includes:
 
-Responsive grid layout
-Real-time metric updates
-Interactive filters
-Export capabilities
-Animated transitions
-Data caching
-WebSocket integration
+* Responsive grid layout
+* Real-time metric updates
+* Interactive filters
+* Export capabilities
+* Animated transitions
+* Data caching
+* WebSocket integration
 
 I'll add more specialized dashboard components focusing on different aspects of the application:
 
 ```TYPESCRIPT
-
-Collapse
 // components/dashboard/widgets/PairProgrammingMetrics.tsx
 const PairProgrammingMetrics: React.FC<{ teamId: string }> = ({ teamId }) => {
   const { data: pairingStats } = usePairingStats(teamId);
@@ -476,22 +473,21 @@ const TeamCollaboration: React.FC<{ teamId: string }> = ({ teamId }) => {
       <CollaborationTrends trends={collaboration?.trends} />
     </MetricCard>
   );
-};```
+};
+```
 These components provide:
 
-Detailed metrics for different aspects of team performance
-Interactive visualizations
-Real-time updates
-Predictive analytics
-Risk assessment
-Capacity planning
-Team collaboration insights
+* Detailed metrics for different aspects of team performance
+* Interactive visualizations
+* Real-time updates
+* Predictive analytics
+* Risk assessment
+* Capacity planning
+* Team collaboration insights
 
-Part 8: Development & Deployment
-8.1 Setup Instructions
+# Part 8: Development & Deployment
+## 8.1 Setup Instructions
 ```TYPESCRIPT
-
-Collapse
 // scripts/setup.ts
 import { execSync } from 'child_process';
 import { writeFileSync } from 'fs';
@@ -525,11 +521,10 @@ const setupProject = async () => {
     console.error('Setup failed:', error);
     process.exit(1);
   }
-};```
-8.2 Development Guidelines
+};
+```
+## 8.2 Development Guidelines
 ```TYPESCRIPT
-
-Collapse
 // docs/DevelopmentGuidelines.md
 /**
  * Development Guidelines
@@ -582,10 +577,9 @@ class ErrorBoundary extends React.Component<
     return this.props.children;
   }
 }```
-8.3 Testing Strategy
+## 8.3 Testing Strategy
 ```TYPESCRIPT
 
-Collapse
 // tests/setup/jest.setup.ts
 import '@testing-library/jest-dom';
 import { server } from './mocks/server';
@@ -630,11 +624,10 @@ describe('Standup Feature', () => {
     
     expect(await findByText(/standup submitted/i)).toBeInTheDocument();
   });
-});```
-8.4 Deployment Process
-```TYPESCRIPT
-
-Collapse
+});
+```
+## 8.4 Deployment Process
+```DOCKERFILE
 // deployment/docker/Dockerfile
 FROM node:18-alpine as builder
 
@@ -698,11 +691,11 @@ kubectl apply -f deployment/kubernetes/deployment.yaml
 # Wait for rollout
 kubectl rollout status deployment/agile-app
 
-echo "Deployment complete!"```
+echo "Deployment complete!"
+```
 8.5 Monitoring & Logging
 ```TYPESCRIPT
 
-Collapse
 // monitoring/setup.ts
 import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
 import { metrics } from '@opentelemetry/api';
@@ -748,11 +741,10 @@ if (process.env.NODE_ENV !== 'production') {
   }));
 }
 
-export { logger };```
-8.6 CI/CD Pipeline
+export { logger };
+```
+## 8.6 CI/CD Pipeline
 ```YAML
-
-Collapse
 # .github/workflows/ci.yml
 name: CI/CD Pipeline
 
@@ -802,58 +794,64 @@ jobs:
         kubectl apply -f deployment/kubernetes/
 ```
 
-Final Specification Summary
-System Overview
+# Final Specification Summary
+## System Overview
+
 This comprehensive Agile Ceremonies Management Application provides a modern, extensible platform for managing agile development processes, with particular focus on Daily Standups and Pair Programming ceremonies.
 
-Key Technical Components
-Frontend Architecture
+### Key Technical Components
+#### Frontend Architecture
 
-React 18+ with TypeScript
-@wix/design-system and Radix UI for components
-Zustand for state management
-React Query for data fetching
-WebSocket for real-time updates
-Backend Architecture
+* React 18+ with TypeScript
+* @wix/design-system and Radix UI for components
+* Zustand for state management
+* React Query for data fetching
+* WebSocket for real-time updates
 
-Node.js with Express
-PostgreSQL with advanced schema design
-Redis for caching and real-time features
-WebSocket server for live updates
-Integration Points
+### Backend Architecture
 
-GitHub API integration
-Google Drive API integration
-OAuth2 authentication
-OpenAI API for AI features
-Core Features Summary
-Standup Management
+* Node.js with Express
+* PostgreSQL with advanced schema design
+* Redis for caching and real-time features
+* WebSocket server for live updates
 
-Asynchronous status submissions
-Real-time team board
-Automated summary generation
-Historical tracking
-Pair Programming
+### Integration Points
 
-Dynamic pair assignment
-Task management
-Real-time collaboration
-Performance tracking
-Analytics & Reporting
+* GitHub API integration
+* Google Drive API integration
+* OAuth2 authentication
+* OpenAI API for AI features
+* Core Features Summary
 
-Comprehensive dashboards
-Real-time metrics
-Custom report generation
-AI-powered insights
-Widget System
+### Standup Management
 
-Extensible architecture
-Inter-widget communication
-Custom widget development
-Marketplace integration
-Deployment & Infrastructure
-```MERMAID 
+* Asynchronous status submissions
+* Real-time team board
+* Automated summary generation
+* Historical tracking 
 
+### Pair Programming
+
+* Dynamic pair assignment
+* Task management
+* Real-time collaboration
+* Performance tracking
+
+### Analytics & Reporting
+
+* Comprehensive dashboards
+* Real-time metrics
+* Custom report generation
+* AI-powered insights
+* Widget System
+
+### Extensible architecture
+* Inter-widget communication
+* Custom widget development
+* Marketplace integration
+* Deployment & Infrastructure
+
+```MERMAID
 graph TD
 Client[Client Application] --> CDN[CDN]
 CDN --> LoadBalancer[Load Balancer]
@@ -867,77 +865,83 @@ AppServer1 --> Queue[Message Queue]
 AppServer2 --> Queue
 ```
 
-Performance Considerations
-Optimized bundle size
-Efficient caching strategy
-Real-time updates optimization
-Database query optimization
-Resource scaling
-Security Measures
-OAuth2 authentication
-JWT token management
-Role-based access control
-API rate limiting
-Data encryption
-Development Workflow
-Local Development
+## Performance Considerations
+* Optimized bundle size
+* Efficient caching strategy
+* Real-time updates optimization
+* Database query optimization
+* Resource scaling
+## Security Measures
+* OAuth2 authentication
+* JWT token management
+* Role-based access control
+* API rate limiting
+* Data encryption
+
+## Development Workflow
+### Local Development
 
 ```BASH
 
 npm install
 npm run setup
-npm run dev```
-Testing
+npm run dev
+```
+### Testing
 
 ```BASH
 
 npm run test
 npm run test:e2e
-npm run test:coverage```
-Deployment
+npm run test:coverage
+```
+### Deployment
 
 ```BASH
 
 npm run build
 docker-compose up
-kubectl apply -f deployment/```
-Future Roadmap
-Phase 1 (MVP)
+kubectl apply -f deployment/
+```
 
-Core standup functionality
-Basic pair programming
-Essential analytics
-Phase 2 (Enhancement)
 
-Advanced analytics
-AI integration
-Widget marketplace
-Phase 3 (Scale)
+## Future Roadmap
+### Phase 1 (MVP)
 
-Enterprise features
-Advanced integrations
-Performance optimization
-Support & Maintenance
-Monitoring setup
-Error tracking
-Performance monitoring
-User feedback system
-Regular updates
-Documentation
-API documentation (OpenAPI/Swagger)
-User guides
-Developer documentation
-Widget development guide
-Requirements
-Node.js 18+
-PostgreSQL 14+
-Redis 6+
-Docker
-Kubernetes
-Contact & Support
-GitHub repository
-Documentation site
-Support email
-Community forum
+* Core standup functionality
+* Basic pair programming
+* Essential analytics
+### Phase 2 (Enhancement)
+
+* Advanced analytics
+* AI integration
+* Widget marketplace
+### Phase 3 (Scale)
+
+* Enterprise features
+* Advanced integrations
+* Performance optimization
+### Support & Maintenance
+* Monitoring setup
+* Error tracking
+* Performance monitoring
+* User feedback system
+* Regular updates
+### Documentation 
+* API documentation (OpenAPI/Swagger)
+* User guides
+* Developer documentation
+* Widget development guide
+### Requirements
+* Node.js 18+
+* PostgreSQL 14+
+* Redis 6+
+* Docker
+* Kubernetes
+### Contact & Support
+* GitHub repository
+* Documentation site
+* Support email
+* Community forum
 
 This concludes the comprehensive specification for the Agile Ceremonies Management Application. The system is designed to be scalable, maintainable, and extensible while providing a robust platform for managing agile development processes.

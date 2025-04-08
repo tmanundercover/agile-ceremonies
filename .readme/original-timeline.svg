@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="900" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="ceoGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#9C27B0;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#BA68C8;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="pmGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#2196F3;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#64B5F6;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="devGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#4CAF50;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#81C784;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+
+    <!-- CEO - Nat -->
+    <rect x="500" y="20" width="200" height="80" fill="url(#ceoGrad)" rx="10"/>
+    <text x="600" y="65" text-anchor="middle" fill="white" font-size="20" font-family="Arial">Nat (CEO)</text>
+    <text x="600" y="85" text-anchor="middle" fill="white" font-size="12" font-family="Arial">Agile Ceremonies Overseer</text>
+
+    <!-- Connecting Lines -->
+    <line x1="600" y1="100" x2="600" y2="130" stroke="#666" stroke-width="2"/>
+    <line x1="200" y1="130" x2="1000" y2="130" stroke="#666" stroke-width="2"/>
+    <line x1="200" y1="130" x2="200" y2="160" stroke="#666" stroke-width="2"/>
+    <line x1="400" y1="130" x2="400" y2="160" stroke="#666" stroke-width="2"/>
+    <line x1="600" y1="130" x2="600" y2="160" stroke="#666" stroke-width="2"/>
+    <line x1="800" y1="130" x2="800" y2="160" stroke="#666" stroke-width="2"/>
+    <line x1="1000" y1="130" x2="1000" y2="160" stroke="#666" stroke-width="2"/>
+
+    <!-- First Tier -->
+    <g font-family="Arial">
+        <!-- Brian (PM) -->
+        <rect x="300" y="160" width="200" height="70" fill="url(#pmGrad)" rx="10"/>
+        <text x="400" y="195" text-anchor="middle" fill="white" font-size="16">Brian (PM)</text>
+        <text x="400" y="215" text-anchor="middle" fill="white" font-size="12">Pair Programming Lead</text>
+
+        <!-- Requirements - Reqqy -->
+        <rect x="100" y="160" width="180" height="70" fill="#FF9800" rx="10"/>
+        <text x="190" y="195" text-anchor="middle" fill="white" font-size="16">Reqqy</text>
+        <text x="190" y="215" text-anchor="middle" fill="white" font-size="12">Requirements Agent</text>
+
+        <!-- Dev Team -->
+        <rect x="520" y="160" width="160" height="70" fill="url(#devGrad)" rx="10"/>
+        <text x="600" y="195" text-anchor="middle" fill="white" font-size="16">James &amp; Terrell</text>
+        <text x="600" y="215" text-anchor="middle" fill="white" font-size="12">Dev Twins</text>
+
+        <!-- Josh -->
+        <rect x="700" y="160" width="200" height="70" fill="#E91E63" rx="10"/>
+        <text x="800" y="195" text-anchor="middle" fill="white" font-size="16">Josh</text>
+        <text x="800" y="215" text-anchor="middle" fill="white" font-size="12">Design &amp; Branding</text>
+
+        <!-- Man-Man -->
+        <rect x="920" y="160" width="160" height="70" fill="#FF5722" rx="10"/>
+        <text x="1000" y="195" text-anchor="middle" fill="white" font-size="16">Man-Man</text>
+        <text x="1000" y="215" text-anchor="middle" fill="white" font-size="12">Operations</text>
+    </g>
+
+    <!-- Second Tier -->
+    <g font-family="Arial">
+        <!-- Antosh -->
+        <rect x="300" y="260" width="200" height="70" fill="#673AB7" rx="10"/>
+        <text x="400" y="295" text-anchor="middle" fill="white" font-size="16">Antosh</text>
+        <text x="400" y="315" text-anchor="middle" fill="white" font-size="12">Testing &amp; Analytics</text>
+
+        <!-- Lia -->
+        <rect x="700" y="260" width="200" height="70" fill="#00BCD4" rx="10"/>
+        <text x="800" y="295" text-anchor="middle" fill="white" font-size="16">Lia</text>
+        <text x="800" y="315" text-anchor="middle" fill="white" font-size="12">Social Media &amp; Email</text>
+    </g>
+
+    <!-- Timeline Section -->
+    <rect x="100" y="380" width="1000" height="450" fill="#F5F5F5" rx="10"/>
+    <g font-family="Arial" transform="translate(120, 420)">
+        <text x="0" y="0" font-size="20" font-weight="bold" fill="#333">7-Day Implementation Timeline:</text>
+
+        <!-- Timeline Content -->
+        <g transform="translate(0, 30)">
+            <!-- Days 1-4 -->
+            <g>
+                <text x="0" y="20" font-size="16" font-weight="bold" fill="#333">Day 1: Nat (CEO Agent)</text>
+                <text x="20" y="45" font-size="14" fill="#666">• Core PM functionality</text>
+                <text x="20" y="65" font-size="14" fill="#666">• Project oversight capabilities</text>
+
+                <text x="0" y="100" font-size="16" font-weight="bold" fill="#333">Day 2: Brian (PM Agent)</text>
+                <text x="20" y="125" font-size="14" fill="#666">• Pair programming management</text>
+                <text x="20" y="145" font-size="14" fill="#666">• Sprint planning features</text>
+
+                <text x="0" y="180" font-size="16" font-weight="bold" fill="#333">Day 3: Reqqy &amp; Josh</text>
+                <text x="20" y="205" font-size="14" fill="#666">• Requirements gathering system</text>
+                <text x="20" y="225" font-size="14" fill="#666">• Design automation setup</text>
+
+                <text x="0" y="260" font-size="16" font-weight="bold" fill="#333">Day 4: James &amp; Terrell (Dev Twins)</text>
+                <text x="20" y="285" font-size="14" fill="#666">• Pair programming AI setup</text>
+                <text x="20" y="305" font-size="14" fill="#666">• Code generation capabilities</text>
+            </g>
+
+            <!-- Days 5-7 -->
+            <g transform="translate(500, 0)">
+                <text x="0" y="20" font-size="16" font-weight="bold" fill="#333">Day 5: Antosh (Testing)</text>
+                <text x="20" y="45" font-size="14" fill="#666">• Test automation framework</text>
+                <text x="20" y="65" font-size="14" fill="#666">• Analytics integration</text>
+
+                <text x="0" y="100" font-size="16" font-weight="bold" fill="#333">Day 6: Man-Man (Ops)</text>
+                <text x="20" y="125" font-size="14" fill="#666">• Infrastructure automation</text>
+                <text x="20" y="145" font-size="14" fill="#666">• Maintenance protocols</text>
+
+                <text x="0" y="180" font-size="16" font-weight="bold" fill="#333">Day 7: Lia (Social)</text>
+                <text x="20" y="205" font-size="14" fill="#666">• Social media integration</text>
+                <text x="20" y="225" font-size="14" fill="#666">• Email automation setup</text>
+            </g>
+        </g>
+    </g>
+</svg>
