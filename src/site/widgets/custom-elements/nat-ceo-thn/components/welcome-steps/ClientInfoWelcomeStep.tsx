@@ -3,6 +3,7 @@ import { Theme, Container, Flex, Text, Button, TextField } from '@radix-ui/theme
 import * as Form from '@radix-ui/react-form';
 import styled from 'styled-components';
 import isEmail from 'validator/lib/isEmail';
+import { StepProgressIndicator, Step } from './StepProgressIndicator';
 
 interface FormData {
     companyName: string;
@@ -25,52 +26,17 @@ interface FormErrors {
     phone?: string;
 }
 
-interface Step {
-    number: number;
-    name: string;
-    active: boolean;
-}
-
-const StyledProgressBar = styled.div`
-  width: 100%;
-  height: 8px;
-  background: var(--gray-4);
-  border-radius: 4px;
-  overflow: hidden;
-  margin-bottom: 24px;
-
-  .progress {
-    width: 20%;
-    height: 100%;
-    background: linear-gradient(90deg, #9333EA 0%, #A855F7 100%);
-    transition: width 0.3s ease;
-  }
-`;
-
-const StepIndicator = styled.div<{ $active: boolean }>`
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: ${props => props.$active ? 
-    'linear-gradient(90deg, #9333EA 0%, #A855F7 100%)' : 
-    'var(--gray-4)'};
-  color: ${props => props.$active ? 'white' : 'var(--gray-9)'};
-`;
-
 const ErrorText = styled(Text)`
   color: var(--red-9);
   margin-top: 4px;
 `;
 
-const ErrorTextField = styled(TextField.Input)`
-  &:focus {
-    box-shadow: ${props => props.$hasError ? '0 0 0 2px var(--red-7)' : '0 0 0 2px var(--purple-7)'};
-  }
-  
-  border-color: ${props => props.$hasError ? 'var(--red-7)' : 'var(--gray-7)'};
+const ErrorTextField = styled(TextField.Input)<{ $hasError: boolean }>`
+    &:focus {
+        box-shadow: ${props => props.$hasError ? '0 0 0 2px var(--red-7)' : '0 0 0 2px var(--purple-7)'};
+    }
+
+    border-color: ${props => props.$hasError ? 'var(--red-7)' : 'var(--gray-7)'};
 `;
 
 export const ClientInfoWelcomeStep: React.FC = () => {
@@ -154,27 +120,8 @@ export const ClientInfoWelcomeStep: React.FC = () => {
         <Theme accentColor="purple" grayColor="slate" radius="medium">
             <Container size="3" p="4">
                 <Flex direction="column" gap="4">
-                    {/* Progress Stepper */}
                     <div>
-                        <StyledProgressBar>
-                            <div className="progress" />
-                        </StyledProgressBar>
-                        <Flex justify="between" gap="4">
-                            {steps.map((step) => (
-                                <Flex key={step.number} direction="column" align="center" gap="2">
-                                    <StepIndicator $active={step.active}>
-                                        {step.number}
-                                    </StepIndicator>
-                                    <Text 
-                                        size="2" 
-                                        weight={step.active ? "bold" : "regular"}
-                                        color={step.active ? "purple" : "gray"}
-                                    >
-                                        {step.name}
-                                    </Text>
-                                </Flex>
-                            ))}
-                        </Flex>
+                        <StepProgressIndicator steps={steps} progress={20} />
                     </div>
 
                     {/* Form Container */}

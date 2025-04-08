@@ -1,4 +1,6 @@
-const config = {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var config = {
     preset: 'ts-jest',
     testEnvironment: 'jsdom',
     setupFilesAfterEnv: [
@@ -33,5 +35,5 @@ const config = {
         }
     }
 };
-export default config;
+exports.default = config;
 //# sourceMappingURL=jest.config.js.map
