@@ -13,12 +13,11 @@ const config: Config.InitialOptions = {
     '^@/(.*)$': '<rootDir>/src/$1'
   },
   transform: {
-    '^.+\\.(ts|tsx)$': ['ts-jest', {
-      tsconfig: 'tsconfig.json'
-    }]
+    '^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: 'tsconfig.json', isolatedModules: true }],
+    '^.+\\.(js|jsx)$': 'babel-jest'
   },
   transformIgnorePatterns: [
-    '/node_modules/(?!(@radix-ui|@testing-library)/)'
+    '/node_modules/(?!(@radix-ui|@testing-library|styled-components)/)'
   ],
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
   coveragePathIgnorePatterns: [
@@ -28,6 +27,12 @@ const config: Config.InitialOptions = {
   ],
   testEnvironmentOptions: {
     url: 'http://localhost'
+  },
+  globals: {
+    'ts-jest': {
+      tsconfig: 'tsconfig.json',
+      isolatedModules: true
+    }
   }
 };
 

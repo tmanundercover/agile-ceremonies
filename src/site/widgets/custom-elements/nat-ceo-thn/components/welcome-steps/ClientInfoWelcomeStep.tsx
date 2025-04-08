@@ -46,17 +46,17 @@ const StyledProgressBar = styled.div`
   }
 `;
 
-const StepIndicator = styled.div<{ active: boolean }>`
+const StepIndicator = styled.div<{ $active: boolean }>`
   width: 32px;
   height: 32px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${props => props.active ? 
+  background: ${props => props.$active ? 
     'linear-gradient(90deg, #9333EA 0%, #A855F7 100%)' : 
     'var(--gray-4)'};
-  color: ${props => props.active ? 'white' : 'var(--gray-9)'};
+  color: ${props => props.$active ? 'white' : 'var(--gray-9)'};
 `;
 
 const ErrorText = styled(Text)`
@@ -64,12 +64,12 @@ const ErrorText = styled(Text)`
   margin-top: 4px;
 `;
 
-const ErrorTextField = styled(TextField.Input)<{ hasError?: boolean }>`
+const ErrorTextField = styled(TextField.Input)`
   &:focus {
-    box-shadow: ${props => props.hasError ? '0 0 0 2px var(--red-7)' : '0 0 0 2px var(--purple-7)'};
+    box-shadow: ${props => props.$hasError ? '0 0 0 2px var(--red-7)' : '0 0 0 2px var(--purple-7)'};
   }
   
-  border-color: ${props => props.hasError ? 'var(--red-7)' : 'var(--gray-7)'};
+  border-color: ${props => props.$hasError ? 'var(--red-7)' : 'var(--gray-7)'};
 `;
 
 export const ClientInfoWelcomeStep: React.FC = () => {
@@ -161,7 +161,7 @@ export const ClientInfoWelcomeStep: React.FC = () => {
                         <Flex justify="between" gap="4">
                             {steps.map((step) => (
                                 <Flex key={step.number} direction="column" align="center" gap="2">
-                                    <StepIndicator active={step.active}>
+                                    <StepIndicator $active={step.active}>
                                         {step.number}
                                     </StepIndicator>
                                     <Text 
@@ -209,7 +209,7 @@ export const ClientInfoWelcomeStep: React.FC = () => {
                                                 value={formData.companyName}
                                                 onChange={handleInputChange}
                                                 placeholder="Enter company name"
-                                                hasError={!!errors.companyName}
+                                                $hasError={!!errors.companyName}
                                             />
                                         </Form.Control>
                                         {errors.companyName && (
@@ -245,7 +245,7 @@ export const ClientInfoWelcomeStep: React.FC = () => {
                                                 value={formData.fullName}
                                                 onChange={handleInputChange}
                                                 placeholder="Enter your full name"
-                                                hasError={!!errors.fullName}
+                                                $hasError={!!errors.fullName}
                                             />
                                         </Form.Control>
                                         {errors.fullName && (
@@ -263,7 +263,7 @@ export const ClientInfoWelcomeStep: React.FC = () => {
                                                 value={formData.role}
                                                 onChange={handleInputChange}
                                                 placeholder="Enter your role"
-                                                hasError={!!errors.role}
+                                                $hasError={!!errors.role}
                                             />
                                         </Form.Control>
                                         {errors.role && (
@@ -282,11 +282,12 @@ export const ClientInfoWelcomeStep: React.FC = () => {
                                                 value={formData.email}
                                                 onChange={handleInputChange}
                                                 placeholder="Enter your email"
-                                                hasError={!!errors.email}
+                                                $hasError={!!errors.email}
+                                                data-testid="email-input"
                                             />
                                         </Form.Control>
                                         {errors.email && (
-                                            <ErrorText size="1" as="p">
+                                            <ErrorText size="1" as="p" data-testid="email-error">
                                                 {errors.email}
                                             </ErrorText>
                                         )}
@@ -300,7 +301,7 @@ export const ClientInfoWelcomeStep: React.FC = () => {
                                                 value={formData.phone}
                                                 onChange={handleInputChange}
                                                 placeholder="Enter phone number"
-                                                hasError={!!errors.phone}
+                                                $hasError={!!errors.phone}
                                             />
                                         </Form.Control>
                                         {errors.phone && (

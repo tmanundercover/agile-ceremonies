@@ -2,7 +2,14 @@
   "extends": "@wix/cli-app/tsconfig.app.json",
   "compilerOptions": {
     "rootDir": "src",
-    "types": ["react"]
+    "types": ["react"],
+    "module": "esnext",
+    "moduleResolution": "node"
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "src/**/__tests__/**/*",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx"
+  ]
 }

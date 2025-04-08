@@ -40,14 +40,15 @@ describe('ClientInfoWelcomeStep', () => {
     it('validates email format', async () => {
         render(<ClientInfoWelcomeStep />);
         
-        const emailInput = screen.getByPlaceholderText('Enter your email');
+        const emailInput = screen.getByTestId('email-input');
         fireEvent.change(emailInput, { target: { value: 'invalid-email' } });
         
         const submitButton = screen.getByText('Next: Project Overview');
         fireEvent.click(submitButton);
 
         await waitFor(() => {
-            expect(screen.getByText('Invalid email format')).toBeTruthy();
+            const errorMessage = screen.getByTestId('email-error');
+            expect(errorMessage).toHaveTextContent('Invalid email format');
         });
     });
 
