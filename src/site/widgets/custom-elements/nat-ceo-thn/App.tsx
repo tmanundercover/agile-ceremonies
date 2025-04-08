@@ -1,8 +1,12 @@
 import React from "react";
-import {ProjectDashboard} from "./components/ProjectDashboard";
+import { Theme } from '@radix-ui/themes';
+import '@radix-ui/themes/styles.css';
+import { ClientInfoWelcomeStep } from "./components/welcome-steps/ClientInfoWelcomeStep";
 
 export const App: React.FC = () => {
     return (
-        <ProjectDashboard />
+        <Theme>
+            <ClientInfoWelcomeStep />
+        </Theme>
     );
 }
