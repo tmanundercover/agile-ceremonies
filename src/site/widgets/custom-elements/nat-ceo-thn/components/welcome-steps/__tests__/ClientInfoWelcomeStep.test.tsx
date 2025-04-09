@@ -56,4 +56,85 @@ describe('ClientInfoWelcomeStep', () => {
       }));
     });
   });
+
+  it('displays validation errors for required fields when submitting empty form', async () => {
+    render(<ClientInfoWelcomeStep onNextStep={mockOnNextStep} />);
+    
+    fireEvent.click(screen.getByText(/Next: Project Overview/i));
+
+    await waitFor(() => {
+      expect(screen.getByText(/Company Name is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/Your Name is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/Your Role is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/Email Address is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/Phone Number is required/i)).toBeInTheDocument();
+    });
+    
+    expect(mockOnNextStep).not.toHaveBeenCalled();
+  });
+
+  it('validates email format correctly', async () => {
+    render(<ClientInfoWelcomeStep onNextStep={mockOnNextStep} />);
+    
+    // Fill required fields except email
+    await userEvent.type(screen.getByLabelText(/Company Name/i), 'Test Company');
+    await userEvent.type(screen.getByLabelText(/Your Name/i), 'John Doe');
+    await userEvent.type(screen.getByLabelText(/Your Role/i), 'Manager');
+    await userEvent.type(screen.getByLabelText(/Phone Number/i), '1234567890');
+    
+    const emailInput = screen.getByLabelText(/Email Address/i);
+    
+    // Test invalid email
+    await userEvent.type(emailInput, 'invalid@');
+    fireEvent.blur(emailInput);
+    
+    await waitFor(() => {
+        const errorElement = screen.getByText('Please enter a valid email address');
+        expect(errorElement).toBeInTheDocument();
+    });
+  });
+
+  it('preserves email validation state on blur', async () => {
+    render(<ClientInfoWelcomeStep onNextStep={mockOnNextStep} />);
+    
+    const emailInput = screen.getByLabelText(/Email Address/i);
+    
+    // Test invalid email
+    await userEvent.type(emailInput, 'invalid@');
+    fireEvent.blur(emailInput);
+    
+    await waitFor(() => {
+        const errorElement = screen.getByText('Please enter a valid email address');
+        expect(errorElement).toBeInTheDocument();
+    });
+    
+    // Test valid email
+    await userEvent.clear(emailInput);
+    await userEvent.type(emailInput, 'valid@email.com');
+    fireEvent.blur(emailInput);
+    
+    await waitFor(() => {
+        expect(screen.queryByText('Please enter a valid email address')).not.toBeInTheDocument();
+    });
+  });
+
+  it('formats phone number correctly', async () => {
+    render(<ClientInfoWelcomeStep onNextStep={mockOnNextStep} />);
+    
+    const phoneInput = screen.getByLabelText(/Phone Number/i);
+    await userEvent.type(phoneInput, '1234567890');
+    
+    expect(phoneInput).toHaveValue('(123) 456-7890');
+  });
+
+  it('preserves field values on re-render', async () => {
+    const { rerender } = render(<ClientInfoWelcomeStep onNextStep={mockOnNextStep} />);
+    
+    await userEvent.type(screen.getByLabelText(/Company Name/i), 'Test Company');
+    
+    rerender(<ClientInfoWelcomeStep onNextStep={mockOnNextStep} />);
+    
+    expect(screen.getByLabelText(/Company Name/i)).toHaveValue('Test Company');
+  });
 });
+

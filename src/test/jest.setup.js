@@ -5,10 +5,6 @@ import { toMatchImageSnapshot } from 'jest-image-snapshot';
 // Setup globals for tests
 global.React = React;
 global.ReactDOM = ReactDOM;
-// Extend Jest matchers with all Testing Library matchers
-expect.extend({
-    ...'@testing-library/jest-dom'.matchers,
-});
 // Configure and add image snapshot matcher
 const customConfig = {
     customDiffConfig: {

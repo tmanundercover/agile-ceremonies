@@ -82,47 +82,69 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({onNextStep}) => {
         {number: 5, name: 'Requirements', active: false}
     ];
 
-const validateForm = (): boolean => {
-    const newErrors: FormErrors = {};
+    const validateForm = (): boolean => {
+        const newErrors: FormErrors = {};
 
-    if (!formData.companyName.trim()) {
-        newErrors.companyName = 'Company name is required';
-    }
+        if (!formData.companyName.trim()) {
+            newErrors.companyName = 'Company name is required';
+        }
 
-    if (!formData.fullName.trim()) {
-        newErrors.fullName = 'Full name is required';
-    }
+        if (!formData.fullName.trim()) {
+            newErrors.fullName = 'Your name is required';
+        }
 
-    if (!formData.role.trim()) {
-        newErrors.role = 'Role is required';
-    }
+        if (!formData.role.trim()) {
+            newErrors.role = 'Your role is required';
+        }
 
-    if (!formData.email.trim()) {
-        newErrors.email = 'Email is required';
-    } else if (!isEmail(formData.email)) {
-        newErrors.email = 'Invalid email format';
-    }
+        if (!formData.email.trim()) {
+            newErrors.email = 'Email address is required';
+        } else if (!isEmail(formData.email)) {
+            newErrors.email = 'Please enter a valid email address';
+        }
 
-    if (!formData.phone.trim()) {
-        newErrors.phone = 'Phone number is required';
-    }
+        if (!formData.phone.trim()) {
+            newErrors.phone = 'Phone number is required';
+        }
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-};
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    const formatPhoneNumber = (value: string): string => {
+        const numbers = value.replace(/\D/g, '').substring(0, 10);
+        if (numbers.length === 10) {
+            return `(${numbers.slice(0, 3)}) ${numbers.slice(3, 6)}-${numbers.slice(6)}`;
+        }
+        return numbers;
+    };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
+        let newValue = value;
+
+        if (name === 'phone') {
+            newValue = formatPhoneNumber(value);
+        }
+
         setFormData(prev => ({
             ...prev,
-            [name]: value
+            [name]: newValue
         }));
-        // Clear error when user starts typing
-        if (errors[name as keyof FormErrors]) {
-            setErrors(prev => ({
-                ...prev,
-                [name]: undefined
-            }));
+
+        // Immediately validate email on change
+        if (name === 'email' && value) {
+            if (!isEmail(value)) {
+                setErrors(prev => ({
+                    ...prev,
+                    email: 'Please enter a valid email address'
+                }));
+            } else {
+                setErrors(prev => ({
+                    ...prev,
+                    email: undefined
+                }));
+            }
         }
     };
 
@@ -245,7 +267,7 @@ const validateForm = (): boolean => {
                                                         />
                                                     </Form.Control>
                                                     {errors.role && (
-                                                        <FieldErrorText fieldName={'companyName'}/>
+                                                        <FieldErrorText fieldName={'role'}/>
                                                     )}
                                                 </Form.Field>
                                             </FormFieldWrapper>
@@ -268,7 +290,7 @@ const validateForm = (): boolean => {
                                                         />
                                                     </Form.Control>
                                                     {errors.email && (
-                                                        <FieldErrorText fieldName={'email'} />
+                                                        <FieldErrorText fieldName="email" />
                                                     )}
                                                 </Form.Field>
                                             </FormFieldWrapper>
@@ -365,16 +387,18 @@ const validateForm = (): boolean => {
                                 </Flex>
 
                                 {/* Submit Button */}
-                                <Button
-                                    size="3"
-                                    style={{
-                                        background: 'linear-gradient(90deg, #9333EA 0%, #A855F7 100%)',
-                                        width: '100%'
-                                    }}
-                                    type="submit"
-                                >
-                                    Next: Project Overview
-                                </Button>
+                                <Flex gap="4">
+                                    <Button
+                                        size="3"
+                                        style={{
+                                            background: 'linear-gradient(90deg, #9333EA 0%, #A855F7 100%)',
+                                            width: '100%'
+                                        }}
+                                        type="submit"
+                                    >
+                                        Next: Project Overview
+                                    </Button>
+                                </Flex>
                             </Flex>
                         </FormContainer>
                     </Form.Root>

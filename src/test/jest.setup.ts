@@ -7,13 +7,17 @@ import {MatchImageSnapshotOptions, toMatchImageSnapshot} from 'jest-image-snapsh
 (global as any).React = React;
 (global as any).ReactDOM = ReactDOM;
 
-// Extend Jest matchers with all Testing Library matchers
-expect.extend({
-  ...('@testing-library/jest-dom' as any).matchers,
-});
+// Import types for @testing-library/jest-dom
+declare global {
+  namespace jest {
+    interface Matchers<R> {
+      toMatchImageSnapshot(options?: MatchImageSnapshotOptions): R;
+    }
+  }
+}
 
 // Configure and add image snapshot matcher
-const customConfig:MatchImageSnapshotOptions = {
+const customConfig: MatchImageSnapshotOptions = {
   customDiffConfig: {
     threshold: 0.1,
   },
