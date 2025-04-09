@@ -1,104 +1,16 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 
-// Mock window.matchMedia
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: jest.fn().mockImplementation(query => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: jest.fn(),
-    removeListener: jest.fn(),
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
-  })),
+// Extend Jest matchers with all Testing Library matchers
+expect.extend({
+  ...('@testing-library/jest-dom' as any).matchers,
 });
 
-// Mock IntersectionObserver
-const mockIntersectionObserver = jest.fn();
-mockIntersectionObserver.mockImplementation((callback, options) => ({
-  observe: jest.fn(),
-  unobserve: jest.fn(),
-  disconnect: jest.fn(),
-}));
-window.IntersectionObserver = mockIntersectionObserver;
-
-// Add required DOM methods for Radix UI
-Object.defineProperty(window, 'ResizeObserver', {
-  writable: true,
-  value: jest.fn().mockImplementation(() => ({
-    observe: jest.fn(),
-    unobserve: jest.fn(),
-    disconnect: jest.fn(),
-  })),
-});
-
-// Add required DOM properties for form validation
-Object.defineProperty(window.HTMLFormElement.prototype, 'checkValidity', {
-  writable: true,
-  value: () => true,
-});
-
-// Mock the ValidityState interface
-Object.defineProperty(window.HTMLInputElement.prototype, 'validity', {
-  writable: true,
-  value: {
-    valid: true,
-    badInput: false,
-    customError: false,
-    patternMismatch: false,
-    rangeOverflow: false,
-    rangeUnderflow: false,
-    stepMismatch: false,
-    tooLong: false,
-    tooShort: false,
-    typeMismatch: false,
-    valueMissing: false,
-  },
-});
-
-// Mock Radix Form components
-type FormComponentProps = {
-  children?: React.ReactNode;
-  onSubmit?: (e: React.FormEvent) => void;
-  name?: string;
-  asChild?: boolean;
+// Suppress act() warnings
+const originalError = console.error;
+console.error = (...args) => {
+  if (/Warning.*not wrapped in act/.test(args[0])) {
+    return;
+  }
+  originalError.call(console, ...args);
 };
-
-jest.mock('@radix-ui/react-form', () => ({
-  Root: React.forwardRef<HTMLFormElement, FormComponentProps>(({ children, onSubmit }, ref) => (
-    React.createElement('form', { 
-      'data-testid': 'radix-form',
-      onSubmit,
-      ref 
-    }, children)
-  )),
-
-  Field: React.forwardRef<HTMLDivElement, FormComponentProps>(({ children, name }, ref) => (
-    React.createElement('div', { 
-      'data-field': name,
-      ref 
-    }, children)
-  )),
-
-  Label: React.forwardRef<HTMLLabelElement, FormComponentProps>(({ children }, ref) => (
-    React.createElement('label', { ref }, children)
-  )),
-
-  Control: React.forwardRef<HTMLInputElement, FormComponentProps>(({ children, asChild }, ref) => {
-    if (asChild && React.isValidElement(children)) {
-      return React.cloneElement(children, { ref });
-    }
-    return React.createElement('input', { ref }, children);
-  }),
-
-  Submit: React.forwardRef<HTMLButtonElement, FormComponentProps>(({ children }, ref) => (
-    React.createElement('button', { type: 'submit', ref }, children)
-  )),
-
-  Message: React.forwardRef<HTMLSpanElement, FormComponentProps>(({ children }, ref) => (
-    React.createElement('span', { role: 'alert', ref }, children)
-  ))
-}));

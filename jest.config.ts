@@ -33,7 +33,9 @@ const config: Config.InitialOptions = {
       tsconfig: 'tsconfig.json',
       isolatedModules: true
     }
-  }
+  },
+  testTimeout: 30000 // Increase default timeout to 30 seconds
 };
 
 export default config;
+

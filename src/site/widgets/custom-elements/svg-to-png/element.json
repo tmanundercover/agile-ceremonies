@@ -1,6 +1,6 @@
 {
   "$schema": "https://dev.wix.com/wix-cli/schemas/custom-element.json",
-  "id": "0a5a931a-25cf-4dc5-aa53-05556edfe268",
+  "id": "5a898a2f-784d-47d5-a2b4-072a6cb51b00",
   "name": "SVG to PNG",
   "width": {
     "defaultWidth": 450,

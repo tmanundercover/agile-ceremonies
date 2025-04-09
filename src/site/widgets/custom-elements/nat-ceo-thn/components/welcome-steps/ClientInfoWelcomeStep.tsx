@@ -1,9 +1,9 @@
-import React, { useState, useRef } from 'react';
-import { Theme, Container, Flex, Text, Button, TextField } from '@radix-ui/themes';
+import React, {useRef, useState} from 'react';
+import {Button, Container, Flex, Text, TextField, Theme} from '@radix-ui/themes';
 import * as Form from '@radix-ui/react-form';
 import styled from 'styled-components';
 import isEmail from 'validator/lib/isEmail';
-import { StepProgressIndicator, Step } from './StepProgressIndicator';
+import {Step, StepProgressIndicator} from './StepProgressIndicator';
 
 interface FormData {
     companyName: string;
@@ -31,9 +31,9 @@ interface Props {
 }
 
 const ErrorText = styled(Text)`
-  color: var(--red-9);
-  margin-top: 4px;
-  display: block; // Ensure consistent display
+    color: var(--red-9);
+    margin-top: 4px;
+    display: block; // Ensure consistent display
 `;
 
 const ErrorTextField = styled(TextField.Input)<{ $hasError: boolean }>`
@@ -57,7 +57,7 @@ const FormFieldWrapper = styled.div<{ $width: string }>`
     min-width: 250px;
 `;
 
-export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
+export const ClientInfoWelcomeStep: React.FC<Props> = ({onNextStep}) => {
     const [formData, setFormData] = useState<FormData>({
         companyName: '',
         companyWebsite: '',
@@ -75,11 +75,11 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
     const formRef = useRef<HTMLFormElement>(null);
 
     const steps: Step[] = [
-        { number: 1, name: 'Client Info', active: true },
-        { number: 2, name: 'Project', active: false },
-        { number: 3, name: 'Digital', active: false },
-        { number: 4, name: 'Brand', active: false },
-        { number: 5, name: 'Requirements', active: false }
+        {number: 1, name: 'Client Info', active: true},
+        {number: 2, name: 'Project', active: false},
+        {number: 3, name: 'Digital', active: false},
+        {number: 4, name: 'Brand', active: false},
+        {number: 5, name: 'Requirements', active: false}
     ];
 
     const validateForm = (): boolean => {
@@ -112,7 +112,7 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setFormData(prev => ({
             ...prev,
             [name]: value
@@ -129,7 +129,7 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const isValid = validateForm();
-        
+
         if (formRef.current?.checkValidity() && isValid) {
             console.log('Form submitted:', formData);
             if (onNextStep) {
@@ -138,12 +138,17 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
         }
     };
 
+    const FieldErrorText = (props: { fieldName: string }) =>
+        (<ErrorText size="1" as="p" role="alert" aria-label={`${props.fieldName} error`}>
+            {errors[props.fieldName as keyof FormErrors]}
+        </ErrorText>)
+
     return (
         <Theme accentColor="purple" grayColor="slate" radius="medium">
             <Container size="3" p="4">
                 <Flex direction="column" gap="4">
                     <div>
-                        <StepProgressIndicator steps={steps} progress={20} />
+                        <StepProgressIndicator steps={steps} progress={20}/>
                     </div>
 
                     <Form.Root ref={formRef} onSubmit={handleSubmit}>
@@ -166,7 +171,7 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
                                             <Form.Field name="companyName">
                                                 <Form.Label>Company Name *</Form.Label>
                                                 <Form.Control asChild>
-                                                    <ErrorTextField 
+                                                    <ErrorTextField
                                                         size="3"
                                                         value={formData.companyName}
                                                         onChange={handleInputChange}
@@ -177,9 +182,7 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
                                                     />
                                                 </Form.Control>
                                                 {errors.companyName && (
-                                                    <ErrorText size="1" as="p" role="alert">
-                                                        {errors.companyName}
-                                                    </ErrorText>
+                                                    <FieldErrorText fieldName={'companyName'}/>
                                                 )}
                                             </Form.Field>
                                         </FormFieldWrapper>
@@ -188,7 +191,7 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
                                             <Form.Field name="companyWebsite">
                                                 <Form.Label>Company Website</Form.Label>
                                                 <Form.Control asChild>
-                                                    <TextField.Input 
+                                                    <TextField.Input
                                                         size="3"
                                                         value={formData.companyWebsite}
                                                         onChange={handleInputChange}
@@ -211,7 +214,7 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
                                                 <Form.Field name="fullName">
                                                     <Form.Label>Your Name *</Form.Label>
                                                     <Form.Control asChild>
-                                                        <ErrorTextField 
+                                                        <ErrorTextField
                                                             size="3"
                                                             value={formData.fullName}
                                                             onChange={handleInputChange}
@@ -222,9 +225,7 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
                                                         />
                                                     </Form.Control>
                                                     {errors.fullName && (
-                                                        <ErrorText size="1" as="p" role="alert">
-                                                            {errors.fullName}
-                                                        </ErrorText>
+                                                        <FieldErrorText fieldName={'fullName'}/>
                                                     )}
                                                 </Form.Field>
                                             </FormFieldWrapper>
@@ -233,7 +234,7 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
                                                 <Form.Field name="role">
                                                     <Form.Label>Your Role *</Form.Label>
                                                     <Form.Control asChild>
-                                                        <ErrorTextField 
+                                                        <ErrorTextField
                                                             size="3"
                                                             value={formData.role}
                                                             onChange={handleInputChange}
@@ -244,9 +245,7 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
                                                         />
                                                     </Form.Control>
                                                     {errors.role && (
-                                                        <ErrorText size="1" as="p" role="alert">
-                                                            {errors.role}
-                                                        </ErrorText>
+                                                        <FieldErrorText fieldName={'companyName'}/>
                                                     )}
                                                 </Form.Field>
                                             </FormFieldWrapper>
@@ -257,7 +256,7 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
                                                 <Form.Field name="email">
                                                     <Form.Label>Email Address *</Form.Label>
                                                     <Form.Control asChild>
-                                                        <ErrorTextField 
+                                                        <ErrorTextField
                                                             size="3"
                                                             type="email"
                                                             name="email"
@@ -269,9 +268,7 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
                                                         />
                                                     </Form.Control>
                                                     {errors.email && (
-                                                        <ErrorText size="1" as="p" role="alert">
-                                                            {errors.email}
-                                                        </ErrorText>
+                                                        <FieldErrorText fieldName={'email'} />
                                                     )}
                                                 </Form.Field>
                                             </FormFieldWrapper>
@@ -280,7 +277,7 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
                                                 <Form.Field name="phone">
                                                     <Form.Label>Phone Number *</Form.Label>
                                                     <Form.Control asChild>
-                                                        <ErrorTextField 
+                                                        <ErrorTextField
                                                             size="3"
                                                             value={formData.phone}
                                                             onChange={handleInputChange}
@@ -291,9 +288,7 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
                                                         />
                                                     </Form.Control>
                                                     {errors.phone && (
-                                                        <ErrorText size="1" as="p" role="alert">
-                                                            {errors.phone}
-                                                        </ErrorText>
+                                                        <FieldErrorText fieldName={'phone'} />
                                                     )}
                                                 </Form.Field>
                                             </FormFieldWrapper>
@@ -307,7 +302,7 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
                                     <Form.Field name="address">
                                         <Form.Label>Address</Form.Label>
                                         <Form.Control asChild>
-                                            <TextField.Input 
+                                            <TextField.Input
                                                 size="3"
                                                 value={formData.address}
                                                 onChange={handleInputChange}
@@ -323,7 +318,7 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
                                             <Form.Field name="city">
                                                 <Form.Label>City</Form.Label>
                                                 <Form.Control asChild>
-                                                    <TextField.Input 
+                                                    <TextField.Input
                                                         size="3"
                                                         value={formData.city}
                                                         onChange={handleInputChange}
@@ -339,7 +334,7 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
                                             <Form.Field name="state">
                                                 <Form.Label>State</Form.Label>
                                                 <Form.Control asChild>
-                                                    <TextField.Input 
+                                                    <TextField.Input
                                                         size="3"
                                                         value={formData.state}
                                                         onChange={handleInputChange}
@@ -355,7 +350,7 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
                                             <Form.Field name="zipCode">
                                                 <Form.Label>ZIP Code</Form.Label>
                                                 <Form.Control asChild>
-                                                    <TextField.Input 
+                                                    <TextField.Input
                                                         size="3"
                                                         value={formData.zipCode}
                                                         onChange={handleInputChange}
@@ -370,8 +365,8 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
                                 </Flex>
 
                                 {/* Submit Button */}
-                                <Button 
-                                    size="3" 
+                                <Button
+                                    size="3"
                                     style={{
                                         background: 'linear-gradient(90deg, #9333EA 0%, #A855F7 100%)',
                                         width: '100%'
@@ -390,4 +385,3 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({ onNextStep }) => {
 };
 
 export default ClientInfoWelcomeStep;
-

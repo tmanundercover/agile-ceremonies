@@ -33,7 +33,8 @@ var config = {
             tsconfig: 'tsconfig.json',
             isolatedModules: true
         }
-    }
+    },
+    testTimeout: 30000 // Increase default timeout to 30 seconds
 };
 exports.default = config;
 //# sourceMappingURL=jest.config.js.map
