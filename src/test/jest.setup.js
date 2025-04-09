@@ -1,20 +1,31 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { toMatchImageSnapshot } from 'jest-image-snapshot';
+import { configureToMatchImageSnapshot } from 'jest-image-snapshot';
 // Setup globals for tests
 global.React = React;
 global.ReactDOM = ReactDOM;
-// Configure and add image snapshot matcher
-const customConfig = {
+// Configure base image snapshot matcher
+const toMatchImageSnapshot = configureToMatchImageSnapshot({
     customDiffConfig: {
         threshold: 0.1,
     },
     failureThreshold: 0.02,
     failureThresholdType: 'percent',
-};
+});
+// Configure visual snapshot matcher
+const toMatchVisualSnapshot = configureToMatchImageSnapshot({
+    customDiffConfig: {
+        threshold: 0.01,
+    },
+    failureThreshold: 0.01,
+    failureThresholdType: 'percent',
+    customSnapshotsDir: '__image_snapshots__/visual',
+});
+// Extend Jest's expect
 expect.extend({
-    toMatchImageSnapshot: (received) => toMatchImageSnapshot.call(expect(received), customConfig)
+    toMatchImageSnapshot,
+    toMatchVisualSnapshot
 });
 // Suppress act() warnings and useLayoutEffect warnings
 const originalError = console.error;

@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {MatchImageSnapshotOptions, toMatchImageSnapshot} from 'jest-image-snapshot';
+import { configureToMatchImageSnapshot } from 'jest-image-snapshot';
 
 // Setup globals for tests
 (global as any).React = React;
@@ -11,22 +11,35 @@ import {MatchImageSnapshotOptions, toMatchImageSnapshot} from 'jest-image-snapsh
 declare global {
   namespace jest {
     interface Matchers<R> {
-      toMatchImageSnapshot(options?: MatchImageSnapshotOptions): R;
+      toMatchImageSnapshot(options?: any): R;
+      toMatchVisualSnapshot(options?: any): R;
     }
   }
 }
 
-// Configure and add image snapshot matcher
-const customConfig: MatchImageSnapshotOptions = {
+// Configure base image snapshot matcher
+const toMatchImageSnapshot = configureToMatchImageSnapshot({
   customDiffConfig: {
     threshold: 0.1,
   },
   failureThreshold: 0.02,
   failureThresholdType: 'percent',
-};
+});
 
-expect.extend({
-  toMatchImageSnapshot: (received: any) => toMatchImageSnapshot.call(expect(received), customConfig)
+// Configure visual snapshot matcher
+const toMatchVisualSnapshot = configureToMatchImageSnapshot({
+  customDiffConfig: {
+    threshold: 0.01,
+  },
+  failureThreshold: 0.01,
+  failureThresholdType: 'percent',
+  customSnapshotsDir: '__image_snapshots__/visual',
+});
+
+// Extend Jest's expect
+expect.extend({ 
+  toMatchImageSnapshot,
+  toMatchVisualSnapshot
 });
 
 // Suppress act() warnings and useLayoutEffect warnings
@@ -38,3 +51,4 @@ console.error = (...args) => {
   }
   originalError.call(console, ...args);
 };
+
