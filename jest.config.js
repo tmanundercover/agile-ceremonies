@@ -1,40 +1,26 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var config = {
+const config = {
     preset: 'ts-jest',
     testEnvironment: 'jsdom',
-    setupFilesAfterEnv: [
-        '<rootDir>/src/test/jest.setup.ts'
-    ],
+    setupFilesAfterEnv: ['<rootDir>/src/test/jest.setup.ts'],
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-    moduleNameMapper: {
-        '\\.(css|less|scss|sass)$': '<rootDir>/__mocks__/styleMock.ts',
-        '\\.(gif|ttf|eot|svg|png|jpg|jpeg)$': '<rootDir>/__mocks__/fileMock.ts',
-        '^@/(.*)$': '<rootDir>/src/$1'
-    },
     transform: {
-        '^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: 'tsconfig.json', isolatedModules: true }],
-        '^.+\\.(js|jsx)$': 'babel-jest'
+        '^.+\\.tsx?$': ['ts-jest', {
+                tsconfig: 'tsconfig.json',
+                isolatedModules: true,
+            }],
     },
+    moduleNameMapper: {
+        '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+        '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/src/test/__mocks__/fileMock.js'
+    },
+    testMatch: [
+        "**/__tests__/**/*.[jt]sx", // Changed to only match tsx files in __tests__ directories
+        "**/*.test.[jt]sx", // Changed to only match tsx test files
+        "**/*.spec.[jt]sx" // Changed to only match tsx spec files
+    ],
     transformIgnorePatterns: [
-        '/node_modules/(?!(@radix-ui|@testing-library|styled-components)/)'
-    ],
-    testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
-    coveragePathIgnorePatterns: [
-        '/node_modules/',
-        '/__tests__/',
-        '/dist/'
-    ],
-    testEnvironmentOptions: {
-        url: 'http://localhost'
-    },
-    globals: {
-        'ts-jest': {
-            tsconfig: 'tsconfig.json',
-            isolatedModules: true
-        }
-    },
-    testTimeout: 30000 // Increase default timeout to 30 seconds
+        "/node_modules/(?!(@radix-ui|@babel/runtime)/)"
+    ]
 };
-exports.default = config;
+export default config;
 //# sourceMappingURL=jest.config.js.map
