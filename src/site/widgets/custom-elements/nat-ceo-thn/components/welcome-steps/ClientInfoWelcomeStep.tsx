@@ -82,34 +82,34 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({onNextStep}) => {
         {number: 5, name: 'Requirements', active: false}
     ];
 
-    const validateForm = (): boolean => {
-        const newErrors: FormErrors = {};
+const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
 
-        if (!formData.companyName.trim()) {
-            newErrors.companyName = 'Company name is required';
-        }
+    if (!formData.companyName.trim()) {
+        newErrors.companyName = 'Company name is required';
+    }
 
-        if (!formData.fullName.trim()) {
-            newErrors.fullName = 'Full name is required';
-        }
+    if (!formData.fullName.trim()) {
+        newErrors.fullName = 'Full name is required';
+    }
 
-        if (!formData.role.trim()) {
-            newErrors.role = 'Role is required';
-        }
+    if (!formData.role.trim()) {
+        newErrors.role = 'Role is required';
+    }
 
-        if (!formData.email.trim()) {
-            newErrors.email = 'Email is required';
-        } else if (!isEmail(formData.email)) {
-            newErrors.email = 'Invalid email format';
-        }
+    if (!formData.email.trim()) {
+        newErrors.email = 'Email is required';
+    } else if (!isEmail(formData.email)) {
+        newErrors.email = 'Invalid email format';
+    }
 
-        if (!formData.phone.trim()) {
-            newErrors.phone = 'Phone number is required';
-        }
+    if (!formData.phone.trim()) {
+        newErrors.phone = 'Phone number is required';
+    }
 
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+};
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
