@@ -26,13 +26,8 @@ describe('ClientInfoWelcomeStep Visual Tests', () => {
     cleanup();
   });
 
-  it('should match visual snapshot and include header text', async () => {
+  it('should match visual snapshot', async () => {
     const component = <ClientInfoWelcomeStep onNextStep={() => {}} />;
-
-    // Render component to verify content
-    const { getByText } = render(component);
-    // expect(getByText('Tell us about you and your company')).toBeInTheDocument();
-    // expect(getByText("We'll use this information to better understand your needs")).toBeInTheDocument();
 
     // Visual test
     await injectStyles(page, component);
