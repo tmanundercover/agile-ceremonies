@@ -3,6 +3,9 @@ import { render, screen, fireEvent, waitFor } from '../../../../../../../test/te
 import { ClientInfoWelcomeStep } from '../ClientInfoWelcomeStep';
 import { toMatchImageSnapshot } from 'jest-image-snapshot';
 import { act } from "react-dom/test-utils";
+import puppeteer from 'puppeteer';
+import fs from 'fs';
+import path from 'path';
 
 expect.extend({ toMatchImageSnapshot });
 
@@ -144,5 +147,65 @@ describe('ClientInfoWelcomeStep', () => {
             consoleSpy.mockRestore();
         });
     });
-});
 
+    describe('ClientInfoWelcomeStep visual comparison', () => {
+        let browser: puppeteer.Browser;
+        
+        // Increase timeout for visual tests
+        jest.setTimeout(15000);
+
+        beforeAll(async () => {
+            browser = await puppeteer.launch({
+                headless: true,
+                args: ['--no-sandbox', '--disable-setuid-sandbox']
+            });
+        });
+
+        afterAll(async () => {
+            await browser.close();
+        });
+
+        it('matches the component screenshot with the SVG mockup', async () => {
+            try {
+                // Render the component
+                const { container } = render(<ClientInfoWelcomeStep />);
+
+                // Create a new page
+                const page = await browser.newPage();
+                await page.setViewport({ width: 1024, height: 768 });
+
+                try {
+                    // Set the page content to the rendered component's HTML
+                    await page.setContent(container.innerHTML, {
+                        waitUntil: 'networkidle0',
+                        timeout: 5000,
+                    });
+
+                    // Take a screenshot of the rendered component
+                    const screenshot = await page.screenshot();
+
+                    // Load the SVG mockup
+                    const svgMockupPath = path.resolve(__dirname, 'mockups', 'ClientInfoWelcomeStep.svg');
+                    const svgMockup = fs.readFileSync(svgMockupPath, 'utf8');
+
+                    // Convert SVG to PNG
+                    await page.setContent(svgMockup, {
+                        waitUntil: 'networkidle0',
+                        timeout: 5000,
+                    });
+                    const svgScreenshot = await page.screenshot();
+
+                    // Compare the screenshots
+                    expect(screenshot).toMatchImageSnapshot();
+                    expect(svgScreenshot).toMatchImageSnapshot();
+                } finally {
+                    // Always close the page
+                    await page.close();
+                }
+            } catch (error) {
+                console.error('Visual comparison test failed:', error);
+                throw error;
+            }
+        });
+    });
+});
