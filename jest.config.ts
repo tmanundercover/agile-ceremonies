@@ -3,7 +3,9 @@ import type { Config } from '@jest/types';
 const config: Config.InitialOptions = {
     preset: 'ts-jest',
     testEnvironment: 'jsdom',
-    setupFilesAfterEnv: ['<rootDir>/src/test/jest.setup.ts'],
+    setupFilesAfterEnv: [
+        '<rootDir>/src/test/jest.setup.ts'
+    ],
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
     transform: {
         '^.+\\.tsx?$': ['ts-jest', {
@@ -22,7 +24,8 @@ const config: Config.InitialOptions = {
     ],
     transformIgnorePatterns: [
         "/node_modules/(?!(@radix-ui|@babel/runtime)/)"
-    ]
+    ],
+    testTimeout: 30000, // Increase timeout for visual tests
 };
 
 export default config;

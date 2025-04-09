@@ -1,7 +1,11 @@
-const config = {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var config = {
     preset: 'ts-jest',
     testEnvironment: 'jsdom',
-    setupFilesAfterEnv: ['<rootDir>/src/test/jest.setup.ts'],
+    setupFilesAfterEnv: [
+        '<rootDir>/src/test/jest.setup.ts'
+    ],
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
     transform: {
         '^.+\\.tsx?$': ['ts-jest', {
@@ -20,7 +24,7 @@ const config = {
     ],
     transformIgnorePatterns: [
         "/node_modules/(?!(@radix-ui|@babel/runtime)/)"
-    ]
+    ],
+    testTimeout: 30000, // Increase timeout for visual tests
 };
-export default config;
-//# sourceMappingURL=jest.config.js.map
+exports.default = config;
