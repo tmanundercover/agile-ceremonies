@@ -154,7 +154,14 @@ const validateForm = (): boolean => {
                     <Form.Root ref={formRef} onSubmit={handleSubmit}>
                         <FormContainer>
                             <Flex direction="column" gap="6">
-
+                                <div>
+                                    <h2><Text size="6" weight="bold">
+                                        Tell us about you and your company
+                                    </Text></h2>
+                                    <Text size="2" color="gray">
+                                        We'll use this information to better understand your needs
+                                    </Text>
+                                </div>
 
                                 {/* Company Information */}
                                 <Flex direction="column" gap="4">
