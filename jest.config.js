@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var config = {
+const config = {
     preset: 'ts-jest',
     testEnvironment: 'jsdom',
     setupFilesAfterEnv: [
@@ -27,4 +25,5 @@ var config = {
     ],
     testTimeout: 30000, // Increase timeout for visual tests
 };
-exports.default = config;
+export default config;
+//# sourceMappingURL=jest.config.js.map

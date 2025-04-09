@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="1000" viewBox="0 0 1200 1000" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="clientInfo_primaryGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#9333EA;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#A855F7;stop-opacity:1" />
+        </linearGradient>
+        
+        <linearGradient id="clientInfo_glassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:rgba(255,255,255,0.1)" />
+            <stop offset="100%" style="stop-color:rgba(255,255,255,0.05)" />
+        </linearGradient>
+
+        <filter id="clientInfo_glassEffect">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="10" />
+            <feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 19 -9" />
+        </filter>
+
+        <filter id="clientInfo_shadowSm">
+            <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.1"/>
+        </filter>
+    </defs>
+
+    <style>
+        .background { fill: #F9FAFB; }
+        .progress-bar-bg { fill: #E2E8F0; }
+        .progress-bar-fill { fill: url(#clientInfo_primaryGrad); }
+        .step-circle { r: 16; }
+        .step-circle-active { fill: url(#clientInfo_primaryGrad); }
+        .step-circle-inactive { fill: #E2E8F0; }
+        .step-text-active { fill: white; }
+        .step-text-inactive { fill: #666; }
+        .step-label-active { fill: #1A1A1A; }
+        .step-label-inactive { fill: #666; }
+        .form-container {
+            fill: url(#clientInfo_glassGrad);
+            stroke: rgba(255,255,255,0.5);
+            filter: url(#clientInfo_glassEffect);
+        }
+        .heading-primary { fill: #1A1A1A; font-size: 24px; font-weight: bold; }
+        .heading-secondary { fill: #666; font-size: 16px; }
+        .section-title { fill: #1A1A1A; font-size: 16px; font-weight: bold; }
+        .field-label { fill: #4A5568; font-size: 14px; }
+        .input-field {
+            fill: white;
+            stroke: #A0AEC0;
+        }
+        .next-button { fill: url(#clientInfo_primaryGrad); }
+        .next-button-text { fill: white; font-size: 16px; font-weight: bold; }
+        text { font-family: sans-serif; }
+    </style>
+
+    <rect class="background" width="1200" height="1000" />
+
+    <g transform="translate(200, 30)">
+        <rect class="progress-bar-bg" width="800" height="8" rx="4"/>
+        <rect class="progress-bar-fill" width="160" height="8" rx="4"/>
+        
+        <g transform="translate(0, -20)">
+            <circle class="step-circle step-circle-active" cx="0" cy="24"/>
+            <text class="step-text-active" x="0" y="28" text-anchor="middle" font-size="12">1</text>
+            <text class="step-label-active" x="0" y="60" text-anchor="middle" font-size="12">Client Info</text>
+
+            <circle class="step-circle step-circle-inactive" cx="200" cy="24"/>
+            <text class="step-text-inactive" x="200" y="28" text-anchor="middle" font-size="12">2</text>
+            <text class="step-label-inactive" x="200" y="60" text-anchor="middle" font-size="12">Project</text>
+
+            <circle class="step-circle step-circle-inactive" cx="400" cy="24"/>
+            <text class="step-text-inactive" x="400" y="28" text-anchor="middle" font-size="12">3</text>
+            <text class="step-label-inactive" x="400" y="60" text-anchor="middle" font-size="12">Digital</text>
+
+            <circle class="step-circle step-circle-inactive" cx="600" cy="24"/>
+            <text class="step-text-inactive" x="600" y="28" text-anchor="middle" font-size="12">4</text>
+            <text class="step-label-inactive" x="600" y="60" text-anchor="middle" font-size="12">Brand</text>
+
+            <circle class="step-circle step-circle-inactive" cx="800" cy="24"/>
+            <text class="step-text-inactive" x="800" y="28" text-anchor="middle" font-size="12">5</text>
+            <text class="step-label-inactive" x="800" y="60" text-anchor="middle" font-size="12">Requirements</text>
+        </g>
+    </g>
+
+    <g transform="translate(200, 120)">
+        <rect class="form-container" width="800" height="800" rx="20"/>
+
+        <g transform="translate(50, 40)">
+            <text class="heading-primary" x="0" y="0">Tell us about you and your company</text>
+            <text class="heading-secondary" x="0" y="30">We'll use this information to better understand your needs</text>
+
+            <g transform="translate(0, 80)">
+                <text class="section-title" x="0" y="0">Company Details</text>
+                
+                <g transform="translate(0, 20)">
+                    <text class="field-label" x="0" y="0">Company Name *</text>
+                    <rect class="input-field" x="0" y="10" width="340" height="50" rx="10"/>
+                </g>
+
+                <g transform="translate(360, 20)">
+                    <text class="field-label" x="0" y="0">Company Website</text>
+                    <rect class="input-field" x="0" y="10" width="340" height="50" rx="10"/>
+                </g>
+            </g>
+
+            <g transform="translate(0, 200)">
+                <text class="section-title" x="0" y="0">Contact Information</text>
+                
+                <g transform="translate(0, 20)">
+                    <text class="field-label" x="0" y="0">Your Name *</text>
+                    <rect class="input-field" x="0" y="10" width="340" height="50" rx="10"/>
+                </g>
+
+                <g transform="translate(360, 20)">
+                    <text class="field-label" x="0" y="0">Your Role *</text>
+                    <rect class="input-field" x="0" y="10" width="340" height="50" rx="10"/>
+                </g>
+
+                <g transform="translate(0, 100)">
+                    <text class="field-label" x="0" y="0">Email Address *</text>
+                    <rect class="input-field" x="0" y="10" width="340" height="50" rx="10"/>
+                </g>
+
+                <g transform="translate(360, 100)">
+                    <text class="field-label" x="0" y="0">Phone Number *</text>
+                    <rect class="input-field" x="0" y="10" width="340" height="50" rx="10"/>
+                </g>
+            </g>
+
+            <g transform="translate(0, 380)">
+                <text class="section-title" x="0" y="0">Location</text>
+                
+                <g transform="translate(0, 20)">
+                    <text class="field-label" x="0" y="0">Address</text>
+                    <rect class="input-field" x="0" y="10" width="700" height="50" rx="10"/>
+                </g>
+
+                <g transform="translate(0, 80)">
+                    <rect class="input-field" x="0" y="10" width="220" height="50" rx="10"/>
+                    <text class="field-label" x="20" y="40">City</text>
+
+                    <rect class="input-field" x="240" y="10" width="220" height="50" rx="10"/>
+                    <text class="field-label" x="260" y="40">State</text>
+
+                    <rect class="input-field" x="480" y="10" width="220" height="50" rx="10"/>
+                    <text class="field-label" x="500" y="40">Zip Code</text>
+                </g>
+            </g>
+
+            <g transform="translate(0, 600)">
+                <rect class="next-button" width="700" height="60" rx="10"/>
+                <text class="next-button-text" x="350" y="35" text-anchor="middle">Next: Project Overview</text>
+            </g>
+        </g>
+    </g>
+</svg>

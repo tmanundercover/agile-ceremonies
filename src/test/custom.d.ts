@@ -1,11 +1,20 @@
 import '@testing-library/jest-dom';
 
 declare global {
-  namespace Testing {
+  namespace jest {
     interface Matchers<R> {
-      toBeInTheDocument(): R;
-      toHaveValue(value: string | number | string[]): R;
-      // Add other matchers as needed
+      toMatchScreenshot(options?: {
+        customDiffConfig?: { threshold: number };
+        failureThreshold?: number;
+        failureThresholdType?: 'pixel' | 'percent';
+        customSnapshotIdentifier?: string;
+      }): R;
+      toMatchSVGMockup(options?: {
+        customDiffConfig?: { threshold: number };
+        failureThreshold?: number;
+        failureThresholdType?: 'pixel' | 'percent';
+        customSnapshotIdentifier?: string;
+      }): R;
     }
   }
 }

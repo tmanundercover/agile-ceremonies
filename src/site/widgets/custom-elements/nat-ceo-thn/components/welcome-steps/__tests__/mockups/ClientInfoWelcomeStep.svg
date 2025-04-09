@@ -2,24 +2,24 @@
 <svg width="1200" height="1000" viewBox="0 0 1200 1000" xmlns="http://www.w3.org/2000/svg">
     <defs>
         <!-- Gradients -->
-        <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <linearGradient id="clientInfo_primaryGrad" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" style="stop-color:#9333EA;stop-opacity:1" />
             <stop offset="100%" style="stop-color:#A855F7;stop-opacity:1" />
         </linearGradient>
         
-        <linearGradient id="glassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <linearGradient id="clientInfo_glassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" style="stop-color:rgba(255,255,255,0.1)" />
             <stop offset="100%" style="stop-color:rgba(255,255,255,0.05)" />
         </linearGradient>
 
         <!-- Glass Effect -->
-        <filter id="glassEffect">
+        <filter id="clientInfo_glassEffect">
             <feGaussianBlur in="SourceGraphic" stdDeviation="10" />
             <feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 19 -9" />
         </filter>
 
         <!-- Shadow -->
-        <filter id="shadowSm">
+        <filter id="clientInfo_shadowSm">
             <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.1"/>
         </filter>
     </defs>
@@ -30,11 +30,11 @@
     <!-- Progress Bar -->
     <g transform="translate(200, 30)">
         <rect width="800" height="8" fill="#E2E8F0" rx="4"/>
-        <rect width="160" height="8" fill="url(#primaryGrad)" rx="4"/>
+        <rect width="160" height="8" fill="url(#clientInfo_primaryGrad)" rx="4"/>
         
         <!-- Step Indicators -->
         <g transform="translate(0, -20)">
-            <circle cx="0" cy="24" r="16" fill="url(#primaryGrad)"/>
+            <circle cx="0" cy="24" r="16" fill="url(#clientInfo_primaryGrad)"/>
             <text x="0" y="28" text-anchor="middle" fill="white" font-size="12">1</text>
             <text x="0" y="60" text-anchor="middle" fill="#1A1A1A" font-size="12">Client Info</text>
 
@@ -59,8 +59,8 @@
     <!-- Form Container -->
     <g transform="translate(200, 120)">
         <!-- Glass Effect Container -->
-        <rect width="800" height="800" fill="url(#glassGrad)" 
-              stroke="rgba(255,255,255,0.5)" filter="url(#glassEffect)" rx="20"/>
+        <rect width="800" height="800" fill="url(#clientInfo_glassGrad)" 
+              stroke="rgba(255,255,255,0.5)" filter="url(#clientInfo_glassEffect)" rx="20"/>
 
         <!-- Step 1: Client Information -->
         <g transform="translate(50, 40)">
@@ -138,7 +138,7 @@
 
             <!-- Navigation Buttons -->
             <g transform="translate(0, 600)">
-                <rect width="700" height="60" fill="url(#primaryGrad)" rx="10"/>
+                <rect width="700" height="60" fill="url(#clientInfo_primaryGrad)" rx="10"/>
                 <text x="350" y="35" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Next: Project Overview</text>
             </g>
         </g>

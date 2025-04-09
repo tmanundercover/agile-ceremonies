@@ -1,9 +1,9 @@
 import React, {useRef, useState} from 'react';
-import {Button, Container, Flex, Text, TextField, Theme} from '@radix-ui/themes';
+import {Container, Flex, Text, TextField, Theme} from '@radix-ui/themes';
 import * as Form from '@radix-ui/react-form';
-import styled from 'styled-components';
 import isEmail from 'validator/lib/isEmail';
 import {Step, StepProgressIndicator} from './StepProgressIndicator';
+import {ErrorText, ErrorTextField, FormContainer, FormFieldWrapper} from '../../styledComponents';
 
 interface FormData {
     companyName: string;
@@ -29,33 +29,6 @@ interface FormErrors {
 interface Props {
     onNextStep?: (data: FormData) => void;
 }
-
-const ErrorText = styled(Text)`
-    color: var(--red-9);
-    margin-top: 4px;
-    display: block; // Ensure consistent display
-`;
-
-const ErrorTextField = styled(TextField.Input)<{ $hasError: boolean }>`
-    &:focus {
-        box-shadow: ${props => props.$hasError ? '0 0 0 2px var(--red-7)' : '0 0 0 2px var(--purple-7)'};
-    }
-
-    border-color: ${props => props.$hasError ? 'var(--red-7)' : 'var(--gray-7)'};
-`;
-
-const FormContainer = styled.div`
-    background: white;
-    padding: 32px;
-    border-radius: 16px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-`;
-
-const FormFieldWrapper = styled.div<{ $width: string }>`
-    flex: 1 1 ${props => props.$width};
-    width: ${props => props.$width};
-    min-width: 250px;
-`;
 
 export const ClientInfoWelcomeStep: React.FC<Props> = ({onNextStep}) => {
     const [formData, setFormData] = useState<FormData>({
@@ -388,16 +361,7 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({onNextStep}) => {
 
                                 {/* Submit Button */}
                                 <Flex gap="4">
-                                    <Button
-                                        size="3"
-                                        style={{
-                                            background: 'linear-gradient(90deg, #9333EA 0%, #A855F7 100%)',
-                                            width: '100%'
-                                        }}
-                                        type="submit"
-                                    >
-                                        Next: Project Overview
-                                    </Button>
+
                                 </Flex>
                             </Flex>
                         </FormContainer>
