@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { Button, TextField, Dialog } from '@radix-ui/themes';
 import { FileData } from '../../types';
+import { saveAs } from 'file-saver';
 
 interface StickerPiece {
     id: string;
@@ -116,6 +117,7 @@ const FilePreview = styled.div`
     justify-content: center;
     align-items: center;
     position: relative;
+    margin-top: 40px;  // Add space for the category pill
 
     img {
         max-width: 100%;
@@ -171,6 +173,83 @@ const ToolIcon = styled.button`
     }
 `;
 
+const CategoryPill = styled.div`
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--purple-9);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 500;
+    z-index: 1;
+`;
+
+const Tooltip = styled.div<{ $visible: boolean }>`
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1A1A1A;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    opacity: ${props => props.$visible ? 1 : 0};
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    white-space: nowrap;
+    
+    &:after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 50%;
+        transform: translateX(-50%) rotate(45deg);
+        width: 8px;
+        height: 8px;
+        background: #1A1A1A;
+    }
+`;
+
+const ToolIconWrapper = styled.div`
+    position: relative;
+`;
+
+const LoadingOverlay = styled.div<{ $visible: boolean }>`
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    opacity: ${props => props.$visible ? 1 : 0};
+    transition: opacity 0.3s ease;
+    pointer-events: ${props => props.$visible ? 'auto' : 'none'};
+`;
+
+const LoadingSpinner = styled.div`
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--purple-3);
+    border-radius: 50%;
+    border-top-color: var(--purple-9);
+    animation: spin 1s linear infinite;
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+`;
+
 export const StickerBuilder: React.FC = () => {
     const [images, setImages] = useState<StickerImage[]>([]);
     const [selectedPieces, setSelectedPieces] = useState<StickerPiece[]>([]);
@@ -179,6 +258,8 @@ export const StickerBuilder: React.FC = () => {
     const [isDragging, setIsDragging] = useState(false);
     const [selectedFile, setSelectedFile] = useState<FileData | null>(null);
     const [isHoveringImage, setIsHoveringImage] = useState(false);
+    const [hoveredTool, setHoveredTool] = useState<string | null>(null);
+    const [isConverting, setIsConverting] = useState(false);
 
     useEffect(() => {
         const loadImages = async () => {
@@ -244,61 +325,115 @@ export const StickerBuilder: React.FC = () => {
     const handleConvertToSvg = async (file: FileData) => {
         if (!file.content.startsWith('data:image')) return;
 
-        // Create an image element to load the file
-        const img = new Image();
-        img.src = file.content;
+        setIsConverting(true);
 
-        await new Promise((resolve) => {
-            img.onload = resolve;
-        });
+        try {
+            // Create an image element to load the file
+            const img = new Image();
+            img.src = file.content;
 
-        // Create a canvas to draw the image
-        const canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
+            await new Promise((resolve) => {
+                img.onload = resolve;
+            });
 
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
+            // Create a canvas to draw the image
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width;
+            canvas.height = img.height;
 
-        // Draw the image on canvas
-        ctx.drawImage(img, 0, 0);
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
 
-        // TODO: Add proper SVG conversion logic here
-        // This is a placeholder that creates a basic SVG wrapper
-        const svgContent = `
-            <svg width="${img.width}" height="${img.height}" xmlns="http://www.w3.org/2000/svg">
-                <image href="${file.content}" width="${img.width}" height="${img.height}"/>
-            </svg>
-        `;
+            // Draw the image on canvas
+            ctx.drawImage(img, 0, 0);
 
-        // Update the file with SVG content
-        const newFile: FileData = {
-            ...file,
-            type: 'image/svg+xml',
-            content: `data:image/svg+xml;base64,${btoa(svgContent)}`,
-            name: file.name.replace(/\.(jpg|jpeg|png)$/i, '.svg')
-        };
+            // TODO: Add proper SVG conversion logic here
+            // This is a placeholder that creates a basic SVG wrapper
+            const svgContent = `
+                <svg width="${img.width}" height="${img.height}" xmlns="http://www.w3.org/2000/svg">
+                    <image href="${file.content}" width="${img.width}" height="${img.height}"/>
+                </svg>
+            `;
 
-        setFiles(prev => prev.map(f => f.id === file.id ? newFile : f));
+            // Update the file with SVG content
+            const newFile: FileData = {
+                ...file,
+                type: 'image/svg+xml',
+                content: `data:image/svg+xml;base64,${btoa(svgContent)}`,
+                name: file.name.replace(/\.(jpg|jpeg|png)$/i, '.svg')
+            };
+
+            setFiles(prev => prev.map(f => f.id === file.id ? newFile : f));
+        } finally {
+            setIsConverting(false);
+        }
+    };
+
+    const getFileCategory = (type: string): string => {
+        if (type.startsWith('image/svg')) return 'SVG Vector';
+        if (type.startsWith('image/')) return 'Image';
+        return 'Document';
+    };
+
+    const handleSaveFile = (file: FileData) => {
+        const blob = dataURItoBlob(file.content);
+        saveAs(blob, file.name);
+    };
+
+    const dataURItoBlob = (dataURI: string): Blob => {
+        const byteString = atob(dataURI.split(',')[1]);
+        const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+
+        for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+
+        return new Blob([ab], { type: mimeString });
     };
 
     const renderFileContent = (file: FileData) => {
         if (isImageFile(file.type)) {
             return (
-                <div
-                    style={{ position: 'relative' }}
+                <div style={{ position: 'relative' }}
                     onMouseEnter={() => setIsHoveringImage(true)}
-                    onMouseLeave={() => setIsHoveringImage(false)}
-                >
+                    onMouseLeave={() => setIsHoveringImage(false)}>
+                    <CategoryPill>{getFileCategory(file.type)}</CategoryPill>
                     <img src={file.content} alt={file.name} />
                     <ImageOverlay $visible={isHoveringImage}>
-                        <ToolIcon onClick={() => handleConvertToSvg(file)} title="Convert to SVG">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M4 14h8v-4H4v4zm8 0h8v-4h-8v4z"/>
-                                <path d="M12 6v12"/>
-                            </svg>
-                        </ToolIcon>
+                        <ToolIconWrapper
+                            onMouseEnter={() => setHoveredTool('convert')}
+                            onMouseLeave={() => setHoveredTool(null)}>
+                            <Tooltip $visible={hoveredTool === 'convert'}>
+                                Convert to SVG
+                            </Tooltip>
+                            <ToolIcon onClick={() => handleConvertToSvg(file)}>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <path d="M4 14h8v-4H4v4zm8 0h8v-4h-8v4z"/>
+                                    <path d="M12 6v12"/>
+                                </svg>
+                            </ToolIcon>
+                        </ToolIconWrapper>
+                        <ToolIconWrapper
+                            onMouseEnter={() => setHoveredTool('save')}
+                            onMouseLeave={() => setHoveredTool(null)}>
+                            <Tooltip $visible={hoveredTool === 'save'}>
+                                Save File
+                            </Tooltip>
+                            <ToolIcon onClick={() => handleSaveFile(file)}>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+                                    <path d="M17 21v-8H7v8"/>
+                                    <path d="M7 3v5h8"/>
+                                </svg>
+                            </ToolIcon>
+                        </ToolIconWrapper>
                     </ImageOverlay>
+                    <LoadingOverlay $visible={isConverting}>
+                        <LoadingSpinner />
+                        <Text>Converting to SVG...</Text>
+                    </LoadingOverlay>
                 </div>
             );
         }
