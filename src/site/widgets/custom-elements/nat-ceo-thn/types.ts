@@ -25,3 +25,12 @@ export interface TeamMember {
     role: string;
     availability: boolean;
 }
+
+export interface FileData {
+    id: string;
+    name: string;
+    type: string;
+    size: number;
+    lastModified: number;
+    content: string;
+}

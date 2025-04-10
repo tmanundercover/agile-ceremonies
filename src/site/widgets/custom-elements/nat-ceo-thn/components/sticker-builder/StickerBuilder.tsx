@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
-import { Button, TextField } from '@radix-ui/themes';
+import { Button, TextField, Dialog } from '@radix-ui/themes';
+import { FileData } from '../../types';
 
 interface StickerPiece {
     id: string;
@@ -78,33 +79,101 @@ const ChatButton = styled(Button)`
     }
 `;
 
+const DropZone = styled.div<{ $isDragging: boolean }>`
+    border: 2px dashed ${props => props.$isDragging ? 'var(--purple-7)' : 'var(--gray-7)'};
+    border-radius: 8px;
+    padding: 24px;
+    text-align: center;
+    background: ${props => props.$isDragging ? 'var(--purple-3)' : 'transparent'};
+    transition: all 0.3s ease;
+    cursor: pointer;
+`;
+
+const FileGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+`;
+
+const FileCard = styled.div`
+    padding: 16px;
+    border: 1px solid var(--gray-7);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        border-color: var(--purple-7);
+        transform: translateY(-2px);
+    }
+`;
+
+const FilePreview = styled.div`
+    max-height: 500px;
+    overflow: auto;
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    pre {
+        background: var(--gray-3);
+        padding: 16px;
+        border-radius: 8px;
+        overflow: auto;
+    }
+`;
+
 export const StickerBuilder: React.FC = () => {
     const [images, setImages] = useState<StickerImage[]>([]);
     const [selectedPieces, setSelectedPieces] = useState<StickerPiece[]>([]);
     const [isChatOpen, setIsChatOpen] = useState(false);
+    const [files, setFiles] = useState<FileData[]>([]);
+    const [isDragging, setIsDragging] = useState(false);
+    const [selectedFile, setSelectedFile] = useState<FileData | null>(null);
 
     useEffect(() => {
-        // Load and parse SVG images
-        // This would typically fetch from your assets and parse them
         const loadImages = async () => {
-            // Example structure - replace with actual image loading logic
-            const mockImages: StickerImage[] = [
-                {
-                    id: '1',
-                    name: 'Basic Avatar',
-                    pieces: [
-                        {
-                            id: 'head1',
-                            type: 'head',
-                            paths: ['M10,10 L20,20...'],
-                            transform: '',
-                            selected: false
-                        },
-                        // Add more pieces...
-                    ]
-                }
-            ];
-            setImages(mockImages);
+            try {
+                // Example of loading SVG data - in production this would come from your assets
+                const mockImages: StickerImage[] = [
+                    {
+                        id: '1',
+                        name: 'Basic Avatar',
+                        pieces: [
+                            {
+                                id: 'head1',
+                                type: 'head',
+                                paths: ['M50,50 C50,30 70,20 90,20 C110,20 130,30 130,50 C130,70 110,90 90,90 C70,90 50,70 50,50'],
+                                transform: 'translate(0,0) scale(1)',
+                                selected: false
+                            },
+                            {
+                                id: 'eyes1',
+                                type: 'eyes',
+                                paths: [
+                                    'M70,40 C70,35 75,35 75,40 C75,45 70,45 70,40',
+                                    'M110,40 C110,35 115,35 115,40 C115,45 110,45 110,40'
+                                ],
+                                transform: 'translate(0,0) scale(1)',
+                                selected: false
+                            },
+                            {
+                                id: 'hair1',
+                                type: 'hair',
+                                paths: ['M40,30 C60,10 120,10 140,30 C140,40 130,50 120,45 C110,40 70,40 60,45 C50,50 40,40 40,30'],
+                                transform: 'translate(0,0) scale(1)',
+                                selected: false
+                            }
+                        ]
+                    }
+                ];
+                setImages(mockImages);
+            } catch (error) {
+                console.error('Error loading sticker images:', error);
+            }
         };
 
         loadImages();
@@ -122,10 +191,98 @@ export const StickerBuilder: React.FC = () => {
         setIsChatOpen(!isChatOpen);
     };
 
+    const isImageFile = (type: string) => {
+        return type.startsWith('image/');
+    };
+
+    const renderFileContent = (file: FileData) => {
+        if (isImageFile(file.type)) {
+            return <img src={file.content} alt={file.name} />;
+        }
+        return (
+            <pre>
+                <code>{file.content}</code>
+            </pre>
+        );
+    };
+
+    const handleDrop = useCallback((e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDragging(false);
+
+        const droppedFiles = Array.from(e.dataTransfer.files);
+
+        droppedFiles.forEach(file => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const newFile: FileData = {
+                    id: Math.random().toString(36).substr(2, 9),
+                    name: file.name,
+                    type: file.type,
+                    size: file.size,
+                    lastModified: file.lastModified,
+                    content: isImageFile(file.type)
+                        ? reader.result as string
+                        : reader.result?.toString() || ''
+                };
+                setFiles(prev => [...prev, newFile]);
+            };
+
+            if (isImageFile(file.type)) {
+                reader.readAsDataURL(file);
+            } else {
+                reader.readAsText(file);
+            }
+        });
+    }, []);
+
+    const handleDragOver = useCallback((e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDragging(true);
+    }, []);
+
+    const handleDragLeave = useCallback((e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDragging(false);
+    }, []);
+
     return (
         <StickerBuilderContainer>
             <h1>Sticker Builder</h1>
             
+            <DropZone
+                $isDragging={isDragging}
+                onDrop={handleDrop}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+            >
+                Drop files here to import
+            </DropZone>
+
+            <FileGrid>
+                {files.map(file => (
+                    <FileCard
+                        key={file.id}
+                        onClick={() => setSelectedFile(file)}
+                    >
+                        <h3>{file.name}</h3>
+                        <p>{Math.round(file.size / 1024)} KB</p>
+                    </FileCard>
+                ))}
+            </FileGrid>
+
+            <Dialog.Root open={!!selectedFile} onOpenChange={() => setSelectedFile(null)}>
+                <Dialog.Content>
+                    <Dialog.Title>{selectedFile?.name}</Dialog.Title>
+                    <FilePreview>
+                        {selectedFile && renderFileContent(selectedFile)}
+                    </FilePreview>
+                    <Dialog.Close>
+                        <Button>Close</Button>
+                    </Dialog.Close>
+                </Dialog.Content>
+            </Dialog.Root>
+
             <StickerCanvas>
                 <StickerPreview>
                     {selectedPieces.map(piece => (
@@ -169,9 +326,40 @@ export const StickerBuilder: React.FC = () => {
             </ChatButton>
 
             {isChatOpen && (
-                <div>
-                    {/* Implement chat interface here */}
-                </div>
+                <Dialog.Root open={isChatOpen} onOpenChange={toggleChat}>
+                    <Dialog.Content style={{ maxWidth: '500px' }}>
+                        <Dialog.Title>Chat with Josh</Dialog.Title>
+                        <div style={{
+                            height: '400px',
+                            overflowY: 'auto',
+                            padding: '16px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '16px'
+                        }}>
+                            <div className="message assistant">
+                                Hi! I'm Josh, your design assistant. How can I help you with your sticker?
+                            </div>
+                            {/* Add message history here */}
+                        </div>
+                        <div style={{
+                            display: 'flex',
+                            gap: '8px',
+                            marginTop: '16px'
+                        }}>
+                            <TextField.Input
+                                placeholder="Type your message..."
+                                style={{ flex: 1 }}
+                            />
+                            <Button>Send</Button>
+                        </div>
+                        <Dialog.Close>
+                            <Button variant="soft" style={{ marginTop: '16px' }}>
+                                Close Chat
+                            </Button>
+                        </Dialog.Close>
+                    </Dialog.Content>
+                </Dialog.Root>
             )}
         </StickerBuilderContainer>
     );
