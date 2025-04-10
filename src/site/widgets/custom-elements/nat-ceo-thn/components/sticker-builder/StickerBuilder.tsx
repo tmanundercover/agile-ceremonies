@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
-import { Button, TextField, Dialog } from '@radix-ui/themes';
-import { FileData } from '../../types';
+import { Button, TextField, Dialog, Text } from '@radix-ui/themes';
+import { FileData, FileVersion } from '../../types';
 import { saveAs } from 'file-saver';
+import { Tabs } from '@radix-ui/themes';
+import { v4 as uuidv4 } from 'uuid';
 
 interface StickerPiece {
     id: string;
@@ -12,6 +14,9 @@ interface StickerPiece {
     selected: boolean;
 }
 
+const TabsList = styled(Tabs.List)`
+    margin-bottom: 16px;
+`;
 interface StickerImage {
     id: string;
     name: string;
@@ -27,6 +32,17 @@ const StickerBuilderContainer = styled.div`
     margin: 0 auto;
 `;
 
+const TabTrigger = styled(Tabs.Trigger)`
+    padding: 8px 16px;
+    border-radius: 4px 4px 0 0;
+    border: 1px solid var(--gray-7);
+    border-bottom: none;
+    
+    &[data-state="active"] {
+        background: var(--purple-3);
+        border-color: var(--purple-7);
+    }
+`;
 const StickerCanvas = styled.div`
     width: 100%;
     height: 500px;
@@ -252,6 +268,7 @@ const LoadingSpinner = styled.div`
 
 export const StickerBuilder: React.FC = () => {
     const [images, setImages] = useState<StickerImage[]>([]);
+
     const [selectedPieces, setSelectedPieces] = useState<StickerPiece[]>([]);
     const [isChatOpen, setIsChatOpen] = useState(false);
     const [files, setFiles] = useState<FileData[]>([]);
@@ -306,6 +323,58 @@ export const StickerBuilder: React.FC = () => {
         loadImages();
     }, []);
 
+    const [selectedVersionId, setSelectedVersionId] = useState<string | null>(null);
+
+    const handleStickerify = async (file: FileData) => {
+        setIsConverting(true);
+
+        try {
+            const img = new Image();
+            img.src = file.content;
+
+            await new Promise((resolve) => {
+                img.onload = resolve;
+            });
+
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width;
+            canvas.height = img.height;
+
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
+
+            // Apply sticker effect
+            ctx.drawImage(img, 0, 0);
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            ctx.arc(img.width / 2, img.height / 2, Math.min(img.width, img.height) / 2, 0, Math.PI * 2);
+            ctx.fill();
+
+            const newVersion: FileVersion = {
+                id: uuidv4(),
+                name: 'Sticker Version',
+                content: canvas.toDataURL(file.type),
+                type: file.type,
+                createdAt: new Date()
+            };
+
+            const updatedFile = {
+                ...file,
+                versions: [...(file.versions || []), newVersion]
+            };
+
+            setFiles(prev => prev.map(f => f.id === file.id ? updatedFile : f));
+            setSelectedVersionId(newVersion.id);
+        } finally {
+            setIsConverting(false);
+        }
+    };
+
+    const getCurrentContent = (file: FileData): string => {
+        if (!selectedVersionId) return file.content;
+        const version = file.versions?.find(v => v.id === selectedVersionId);
+        return version ? version.content : file.content;
+    };
     const handlePieceClick = (piece: StickerPiece) => {
         if (piece.selected) {
             setSelectedPieces(prev => prev.filter(p => p.id !== piece.id));
@@ -400,18 +469,45 @@ export const StickerBuilder: React.FC = () => {
                     onMouseEnter={() => setIsHoveringImage(true)}
                     onMouseLeave={() => setIsHoveringImage(false)}>
                     <CategoryPill>{getFileCategory(file.type)}</CategoryPill>
-                    <img src={file.content} alt={file.name} />
+                    <Tabs.Root value={selectedVersionId || 'original'} onValueChange={(value) => setSelectedVersionId(value === 'original' ? null : value)}>
+                        <TabsList>
+                            <TabTrigger value="original">Original</TabTrigger>
+                            {file.versions?.map(version => (
+                                <TabTrigger key={version.id} value={version.id}>
+                                    {version.name}
+                                </TabTrigger>
+                            ))}
+                        </TabsList>
+                        <img src={getCurrentContent(file)} alt={file.name} />
+                    </Tabs.Root>
                     <ImageOverlay $visible={isHoveringImage}>
+                        {!file.type.startsWith('image/svg') && (
+                            <ToolIconWrapper
+                                onMouseEnter={() => setHoveredTool('convert')}
+                                onMouseLeave={() => setHoveredTool(null)}>
+                                <Tooltip $visible={hoveredTool === 'convert'}>
+                                    Convert to SVG
+                                </Tooltip>
+                                <ToolIcon onClick={() => handleConvertToSvg(file)}>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M4 14h8v-4H4v4zm8 0h8v-4h-8v4z"/>
+                                        <path d="M12 6v12"/>
+                                    </svg>
+                                </ToolIcon>
+                            </ToolIconWrapper>
+                        )}
                         <ToolIconWrapper
-                            onMouseEnter={() => setHoveredTool('convert')}
+                            onMouseEnter={() => setHoveredTool('stickerify')}
                             onMouseLeave={() => setHoveredTool(null)}>
-                            <Tooltip $visible={hoveredTool === 'convert'}>
-                                Convert to SVG
+                            <Tooltip $visible={hoveredTool === 'stickerify'}>
+                                Sticker-fy
                             </Tooltip>
-                            <ToolIcon onClick={() => handleConvertToSvg(file)}>
+                            <ToolIcon onClick={() => handleStickerify(file)}>
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <path d="M4 14h8v-4H4v4zm8 0h8v-4h-8v4z"/>
-                                    <path d="M12 6v12"/>
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                                    <line x1="9" y1="9" x2="9.01" y2="9"/>
+                                    <line x1="15" y1="9" x2="15.01" y2="9"/>
                                 </svg>
                             </ToolIcon>
                         </ToolIconWrapper>
@@ -432,7 +528,7 @@ export const StickerBuilder: React.FC = () => {
                     </ImageOverlay>
                     <LoadingOverlay $visible={isConverting}>
                         <LoadingSpinner />
-                        <Text>Converting to SVG...</Text>
+                        <Text>Converting image...</Text>
                     </LoadingOverlay>
                 </div>
             );
@@ -461,7 +557,8 @@ export const StickerBuilder: React.FC = () => {
                     lastModified: file.lastModified,
                     content: isImageFile(file.type)
                         ? reader.result as string
-                        : reader.result?.toString() || ''
+                        : reader.result?.toString() || '',
+                    versions:[]
                 };
                 setFiles(prev => [...prev, newFile]);
             };

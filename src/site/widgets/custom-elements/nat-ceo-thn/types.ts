@@ -26,6 +26,14 @@ export interface TeamMember {
     availability: boolean;
 }
 
+export interface FileVersion {
+    id: string;
+    name: string;
+    content: string;
+    type: string;
+    createdAt: Date;
+}
+
 export interface FileData {
     id: string;
     name: string;
@@ -33,4 +41,6 @@ export interface FileData {
     size: number;
     lastModified: number;
     content: string;
+    versions: FileVersion[];
 }
+
