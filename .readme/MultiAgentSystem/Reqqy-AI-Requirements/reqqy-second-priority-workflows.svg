@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <!-- Styles extracted for better maintenance and reuse -->
+    <style>
+        .header-bar { fill: #9333EA; }
+        .workflow-container { fill: #faf5ff; stroke: #e9d5ff; stroke-width: 1; }
+        .step-box { fill: white; stroke: #e9d5ff; stroke-width: 1; }
+        .workflow-title { fill: #9333EA; font-size: 20px; font-weight: bold; }
+        .step-text { fill: #1A1A1A; font-size: 14px; }
+        .step-text-small { fill: #1A1A1A; font-size: 12px; }
+        .metadata-text { fill: #666666; font-size: 14px; }
+        .arrow-path { stroke: #9333EA; stroke-width: 2; }
+    </style>
+
+    <!-- Definitions for reusable elements -->
+    <defs>
+        <filter id="shadow-sm" x="-1" y="-1" width="102%" height="102%">
+            <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.1"/>
+        </filter>
+        
+        <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L9,3 z" fill="#9333EA"/>
+        </marker>
+    </defs>
+
+    <!-- Header Bar -->
+    <rect x="0" y="0" width="1200" height="80" class="header-bar" rx="8"/>
+    <text x="600" y="50" text-anchor="middle" fill="white" font-size="32px" font-weight="bold">
+        Reqqy's Requirements Workflows (Continued)
+    </text>
+
+    <!-- 3. Requirements Tracking Workflow -->
+    <g transform="translate(40, 100)">
+        <rect width="540" height="200" class="workflow-container" rx="8" filter="url(#shadow-sm)"/>
+        <text x="20" y="35" class="workflow-title">3. Requirements Tracking</text>
+        
+        <!-- Workflow Steps -->
+        <g transform="translate(20, 60)">
+            <rect width="140" height="50" x="0" y="0" class="step-box" rx="4"/>
+            <text x="70" y="20" class="step-text-small" text-anchor="middle">Monitor GitHub</text>
+            <text x="70" y="35" class="step-text-small" text-anchor="middle">Issue Changes</text>
+            
+            <path d="M 140 25 L 180 25" class="arrow-path" marker-end="url(#arrow)"/>
+            
+            <rect width="140" height="50" x="180" y="0" class="step-box" rx="4"/>
+            <text x="250" y="20" class="step-text-small" text-anchor="middle">Process Change</text>
+            <text x="250" y="35" class="step-text-small" text-anchor="middle">Notifications</text>
+            
+            <path d="M 320 25 L 360 25" class="arrow-path" marker-end="url(#arrow)"/>
+            
+            <rect width="140" height="50" x="360" y="0" class="step-box" rx="4"/>
+            <text x="430" y="20" class="step-text-small" text-anchor="middle">Update Related</text>
+            <text x="430" y="35" class="step-text-small" text-anchor="middle">Requirements</text>
+        </g>
+
+        <!-- Metadata -->
+        <text x="20" y="140" class="metadata-text">Implementation Priority: MEDIUM</text>
+        <text x="20" y="160" class="metadata-text">Key APIs: n8n GitHub Triggers, Webhook Listeners</text>
+        <text x="20" y="180" class="metadata-text">Output: Change Logs, Notification Records</text>
+    </g>
+
+    <!-- 4. Requirements Documentation Workflow -->
+    <g transform="translate(620, 100)">
+        <rect width="540" height="200" class="workflow-container" rx="8" filter="url(#shadow-sm)"/>
+        <text x="20" y="35" class="workflow-title">4. Requirements Documentation</text>
+        
+        <!-- Workflow Steps -->
+        <g transform="translate(20, 60)">
+            <rect width="140" height="50" x="0" y="0" class="step-box" rx="4"/>
+            <text x="70" y="20" class="step-text-small" text-anchor="middle">Aggregate</text>
+            <text x="70" y="35" class="step-text-small" text-anchor="middle">Requirements</text>
+            
+            <path d="M 140 25 L 180 25" class="arrow-path" marker-end="url(#arrow)"/>
+            
+            <rect width="140" height="50" x="180" y="0" class="step-box" rx="4"/>
+            <text x="250" y="20" class="step-text-small" text-anchor="middle">Generate</text>
+            <text x="250" y="35" class="step-text-small" text-anchor="middle">Documentation</text>
+            
+            <path d="M 320 25 L 360 25" class="arrow-path" marker-end="url(#arrow)"/>
+            
+            <rect width="140" height="50" x="360" y="0" class="step-box" rx="4"/>
+            <text x="430" y="20" class="step-text-small" text-anchor="middle">Publish to</text>
+            <text x="430" y="35" class="step-text-small" text-anchor="middle">Wiki/README</text>
+        </g>
+
+        <!-- Metadata -->
+        <text x="20" y="140" class="metadata-text">Implementation Priority: MEDIUM</text>
+        <text x="20" y="160" class="metadata-text">Key APIs: GitHub API, Markdown Processing</text>
+        <text x="20" y="180" class="metadata-text">Output: Technical Documentation, Wiki Pages</text>
+    </g>
+
+    <!-- Implementation Notes Section -->
+    <g transform="translate(40, 340)">
+        <rect width="1120" height="420" class="workflow-container" rx="8" filter="url(#shadow-sm)"/>
+        <text x="20" y="35" class="workflow-title">Implementation Notes</text>
+
+        <!-- Start With Section -->
+        <g transform="translate(20, 70)">
+            <text font-weight="bold" font-size="16px">Start with:</text>
+            <text x="0" y="30" class="metadata-text">1. Configure GitHub webhook listeners in n8n</text>
+            <text x="0" y="50" class="metadata-text">2. Set up documentation templates and wiki structure</text>
+        </g>
+
+        <!-- Key Components Section -->
+        <g transform="translate(20, 140)">
+            <text font-weight="bold" font-size="16px">Key Components:</text>
+            <text x="0" y="30" class="metadata-text">• Change Tracking System</text>
+            <text x="0" y="50" class="metadata-text">• Notification Manager</text>
+            <text x="0" y="70" class="metadata-text">• Documentation Generator</text>
+            <text x="0" y="90" class="metadata-text">• Wiki Integration Module</text>
+        </g>
+
+        <!-- Dependencies Section -->
+        <g transform="translate(400, 140)">
+            <text font-weight="bold" font-size="16px">Dependencies:</text>
+            <text x="0" y="30" class="metadata-text">• GitHub Webhooks Configuration</text>
+            <text x="0" y="50" class="metadata-text">• Wiki API Access</text>
+            <text x="0" y="70" class="metadata-text">• Template System</text>
+        </g>
+
+        <!-- Success Metrics Section -->
+        <g transform="translate(800, 140)">
+            <text font-weight="bold" font-size="16px">Success Metrics:</text>
+            <text x="0" y="30" class="metadata-text">• Change Detection Speed</text>
+            <text x="0" y="50" class="metadata-text">• Documentation Accuracy</text>
+            <text x="0" y="70" class="metadata-text">• Wiki Update Success Rate</text>
+        </g>
+    </g>
+</svg>

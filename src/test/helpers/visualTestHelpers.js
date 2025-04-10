@@ -36,6 +36,5 @@ export async function takeScreenshot(page) {
     // await page.waitForSelector('#root');
     return page.screenshot({
         fullPage: true,
-        captureBeyondViewport: true
     });
 }

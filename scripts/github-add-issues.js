@@ -96,7 +96,7 @@ async function main() {
         console.log(`File "${filename}" read successfully.`); // Debug message
 
         const issues = JSON.parse(data);
-        const delay = 1000; // 1 second delay
+        const delay = 1500; 
 
         for (const issue of issues) {
             await createIssueWithDelay(issue, octokit, username, repo, delay);

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  RadixUI Components:
+  - Command (searchable mega menu)
+  - Dialog (AI chat)
+  - ScrollArea (menu columns)
+  - Tabs (categories)
+  - Badge (selected tech)
+  
+  Testing Considerations:
+  - Search functionality
+  - Icon state management
+  - Selection handling
+  - Responsive layout
+  - Accessibility
+-->
+<svg width="1200" height="900" viewBox="0 0 1200 900" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .header-bar { fill: #9333EA; }
+        .container { fill: #faf5ff; stroke: #e9d5ff; stroke-width: 1; }
+        .form-section { fill: white; filter: url(#shadow-sm); }
+        .step-indicator { fill: #e9d5ff; }
+        .step-indicator.active { fill: #9333EA; }
+        .step-line { stroke: #e9d5ff; stroke-width: 2; }
+        .step-line.completed { stroke: #9333EA; }
+        .input-field { fill: white; stroke: #e9d5ff; stroke-width: 1; }
+        .search-container { 
+            fill: white; 
+            stroke: #e9d5ff;
+            stroke-width: 1;
+            filter: url(#shadow-sm);
+        }
+        .mega-menu {
+            fill: white;
+            filter: url(#shadow-lg);
+        }
+        .mega-menu-item {
+            fill: white;
+            cursor: pointer;
+        }
+        .mega-menu-item:hover {
+            fill: #f3e8ff;
+        }
+        .tech-icon-brand {
+            fill: currentColor;
+        }
+        .tech-icon-ours {
+            fill: #9333EA;
+        }
+        .tech-category {
+            fill: #1A1A1A;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .selected-tech {
+            fill: #f3e8ff;
+            stroke: #9333EA;
+            stroke-width: 1;
+        }
+        .sound-wave {
+            fill: none;
+            stroke: #9333EA;
+            stroke-width: 2;
+        }
+        .label-text { fill: #1A1A1A; font-size: 14px; font-weight: 500; }
+        .helper-text { fill: #666666; font-size: 12px; }
+        .button-primary { fill: #9333EA; }
+        .button-secondary { fill: white; stroke: #9333EA; stroke-width: 1; }
+    </style>
+
+    <defs>
+        <!-- Previous defs remain -->
+        <symbol id="react-icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="2.139"/>
+            <path d="M12,8.877c6.196,0,11.228,1.459,11.228,3.258s-5.032,3.258-11.228,3.258S.772,13.934.772,12.135,5.804,8.877,12,8.877z"/>
+            <path d="M16.863,10.135c3.098,5.367,3.098,10.732,0,11.957s-8.132-2.59-11.23-7.957S2.535,3.403,5.633,2.178,13.765,4.768,16.863,10.135z"/>
+            <path d="M5.633,14.135c-3.098-5.367-3.098-10.732,0-11.957s8.132,2.59,11.23,7.957,3.098,10.732,0,11.957S8.731,19.502,5.633,14.135z"/>
+        </symbol>
+        <symbol id="node-icon" viewBox="0 0 24 24">
+            <path d="M12,1.85c-.27,0-.54.067-.78.2L3.78,6.35C3.3,6.63,3,7.15,3,7.71v10.58c0,.56.3,1.08.78,1.36l7.44,4.3c.24.133.51.2.78.2s.54-.067.78-.2l7.44-4.3c.48-.28.78-.8.78-1.36V7.71c0-.56-.3-1.08-.78-1.36l-7.44-4.3c-.24-.133-.51-.2-.78-.2z"/>
+        </symbol>
+    </defs>
+
+    <!-- [Previous header and stepper content remains the same] -->
+
+    <!-- Mega Menu (Foreground) -->
+    <g transform="translate(40, 100)">
+        <rect width="1120" height="600" class="mega-menu" rx="8"/>
+        
+        <!-- Search Bar -->
+        <g transform="translate(20, 20)">
+            <rect width="1080" height="50" class="search-container" rx="8"/>
+            <use href="#search-icon" x="16" y="13" width="24" height="24"/>
+            <text x="50" y="32" class="helper-text">Search technologies, frameworks, and tools...</text>
+        </g>
+
+        <!-- Categories -->
+        <g transform="translate(20, 90)">
+            <text class="tech-category">Frontend</text>
+            <g transform="translate(0, 30)">
+                <!-- React Item -->
+                <rect width="350" height="50" class="mega-menu-item" rx="4"/>
+                <use href="#react-icon" x="16" y="13" width="24" height="24" class="tech-icon-ours"/>
+                <text x="50" y="32" class="label-text">React</text>
+                <text x="250" y="32" class="helper-text">UI Library</text>
+            </g>
+            <!-- More frontend items -->
+        </g>
+
+        <g transform="translate(390, 90)">
+            <text class="tech-category">Backend</text>
+            <g transform="translate(0, 30)">
+                <!-- Node.js Item -->
+                <rect width="350" height="50" class="mega-menu-item" rx="4"/>
+                <use href="#node-icon" x="16" y="13" width="24" height="24" class="tech-icon-ours"/>
+                <text x="50" y="32" class="label-text">Node.js</text>
+                <text x="250" y="32" class="helper-text">Runtime</text>
+            </g>
+            <!-- More backend items -->
+        </g>
+
+        <g transform="translate(760, 90)">
+            <text class="tech-category">Infrastructure</text>
+            <!-- Infrastructure items -->
+        </g>
+    </g>
+
+    <!-- Icon Examples (Margin) -->
+    <g transform="translate(1150, 300)">
+        <!-- React Icon Examples -->
+        <g transform="translate(0, 0)">
+            <use href="#react-icon" width="40" height="40" class="tech-icon-ours"/>
+            <use href="#react-icon" y="50" width="40" height="40" style="fill: #61DAFB;"/>
+        </g>
+        <!-- Node.js Icon Examples -->
+        <g transform="translate(0, 120)">
+            <use href="#node-icon" width="40" height="40" class="tech-icon-ours"/>
+            <use href="#node-icon" y="50" width="40" height="40" style="fill: #68A063;"/>
+        </g>
+    </g>
+
+    <!-- Selected Stack Pills -->
+    <g transform="translate(40, 420)">
+        <text class="tech-category">Selected Stack</text>
+        <!-- React Pill -->
+        <g transform="translate(0, 30)">
+            <rect width="180" height="40" class="selected-tech" rx="20"/>
+            <use href="#react-icon" x="16" y="8" width="24" height="24" style="fill: #61DAFB;"/>
+            <text x="90" y="25" text-anchor="middle" class="label-text">React</text>
+        </g>
+        <!-- Node.js Pill -->
+        <g transform="translate(190, 30)">
+            <rect width="180" height="40" class="selected-tech" rx="20"/>
+            <use href="#node-icon" x="16" y="8" width="24" height="24" style="fill: #68A063;"/>
+            <text x="90" y="25" text-anchor="middle" class="label-text">Node.js</text>
+        </g>
+    </g>
+
+    <!-- [Previous Reqqy sticker and other content remains the same] -->
+
+</svg>

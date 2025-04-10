@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  RadixUI Components:
+  - Command (for searchable mega menu)
+  - Dialog (for AI chat)
+  - Tabs (for stepper)
+  - Select (for dropdowns)
+  - Checkbox (for multi-select)
+  - ScrollArea (for menu columns)
+  
+  Testing Considerations:
+  - Search functionality
+  - Multi-select validation
+  - Tech stack compatibility checks
+  - AI interaction states
+  - Form validation
+  - Accessibility testing
+-->
+<svg width="1200" height="900" viewBox="0 0 1200 900" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .header-bar { fill: #9333EA; }
+        .container { fill: #faf5ff; stroke: #e9d5ff; stroke-width: 1; }
+        .form-section { fill: white; filter: url(#shadow-sm); }
+        .step-indicator { fill: #e9d5ff; }
+        .step-indicator.active { fill: #9333EA; }
+        .step-line { stroke: #e9d5ff; stroke-width: 2; }
+        .step-line.completed { stroke: #9333EA; }
+        .input-field { fill: white; stroke: #e9d5ff; stroke-width: 1; }
+        .input-field:focus { stroke: #9333EA; }
+        .label-text { fill: #1A1A1A; font-size: 14px; font-weight: 500; }
+        .helper-text { fill: #666666; font-size: 12px; }
+        .button-primary { fill: #9333EA; }
+        .button-secondary { fill: white; stroke: #9333EA; stroke-width: 1; }
+        .ai-container { fill: #f3e8ff; stroke: #e9d5ff; stroke-width: 2; }
+        .chat-button { fill: #9333EA; filter: url(#shadow-sm); cursor: pointer; }
+        .search-container { 
+            fill: white; 
+            stroke: #e9d5ff;
+            stroke-width: 1;
+            filter: url(#shadow-sm);
+        }
+        .mega-menu {
+            fill: white;
+            filter: url(#shadow-lg);
+        }
+        .tech-icon {
+            fill: #666666;
+        }
+        .tech-category {
+            fill: #1A1A1A;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .sound-wave {
+            fill: none;
+            stroke: #9333EA;
+            stroke-width: 2;
+        }
+        .selected-tech {
+            fill: #f3e8ff;
+            stroke: #9333EA;
+            stroke-width: 1;
+        }
+    </style>
+
+    <defs>
+        <filter id="shadow-sm">
+            <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.1"/>
+        </filter>
+        <filter id="shadow-lg">
+            <feDropShadow dx="0" dy="8" stdDeviation="8" flood-opacity="0.1"/>
+        </filter>
+        <symbol id="search-icon" viewBox="0 0 24 24">
+            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+        </symbol>
+        <path id="squircle" d="
+            M 0,35 
+            C 0,15 15,0 35,0 
+            L 215,0 
+            C 235,0 250,15 250,35
+            L 250,165
+            C 250,185 235,200 215,200
+            L 35,200
+            C 15,200 0,185 0,165
+            Z
+        "/>
+    </defs>
+
+    <!-- Header -->
+    <rect x="0" y="0" width="1200" height="80" class="header-bar" rx="8"/>
+    <text x="600" y="50" text-anchor="middle" fill="white" font-size="32px" font-weight="bold">
+        Technical Specifications
+    </text>
+
+    <!-- Progress Bar - Step 3 Active -->
+    <g transform="translate(75, 100)">
+        <!-- Steps 1-2 Completed -->
+        <circle cx="50" cy="25" r="25" class="step-indicator"/>
+        <text x="50" y="30" text-anchor="middle" fill="white">✓</text>
+        <text x="50" y="70" text-anchor="middle" class="label-text">Company Info</text>
+        <line x1="75" y1="25" x2="275" y2="25" class="step-line completed"/>
+
+        <circle cx="300" cy="25" r="25" class="step-indicator"/>
+        <text x="300" y="30" text-anchor="middle" fill="white">✓</text>
+        <text x="300" y="70" text-anchor="middle" class="label-text">Project Details</text>
+        <line x1="325" y1="25" x2="525" y2="25" class="step-line completed"/>
+
+        <!-- Step 3 Active -->
+        <circle cx="550" cy="25" r="25" class="step-indicator active"/>
+        <text x="550" y="30" text-anchor="middle" fill="white">3</text>
+        <text x="550" y="70" text-anchor="middle" class="label-text">Technical Specs</text>
+        <line x1="575" y1="25" x2="775" y2="25" class="step-line"/>
+
+        <!-- Steps 4-5 Pending -->
+        <circle cx="800" cy="25" r="25" class="step-indicator"/>
+        <text x="800" y="30" text-anchor="middle" fill="#666666">4</text>
+        <text x="800" y="70" text-anchor="middle" class="label-text">Assets</text>
+        <line x1="825" y1="25" x2="1025" y2="25" class="step-line"/>
+
+        <circle cx="1050" cy="25" r="25" class="step-indicator"/>
+        <text x="1050" y="30" text-anchor="middle" fill="#666666">5</text>
+        <text x="1050" y="70" text-anchor="middle" class="label-text">Timeline</text>
+    </g>
+
+    <!-- Main Form Container -->
+    <g transform="translate(100, 200)">
+        <rect width="1000" height="600" class="form-section" rx="8"/>
+
+        <!-- Search Box Component -->
+        <g transform="translate(40, 40)">
+            <rect width="920" height="50" class="search-container" rx="8"/>
+            <use href="#search-icon" x="16" y="13" width="24" height="24"/>
+            <text x="50" y="32" class="helper-text">Search technologies, frameworks, and tools...</text>
+            <rect x="840" width="80" height="50" class="button-primary" rx="8"/>
+            <text x="880" y="32" text-anchor="middle" fill="white">Filter</text>
+        </g>
+
+        <!-- Mega Menu -->
+        <g transform="translate(40, 100)">
+            <rect width="920" height="300" class="mega-menu" rx="8"/>
+            
+            <!-- Column 1: Frontend -->
+            <g transform="translate(20, 20)">
+                <text class="tech-category">Frontend</text>
+                <g transform="translate(0, 30)">
+                    <rect width="280" height="40" class="selected-tech" rx="4"/>
+                    <text x="40" y="25" class="label-text">React</text>
+                </g>
+                <text x="0" y="95" class="label-text">Vue</text>
+                <text x="0" y="135" class="label-text">Angular</text>
+            </g>
+
+            <!-- Column 2: Backend -->
+            <g transform="translate(320, 20)">
+                <text class="tech-category">Backend</text>
+                <text x="0" y="55" class="label-text">Node.js</text>
+                <text x="0" y="95" class="label-text">Python</text>
+                <text x="0" y="135" class="label-text">Java</text>
+            </g>
+
+            <!-- Column 3: Infrastructure -->
+            <g transform="translate(620, 20)">
+                <text class="tech-category">Infrastructure</text>
+                <text x="0" y="55" class="label-text">AWS</text>
+                <text x="0" y="95" class="label-text">Docker</text>
+                <text x="0" y="135" class="label-text">Kubernetes</text>
+            </g>
+        </g>
+
+        <!-- Selected Technologies -->
+        <g transform="translate(40, 420)">
+            <text class="tech-category">Selected Stack</text>
+            <g transform="translate(0, 30)">
+                <rect width="180" height="40" class="selected-tech" rx="20"/>
+                <text x="90" y="25" text-anchor="middle" class="label-text">React</text>
+            </g>
+            <g transform="translate(190, 30)">
+                <rect width="180" height="40" class="selected-tech" rx="20"/>
+                <text x="90" y="25" text-anchor="middle" class="label-text">Node.js</text>
+            </g>
+        </g>
+
+        <!-- Navigation Buttons -->
+        <g transform="translate(40, 500)">
+            <rect width="100" height="40" class="button-secondary" rx="4"/>
+            <text x="50" y="25" text-anchor="middle" fill="#9333EA">Previous</text>
+
+            <rect x="820" width="100" height="40" class="button-primary" rx="4"/>
+            <text x="870" y="25" text-anchor="middle" fill="white">Next</text>
+        </g>
+
+        <!-- Reqqy Sticker -->
+        <g transform="translate(700, 420)">
+            <use href="#squircle" class="ai-container"/>
+            <path d="M 125,25 C 125,25 175,100 125,175" 
+                  stroke="#9333EA" 
+                  fill="none" 
+                  stroke-dasharray="4,4"/>
+            <!-- Sound Wave/Progress Bar -->
+            <rect x="25" y="140" width="200" height="4" class="progress-bg" rx="2"/>
+            <path d="M 25,142 Q 45,138 65,142 Q 85,146 105,142 Q 125,138 145,142 Q 165,146 185,142 Q 205,138 225,142" 
+                  class="sound-wave"/>
+        </g>
+    </g>
+</svg>

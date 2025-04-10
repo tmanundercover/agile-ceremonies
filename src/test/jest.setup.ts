@@ -13,10 +13,10 @@ const toMatchScreenshot = configureToMatchImageSnapshot({
 
 // Configure svg matcher
 const toMatchSVGMockup = configureToMatchImageSnapshot({
-  customDiffConfig: { threshold: 0.9 },
-  failureThreshold: 0.2,
+  customDiffConfig: { threshold: 0.59 },
+  failureThreshold: 0.02,
   failureThresholdType: 'percent',
-  allowSizeMismatch: true
+  allowSizeMismatch: true,
 });
 
 // Extend Jest's expect

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Slider from 'react-slick';
 import { SwimlaneStyled, SwimlaneSectionStyled, TaskListStyled, TaskItemStyled, DropdownStyled, ToggleSwitchStyled, RadioButtonLabelStyled, AddTaskButtonStyled } from './StyledComponents';
 import { Task } from './models';
-import {Date as DateIcon} from "@wix/wix-ui-icons-common/dist/types/general/dist";
+import {CalendarIcon} from "@radix-ui/react-icons";
 
 interface SwimlanesProps {
   tasksCompleted: Task[];
@@ -23,7 +23,7 @@ const Swimlanes: React.FC<SwimlanesProps> = ({ tasksCompleted, setTasksCompleted
           comments: [],
           dependencies: [],
           description: '',
-          icon: DateIcon,
+          icon: CalendarIcon,
           id: `${Date.now()}`,
           priority: "Low",
           requirementId: '',

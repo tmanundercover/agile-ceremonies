@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  RadixUI Components:
+  - Form.Root
+  - Tabs (for stepper)
+  - Select
+  - RadioGroup
+  - Checkbox
+  - TextField
+  - TextArea
+  - Button
+  - Progress
+  
+  Testing Considerations:
+  - Form validation states
+  - Step navigation
+  - Data persistence between steps
+  - File upload handling
+  - Form submission
+  - Error states
+-->
+<svg width="1200" height="900" viewBox="0 0 1200 900" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        /* StyledComponents ready styles */
+        .header-bar { 
+            fill: #9333EA; 
+        }
+        .container { 
+            fill: #faf5ff; 
+            stroke: #e9d5ff; 
+            stroke-width: 1; 
+        }
+        .form-section {
+            fill: white;
+            filter: url(#shadow-sm);
+        }
+        .step-indicator {
+            fill: #e9d5ff;
+        }
+        .step-indicator.active {
+            fill: #9333EA;
+        }
+        .step-line {
+            stroke: #e9d5ff;
+            stroke-width: 2;
+        }
+        .step-line.completed {
+            stroke: #9333EA;
+        }
+        .input-field {
+            fill: white;
+            stroke: #e9d5ff;
+            stroke-width: 1;
+        }
+        .input-field:focus {
+            stroke: #9333EA;
+        }
+        .label-text {
+            fill: #1A1A1A;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .helper-text {
+            fill: #666666;
+            font-size: 12px;
+        }
+        .button-primary {
+            fill: #9333EA;
+        }
+        .button-secondary {
+            fill: white;
+            stroke: #9333EA;
+            stroke-width: 1;
+        }
+    </style>
+
+    <defs>
+        <filter id="shadow-sm">
+            <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.1"/>
+        </filter>
+        <filter id="shadow-md">
+            <feDropShadow dx="0" dy="4" stdDeviation="4" flood-opacity="0.15"/>
+        </filter>
+    </defs>
+
+    <!-- Header -->
+    <rect x="0" y="0" width="1200" height="80" class="header-bar" rx="8"/>
+    <text x="600" y="50" text-anchor="middle" fill="white" font-size="32px" font-weight="bold">
+        Project Requirements Intake Form
+    </text>
+
+    <!-- Stepper Progress -->
+    <g transform="translate(100, 100)">
+        <!-- Step 1: Company Info -->
+        <circle cx="50" cy="25" r="25" class="step-indicator active"/>
+        <text x="50" y="30" text-anchor="middle" fill="white">1</text>
+        <text x="50" y="70" text-anchor="middle" class="label-text">Company Info</text>
+
+        <line x1="75" y1="25" x2="175" y2="25" class="step-line completed"/>
+
+        <!-- Step 2: Project Details -->
+        <circle cx="200" cy="25" r="25" class="step-indicator active"/>
+        <text x="200" y="30" text-anchor="middle" fill="white">2</text>
+        <text x="200" y="70" text-anchor="middle" class="label-text">Project Details</text>
+
+        <line x1="225" y1="25" x2="325" y2="25" class="step-line"/>
+
+        <!-- Step 3: Technical Requirements -->
+        <circle cx="350" cy="25" r="25" class="step-indicator"/>
+        <text x="350" y="30" text-anchor="middle" fill="#666666">3</text>
+        <text x="350" y="70" text-anchor="middle" class="label-text">Technical Specs</text>
+
+        <line x1="375" y1="25" x2="475" y2="25" class="step-line"/>
+
+        <!-- Step 4: Assets & Resources -->
+        <circle cx="500" cy="25" r="25" class="step-indicator"/>
+        <text x="500" y="30" text-anchor="middle" fill="#666666">4</text>
+        <text x="500" y="70" text-anchor="middle" class="label-text">Assets</text>
+
+        <line x1="525" y1="25" x2="625" y2="25" class="step-line"/>
+
+        <!-- Step 5: Timeline & Constraints -->
+        <circle cx="650" cy="25" r="25" class="step-indicator"/>
+        <text x="650" y="30" text-anchor="middle" fill="#666666">5</text>
+        <text x="650" y="70" text-anchor="middle" class="label-text">Timeline</text>
+    </g>
+
+    <!-- Form Section -->
+    <g transform="translate(100, 200)">
+        <rect width="1000" height="600" class="form-section" rx="8"/>
+        
+        <!-- Project Details Form (Step 2 shown as example) -->
+        <text x="40" y="40" font-size="24px" font-weight="bold" fill="#1A1A1A">Project Details</text>
+        
+        <!-- Project Type -->
+        <g transform="translate(40, 80)">
+            <text class="label-text">Project Type</text>
+            <rect x="0" y="20" width="300" height="40" class="input-field" rx="4"/>
+            <text x="16" y="45" class="helper-text">Select project type...</text>
+            <!-- RadixUI.Select would render here -->
+        </g>
+
+        <!-- Project Name -->
+        <g transform="translate(40, 160)">
+            <text class="label-text">Project Name</text>
+            <rect x="0" y="20" width="300" height="40" class="input-field" rx="4"/>
+        </g>
+
+        <!-- Project Description -->
+        <g transform="translate(40, 240)">
+            <text class="label-text">Project Description</text>
+            <rect x="0" y="20" width="920" height="100" class="input-field" rx="4"/>
+            <text x="16" y="45" class="helper-text">Describe the project goals and objectives...</text>
+        </g>
+
+        <!-- Technical Stack Preferences -->
+        <g transform="translate(40, 380)">
+            <text class="label-text">Technical Stack Preferences</text>
+            <rect x="0" y="20" width="920" height="80" class="input-field" rx="4"/>
+            <text x="16" y="45" class="helper-text">List any specific technical requirements or preferences...</text>
+        </g>
+
+        <!-- Navigation Buttons -->
+        <g transform="translate(40, 500)">
+            <rect width="100" height="40" class="button-secondary" rx="4"/>
+            <text x="50" y="25" text-anchor="middle" fill="#9333EA">Previous</text>
+
+            <rect x="820" width="100" height="40" class="button-primary" rx="4"/>
+            <text x="870" y="25" text-anchor="middle" fill="white">Next</text>
+        </g>
+    </g>
+
+    <!-- Form Context Panel -->
+    <g transform="translate(1120, 200)">
+        <rect width="60" height="200" class="container" rx="8"/>
+        <text x="30" y="30" text-anchor="middle" class="helper-text">Step</text>
+        <text x="30" y="50" text-anchor="middle" class="label-text">2/5</text>
+        <!-- Progress indicator would render here -->
+    </g>
+</svg>

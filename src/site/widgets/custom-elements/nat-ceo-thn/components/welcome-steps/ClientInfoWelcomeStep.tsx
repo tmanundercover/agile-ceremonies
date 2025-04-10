@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Container, Flex, Text, TextField, Theme} from '@radix-ui/themes';
+import {Button, Container, Flex, Text, TextField, Theme} from '@radix-ui/themes';
 import * as Form from '@radix-ui/react-form';
 import isEmail from 'validator/lib/isEmail';
 import {Step, StepProgressIndicator} from './StepProgressIndicator';
@@ -140,13 +140,13 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({onNextStep}) => {
 
     return (
         <Theme accentColor="purple" grayColor="slate" radius="medium">
-            <Container size="3" p="4">
+            <Container size="4" p="8">
                 <Flex direction="column" gap="4">
                     <div>
                         <StepProgressIndicator steps={steps} progress={20}/>
                     </div>
 
-                    <Form.Root ref={formRef} onSubmit={handleSubmit}>
+                    <div><Form.Root ref={formRef} onSubmit={handleSubmit}>
                         <FormContainer>
                             <Flex direction="column" gap="6">
                                 <div>
@@ -263,7 +263,7 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({onNextStep}) => {
                                                         />
                                                     </Form.Control>
                                                     {errors.email && (
-                                                        <FieldErrorText fieldName="email" />
+                                                        <FieldErrorText fieldName="email"/>
                                                     )}
                                                 </Form.Field>
                                             </FormFieldWrapper>
@@ -283,7 +283,7 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({onNextStep}) => {
                                                         />
                                                     </Form.Control>
                                                     {errors.phone && (
-                                                        <FieldErrorText fieldName={'phone'} />
+                                                        <FieldErrorText fieldName={'phone'}/>
                                                     )}
                                                 </Form.Field>
                                             </FormFieldWrapper>
@@ -308,64 +308,71 @@ export const ClientInfoWelcomeStep: React.FC<Props> = ({onNextStep}) => {
                                         </Form.Control>
                                     </Form.Field>
 
-                                    <Flex gap="4">
-                                        <FormFieldWrapper $width="33.33%">
-                                            <Form.Field name="city">
-                                                <Form.Label>City</Form.Label>
-                                                <Form.Control asChild>
-                                                    <TextField.Input
-                                                        size="3"
-                                                        value={formData.city}
-                                                        onChange={handleInputChange}
-                                                        placeholder="Enter city"
-                                                        aria-label="City"
-                                                        name="city"
-                                                    />
-                                                </Form.Control>
-                                            </Form.Field>
-                                        </FormFieldWrapper>
-
-                                        <FormFieldWrapper $width="33.33%">
-                                            <Form.Field name="state">
-                                                <Form.Label>State</Form.Label>
-                                                <Form.Control asChild>
-                                                    <TextField.Input
-                                                        size="3"
-                                                        value={formData.state}
-                                                        onChange={handleInputChange}
-                                                        placeholder="Enter state"
-                                                        aria-label="State"
-                                                        name="state"
-                                                    />
-                                                </Form.Control>
-                                            </Form.Field>
-                                        </FormFieldWrapper>
-
-                                        <FormFieldWrapper $width="33.33%">
-                                            <Form.Field name="zipCode">
-                                                <Form.Label>ZIP Code</Form.Label>
-                                                <Form.Control asChild>
-                                                    <TextField.Input
-                                                        size="3"
-                                                        value={formData.zipCode}
-                                                        onChange={handleInputChange}
-                                                        placeholder="Enter ZIP code"
-                                                        aria-label="ZIP Code"
-                                                        name="zipCode"
-                                                    />
-                                                </Form.Control>
-                                            </Form.Field>
-                                        </FormFieldWrapper>
+                                    <Flex gap={"4"} width="100%">
+                                            <FormFieldWrapper $width="33.33%">
+                                                <Form.Field name="city">
+                                                    <Form.Label>City</Form.Label>
+                                                    <Form.Control asChild>
+                                                        <TextField.Input
+                                                            size="3"
+                                                            value={formData.city}
+                                                            onChange={handleInputChange}
+                                                            placeholder="Enter city"
+                                                            aria-label="City"
+                                                            name="city"
+                                                        />
+                                                    </Form.Control>
+                                                </Form.Field>
+                                            </FormFieldWrapper>
+                                            <FormFieldWrapper $width="33.33%">
+                                                <Form.Field name="state">
+                                                    <Form.Label>State</Form.Label>
+                                                    <Form.Control asChild>
+                                                        <TextField.Input
+                                                            size="3"
+                                                            value={formData.state}
+                                                            onChange={handleInputChange}
+                                                            placeholder="Enter state"
+                                                            aria-label="State"
+                                                            name="state"
+                                                        />
+                                                    </Form.Control>
+                                                </Form.Field>
+                                            </FormFieldWrapper>
+                                            <FormFieldWrapper $width="33.33%" >
+                                                <Form.Field name="zipCode">
+                                                    <Form.Label>ZIP Code</Form.Label>
+                                                    <Form.Control asChild>
+                                                        <TextField.Input
+                                                            size="3"
+                                                            value={formData.zipCode}
+                                                            onChange={handleInputChange}
+                                                            placeholder="Enter ZIP code"
+                                                            aria-label="ZIP Code"
+                                                            name="zipCode"
+                                                        />
+                                                    </Form.Control>
+                                                </Form.Field>
+                                            </FormFieldWrapper>
                                     </Flex>
                                 </Flex>
 
                                 {/* Submit Button */}
                                 <Flex gap="4">
-
+                                    <Button
+                                        size="3"
+                                        style={{
+                                            background: 'linear-gradient(90deg, #9333EA 0%, #A855F7 100%)',
+                                            width: '100%'
+                                        }}
+                                        type="submit"
+                                    >
+                                        Next: Project Overview
+                                    </Button>
                                 </Flex>
                             </Flex>
                         </FormContainer>
-                    </Form.Root>
+                    </Form.Root></div>
                 </Flex>
             </Container>
         </Theme>

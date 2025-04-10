@@ -1,5 +1,6 @@
 import * as React from "react";
 import {DateProps} from "@wix/wix-ui-icons-common/dist/types/general/dist/components/Date";
+import {IconProps} from "@wix/wix-ui-icons-common";
 
 export interface Task {
   id: string;
@@ -12,7 +13,7 @@ export interface Task {
   dependencies: (Task | Requirement)[];
   status: 'To Do' | 'In Progress' | 'Done';
   priority: 'Low' | 'Medium' | 'High';
-  icon: React.FC<DateProps>
+  icon: React.ReactNode
 }
 
 export interface Requirement {
@@ -87,8 +88,8 @@ export interface StandupData {
   status: string;
   blockers: string[];
   helpRequest: HelpRequest;
-  tasksCompleted: string[];
-  tasksInProgress: string[];
-  tasksPlanned: string[];
+  tasksCompleted: Task[];
+  tasksInProgress: Task[];
+  tasksPlanned: Task[];
 }
 

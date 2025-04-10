@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="900" viewBox="0 0 1200 900" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .header-bar { fill: #9333EA; }
+        .container { fill: #faf5ff; stroke: #e9d5ff; stroke-width: 1; }
+        .step-circle {
+            fill: #e9d5ff;
+            stroke: none;
+        }
+        .step-circle.active {
+            fill: #9333EA;
+        }
+        .step-circle.completed {
+            fill: #9333EA;
+        }
+        .step-line {
+            stroke: #e9d5ff;
+            stroke-width: 2;
+        }
+        .step-line.completed {
+            stroke: #9333EA;
+        }
+        .step-text {
+            fill: #1A1A1A;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .step-number {
+            fill: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .asset-grid {
+            fill: white;
+            stroke: #e9d5ff;
+            stroke-width: 1;
+            filter: url(#shadow-sm);
+        }
+        .asset-card {
+            fill: white;
+            stroke: #e9d5ff;
+            stroke-width: 1;
+            cursor: pointer;
+        }
+        .asset-card:hover {
+            stroke: #9333EA;
+        }
+        .upload-zone {
+            fill: #f3e8ff;
+            stroke: #9333EA;
+            stroke-width: 2;
+            stroke-dasharray: 5,5;
+        }
+        .asset-type-badge {
+            fill: #f3e8ff;
+            stroke: none;
+        }
+        .asset-type-text {
+            fill: #9333EA;
+            font-size: 12px;
+        }
+        .nav-button-primary {
+            fill: #9333EA;
+            stroke: none;
+            cursor: pointer;
+        }
+        .nav-button-secondary {
+            fill: white;
+            stroke: #9333EA;
+            stroke-width: 1;
+            cursor: pointer;
+        }
+        .button-text-light {
+            fill: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .button-text-dark {
+            fill: #9333EA;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .folder-tab {
+            fill: #f3e8ff;
+            stroke: #9333EA;
+            stroke-width: 1;
+            cursor: pointer;
+        }
+        .folder-tab.active {
+            fill: #9333EA;
+        }
+        .folder-tab-text {
+            fill: #1A1A1A;
+            font-size: 14px;
+        }
+        .folder-tab-text.active {
+            fill: white;
+        }
+    </style>
+
+    <defs>
+        <filter id="shadow-sm">
+            <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.1"/>
+        </filter>
+        <path id="squircle" d="
+            M 0,35 
+            C 0,15 15,0 35,0 
+            L 215,0 
+            C 235,0 250,15 250,35
+            L 250,165
+            C 250,185 235,200 215,200
+            L 35,200
+            C 15,200 0,185 0,165
+            Z
+        "/>
+    </defs>
+
+    <!-- Header -->
+    <rect width="1200" height="80" class="header-bar"/>
+    <text x="600" y="45" text-anchor="middle" fill="white" font-size="24px" font-weight="bold">
+        Project Requirements Intake Form
+    </text>
+
+    <!-- Stepper -->
+    <g transform="translate(100, 100)">
+        <!-- Steps 1-3 Completed -->
+        <circle cx="50" cy="25" r="25" class="step-circle completed"/>
+        <text x="50" y="30" class="step-number" text-anchor="middle">1</text>
+        <text x="50" y="65" class="step-text" text-anchor="middle">Company Info</text>
+        <line x1="75" y1="25" x2="225" y2="25" class="step-line completed"/>
+
+        <circle cx="250" cy="25" r="25" class="step-circle completed"/>
+        <text x="250" y="30" class="step-number" text-anchor="middle">2</text>
+        <text x="250" y="65" class="step-text" text-anchor="middle">Project Details</text>
+        <line x1="275" y1="25" x2="425" y2="25" class="step-line completed"/>
+
+        <circle cx="450" cy="25" r="25" class="step-circle completed"/>
+        <text x="450" y="30" class="step-number" text-anchor="middle">3</text>
+        <text x="450" y="65" class="step-text" text-anchor="middle">Technical Specs</text>
+        <line x1="475" y1="25" x2="625" y2="25" class="step-line completed"/>
+
+        <!-- Step 4 Active -->
+        <circle cx="650" cy="25" r="25" class="step-circle active"/>
+        <text x="650" y="30" class="step-number" text-anchor="middle">4</text>
+        <text x="650" y="65" class="step-text" text-anchor="middle">Assets</text>
+        <line x1="675" y1="25" x2="825" y2="25" class="step-line"/>
+
+        <!-- Step 5 Pending -->
+        <circle cx="850" cy="25" r="25" class="step-circle"/>
+        <text x="850" y="30" class="step-number" text-anchor="middle">5</text>
+        <text x="850" y="65" class="step-text" text-anchor="middle">Timeline</text>
+    </g>
+
+    <!-- Asset Management Interface -->
+    <g transform="translate(100, 180)">
+        <!-- Folder Tabs -->
+        <g transform="translate(0, 0)">
+            <rect width="150" height="40" rx="8" class="folder-tab active"/>
+            <text x="75" y="25" text-anchor="middle" class="folder-tab-text active">Existing Assets</text>
+        </g>
+        <g transform="translate(160, 0)">
+            <rect width="150" height="40" rx="8" class="folder-tab"/>
+            <text x="75" y="25" text-anchor="middle" class="folder-tab-text">Brand Request</text>
+        </g>
+        <g transform="translate(320, 0)">
+            <rect width="150" height="40" rx="8" class="folder-tab"/>
+            <text x="75" y="25" text-anchor="middle" class="folder-tab-text">Guidelines</text>
+        </g>
+
+        <!-- Asset Grid -->
+        <g transform="translate(0, 50)">
+            <rect width="1000" height="500" class="asset-grid" rx="8"/>
+            
+            <!-- Upload Zone -->
+            <g transform="translate(20, 20)">
+                <rect width="960" height="100" class="upload-zone" rx="8"/>
+                <text x="480" y="45" text-anchor="middle" class="button-text-dark">
+                    Drag and drop files here
+                </text>
+                <text x="480" y="65" text-anchor="middle" class="button-text-dark">
+                    or click to browse
+                </text>
+            </g>
+
+            <!-- Asset Cards -->
+            <g transform="translate(20, 140)">
+                <!-- Logo File -->
+                <g transform="translate(0, 0)">
+                    <rect width="200" height="150" class="asset-card" rx="8"/>
+                    <rect x="10" y="10" width="60" height="24" rx="12" class="asset-type-badge"/>
+                    <text x="40" y="26" text-anchor="middle" class="asset-type-text">Logo</text>
+                    <text x="10" y="140" class="step-text">company-logo.svg</text>
+                </g>
+
+                <!-- Brand Colors -->
+                <g transform="translate(220, 0)">
+                    <rect width="200" height="150" class="asset-card" rx="8"/>
+                    <rect x="10" y="10" width="60" height="24" rx="12" class="asset-type-badge"/>
+                    <text x="40" y="26" text-anchor="middle" class="asset-type-text">Colors</text>
+                    <text x="10" y="140" class="step-text">brand-colors.pdf</text>
+                </g>
+            </g>
+        </g>
+    </g>
+
+    <!-- Reqqy Sticker -->
+    <g transform="translate(800, 180)">
+        <use href="#squircle" class="reqqy-container"/>
+        <circle cx="225" cy="25" r="15" class="plus-badge"/>
+        <path d="M 225,18 L 225,32 M 218,25 L 232,25" stroke="white" stroke-width="2"/>
+        
+        <g transform="translate(25, 80)">
+            <path d="M 0,20 Q 25,0 50,20 Q 75,40 100,20 Q 125,0 150,20 Q 175,40 200,20" class="voice-wave"/>
+        </g>
+        
+        <rect x="25" y="100" width="200" height="60" fill="#f3e8ff" rx="4"/>
+        <text x="35" y="120" class="step-text">Suggested assets:</text>
+        <text x="35" y="140" class="step-text">• Brand Style Guide</text>
+        <text x="35" y="155" class="step-text">• UI Component Library</text>
+    </g>
+
+    <!-- Action Buttons -->
+    <g transform="translate(100, 800)">
+        <rect width="120" height="40" rx="8" class="nav-button-secondary"/>
+        <text x="60" y="25" text-anchor="middle" class="button-text-dark">Previous</text>
+        
+        <g transform="translate(880, 0)">
+            <rect width="120" height="40" rx="8" class="nav-button-primary"/>
+            <text x="60" y="25" text-anchor="middle" class="button-text-light">Next</text>
+        </g>
+    </g>
+</svg>

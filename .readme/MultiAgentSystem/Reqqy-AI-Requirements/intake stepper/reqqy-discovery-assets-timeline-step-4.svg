@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="900" viewBox="0 0 1200 900" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .header-bar { fill: #9333EA; }
+        .container { fill: #faf5ff; stroke: #e9d5ff; stroke-width: 1; }
+        .step-circle {
+            fill: #e9d5ff;
+            stroke: none;
+        }
+        .step-circle.active {
+            fill: #9333EA;
+        }
+        .step-circle.completed {
+            fill: #9333EA;
+        }
+        .step-line {
+            stroke: #e9d5ff;
+            stroke-width: 2;
+        }
+        .step-line.completed {
+            stroke: #9333EA;
+        }
+        .step-text {
+            fill: #1A1A1A;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .step-number {
+            fill: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .form-container {
+            fill: white;
+            stroke: #e9d5ff;
+            stroke-width: 1;
+            filter: url(#shadow-sm);
+        }
+        .form-label {
+            fill: #1A1A1A;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .form-input {
+            fill: white;
+            stroke: #e9d5ff;
+            stroke-width: 1;
+        }
+        .form-input:hover {
+            stroke: #9333EA;
+        }
+        .milestone-card {
+            fill: #f3e8ff;
+            stroke: #9333EA;
+            stroke-width: 1;
+        }
+        .priority-high {
+            fill: #EF4444;
+        }
+        .priority-medium {
+            fill: #F59E0B;
+        }
+        .priority-low {
+            fill: #10B981;
+        }
+        .nav-button-primary {
+            fill: #9333EA;
+            stroke: none;
+            cursor: pointer;
+        }
+        .nav-button-secondary {
+            fill: white;
+            stroke: #9333EA;
+            stroke-width: 1;
+            cursor: pointer;
+        }
+        .button-text-light {
+            fill: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .button-text-dark {
+            fill: #9333EA;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .timeline-marker {
+            fill: #9333EA;
+        }
+        .timeline-line {
+            stroke: #e9d5ff;
+            stroke-width: 2;
+            stroke-dasharray: 4,4;
+        }
+    </style>
+
+    <defs>
+        <filter id="shadow-sm">
+            <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.1"/>
+        </filter>
+        <path id="squircle" d="
+            M 0,35 
+            C 0,15 15,0 35,0 
+            L 215,0 
+            C 235,0 250,15 250,35
+            L 250,165
+            C 250,185 235,200 215,200
+            L 35,200
+            C 15,200 0,185 0,165
+            Z
+        "/>
+    </defs>
+
+    <!-- Header -->
+    <rect width="1200" height="80" class="header-bar"/>
+    <text x="600" y="45" text-anchor="middle" fill="white" font-size="24px" font-weight="bold">
+        Project Requirements Intake Form
+    </text>
+
+    <!-- Stepper -->
+    <g transform="translate(100, 100)">
+        <!-- Previous steps completed -->
+        <circle cx="50" cy="25" r="25" class="step-circle completed"/>
+        <text x="50" y="30" class="step-number" text-anchor="middle">1</text>
+        <text x="50" y="65" class="step-text" text-anchor="middle">Company Info</text>
+        <line x1="75" y1="25" x2="225" y2="25" class="step-line completed"/>
+
+        <circle cx="250" cy="25" r="25" class="step-circle completed"/>
+        <text x="250" y="30" class="step-number" text-anchor="middle">2</text>
+        <text x="250" y="65" class="step-text" text-anchor="middle">Project Details</text>
+        <line x1="275" y1="25" x2="425" y2="25" class="step-line completed"/>
+
+        <circle cx="450" cy="25" r="25" class="step-circle completed"/>
+        <text x="450" y="30" class="step-number" text-anchor="middle">3</text>
+        <text x="450" y="65" class="step-text" text-anchor="middle">Technical Specs</text>
+        <line x1="475" y1="25" x2="625" y2="25" class="step-line completed"/>
+
+        <circle cx="650" cy="25" r="25" class="step-circle completed"/>
+        <text x="650" y="30" class="step-number" text-anchor="middle">4</text>
+        <text x="650" y="65" class="step-text" text-anchor="middle">Assets</text>
+        <line x1="675" y1="25" x2="825" y2="25" class="step-line completed"/>
+
+        <circle cx="850" cy="25" r="25" class="step-circle active"/>
+        <text x="850" y="30" class="step-number" text-anchor="middle">5</text>
+        <text x="850" y="65" class="step-text" text-anchor="middle">Timeline</text>
+    </g>
+
+    <!-- Timeline Form -->
+    <g transform="translate(100, 180)">
+        <rect width="650" height="600" class="form-container" rx="8"/>
+        
+        <!-- Project Dates -->
+        <g transform="translate(30, 30)">
+            <text class="form-label">Project Timeline</text>
+            <g transform="translate(0, 20)">
+                <rect width="280" height="40" class="form-input" rx="4"/>
+                <text x="15" y="26" class="step-text">Start Date</text>
+            </g>
+            <g transform="translate(300, 20)">
+                <rect width="280" height="40" class="form-input" rx="4"/>
+                <text x="15" y="26" class="step-text">Target Launch Date</text>
+            </g>
+        </g>
+
+        <!-- Milestones -->
+        <g transform="translate(30, 120)">
+            <text class="form-label">Key Milestones</text>
+            
+            <!-- Milestone 1 -->
+            <g transform="translate(0, 30)">
+                <rect width="590" height="80" class="milestone-card" rx="8"/>
+                <circle cx="20" cy="25" r="8" class="priority-high"/>
+                <text x="40" y="30" class="step-text">Design System Complete</text>
+                <rect x="20" y="40" width="200" height="24" class="form-input" rx="4"/>
+                <text x="30" y="56" class="step-text" fill="#666666">Target: July 2024</text>
+            </g>
+
+            <!-- Milestone 2 -->
+            <g transform="translate(0, 120)">
+                <rect width="590" height="80" class="milestone-card" rx="8"/>
+                <circle cx="20" cy="25" r="8" class="priority-medium"/>
+                <text x="40" y="30" class="step-text">MVP Development</text>
+                <rect x="20" y="40" width="200" height="24" class="form-input" rx="4"/>
+                <text x="30" y="56" class="step-text" fill="#666666">Target: September 2024</text>
+            </g>
+
+            <!-- Add Milestone Button -->
+            <g transform="translate(0, 220)">
+                <rect width="590" height="60" class="form-input" rx="8" stroke-dasharray="4,4"/>
+                <text x="295" y="35" text-anchor="middle" class="button-text-dark">+ Add Milestone</text>
+            </g>
+        </g>
+
+        <!-- Time Constraints -->
+        <g transform="translate(30, 460)">
+            <text class="form-label">Time Constraints & Dependencies</text>
+            <rect width="590" height="100" class="form-input" rx="4" transform="translate(0, 20)"/>
+        </g>
+    </g>
+
+    <!-- Reqqy Analysis -->
+    <g transform="translate(800, 180)">
+        <use href="#squircle" class="reqqy-container"/>
+        <circle cx="225" cy="25" r="15" class="plus-badge"/>
+        <path d="M 225,18 L 225,32 M 218,25 L 232,25" stroke="white" stroke-width="2"/>
+        
+        <g transform="translate(25, 80)">
+            <path d="M 0,20 Q 25,0 50,20 Q 75,40 100,20 Q 125,0 150,20 Q 175,40 200,20" class="voice-wave"/>
+        </g>
+        
+        <rect x="25" y="100" width="200" height="80" fill="#f3e8ff" rx="4"/>
+        <text x="35" y="120" class="step-text">Timeline Analysis:</text>
+        <text x="35" y="140" class="step-text">• Tech stack setup: ~4 weeks</text>
+        <text x="35" y="155" class="step-text">• MVP development: 12-14 weeks</text>
+        <text x="35" y="170" class="step-text" fill="#EF4444">! Timeline constraints detected</text>
+    </g>
+
+    <!-- Timeline Visualization -->
+    <g transform="translate(800, 400)">
+        <rect width="250" height="200" class="form-container" rx="8"/>
+        <text x="20" y="30" class="form-label">Timeline Overview</text>
+        
+        <!-- Timeline markers -->
+        <line x1="40" y1="80" x2="210" y2="80" class="timeline-line"/>
+        <circle cx="40" cy="80" r="6" class="timeline-marker"/>
+        <circle cx="125" cy="80" r="6" class="timeline-marker"/>
+        <circle cx="210" cy="80" r="6" class="timeline-marker"/>
+        
+        <text x="40" y="100" class="step-text" text-anchor="middle">Start</text>
+        <text x="125" y="100" class="step-text" text-anchor="middle">MVP</text>
+        <text x="210" y="100" class="step-text" text-anchor="middle">Launch</text>
+    </g>
+
+    <!-- Action Buttons -->
+    <g transform="translate(100, 820)">
+        <rect width="120" height="40" rx="8" class="nav-button-secondary"/>
+        <text x="60" y="25" text-anchor="middle" class="button-text-dark">Previous</text>
+        
+        <g transform="translate(880, 0)">
+            <rect width="120" height="40" rx="8" class="nav-button-primary"/>
+            <text x="60" y="25" text-anchor="middle" class="button-text-light">Submit</text>
+        </g>
+    </g>
+
+</svg>

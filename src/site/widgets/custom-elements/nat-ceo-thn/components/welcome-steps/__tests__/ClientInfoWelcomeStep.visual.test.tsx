@@ -5,6 +5,8 @@ import {ClientInfoWelcomeStep} from '../ClientInfoWelcomeStep';
 // import '@radix-ui/themes/styles.css';
 import RadixThemeWrapper from "../../../../../../../test/RadixThemeWrapper";
 import {Theme} from "@radix-ui/themes";
+import fs from "fs";
+import path from "path";
 
 jest.mock("@radix-ui/react-portal", () => ({
   ...jest.requireActual("@radix-ui/react-portal"),
@@ -26,33 +28,34 @@ describe('ClientInfoWelcomeStep Mockup Visual Regression', () => {
   it('matches SVG mockup', async () => {
 
 
-    await injectStyles(page, <Theme><div style={{padding: "32px"}}><ClientInfoWelcomeStep onNextStep={() => {}} /></div></Theme>);
+    await page.setViewport({ width: 1200, height: 1000 });
+    await injectStyles(page, <Theme><ClientInfoWelcomeStep onNextStep={() => {}} /></Theme>);
 
     // render()
 
-    // const mockupPath = path.join(__dirname, 'mockups', 'ClientInfoWelcomeStep.styled.svg');
-    // expect(fs.existsSync(mockupPath)).toBeTruthy();
+    const mockupPath = path.join(__dirname, 'mockups', 'ClientInfoWelcomeStep.svg');
+    expect(fs.existsSync(mockupPath)).toBeTruthy();
     const screenshot = await takeScreenshot(page);
     expect(screenshot).toMatchScreenshot({
-        customSnapshotIdentifier: 'client-info-welcome-step'
+        customSnapshotIdentifier: 'client-info-welcome-step-component-screenshot'
       });
-    // const svgContent = fs.readFileSync(mockupPath);
+    const svgContent = fs.readFileSync(mockupPath);
     //
-    // await mockupPage.setViewport({ width: 1200, height: 1000 });
+    await mockupPage.setViewport({ width: 1200, height: 1000 });
     //
-    // const svgString = svgContent.toString();
+    const svgString = svgContent.toString();
     //
     // // Set the content of the page to the SVG
-    // await mockupPage.setContent(svgString, { waitUntil: 'networkidle0' });
+    await mockupPage.setContent(svgString, { waitUntil: 'networkidle0' });
     //
-    // const svgMockupScreenshot = await takeScreenshot(mockupPage);
+    const svgMockupScreenshot = await takeScreenshot(mockupPage);
 
     // expect(screenshot).toMatchScreenshot({
     //   customSnapshotIdentifier: 'client-info-welcome-step'
     // });
     //
-    // expect(svgMockupScreenshot).toMatchSVGMockup({
-    //   customSnapshotIdentifier: 'client-info-welcome-step-mockup'
-    // });
+    expect(svgMockupScreenshot).toMatchSVGMockup({
+      customSnapshotIdentifier: 'client-info-welcome-step-mockup-screenshot'
+    });
   });
 });

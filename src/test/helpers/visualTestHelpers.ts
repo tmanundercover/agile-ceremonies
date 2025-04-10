@@ -1,9 +1,8 @@
 import puppeteer from 'puppeteer';
 import ReactDOMServer from 'react-dom/server';
-import { ReactElement } from 'react';
-import radixUI from '@radix-ui/themes/styles.css';
-import * as styled from '../../site/widgets/custom-elements/nat-ceo-thn/styledComponents';
+import {ReactElement} from 'react';
 import {ServerStyleSheet} from "styled-components";
+
 export async function setupVisualTest() {
   const browser = await puppeteer.launch({
     headless: true,
@@ -45,6 +44,5 @@ export async function takeScreenshot(page: puppeteer.Page) {
   
   return page.screenshot({
     fullPage: true,
-    captureBeyondViewport: true
   });
 }

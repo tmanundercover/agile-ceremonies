@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="900" viewBox="0 0 1200 900" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .header-bar { fill: #9333EA; }
+        .container { fill: #faf5ff; stroke: #e9d5ff; stroke-width: 1; }
+        .form-section { fill: white; filter: url(#shadow-sm); }
+        .step-indicator { fill: #e9d5ff; }
+        .step-indicator.active { fill: #9333EA; }
+        .step-line { stroke: #e9d5ff; stroke-width: 2; }
+        .step-line.completed { stroke: #9333EA; }
+        .input-field { fill: white; stroke: #e9d5ff; stroke-width: 1; }
+        .input-field:focus { stroke: #9333EA; }
+        .label-text { fill: #1A1A1A; font-size: 14px; font-weight: 500; }
+        .helper-text { fill: #666666; font-size: 12px; }
+        .button-primary { fill: #9333EA; }
+        .button-secondary { fill: white; stroke: #9333EA; stroke-width: 1; }
+        .ai-container { fill: #f3e8ff; stroke: #e9d5ff; stroke-width: 2; }
+        .chat-button { fill: #9333EA; filter: url(#shadow-sm); cursor: pointer; }
+        .chat-icon { fill: white; }
+        .chevron { fill: #666666; }
+        .progress-bar { fill: #22C55E; }
+        .progress-bg { fill: #EDF2F7; }
+        .dropdown-item { fill: white; }
+        .dropdown-item:hover { fill: #f3e8ff; }
+        .type-selector { 
+            fill: white; 
+            stroke: #9333EA; 
+            stroke-width: 2;
+            cursor: pointer;
+        }
+        .type-selector:hover { fill: #f3e8ff; }
+    </style>
+
+    <defs>
+        <filter id="shadow-sm">
+            <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.1"/>
+        </filter>
+        <filter id="shadow-md">
+            <feDropShadow dx="0" dy="4" stdDeviation="4" flood-opacity="0.15"/>
+        </filter>
+        <symbol id="chevron-down" viewBox="0 0 24 24">
+            <path d="M7 10l5 5 5-5z"/>
+        </symbol>
+        <symbol id="question-mark" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/>
+        </symbol>
+        <path id="squircle" d="
+            M 0,35 
+            C 0,15 15,0 35,0 
+            L 215,0 
+            C 235,0 250,15 250,35
+            L 250,165
+            C 250,185 235,200 215,200
+            L 35,200
+            C 15,200 0,185 0,165
+            Z
+        "/>
+    </defs>
+
+    <!-- Header -->
+    <rect x="0" y="0" width="1200" height="80" class="header-bar" rx="8"/>
+    <text x="600" y="50" text-anchor="middle" fill="white" font-size="32px" font-weight="bold">
+        Project Requirements Intake Form
+    </text>
+
+    <!-- Progress Bar -->
+    <g transform="translate(75, 100)">
+        <!-- Step 1 -->
+        <circle cx="50" cy="25" r="25" class="step-indicator active"/>
+        <text x="50" y="30" text-anchor="middle" fill="white">1</text>
+        <text x="50" y="70" text-anchor="middle" class="label-text">Company Info</text>
+        <line x1="75" y1="25" x2="275" y2="25" class="step-line completed"/>
+
+        <!-- Step 2 -->
+        <circle cx="300" cy="25" r="25" class="step-indicator active"/>
+        <text x="300" y="30" text-anchor="middle" fill="white">2</text>
+        <text x="300" y="70" text-anchor="middle" class="label-text">Project Details</text>
+        <line x1="325" y1="25" x2="525" y2="25" class="step-line"/>
+
+        <!-- Step 3 -->
+        <circle cx="550" cy="25" r="25" class="step-indicator"/>
+        <text x="550" y="30" text-anchor="middle" fill="#666666">3</text>
+        <text x="550" y="70" text-anchor="middle" class="label-text">Technical Specs</text>
+        <line x1="575" y1="25" x2="775" y2="25" class="step-line"/>
+
+        <!-- Step 4 -->
+        <circle cx="800" cy="25" r="25" class="step-indicator"/>
+        <text x="800" y="30" text-anchor="middle" fill="#666666">4</text>
+        <text x="800" y="70" text-anchor="middle" class="label-text">Assets</text>
+        <line x1="825" y1="25" x2="1025" y2="25" class="step-line"/>
+
+        <!-- Step 5 -->
+        <circle cx="1050" cy="25" r="25" class="step-indicator"/>
+        <text x="1050" y="30" text-anchor="middle" fill="#666666">5</text>
+        <text x="1050" y="70" text-anchor="middle" class="label-text">Timeline</text>
+    </g>
+
+    <!-- Main Form Container -->
+    <g transform="translate(100, 200)">
+        <rect width="1000" height="600" class="form-section" rx="8"/>
+        
+        <!-- AI Assistant Section -->
+        <g transform="translate(700, 40)">
+            <use href="#squircle" class="ai-container"/>
+            <!-- Reqqy Placeholder -->
+            <path d="M 125,25 C 125,25 175,100 125,175" 
+                  stroke="#9333EA" 
+                  fill="none" 
+                  stroke-dasharray="4,4"/>
+            <text x="125" y="180" text-anchor="middle" class="helper-text">
+                Reqqy illustration here
+            </text>
+            
+            <!-- Project Type Selector -->
+            <g transform="translate(25, 140)">
+                <rect width="200" height="40" class="type-selector" rx="4"/>
+                <text x="16" y="25" class="label-text">Web Application</text>
+                <use href="#chevron-down" x="160" y="8" width="24" height="24" class="chevron"/>
+                
+                <!-- Help Icon -->
+                <g transform="translate(130, 8)">
+                    <use href="#question-mark" width="24" height="24" class="chevron"/>
+                </g>
+
+                <!-- Progress Bar -->
+                <rect x="0" y="-20" width="200" height="4" class="progress-bg" rx="2"/>
+                <rect x="0" y="-20" width="120" height="4" class="progress-bar" rx="2"/>
+            </g>
+        </g>
+
+        <!-- Chat Button -->
+        <g transform="translate(900, 220)">
+            <circle cx="25" cy="25" r="20" class="chat-button"/>
+            <path d="M 15,25 L 35,25 M 25,15 L 25,35" 
+                  stroke="white" 
+                  stroke-width="2"/>
+        </g>
+
+        <!-- Form Fields -->
+        <text x="40" y="40" font-size="24px" font-weight="bold" fill="#1A1A1A">Project Details</text>
+        
+        <!-- Project Type Field -->
+        <g transform="translate(40, 80)">
+            <text class="label-text">Project Type</text>
+            <rect x="0" y="20" width="640" height="40" class="input-field" rx="4"/>
+            <text x="16" y="45" class="helper-text">Select project type...</text>
+            <use href="#chevron-down" x="600" y="28" width="24" height="24" class="chevron"/>
+        </g>
+
+        <!-- Project Name Field -->
+        <g transform="translate(40, 160)">
+            <text class="label-text">Project Name</text>
+            <rect x="0" y="20" width="640" height="40" class="input-field" rx="4"/>
+        </g>
+
+        <!-- Project Description Field -->
+        <g transform="translate(40, 240)">
+            <text class="label-text">Project Description</text>
+            <rect x="0" y="20" width="920" height="100" class="input-field" rx="4"/>
+            <text x="16" y="45" class="helper-text">Describe the project goals and objectives...</text>
+        </g>
+
+        <!-- Technical Stack Field -->
+        <g transform="translate(40, 380)">
+            <text class="label-text">Technical Stack Preferences</text>
+            <rect x="0" y="20" width="920" height="80" class="input-field" rx="4"/>
+            <text x="16" y="45" class="helper-text">List any specific technical requirements or preferences...</text>
+        </g>
+
+        <!-- Navigation Buttons -->
+        <g transform="translate(40, 500)">
+            <rect width="100" height="40" class="button-secondary" rx="4"/>
+            <text x="50" y="25" text-anchor="middle" fill="#9333EA">Previous</text>
+
+            <rect x="820" width="100" height="40" class="button-primary" rx="4"/>
+            <text x="870" y="25" text-anchor="middle" fill="white">Next</text>
+        </g>
+    </g>
+</svg>

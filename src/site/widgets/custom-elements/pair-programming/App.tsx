@@ -1,26 +1,22 @@
-// App.tsx
-import React, {useEffect, useState} from 'react';
+import TeammateCard from './TeammateCard';
+import TeammateDetailsModal from './TeammateDetailsModal';
+import StandupModal from './StandupModal';
+import {useEffect, useState} from "react";
+import {Desk, Task, Teammate} from "./models";
 import {
     AppContainer,
-    OfficeContainer,
-    Sidebar,
-    TeammateCarousel,
-    BacklogSection,
-    OfficeFloor,
-    DeskContainer,
-    Seat,
-    SeatOccupied,
-    DraggableTeammate,
-    TaskDropdown
-} from './StyledComponents';
-import DeskDetailsModal from "./DeskDetailsModal";
-import {Date as DateIcon} from "@wix/wix-ui-icons-common";
-import {Desk, Teammate, Requirement, StandupStatus, HelpRequest, Comment, Task} from "./models"
+    BacklogSection, DeskContainer,
+    OfficeContainer, OfficeFloor, Seat, SeatOccupied,
+    Sidebar, TaskDropdown,
+    TeammateCarousel
+} from "./StyledComponents";
+import { CalendarIcon } from '@radix-ui/react-icons';
+import React from 'react';
 
-// Main App Component
-export const App: React.FC = () => {
-    // const [currentView, setCurrentView] = useState<'standup' | 'office' | 'board'>('office');
-    // const [currentUser, setCurrentUser] = useState<string | null>(null);
+const App: React.FC = () => {
+    const [currentTeammateIndex, setCurrentTeammateIndex] = useState(0);
+    const [selectedTeammate, setSelectedTeammate] = useState<Teammate | null>(null);
+    const [showStandupModal, setShowStandupModal] = useState(false);
     const [selectedDesk, setSelectedDesk] = useState<Desk | null>(null);
 
     const [desks, setDesks] = useState<Desk[]>([
@@ -50,7 +46,7 @@ export const App: React.FC = () => {
         {
             id: '1',
             priority: 'Low',
-            icon: DateIcon,
+            icon: CalendarIcon,
             title: 'Implement Login',
             type: 'feature',
             status: 'To Do',
@@ -70,32 +66,12 @@ export const App: React.FC = () => {
         }
     }, []);
 
-    const handleDragEnd = (result: any) => {
-        const {source, destination, draggableId} = result;
+    const nextTeammate = () => {
+        setCurrentTeammateIndex((prev) => (prev + 1) % teammates.length);
+    };
 
-        if (!destination) return;
-
-        const teammate = teammates.find(t => t.id === draggableId);
-        if (!teammate) return;
-
-        const updatedDesks = [...desks];
-        const targetDesk = updatedDesks.find(d => d.id === destination.droppableId);
-
-        if (!targetDesk) return;
-
-        if (teammate.role === 'Developer') {
-            if (!targetDesk.developerSeats[0]) {
-                targetDesk.developerSeats[0] = teammate;
-            } else if (!targetDesk.developerSeats[1]) {
-                targetDesk.developerSeats[1] = teammate;
-            }
-        } else if (['PM', 'GraphicDesigner'].includes(teammate.role)) {
-            if (!!targetDesk && !targetDesk.endcapSeat) {
-                targetDesk.endcapSeat = teammate;
-            }
-        }
-
-        setDesks(updatedDesks);
+    const previousTeammate = () => {
+        setCurrentTeammateIndex((prev) => (prev - 1 + teammates.length) % teammates.length);
     };
 
     return (
@@ -103,18 +79,13 @@ export const App: React.FC = () => {
             <OfficeContainer>
                 <Sidebar>
                     <TeammateCarousel>
-                        {teammates.map(teammate => (
-                            <DraggableTeammate
-                                key={teammate.id}
-                                // drag
-                                // dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-                                // whileHover={{ scale: 1.05 }}
-                                // whileTap={{ scale: 0.95 }}
-                            >
-                                {teammate.name}
-                            </DraggableTeammate>
-                        ))}
+                        <button onClick={previousTeammate}>&lt;</button>
+                        <button onClick={nextTeammate}>&gt;</button>
                     </TeammateCarousel>
+                    <TeammateCard
+                        teammate={teammates[currentTeammateIndex]}
+                        onClick={() => setSelectedTeammate(teammates[currentTeammateIndex])}
+                    />
                     <BacklogSection>
                         {/* Implement backlog list */}
                     </BacklogSection>
@@ -191,12 +162,24 @@ export const App: React.FC = () => {
                 </OfficeFloor>
             </OfficeContainer>
 
-            {selectedDesk && (
-                <DeskDetailsModal
-                    desk={selectedDesk}
-                    onClose={() => setSelectedDesk(null)}
-                    teammates={teammates}
-                    tasks={tasks}
+            {selectedTeammate && (
+                <TeammateDetailsModal
+                    teammate={selectedTeammate}
+                    onClose={() => setSelectedTeammate(null)}
+                    onStandupClick={() => setShowStandupModal(true)}
+                    isExiting={showStandupModal}
+                />
+            )}
+
+            {showStandupModal && (
+                <StandupModal
+                    teammate={selectedTeammate}
+                    onClose={(data) => {
+                        setShowStandupModal(false);
+                        setSelectedTeammate(null);
+                        // Handle standup data
+                    }}
+                    isEntering={true}
                 />
             )}
         </AppContainer>

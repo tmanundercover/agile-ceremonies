@@ -1,0 +1,161 @@
+<svg width="1200" height="900" xmlns="http://www.w3.org/2000/svg">
+    <!-- Header Bar -->
+    <rect x="0" y="0" width="1200" height="80" fill="#9333EA" rx="8"/>
+    <text x="40" y="50" fill="white" font-size="32px" font-weight="bold">Reqqy's Priority Workflows</text>
+
+    <!-- Workflow Containers -->
+    <g id="workflows">
+        <!-- 1. Requirements Discovery -->
+        <g transform="translate(40, 100)">
+            <rect width="540" height="180" fill="#faf5ff" rx="8" filter="url(#shadow-sm)"/>
+            <text x="20" y="35" font-size="20px" font-weight="bold">1. Requirements Discovery</text>
+            
+            <!-- Workflow Steps -->
+            <g transform="translate(20, 60)">
+                <rect width="140" height="40" fill="white" rx="4" stroke="#e9d5ff"/>
+                <text x="70" y="25" text-anchor="middle" font-size="14px">Receive Brief</text>
+                
+                <path d="M 140 20 L 180 20" stroke="#9333EA" marker-end="url(#arrow)"/>
+                
+                <rect x="180" width="140" height="40" fill="white" rx="4" stroke="#e9d5ff"/>
+                <text x="250" y="25" text-anchor="middle" font-size="14px">Analyze Requirements</text>
+                
+                <path d="M 320 20 L 360 20" stroke="#9333EA" marker-end="url(#arrow)"/>
+                
+                <rect x="360" width="140" height="40" fill="white" rx="4" stroke="#e9d5ff"/>
+                <text x="430" y="25" text-anchor="middle" font-size="14px">Generate Issues</text>
+            </g>
+
+            <text x="20" y="130" font-size="14px" fill="#666">Implementation Priority: HIGH</text>
+            <text x="20" y="150" font-size="14px" fill="#666">Key APIs: GitHub Issues API, NLP API</text>
+            <text x="20" y="170" font-size="14px" fill="#666">Output: Structured Requirements, GitHub Issues</text>
+        </g>
+
+        <!-- 2. Requirements Validation -->
+        <g transform="translate(620, 100)">
+            <rect width="540" height="180" fill="#faf5ff" rx="8" filter="url(#shadow-sm)"/>
+            <text x="20" y="35" font-size="20px" font-weight="bold">2. Requirements Validation</text>
+            
+            <g transform="translate(20, 60)">
+                <rect width="140" height="40" fill="white" rx="4" stroke="#e9d5ff"/>
+                <text x="70" y="25" text-anchor="middle" font-size="14px">Review Requirements</text>
+                
+                <path d="M 140 20 L 180 20" stroke="#9333EA" marker-end="url(#arrow)"/>
+                
+                <rect x="180" width="140" height="40" fill="white" rx="4" stroke="#e9d5ff"/>
+                <text x="250" y="25" text-anchor="middle" font-size="14px">Check Consistency</text>
+                
+                <path d="M 320 20 L 360 20" stroke="#9333EA" marker-end="url(#arrow)"/>
+                
+                <rect x="360" width="140" height="40" fill="white" rx="4" stroke="#e9d5ff"/>
+                <text x="430" y="25" text-anchor="middle" font-size="14px">Validate Feasibility</text>
+            </g>
+
+            <text x="20" y="130" font-size="14px" fill="#666">Implementation Priority: HIGH</text>
+            <text x="20" y="150" font-size="14px" fill="#666">Key APIs: GitHub Issues API, Validation Tools</text>
+            <text x="20" y="170" font-size="14px" fill="#666">Output: Validated Requirements Set</text>
+        </g>
+
+        <!-- 3. Requirements Tracking -->
+        <g transform="translate(40, 320)">
+            <rect width="540" height="180" fill="#faf5ff" rx="8" filter="url(#shadow-sm)"/>
+            <text x="20" y="35" font-size="20px" font-weight="bold">3. Requirements Tracking</text>
+            
+            <g transform="translate(20, 60)">
+                <rect width="140" height="40" fill="white" rx="4" stroke="#e9d5ff"/>
+                <text x="70" y="25" text-anchor="middle" font-size="14px">Monitor Changes</text>
+                
+                <path d="M 140 20 L 180 20" stroke="#9333EA" marker-end="url(#arrow)"/>
+                
+                <rect x="180" width="140" height="40" fill="white" rx="4" stroke="#e9d5ff"/>
+                <text x="250" y="25" text-anchor="middle" font-size="14px">Update Issues</text>
+                
+                <path d="M 320 20 L 360 20" stroke="#9333EA" marker-end="url(#arrow)"/>
+                
+                <rect x="360" width="140" height="40" fill="white" rx="4" stroke="#e9d5ff"/>
+                <text x="430" y="25" text-anchor="middle" font-size="14px">Notify Stakeholders</text>
+            </g>
+
+            <text x="20" y="130" font-size="14px" fill="#666">Implementation Priority: MEDIUM</text>
+            <text x="20" y="150" font-size="14px" fill="#666">Key APIs: GitHub Webhooks, Notification System</text>
+            <text x="20" y="170" font-size="14px" fill="#666">Output: Updated Requirements, Change Logs</text>
+        </g>
+
+        <!-- 4. Requirements Documentation -->
+        <g transform="translate(620, 320)">
+            <rect width="540" height="180" fill="#faf5ff" rx="8" filter="url(#shadow-sm)"/>
+            <text x="20" y="35" font-size="20px" font-weight="bold">4. Requirements Documentation</text>
+            
+            <g transform="translate(20, 60)">
+                <rect width="140" height="40" fill="white" rx="4" stroke="#e9d5ff"/>
+                <text x="70" y="25" text-anchor="middle" font-size="14px">Collect Requirements</text>
+                
+                <path d="M 140 20 L 180 20" stroke="#9333EA" marker-end="url(#arrow)"/>
+                
+                <rect x="180" width="140" height="40" fill="white" rx="4" stroke="#e9d5ff"/>
+                <text x="250" y="25" text-anchor="middle" font-size="14px">Format Documentation</text>
+                
+                <path d="M 320 20 L 360 20" stroke="#9333EA" marker-end="url(#arrow)"/>
+                
+                <rect x="360" width="140" height="40" fill="white" rx="4" stroke="#e9d5ff"/>
+                <text x="430" y="25" text-anchor="middle" font-size="14px">Generate Reports</text>
+            </g>
+
+            <text x="20" y="130" font-size="14px" fill="#666">Implementation Priority: MEDIUM</text>
+            <text x="20" y="150" font-size="14px" fill="#666">Key APIs: Documentation Tools, GitHub Markdown API</text>
+            <text x="20" y="170" font-size="14px" fill="#666">Output: Requirements Documentation, Technical Specs</text>
+        </g>
+
+        <!-- Implementation Notes -->
+        <g transform="translate(40, 540)">
+            <rect width="1120" height="320" fill="#faf5ff" rx="8" filter="url(#shadow-sm)"/>
+            <text x="20" y="35" font-size="20px" font-weight="bold">Implementation Notes</text>
+            
+            <!-- Start With -->
+            <g transform="translate(20, 60)">
+                <text font-weight="bold" font-size="16px">Start with:</text>
+                <text x="0" y="25" font-size="14px">1. Requirements Discovery - Essential for project initialization</text>
+                <text x="0" y="45" font-size="14px">2. Requirements Validation - Core functionality for quality assurance</text>
+            </g>
+
+            <!-- Key Components -->
+            <g transform="translate(20, 130)">
+                <text font-weight="bold" font-size="16px">Key Components:</text>
+                <text x="0" y="25" font-size="14px">• GitHub Issues Integration</text>
+                <text x="0" y="45" font-size="14px">• Requirements Parser</text>
+                <text x="0" y="65" font-size="14px">• Validation Engine</text>
+                <text x="0" y="85" font-size="14px">• Documentation Generator</text>
+            </g>
+
+            <!-- Dependencies -->
+            <g transform="translate(400, 130)">
+                <text font-weight="bold" font-size="16px">Dependencies:</text>
+                <text x="0" y="25" font-size="14px">• GitHub Issues API Integration</text>
+                <text x="0" y="45" font-size="14px">• Natural Language Processing System</text>
+                <text x="0" y="65" font-size="14px">• Database Setup (MongoDB/PostgreSQL)</text>
+            </g>
+
+            <!-- Success Metrics -->
+            <g transform="translate(800, 130)">
+                <text font-weight="bold" font-size="16px">Success Metrics:</text>
+                <text x="0" y="25" font-size="14px">• Requirements Accuracy Rate</text>
+                <text x="0" y="45" font-size="14px">• Issue Creation Speed</text>
+                <text x="0" y="65" font-size="14px">• Documentation Quality</text>
+                <text x="0" y="85" font-size="14px">• Stakeholder Satisfaction</text>
+            </g>
+        </g>
+    </g>
+
+    <!-- Definitions -->
+    <defs>
+        <!-- Arrow Marker -->
+        <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L9,3 z" fill="#9333EA"/>
+        </marker>
+        
+        <!-- Shadows -->
+        <filter id="shadow-sm" x="-1" y="-1" width="102%" height="102%">
+            <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.1"/>
+        </filter>
+    </defs>
+</svg>

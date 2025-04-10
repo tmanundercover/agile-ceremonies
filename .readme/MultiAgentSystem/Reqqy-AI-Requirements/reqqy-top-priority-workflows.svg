@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <!-- Styles extracted for better maintenance and reuse -->
+    <style>
+        .header-bar { fill: #9333EA; }
+        .workflow-container { fill: #faf5ff; stroke: #e9d5ff; stroke-width: 1; }
+        .step-box { fill: white; stroke: #e9d5ff; stroke-width: 1; }
+        .workflow-title { fill: #9333EA; font-size: 20px; font-weight: bold; }
+        .step-text { fill: #1A1A1A; font-size: 14px; }
+        .metadata-text { fill: #666666; font-size: 14px; }
+        .arrow-path { stroke: #9333EA; stroke-width: 2; }
+    </style>
+
+    <!-- Definitions for reusable elements -->
+    <defs>
+        <!-- Shadow filter for containers -->
+        <filter id="shadow-sm" x="-1" y="-1" width="102%" height="102%">
+            <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.1"/>
+        </filter>
+        
+        <!-- Arrow marker for workflow steps -->
+        <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L9,3 z" fill="#9333EA"/>
+        </marker>
+    </defs>
+
+    <!-- Header Bar -->
+    <rect x="0" y="0" width="1200" height="80" class="header-bar" rx="8"/>
+    <text x="600" y="50" text-anchor="middle" fill="white" font-size="32px" font-weight="bold">
+        Reqqy's Requirements Workflows
+    </text>
+
+    <!-- 1. Requirements Discovery Workflow -->
+    <g transform="translate(40, 100)">
+        <rect width="540" height="200" class="workflow-container" rx="8" filter="url(#shadow-sm)"/>
+        <text x="20" y="35" class="workflow-title">1. Requirements Discovery</text>
+        
+        <!-- Workflow Steps -->
+        <g transform="translate(20, 60)">
+            <!-- Step boxes with consistent spacing -->
+            <rect width="140" height="40" x="0" y="0" class="step-box" rx="4"/>
+            <text x="70" y="25" class="step-text" text-anchor="middle">Process Welcome Form</text>
+            
+            <path d="M 140 20 L 180 20" class="arrow-path" marker-end="url(#arrow)"/>
+            
+            <rect width="140" height="40" x="180" y="0" class="step-box" rx="4"/>
+            <text x="250" y="25" class="step-text" text-anchor="middle">Extract Requirements</text>
+            
+            <path d="M 320 20 L 360 20" class="arrow-path" marker-end="url(#arrow)"/>
+            
+            <rect width="140" height="40" x="360" y="0" class="step-box" rx="4"/>
+            <text x="430" y="25" class="step-text" text-anchor="middle">Create GitHub Issues</text>
+        </g>
+
+        <!-- Metadata -->
+        <text x="20" y="140" class="metadata-text">Implementation Priority: HIGH</text>
+        <text x="20" y="160" class="metadata-text">Key APIs: n8n HTTP Trigger, GitHub Issues API, NLP Processing</text>
+        <text x="20" y="180" class="metadata-text">Output: Structured Requirements in GitHub Issues</text>
+    </g>
+
+    <!-- 2. Requirements Validation Workflow -->
+    <g transform="translate(620, 100)">
+        <rect width="540" height="200" class="workflow-container" rx="8" filter="url(#shadow-sm)"/>
+        <text x="20" y="35" class="workflow-title">2. Requirements Validation</text>
+        
+        <!-- Workflow Steps -->
+        <g transform="translate(20, 60)">
+            <rect width="140" height="40" x="0" y="0" class="step-box" rx="4"/>
+            <text x="70" y="25" class="step-text" text-anchor="middle">Analyze Requirements</text>
+            
+            <path d="M 140 20 L 180 20" class="arrow-path" marker-end="url(#arrow)"/>
+            
+            <rect width="140" height="40" x="180" y="0" class="step-box" rx="4"/>
+            <text x="250" y="25" class="step-text" text-anchor="middle">Validate Constraints</text>
+            
+            <path d="M 320 20 L 360 20" class="arrow-path" marker-end="url(#arrow)"/>
+            
+            <rect width="140" height="40" x="360" y="0" class="step-box" rx="4"/>
+            <text x="430" y="25" class="step-text" text-anchor="middle">Update Status</text>
+        </g>
+
+        <!-- Metadata -->
+        <text x="20" y="140" class="metadata-text">Implementation Priority: HIGH</text>
+        <text x="20" y="160" class="metadata-text">Key APIs: n8n GitHub Trigger, Validation Rules Engine</text>
+        <text x="20" y="180" class="metadata-text">Output: Validated Requirements Set, Status Updates</text>
+    </g>
+
+    <!-- Implementation Notes Section -->
+    <g transform="translate(40, 340)">
+        <rect width="1120" height="420" class="workflow-container" rx="8" filter="url(#shadow-sm)"/>
+        <text x="20" y="35" class="workflow-title">Implementation Notes</text>
+
+        <!-- Start With Section -->
+        <g transform="translate(20, 70)">
+            <text font-weight="bold" font-size="16px">Start with:</text>
+            <text x="0" y="30" class="metadata-text">1. Configure n8n workflow triggers for form submission processing</text>
+            <text x="0" y="50" class="metadata-text">2. Set up GitHub repository and issue templates</text>
+        </g>
+
+        <!-- Key Components Section -->
+        <g transform="translate(20, 140)">
+            <text font-weight="bold" font-size="16px">Key Components:</text>
+            <text x="0" y="30" class="metadata-text">• n8n Workflow Engine</text>
+            <text x="0" y="50" class="metadata-text">• GitHub Issues Integration</text>
+            <text x="0" y="70" class="metadata-text">• Requirements Parser Module</text>
+            <text x="0" y="90" class="metadata-text">• Validation Rules Engine</text>
+        </g>
+
+        <!-- Dependencies Section -->
+        <g transform="translate(400, 140)">
+            <text font-weight="bold" font-size="16px">Dependencies:</text>
+            <text x="0" y="30" class="metadata-text">• n8n Server Setup</text>
+            <text x="0" y="50" class="metadata-text">• GitHub API Access</text>
+            <text x="0" y="70" class="metadata-text">• Database Configuration</text>
+        </g>
+
+        <!-- Success Metrics Section -->
+        <g transform="translate(800, 140)">
+            <text font-weight="bold" font-size="16px">Success Metrics:</text>
+            <text x="0" y="30" class="metadata-text">• Requirements Processing Time</text>
+            <text x="0" y="50" class="metadata-text">• Validation Accuracy Rate</text>
+            <text x="0" y="70" class="metadata-text">• Issue Creation Success Rate</text>
+        </g>
+    </g>
+</svg>

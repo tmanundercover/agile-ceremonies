@@ -2,14 +2,6 @@ import styled from 'styled-components';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-export const ModalStyled = styled.div`
-  padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
-  margin: 0 auto;
-`;
 
 export const BoardRoomStyled = styled.div`
   display: flex;
@@ -277,7 +269,7 @@ export const AppContainer = styled.div`
 
 export const OfficeContainer = styled.div`
     display: grid;
-    grid-template-columns: 250px 1fr;
+    grid-template-columns: 300px 1fr;  // Increased from 250px to 300px
     height: 100vh;
     background: #f5f5f5;
 `;
@@ -288,15 +280,7 @@ export const Sidebar = styled.div`
     background: rgba(0, 0, 0, 0.8);
     color: white;
     padding: 1rem;
-`;
-
-export const TeammateCarousel = styled.div`
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    padding: 1rem;
-    gap: 1rem;
-    height: 40%;
+    overflow: hidden; // Prevent content from overflowing
 `;
 
 export const BacklogSection = styled.div`
@@ -348,19 +332,130 @@ export const SeatOccupied = styled.div`
     cursor: pointer;
 `;
 
-export const DraggableTeammate = styled.div`
-    background: black;
-    color: white;
-    padding: 1rem;
-    border-radius: 8px;
-    cursor: move;
-    scroll-snap-align: start;
-`;
-
 export const TaskDropdown = styled.select`
     grid-area: task;
     padding: 0.5rem;
     border-radius: 8px;
     border: 1px solid rgba(0, 0, 0, 0.1);
+`;
+
+export const TeammateCarousel = styled.div`
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px;
+    background: #333;
+    margin-bottom: 20px;
+    z-index: 1;
+    
+    button {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 5px 15px;
+        &:hover {
+            color: #007bff;
+        }
+    }
+`;
+
+export const DraggableTeammate = styled.div`
+    flex: 1;
+    padding: 30px 20px;
+    background: #7FCF87;  // Using the Dev Twins color from style guide
+    color: #000000;
+    font-weight: bold;
+    font-size: 1.2em;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-align: center;
+    
+    &:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+`;
+
+export const ModalStyled = styled.div`
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    z-index: 1000;
+    max-width: 90vw;
+    max-height: 90vh;
+    width: 800px;
+    overflow-y: auto;
+    
+    &.slide-in {
+        animation: slideIn 0.3s forwards;
+    }
+    
+    &.slide-out {
+        animation: slideOut 0.3s forwards;
+    }
+    
+    @keyframes slideIn {
+        from {
+            transform: translate(100%, -50%);
+            opacity: 0;
+        }
+        to {
+            transform: translate(-50%, -50%);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideOut {
+        from {
+            transform: translate(-50%, -50%);
+            opacity: 1;
+        }
+        to {
+            transform: translate(-100%, -50%);
+            opacity: 0;
+        }
+    }
+`;
+
+export const TeammateCardContainer = styled.div`
+    width: calc(100% - 2rem); // Account for padding
+    min-height: 120px;
+    padding: 1.5rem;
+    background: #7FCF87;
+    color: #000000;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-bottom: 1rem;
+    text-align: center;
+    
+    &:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+`;
+
+export const TeammateInfo = styled.div`
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+`;
+
+export const TeammateRole = styled.div`
+    font-size: 1em;
+    opacity: 0.9;
 `;
 
