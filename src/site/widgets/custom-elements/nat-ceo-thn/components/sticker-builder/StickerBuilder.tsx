@@ -110,12 +110,18 @@ const FileCard = styled.div`
 `;
 
 const FilePreview = styled.div`
-    max-height: 500px;
+    max-height: 70vh;
     overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 
     img {
         max-width: 100%;
+        max-height: 70vh;
         height: auto;
+        object-fit: contain;
     }
 
     pre {
@@ -126,6 +132,45 @@ const FilePreview = styled.div`
     }
 `;
 
+const ImageOverlay = styled.div<{ $visible: boolean }>`
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    opacity: ${props => props.$visible ? 1 : 0};
+    transition: opacity 0.3s ease;
+    pointer-events: ${props => props.$visible ? 'auto' : 'none'};
+`;
+
+const ToolIcon = styled.button`
+    background: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+        transform: scale(1.1);
+    }
+
+    svg {
+        width: 20px;
+        height: 20px;
+    }
+`;
+
 export const StickerBuilder: React.FC = () => {
     const [images, setImages] = useState<StickerImage[]>([]);
     const [selectedPieces, setSelectedPieces] = useState<StickerPiece[]>([]);
@@ -133,6 +178,7 @@ export const StickerBuilder: React.FC = () => {
     const [files, setFiles] = useState<FileData[]>([]);
     const [isDragging, setIsDragging] = useState(false);
     const [selectedFile, setSelectedFile] = useState<FileData | null>(null);
+    const [isHoveringImage, setIsHoveringImage] = useState(false);
 
     useEffect(() => {
         const loadImages = async () => {
@@ -195,9 +241,66 @@ export const StickerBuilder: React.FC = () => {
         return type.startsWith('image/');
     };
 
+    const handleConvertToSvg = async (file: FileData) => {
+        if (!file.content.startsWith('data:image')) return;
+
+        // Create an image element to load the file
+        const img = new Image();
+        img.src = file.content;
+
+        await new Promise((resolve) => {
+            img.onload = resolve;
+        });
+
+        // Create a canvas to draw the image
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        // Draw the image on canvas
+        ctx.drawImage(img, 0, 0);
+
+        // TODO: Add proper SVG conversion logic here
+        // This is a placeholder that creates a basic SVG wrapper
+        const svgContent = `
+            <svg width="${img.width}" height="${img.height}" xmlns="http://www.w3.org/2000/svg">
+                <image href="${file.content}" width="${img.width}" height="${img.height}"/>
+            </svg>
+        `;
+
+        // Update the file with SVG content
+        const newFile: FileData = {
+            ...file,
+            type: 'image/svg+xml',
+            content: `data:image/svg+xml;base64,${btoa(svgContent)}`,
+            name: file.name.replace(/\.(jpg|jpeg|png)$/i, '.svg')
+        };
+
+        setFiles(prev => prev.map(f => f.id === file.id ? newFile : f));
+    };
+
     const renderFileContent = (file: FileData) => {
         if (isImageFile(file.type)) {
-            return <img src={file.content} alt={file.name} />;
+            return (
+                <div
+                    style={{ position: 'relative' }}
+                    onMouseEnter={() => setIsHoveringImage(true)}
+                    onMouseLeave={() => setIsHoveringImage(false)}
+                >
+                    <img src={file.content} alt={file.name} />
+                    <ImageOverlay $visible={isHoveringImage}>
+                        <ToolIcon onClick={() => handleConvertToSvg(file)} title="Convert to SVG">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M4 14h8v-4H4v4zm8 0h8v-4h-8v4z"/>
+                                <path d="M12 6v12"/>
+                            </svg>
+                        </ToolIcon>
+                    </ImageOverlay>
+                </div>
+            );
         }
         return (
             <pre>
@@ -327,10 +430,10 @@ export const StickerBuilder: React.FC = () => {
 
             {isChatOpen && (
                 <Dialog.Root open={isChatOpen} onOpenChange={toggleChat}>
-                    <Dialog.Content style={{ maxWidth: '500px' }}>
+                    <Dialog.Content style={{ maxWidth: '500px', display: 'flex', flexDirection: 'column', height: '600px' }}>
                         <Dialog.Title>Chat with Josh</Dialog.Title>
                         <div style={{
-                            height: '400px',
+                            flex: 1,
                             overflowY: 'auto',
                             padding: '16px',
                             display: 'flex',
@@ -345,7 +448,11 @@ export const StickerBuilder: React.FC = () => {
                         <div style={{
                             display: 'flex',
                             gap: '8px',
-                            marginTop: '16px'
+                            padding: '16px',
+                            borderTop: '1px solid var(--gray-5)',
+                            background: 'white',
+                            width: '100%',
+                            boxSizing: 'border-box'
                         }}>
                             <TextField.Input
                                 placeholder="Type your message..."
@@ -354,7 +461,7 @@ export const StickerBuilder: React.FC = () => {
                             <Button>Send</Button>
                         </div>
                         <Dialog.Close>
-                            <Button variant="soft" style={{ marginTop: '16px' }}>
+                            <Button variant="soft" style={{ margin: '0 16px 16px' }}>
                                 Close Chat
                             </Button>
                         </Dialog.Close>
@@ -366,3 +473,4 @@ export const StickerBuilder: React.FC = () => {
 };
 
 export default StickerBuilder;
+
