@@ -445,6 +445,32 @@ export const StickerBuilder: React.FC = () => {
         }
     };
 
+    const handleSplitSvg = async (file: FileData) => {
+        setIsConverting(true);
+
+        try {
+            // TODO: Implement actual SVG splitting logic
+            // For now, just create a stub version
+            const newVersion: FileVersion = {
+                id: uuidv4(),
+                name: 'Split Version',
+                content: file.content, // Just copying content for now
+                type: file.type,
+                createdAt: new Date()
+            };
+
+            const updatedFile = {
+                ...file,
+                versions: [...(file.versions || []), newVersion]
+            };
+
+            setFiles(prev => prev.map(f => f.id === file.id ? updatedFile : f));
+            setSelectedVersionId(newVersion.id);
+        } finally {
+            setIsConverting(false);
+        }
+    };
+
     const getFileCategory = (type: string): string => {
         if (type.startsWith('image/svg')) return 'SVG Vector';
         if (type.startsWith('image/')) return 'Image';
@@ -499,6 +525,20 @@ export const StickerBuilder: React.FC = () => {
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                                 <path d="M4 14h8v-4H4v4zm8 0h8v-4h-8v4z"/>
                                                 <path d="M12 6v12"/>
+                                            </svg>
+                                        </ToolIcon>
+                                    </ToolIconWrapper>
+                                )}
+                                {file.type.startsWith('image/svg') && (
+                                    <ToolIconWrapper
+                                        onMouseEnter={() => setHoveredTool('split')}
+                                        onMouseLeave={() => setHoveredTool(null)}>
+                                        <Tooltip $visible={hoveredTool === 'split'}>
+                                            Split SVG
+                                        </Tooltip>
+                                        <ToolIcon onClick={() => handleSplitSvg(file)}>
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <path d="M4 20h16M4 4h16M12 4v16"/>
                                             </svg>
                                         </ToolIcon>
                                     </ToolIconWrapper>
