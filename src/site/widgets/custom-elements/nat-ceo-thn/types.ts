@@ -42,5 +42,5 @@ export interface FileData {
     lastModified: number;
     content: string;
     versions: FileVersion[];
+    savedSvgLocation?: string;
 }
-

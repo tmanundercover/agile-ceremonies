@@ -45,16 +45,16 @@ const TabTrigger = styled(Tabs.Trigger)`
 `;
 const StickerCanvas = styled.div`
     width: 100%;
-    height: 500px;
+    height: calc(min(1024px, 100vh - 200px)); // Update height limit
     border: 2px dashed var(--gray-7);
-    border-radius: 8px;
+    border-radius: 16px;
     margin: 16px 0;
     position: relative;
 `;
 
 const StickerPreview = styled.svg`
-    width: 100%;
-    height: 100%;
+    width: 1024px;
+    height: 1024px;
     cursor: pointer;
 
     .sticker-piece {
@@ -119,25 +119,63 @@ const FileCard = styled.div`
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 
     &:hover {
         border-color: var(--purple-7);
         transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 `;
 
+const ThumbnailContainer = styled.div`
+    width: 100%;
+    height: 120px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--gray-3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    svg {
+        width: 40px;
+        height: 40px;
+        color: var(--gray-7);
+    }
+`;
+
+const FileInfo = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+`;
+
 const FilePreview = styled.div`
-    max-height: 70vh;
+    width: 100%;
+    aspect-ratio: 1;
     overflow: auto;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
-    margin-top: 40px;  // Add space for the category pill
+    margin: 0 auto;
+    background: #f8f9fa;
+    border: 1px solid var(--gray-7);
+    border-radius: 16px;
 
     img {
         max-width: 100%;
-        max-height: 70vh;
+        max-height: 100%;
+        width: auto;
         height: auto;
         object-fit: contain;
     }
@@ -147,6 +185,8 @@ const FilePreview = styled.div`
         padding: 16px;
         border-radius: 8px;
         overflow: auto;
+        max-width: 100%;
+        max-height: 100%;
     }
 `;
 
@@ -155,14 +195,25 @@ const ImageContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    aspect-ratio: 1;
+    margin: 0 auto;
+
+    img {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+    }
 `;
 
 const ImageOverlay = styled.div<{ $visible: boolean }>`
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+    width: 100%;
+    height: 100%;
     background: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
@@ -479,7 +530,18 @@ export const StickerBuilder: React.FC = () => {
 
     const handleSaveFile = (file: FileData) => {
         const blob = dataURItoBlob(file.content);
+        const defaultPath = '/Users/terrelltrapperkeepersingleton/IdeaProjects/agile-ceremonies/saved-svgs';
+        const savePath = `${defaultPath}/${file.name}`;
+
         saveAs(blob, file.name);
+
+        // Update the file with the save location
+        const updatedFile = {
+            ...file,
+            savedSvgLocation: savePath
+        };
+
+        setFiles(prev => prev.map(f => f.id === file.id ? updatedFile : f));
     };
 
     const dataURItoBlob = (dataURI: string): Blob => {
@@ -503,6 +565,10 @@ export const StickerBuilder: React.FC = () => {
                     <Tabs.Root value={selectedVersionId || 'original'} onValueChange={(value) => setSelectedVersionId(value === 'original' ? null : value)}>
                         <TabsList>
                             <TabTrigger value="original">Original</TabTrigger>
+                            <TabTrigger value="svg">SVG</TabTrigger>
+                            {file.savedSvgLocation && (
+                                <TabTrigger value="saved-svg">Saved SVG</TabTrigger>
+                            )}
                             {file.versions?.map(version => (
                                 <TabTrigger key={version.id} value={version.id}>
                                     {version.name}
@@ -512,23 +578,37 @@ export const StickerBuilder: React.FC = () => {
                         <ImageContainer
                             onMouseEnter={() => setIsHoveringImage(true)}
                             onMouseLeave={() => setIsHoveringImage(false)}>
-                            <img src={getCurrentContent(file)} alt={file.name} />
+                            {selectedVersionId === 'svg' ? (
+                                <svg
+                                    width="100%"
+                                    height="100%"
+                                    viewBox="0 0 100 100"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    preserveAspectRatio="xMidYMid meet"
+                                    style={{ maxHeight: '60vh' }}
+                                >
+                                    <rect x="10" y="10" width="80" height="80" fill="#F3E5F5" stroke="#9333EA" strokeWidth="2"/>
+                                    <text x="50" y="55" textAnchor="middle" fill="#9333EA" fontSize="12">SVG Preview</text>
+                                </svg>
+                            ) : selectedVersionId === 'saved-svg' && file.savedSvgLocation ? (
+                                <img src={file.content} alt={`Saved version of ${file.name}`} style={{ maxHeight: '60vh', width: 'auto' }} />
+                            ) : (
+                                <img src={getCurrentContent(file)} alt={file.name} style={{ maxHeight: '60vh', width: 'auto' }} />
+                            )}
                             <ImageOverlay $visible={isHoveringImage}>
-                                {!file.type.startsWith('image/svg') && (
-                                    <ToolIconWrapper
-                                        onMouseEnter={() => setHoveredTool('convert')}
-                                        onMouseLeave={() => setHoveredTool(null)}>
-                                        <Tooltip $visible={hoveredTool === 'convert'}>
-                                            Convert to SVG
-                                        </Tooltip>
-                                        <ToolIcon onClick={() => handleConvertToSvg(file)}>
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                                <path d="M4 14h8v-4H4v4zm8 0h8v-4h-8v4z"/>
-                                                <path d="M12 6v12"/>
-                                            </svg>
-                                        </ToolIcon>
-                                    </ToolIconWrapper>
-                                )}
+                                <ToolIconWrapper
+                                    onMouseEnter={() => setHoveredTool('convert')}
+                                    onMouseLeave={() => setHoveredTool(null)}>
+                                    <Tooltip $visible={hoveredTool === 'convert'}>
+                                        Convert to SVG
+                                    </Tooltip>
+                                    <ToolIcon onClick={() => handleConvertToSvg(file)}>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                            <path d="M4 14h8v-4H4v4zm8 0h8v-4h-8v4z"/>
+                                            <path d="M12 6v12"/>
+                                        </svg>
+                                    </ToolIcon>
+                                </ToolIconWrapper>
                                 {file.type.startsWith('image/svg') && (
                                     <ToolIconWrapper
                                         onMouseEnter={() => setHoveredTool('split')}
@@ -649,8 +729,20 @@ export const StickerBuilder: React.FC = () => {
                         key={file.id}
                         onClick={() => setSelectedFile(file)}
                     >
-                        <h3>{file.name}</h3>
-                        <p>{Math.round(file.size / 1024)} KB</p>
+                        <ThumbnailContainer>
+                            {isImageFile(file.type) ? (
+                                <img src={file.content} alt={`Thumbnail of ${file.name}`} />
+                            ) : (
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/>
+                                    <path d="M13 2v7h7"/>
+                                </svg>
+                            )}
+                        </ThumbnailContainer>
+                        <FileInfo>
+                            <Text weight="medium">{file.name}</Text>
+                            <Text size="1" color="gray">{Math.round(file.size / 1024)} KB</Text>
+                        </FileInfo>
                     </FileCard>
                 ))}
             </FileGrid>
