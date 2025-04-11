@@ -1,9 +1,9 @@
 import React from 'react';
-import {ImageOverlayContainerStyled} from '../../styledComponents';
-import {SaveTool} from '../tools/SaveTool';
-import {SvgSplitTool} from '../tools/SvgSplitTool';
-import {StickerifyTool} from '../tools/StickerifyTool';
-import {FileData} from '../../types';
+import {ImageOverlayContainerStyled} from '../../../styledComponents';
+import {SaveTool} from './SaveTool';
+import {SvgSplitTool} from './SvgSplitTool';
+import {StickerifyTool} from './StickerifyTool';
+import {FileData} from '../../../types';
 
 interface ImageToolKitOverlayProps {
     $visible: boolean;

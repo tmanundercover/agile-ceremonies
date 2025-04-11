@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import {LoadMockImagesTool} from '../tools/LoadMockImagesTool';
-import {StickerImage} from '../../types';
+import {LoadMockImagesTool} from './LoadMockImagesTool';
+import {OpenFileTool} from './OpenFileTool';
+import {FileData, StickerImage} from '../../../types';
 
 const ToolBarContainer = styled.div`
     display: flex;
@@ -28,11 +29,16 @@ const ToolLabel = styled.span`
 
 interface ToolBarProps {
     onLoadMockImages: (stickerImages: StickerImage[]) => void;
+    onFileOpen: (file: FileData) => void;
 }
 
-export const ToolBar: React.FC<ToolBarProps> = ({ onLoadMockImages }) => {
+export const ToolBar: React.FC<ToolBarProps> = ({ onLoadMockImages, onFileOpen }) => {
     return (
         <ToolBarContainer>
+            <ToolWrapper>
+                <OpenFileTool onFileOpen={onFileOpen} />
+                <ToolLabel>Open File</ToolLabel>
+            </ToolWrapper>
             <ToolWrapper>
                 <LoadMockImagesTool onLoad={onLoadMockImages} />
                 <ToolLabel>Load Mock Images</ToolLabel>
@@ -40,3 +46,4 @@ export const ToolBar: React.FC<ToolBarProps> = ({ onLoadMockImages }) => {
         </ToolBarContainer>
     );
 };
+

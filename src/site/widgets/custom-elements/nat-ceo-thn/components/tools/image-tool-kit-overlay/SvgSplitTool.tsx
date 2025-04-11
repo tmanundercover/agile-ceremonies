@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { FileData, FileVersion } from '../../types';
-import { ToolIconStyled, ToolIconWrapperStyled, TooltipStyled } from '../../styledComponents';
+import { FileData, FileVersion } from '../../../types';
+import { ToolIconStyled, ToolIconWrapperStyled, TooltipStyled } from '../../../styledComponents';
 import { v4 as uuidv4 } from 'uuid';
+import { ScissorsIcon } from '@radix-ui/react-icons';
 
 interface SvgSplitToolProps {
     file: FileData;
@@ -56,7 +57,7 @@ export const SvgSplitTool: React.FC<SvgSplitToolProps> = ({ file, onSplit }) => 
         >
             <TooltipStyled $visible={showTooltip}>Split SVG layers</TooltipStyled>
             <ToolIconStyled onClick={handleSplitSvg}>
-                <span role="img" aria-label="Split">✂️</span>
+                <ScissorsIcon width={20} height={20} />
             </ToolIconStyled>
         </ToolIconWrapperStyled>
     );

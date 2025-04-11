@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { saveAs } from 'file-saver';
-import {FileData} from "../../types";
-import {ToolIconStyled, ToolIconWrapperStyled, TooltipStyled} from "../../styledComponents";
+import { DiscIcon } from '@radix-ui/react-icons';
+import {FileData} from "../../../types";
+import {ToolIconStyled, ToolIconWrapperStyled, TooltipStyled} from "../../../styledComponents";
 
 interface SaveToolProps {
     file: FileData;
@@ -36,9 +37,8 @@ export const SaveTool: React.FC<SaveToolProps> = ({ file }) => {
         >
             <TooltipStyled $visible={showTooltip}>Save file</TooltipStyled>
             <ToolIconStyled onClick={handleSave}>
-                <span role="img" aria-label="Save">💾</span>
+                <DiscIcon width={20} height={20} />
             </ToolIconStyled>
         </ToolIconWrapperStyled>
     );
 };
-

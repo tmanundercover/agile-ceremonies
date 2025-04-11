@@ -5,7 +5,7 @@ import {saveAs} from 'file-saver';
 import {ImageToolKitOverlay} from '../image-overlay/ImageToolKitOverlay';
 import {v4 as uuidv4} from 'uuid';
 import {Chat} from '../chat/Chat';
-import {ToolBar} from '../tool-bar/ToolBar';
+import {ToolBar} from '../tools/tool-bar/ToolBar';
 import {
     CategoryPillStyled,
     DropZoneStyled,
@@ -339,11 +339,18 @@ export const StickerBuilder: React.FC = () => {
         return `data:image/svg+xml;base64,${btoa(svgContent)}`;
     };
 
+    const handleFileOpen = (newFile: FileData) => {
+        setFiles(prev => [...prev, newFile]);
+    };
+
     return (
         <StickerBuilderContainerStyled>
             <h1>Sticker Builder</h1>
             
-            <ToolBar onLoadMockImages={handleMockImagesLoad} />
+            <ToolBar
+                onLoadMockImages={handleMockImagesLoad}
+                onFileOpen={handleFileOpen}
+            />
 
             <DropZoneStyled
                 $isDragging={isDragging}

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { FileData, FileVersion } from '../../types';
-import { ToolIconStyled, ToolIconWrapperStyled, TooltipStyled } from '../../styledComponents';
+import { FileData, FileVersion } from '../../../types';
+import { ToolIconStyled, ToolIconWrapperStyled, TooltipStyled } from '../../../styledComponents';
 import { v4 as uuidv4 } from 'uuid';
+import { TargetIcon } from '@radix-ui/react-icons';
 
 interface StickerifyToolProps {
     file: FileData;
@@ -59,7 +60,7 @@ export const StickerifyTool: React.FC<StickerifyToolProps> = ({ file, onStickeri
         >
             <TooltipStyled $visible={showTooltip}>Create sticker</TooltipStyled>
             <ToolIconStyled onClick={handleStickerify}>
-                <span role="img" aria-label="Stickerify">🎯</span>
+                <TargetIcon width={20} height={20} />
             </ToolIconStyled>
         </ToolIconWrapperStyled>
     );

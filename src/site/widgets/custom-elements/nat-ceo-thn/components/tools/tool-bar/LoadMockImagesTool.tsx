@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import {ToolIconStyled} from '../../styledComponents';
-import {StickerImage} from '../../types';
+import {DownloadIcon} from '@radix-ui/react-icons';
+import {ToolIconStyled} from '../../../styledComponents';
+import {StickerImage} from '../../../types';
 
 interface LoadMockImagesToolProps {
     onLoad: (stickerImages: StickerImage[]) => void;
@@ -61,7 +62,7 @@ export const LoadMockImagesTool: React.FC<LoadMockImagesToolProps> = ({ onLoad }
 
     return (
         <ToolIconStyled onClick={handleLoadMockImages}>
-            <span role="img" aria-label="Load">📥</span>
+            <DownloadIcon width={20} height={20} />
         </ToolIconStyled>
     );
 };
