@@ -1,138 +1,67 @@
-import { PabloAttributes, PabloCollection, PabloEventCallback, PabloEventOptions } from './sticker-builder-types';
-import { Layer, LayerTransform, LayerStyle, LayerManipulationOptions, LayerOperationResult } from './sticker-builder-types';
+import {
+  PabloAttributes,
+  PabloCollection,
+  PabloEventCallback,
+  PabloEventOptions,
+  Layer,
+  LayerTransform,
+  LayerStyle,
+  LayerManipulationOptions,
+  LayerOperationResult
+} from './sticker-builder-types';
 
 // SVG namespace constant
 export const SVG_NS = 'http://www.w3.org/2000/svg';
 
-// Create SVG element
-export function createSvgElement(tagName: string, attrs?: PabloAttributes): SVGElement {
-  const el = document.createElementNS(SVG_NS, tagName);
-  if (attrs) {
-    setAttributes(el, attrs);
-  }
+// Basic SVG element creation utilities
+export function createSvgElement(type: string, attributes: Record<string, any> = {}): SVGElement {
+  const el = document.createElementNS(SVG_NS, type);
+  setSvgAttributes(el, attributes);
   return el;
 }
 
-// Set multiple attributes
-export function setAttributes(el: SVGElement, attrs: PabloAttributes): void {
-  Object.entries(attrs).forEach(([name, value]) => {
-    el.setAttribute(name, value.toString());
+export function setSvgAttributes(el: SVGElement, attributes: Record<string, any>): void {
+  Object.entries(attributes).forEach(([key, value]) => {
+    el.setAttribute(key, value.toString());
   });
 }
 
-// Convert DOM collection to array
-export function toArray<T>(collection: ArrayLike<T>): T[] {
-  return Array.prototype.slice.call(collection);
+export function getSvgAttribute(el: SVGElement, attribute: string): string | null {
+  return el.getAttribute(attribute);
 }
 
-// Parse transform string to object
-export function parseTransform(transform: string): Record<string, number[]> {
-  const transforms: Record<string, number[]> = {};
-  const regex = /(\w+)\s*\(([-\d\s,.]+)\)/g;
-  let match;
-
-  while ((match = regex.exec(transform)) !== null) {
-    const [, name, valueStr] = match;
-    transforms[name] = valueStr.split(/[\s,]+/).map(Number);
-  }
-
-  return transforms;
+export function removeSvgAttribute(el: SVGElement, attribute: string): void {
+  el.removeAttribute(attribute);
 }
 
-// Convert transform object to string
-export function stringifyTransform(transforms: Record<string, number[]>): string {
-  return Object.entries(transforms)
-    .map(([name, values]) => `${name}(${values.join(' ')})`)
-    .join(' ');
-}
-
-// Create data URL from SVG
-export function svgToDataUrl(svg: SVGElement): string {
-  const serializer = new XMLSerializer();
-  const svgString = serializer.serializeToString(svg);
-  return `data:image/svg+xml;base64,${btoa(svgString)}`;
-}
-
-// Convert SVG to Canvas
-export function svgToCanvas(svg: SVGElement): Promise<HTMLCanvasElement> {
-  return new Promise((resolve, reject) => {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    const image = new Image();
-    
-    image.onload = () => {
-      canvas.width = image.width;
-      canvas.height = image.height;
-      ctx?.drawImage(image, 0, 0);
-      resolve(canvas);
-    };
-
-    image.onerror = reject;
-    image.src = svgToDataUrl(svg);
-  });
-}
-
-// Event handling
-export function addEvent(
-  el: SVGElement, 
-  type: string,
-  listener: PabloEventCallback,
-  options?: PabloEventOptions
-): void {
-  el.addEventListener(type, listener, options);
-}
-
-export function removeEvent(
-  el: SVGElement,
-  type: string, 
-  listener: PabloEventCallback,
-  options?: PabloEventOptions
-): void {
-  el.removeEventListener(type, listener, options);
-}
-
-// CSS class handling
-export function addClass(el: SVGElement, className: string): void {
-  el.classList.add(className);
-}
-
-export function removeClass(el: SVGElement, className: string): void {
-  el.classList.remove(className);
-}
-
-export function hasClass(el: SVGElement, className: string): boolean {
-  return el.classList.contains(className);
-}
-
-// CSS style handling
-export function setStyles(el: SVGElement, styles: Partial<CSSStyleDeclaration>): void {
-  Object.assign(el.style, styles);
-}
-
-// Selection utilities 
-export function findElements(selector: string, context: Element = document.documentElement): Element[] {
-  return toArray(context.querySelectorAll(selector));
-}
-
-// DOM manipulation
-export function appendElement(parent: SVGElement, child: SVGElement): void {
+export function appendSvgChild(parent: SVGElement, child: SVGElement): void {
   parent.appendChild(child);
 }
 
-export function prependElement(parent: SVGElement, child: SVGElement): void {
-  parent.insertBefore(child, parent.firstChild);
+// SVG Creation Helpers
+export function createSvg(attributes: Record<string, any> = {}): SVGElement {
+  const el = document.createElementNS(SVG_NS, 'svg');
+  setSvgAttributes(el, {
+    version: '1.1',
+    xmlns: SVG_NS,
+    ...attributes
+  });
+  return el;
 }
 
-export function removeElement(el: SVGElement): void {
-  el.parentNode?.removeChild(el);
+export function createGroup(attributes: Record<string, any> = {}): SVGElement {
+  const el = document.createElementNS(SVG_NS, 'g');
+  setSvgAttributes(el, attributes);
+  return el;
 }
 
-// Cloning
-export function cloneElement(el: SVGElement, deep: boolean = true): SVGElement {
-  return el.cloneNode(deep) as SVGElement;
+export function createPath(attributes: Record<string, any> = {}): SVGElement {
+  const el = document.createElementNS(SVG_NS, 'path');
+  setSvgAttributes(el, attributes);
+  return el;
 }
 
-// Layer Transform Utilities
+// Transform utilities
 export function applyTransform(el: SVGElement, transform: LayerTransform): void {
   const transforms: string[] = [];
   
@@ -177,7 +106,7 @@ export function getTransform(el: SVGElement): LayerTransform {
   return transform;
 }
 
-// Layer Style Utilities 
+// Style utilities
 export function applyStyle(el: SVGElement, style: LayerStyle): void {
   Object.entries(style).forEach(([prop, value]) => {
     if (value !== undefined) {
@@ -193,14 +122,14 @@ export function getStyle(el: SVGElement): LayerStyle {
   ['fill', 'stroke', 'strokeWidth', 'opacity'].forEach(prop => {
     const value = computedStyle.getPropertyValue(prop);
     if (value) {
-      style[prop] = value;
+      style[prop as keyof LayerStyle] = value;
     }
   });
   
   return style;
 }
 
-// Layer Manipulation
+// Layer manipulation
 export function createLayer(type: string, options: Partial<Layer> = {}): SVGElement {
   const el = document.createElementNS(SVG_NS, type);
   
@@ -217,38 +146,15 @@ export function createLayer(type: string, options: Partial<Layer> = {}): SVGElem
   return el;
 }
 
-export function updateLayer(
-  el: SVGElement, 
-  options: Partial<Layer>, 
-  animationOptions?: LayerManipulationOptions
-): LayerOperationResult {
-  try {
-    if (options.transform) {
-      if (animationOptions) {
-        animateTransform(el, options.transform, animationOptions);
-      } else {
-        applyTransform(el, options.transform);
-      }
-    }
-    
-    if (options.style) {
-      if (animationOptions) {
-        animateStyle(el, options.style, animationOptions);
-      } else {
-        applyStyle(el, options.style);
-      }
-    }
-    
-    return { success: true };
-  } catch (error) {
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error'
-    };
-  }
+// Convert SVG to data URL
+export function svgToDataUrl(svg: SVGElement): string {
+  const serializer = new XMLSerializer();
+  const svgString = serializer.serializeToString(svg);
+  const encoded = window.btoa(unescape(encodeURIComponent(svgString)));
+  return `data:image/svg+xml;base64,${encoded}`;
 }
 
-// Animation Utilities
+// Animation utilities
 export function animateTransform(
   el: SVGElement,
   transform: LayerTransform,
@@ -276,55 +182,18 @@ export function animateStyle(
   applyStyle(el, style);
 }
 
-// Layer Hierarchy
-export function appendChild(parent: SVGElement, child: SVGElement): LayerOperationResult {
-  try {
-    parent.appendChild(child);
-    return { success: true };
-  } catch (error) {
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error'
+// Pablo namespace (minimal implementation)
+export const Pablo = {
+  svg: createSvg,
+  g: createGroup,
+  path: createPath,
+  load: (url: string, callback: (collection: any) => void): void => {
+    const img = new Image();
+    img.onload = () => {
+      callback([img]);
     };
+    img.src = url;
   }
-}
+};
 
-export function insertBefore(
-  referenceEl: SVGElement, 
-  newEl: SVGElement
-): LayerOperationResult {
-  try {
-    if (referenceEl.parentNode) {
-      referenceEl.parentNode.insertBefore(newEl, referenceEl);
-      return { success: true };
-    }
-    return {
-      success: false,
-      error: 'Reference element has no parent'
-    };
-  } catch (error) {
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error'
-    };
-  }
-}
-
-export function removeLayer(el: SVGElement): LayerOperationResult {
-  try {
-    if (el.parentNode) {
-      el.parentNode.removeChild(el);
-      return { success: true };
-    }
-    return {
-      success: false,
-      error: 'Element has no parent'
-    };
-  } catch (error) {
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error'
-    };
-  }
-}
-
+export type { PabloCollection as Collection };

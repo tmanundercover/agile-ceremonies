@@ -48,6 +48,8 @@ export interface PabloEventOptions {
 export interface PabloCollection {
   [index: number]: SVGElement;
   length: number;
+  pablo: string;
+  collection: null;
 
   // Array-like methods
   forEach(callback: (element: SVGElement, index: number, array: SVGElement[]) => void, thisArg?: any): void;
@@ -57,6 +59,13 @@ export interface PabloCollection {
   indexOf(element: SVGElement): number;
   slice(start?: number, end?: number): PabloCollection;
   push(...elements: SVGElement[]): number;
+  pop(): SVGElement;
+  shift(): SVGElement;
+  unshift(...elements: SVGElement[]): number;
+  splice(start: number, deleteCount?: number): PabloCollection;
+  join(separator: string): string;
+  reverse(): PabloCollection;
+  sort(fn?: (a: SVGElement, b: SVGElement) => number): PabloCollection;
 
   // Pablo-specific methods
   attr(name: string): string;
@@ -70,7 +79,7 @@ export interface PabloCollection {
   addClass(className: string): this;
   removeClass(className: string): this;
   toggleClass(className: string): this;
-  hasClass(className: string): boolean;
+  hasClass(className: boolean): boolean;
 
   append(elements: SVGElement | PabloCollection): this;
   prepend(elements: SVGElement | PabloCollection): this;
@@ -85,7 +94,6 @@ export interface PabloCollection {
   off(type: string, listener: PabloEventCallback, options?: PabloEventOptions): this;
   trigger(type: string, detail?: any): this;
 
-  find(selector: string): PabloCollection;
   children(): PabloCollection;
   parent(): PabloCollection;
 
@@ -94,6 +102,16 @@ export interface PabloCollection {
   toDataURL(type?: string): string;
   toCanvas(): HTMLCanvasElement;
   toImage(): HTMLImageElement;
+
+  first(): PabloCollection;
+  last(): PabloCollection;
+  each(fn: (el: SVGElement, i: number) => void): this;
+
+  content(text?: string): string | this;
+  markup(asCompleteFile?: boolean): string;
+  toString(): string;
+
+  download(type: string, filename: string): void;
 }
 
 export interface PabloStatic {
@@ -129,7 +147,10 @@ export interface Layer {
   type: string;
   transform: LayerTransform;
   style: LayerStyle;
+  path?: string; // Add path property for SVG path data
   children?: Layer[];
+  width?: number;   // Add width property
+  height?: number;  // Add height property
 }
 
 export interface LayerManipulationOptions {
@@ -142,3 +163,31 @@ export interface LayerOperationResult {
   success: boolean;
   error?: string;
 }
+
+export interface StickerBuilderProps {
+  onSave?: (svg: SVGElement) => void;
+}
+
+export interface ImagePreviewContainerProps {
+  isOriginal?: boolean;
+}
+
+export interface LayerControlsProps {
+  layer: Layer;
+  onToggle: (id: string) => void;
+  isVisible: boolean;
+}
+
+export interface VectorizedImage {
+  layers: Layer[];
+  width: number;
+  height: number;
+}
+
+export interface StickerBuilderState {
+  originalImage: string | null;
+  vectorizedImage: VectorizedImage | null;
+  hiddenLayers: Set<string>;
+  isProcessing: boolean;
+}
+
