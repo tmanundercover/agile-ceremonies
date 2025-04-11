@@ -20,7 +20,7 @@ export const PreviewContainer = styled.div`
 export const ImagePreviewContainer = styled.div<ImagePreviewContainerProps>`
   width: 400px;
   height: 400px;
-  border: 2px solid ${props => props.isOriginal ? '#ccc' : '#666'};
+  border: 2px solid ${props => props.$isOriginal ? '#ccc' : '#666'};
   border-radius: 8px;
   overflow: hidden;
   display: flex;

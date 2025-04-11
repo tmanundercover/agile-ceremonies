@@ -169,7 +169,7 @@ export interface StickerBuilderProps {
 }
 
 export interface ImagePreviewContainerProps {
-  isOriginal?: boolean;
+  $isOriginal?: boolean;  // Changed from isOriginal to $isOriginal
 }
 
 export interface LayerControlsProps {

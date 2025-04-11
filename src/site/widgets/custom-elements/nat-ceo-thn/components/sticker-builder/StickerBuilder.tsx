@@ -59,7 +59,7 @@ export const StickerBuilder: React.FC<StickerBuilderProps> = ({ onSave }) => {
       const img = new Image();
       img.onload = () => {
         const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
         if (!ctx) {
           reject(new Error('Failed to get canvas context'));
           return;
@@ -262,7 +262,7 @@ export const StickerBuilder: React.FC<StickerBuilderProps> = ({ onSave }) => {
       </FileInputContainer>
 
       <PreviewContainer>
-        <ImagePreviewContainer isOriginal>
+        <ImagePreviewContainer $isOriginal>
           {state.originalImage && (
             <img
               src={state.originalImage}
