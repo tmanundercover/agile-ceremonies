@@ -5,6 +5,7 @@ import {saveAs} from 'file-saver';
 import {ImageToolKitOverlay} from '../image-overlay/ImageToolKitOverlay';
 import {v4 as uuidv4} from 'uuid';
 import {Chat} from '../chat/Chat';
+import {ToolBar} from '../tool-bar/ToolBar';
 import {
     CategoryPillStyled,
     DropZoneStyled,
@@ -236,7 +237,6 @@ export const StickerBuilder: React.FC = () => {
                         <ImageToolKitOverlay
                             $visible={isHoveringImage}
                             file={file}
-                            onLoad={handleMockImagesLoad}
                             onSave={(updatedFile) => {
                                 setFiles(prev => prev.map(f => f.id === file.id ? updatedFile : f));
                             }}
@@ -342,6 +342,8 @@ export const StickerBuilder: React.FC = () => {
     return (
         <StickerBuilderContainerStyled>
             <h1>Sticker Builder</h1>
+            
+            <ToolBar onLoadMockImages={handleMockImagesLoad} />
 
             <DropZoneStyled
                 $isDragging={isDragging}

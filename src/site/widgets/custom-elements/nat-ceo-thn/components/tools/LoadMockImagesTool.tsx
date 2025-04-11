@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {ToolIconStyled, ToolIconWrapperStyled, TooltipStyled} from '../../styledComponents';
+import {ToolIconStyled} from '../../styledComponents';
 import {StickerImage} from '../../types';
 
 interface LoadMockImagesToolProps {
@@ -60,16 +60,11 @@ export const LoadMockImagesTool: React.FC<LoadMockImagesToolProps> = ({ onLoad }
     };
 
     return (
-        <ToolIconWrapperStyled
-            onMouseEnter={() => setShowTooltip(true)}
-            onMouseLeave={() => setShowTooltip(false)}
-        >
-            <TooltipStyled $visible={showTooltip}>Load mock images</TooltipStyled>
-            <ToolIconStyled onClick={handleLoadMockImages}>
-                <span role="img" aria-label="Load">📥</span>
-            </ToolIconStyled>
-        </ToolIconWrapperStyled>
+        <ToolIconStyled onClick={handleLoadMockImages}>
+            <span role="img" aria-label="Load">📥</span>
+        </ToolIconStyled>
     );
 };
 
 export default LoadMockImagesTool;
+
