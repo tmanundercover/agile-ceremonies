@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {DownloadIcon} from '@radix-ui/react-icons';
-import {ToolIconStyled} from '../../../styledComponents';
 import {StickerImage} from '../../../types';
 
 interface LoadMockImagesToolProps {
@@ -8,8 +7,6 @@ interface LoadMockImagesToolProps {
 }
 
 export const LoadMockImagesTool: React.FC<LoadMockImagesToolProps> = ({ onLoad }) => {
-    const [showTooltip, setShowTooltip] = useState(false);
-
     const createSvgFromPieces = (pieces: StickerImage['pieces']): string => {
         const svgContent = `
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
@@ -61,11 +58,8 @@ export const LoadMockImagesTool: React.FC<LoadMockImagesToolProps> = ({ onLoad }
     };
 
     return (
-        <ToolIconStyled onClick={handleLoadMockImages}>
-            <DownloadIcon width={20} height={20} />
-        </ToolIconStyled>
+        <DownloadIcon width={20} height={20} onClick={handleLoadMockImages} />
     );
 };
 
 export default LoadMockImagesTool;
-

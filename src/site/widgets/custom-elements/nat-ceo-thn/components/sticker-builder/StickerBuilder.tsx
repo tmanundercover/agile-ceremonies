@@ -2,7 +2,6 @@ import React, {useCallback, useState} from 'react';
 import {Button, Dialog, Text} from '@radix-ui/themes';
 import {FileData, FileVersion, StickerImage, StickerPiece} from '../../types';
 import {saveAs} from 'file-saver';
-import {ImageToolKitOverlay} from '../image-overlay/ImageToolKitOverlay';
 import {v4 as uuidv4} from 'uuid';
 import {Chat} from '../chat/Chat';
 import {ToolBar} from '../tools/tool-bar/ToolBar';
@@ -23,8 +22,38 @@ import {
     TabButtonStyled,
     TabContentStyled,
     TabListStyled,
-    ThumbnailContainerStyled
+    ThumbnailContainerStyled,
 } from '../../styledComponents';
+import {ImageToolKitOverlay} from "../tools/image-tool-kit-overlay/ImageToolKitOverlay";
+import {HamburgerMenuIcon} from '@radix-ui/react-icons';
+import styled from 'styled-components';
+
+const ToolbarWrapper = styled.div`
+    position: relative;
+    display: inline-block;
+    z-index: 1000;
+    margin-bottom: 16px; // Add spacing below instead of around
+`;
+
+const ToolbarButton = styled(Button)`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 6px;
+    margin: 0; // Remove any margin
+    position: relative; // Ensure button is positioned relative to wrapper
+
+    &:hover {
+        background-color: var(--gray-4);
+    }
+
+    &[data-state='opened'] {
+        background-color: var(--gray-5);
+        border-bottom-left-radius: ${props => props['data-state'] === 'opened' ? '0' : '6px'};
+        border-bottom-right-radius: ${props => props['data-state'] === 'opened' ? '0' : '6px'};
+    }
+`;
 
 export const StickerBuilder: React.FC = () => {
     const [images, setImages] = useState<StickerImage[]>([]);
@@ -36,6 +65,7 @@ export const StickerBuilder: React.FC = () => {
     const [isHoveringImage, setIsHoveringImage] = useState(false);
     const [isConverting, setIsConverting] = useState(false);
     const [activeTab, setActiveTab] = useState('preview');
+    const [isToolbarVisible, setIsToolbarVisible] = useState(false);
 
     const handlePieceClick = (piece: StickerPiece) => {
         if (piece.selected) {
@@ -237,13 +267,13 @@ export const StickerBuilder: React.FC = () => {
                         <ImageToolKitOverlay
                             $visible={isHoveringImage}
                             file={file}
-                            onSave={(updatedFile) => {
+                            onSave={(updatedFile: FileData) => {
                                 setFiles(prev => prev.map(f => f.id === file.id ? updatedFile : f));
                             }}
-                            onSplit={(updatedFile) => {
+                            onSplit={(updatedFile: FileData) => {
                                 setFiles(prev => prev.map(f => f.id === file.id ? updatedFile : f));
                             }}
-                            onStickerify={(updatedFile) => {
+                            onStickerify={(updatedFile: FileData) => {
                                 setFiles(prev => prev.map(f => f.id === file.id ? updatedFile : f));
                             }}
                         />
@@ -309,7 +339,7 @@ export const StickerBuilder: React.FC = () => {
 
     const handleMockImagesLoad = (stickerImages: StickerImage[]) => {
         setImages(stickerImages);
-        
+
         // Create files from the mock images
         stickerImages.forEach(image => {
             const svgContent = createSvgFromPieces(image.pieces);
@@ -346,11 +376,22 @@ export const StickerBuilder: React.FC = () => {
     return (
         <StickerBuilderContainerStyled>
             <h1>Sticker Builder</h1>
-            
-            <ToolBar
-                onLoadMockImages={handleMockImagesLoad}
-                onFileOpen={handleFileOpen}
-            />
+
+            <ToolbarWrapper>
+                <ToolbarButton
+                    onClick={() => setIsToolbarVisible(!isToolbarVisible)}
+                    variant="soft"
+                    data-state={isToolbarVisible ? 'opened' : 'closed'}
+                >
+                    <HamburgerMenuIcon/>
+                </ToolbarButton>
+                <ToolBar
+                    isVisible={isToolbarVisible}
+                    onLoadMockImages={handleMockImagesLoad}
+                    onFileOpen={handleFileOpen}
+                    onClose={() => setIsToolbarVisible(false)}
+                />
+            </ToolbarWrapper>
 
             <DropZoneStyled
                 $isDragging={isDragging}

@@ -1,7 +1,7 @@
 import React, {useRef} from 'react';
+import {FileIcon} from '@radix-ui/react-icons';
 import {ToolIconStyled} from '../../../styledComponents';
 import {FileData} from '../../../types';
-import { FileIcon } from '@radix-ui/react-icons';
 
 interface OpenFileToolProps {
     onFileOpen: (file: FileData) => void;
@@ -48,9 +48,7 @@ export const OpenFileTool: React.FC<OpenFileToolProps> = ({onFileOpen}) => {
                 onChange={handleFileChange}
                 accept="image/*,.svg"
             />
-            <ToolIconStyled onClick={handleClick}>
-                <FileIcon width={20} height={20} />
-            </ToolIconStyled>
+            <FileIcon width={20} height={20} />
         </>
     );
 };

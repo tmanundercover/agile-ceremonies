@@ -453,3 +453,13 @@ export const TabContentStyled = styled.div`
     overflow: auto;
 `;
 
+export const ToolbarWrapper = styled.div`
+        position: relative;
+        display: inline-block;
+    `;
+
+export const ToolbarButton = styled(Button)`
+        margin-bottom: 16px;
+    `;
+
+
