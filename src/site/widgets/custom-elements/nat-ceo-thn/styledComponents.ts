@@ -2,13 +2,13 @@ import styled from "styled-components";
 import {Button, Text, TextField} from "@radix-ui/themes";
 import {Step} from "./components/welcome-steps/StepProgressIndicator";
 
-export const ErrorText = styled(Text)`
+export const ErrorTextStyled = styled(Text)`
     color: var(--red-9);
     margin-top: 4px;
     display: block; // Ensure consistent display
 `;
 
-export const ErrorTextField = styled(TextField.Input)<{ $hasError: boolean }>`
+export const ErrorTextFieldStyled = styled(TextField.Input)<{ $hasError: boolean }>`
     &:focus {
         box-shadow: ${props => props.$hasError ? '0 0 0 2px var(--red-7)' : '0 0 0 2px var(--purple-7)'};
     }
@@ -16,14 +16,14 @@ export const ErrorTextField = styled(TextField.Input)<{ $hasError: boolean }>`
     border-color: ${props => props.$hasError ? 'var(--red-7)' : 'var(--gray-7)'};
 `;
 
-export const FormContainer = styled.div`
+export const FormContainerStyled = styled.div`
     background: white;
     padding: 32px;
     border-radius: 16px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 `;
 
-export const FormFieldWrapper = styled.div<{ $width: string }>`
+export const FormFieldWrapperStyled = styled.div<{ $width: string }>`
     flex: 1 1 ${props => props.$width};
     width: ${props => props.$width};
     min-width: 250px;
@@ -33,7 +33,7 @@ interface StyledProgressBarProps {
     progress?: number;
 }
 
-export const StyledProgressBar = styled.div<StyledProgressBarProps>`
+export const StyledProgressBarStyled = styled.div<StyledProgressBarProps>`
   position: relative;
   width: 100%;
   height: 32px;
@@ -69,7 +69,7 @@ interface StepProgressIndicatorProps {
     progress?: number;
 }
 
-export const StepperContainer = styled.div`
+export const StepperContainerStyled = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -81,13 +81,13 @@ export const StepperContainer = styled.div`
   width: 100%;
 `;
 
-export const StepIndicatorWrapper = styled.div<{ $position: number }>`
+export const StepIndicatorWrapperStyled = styled.div<{ $position: number }>`
   position: absolute;
   left: ${props => props.$position}%;
   transform: translateX(-50%);
 `;
 
-export const StepIndicator = styled.div<{ $active: boolean }>`
+export const StepIndicatorStyled = styled.div<{ $active: boolean }>`
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -106,7 +106,7 @@ export const StepIndicator = styled.div<{ $active: boolean }>`
   z-index: 1;
 `;
 
-export const StepLabel = styled(Text)`
+export const StepLabelStyled = styled(Text)`
   position: absolute;
   top: 100%;
   left: 50%;
@@ -115,7 +115,7 @@ export const StepLabel = styled(Text)`
   white-space: nowrap;
 `;
 
-export const ToolIcon = styled.button`
+export const ToolIconStyled = styled.button`
     background: white;
     border: none;
     border-radius: 50%;
@@ -138,7 +138,7 @@ export const ToolIcon = styled.button`
     }
 `;
 
-export const ImageOverlayContainer = styled.div<{ $visible: boolean }>`
+export const ImageOverlayContainerStyled = styled.div<{ $visible: boolean }>`
     position: absolute;
     top: 0;
     left: 0;
@@ -154,7 +154,7 @@ export const ImageOverlayContainer = styled.div<{ $visible: boolean }>`
     pointer-events: ${props => props.$visible ? 'auto' : 'none'};
 `;
 
-export const Tooltip = styled.div<{ $visible: boolean }>`
+export const TooltipStyled = styled.div<{ $visible: boolean }>`
     position: absolute;
     top: -40px;
     left: 50%;
@@ -181,11 +181,11 @@ export const Tooltip = styled.div<{ $visible: boolean }>`
     }
 `;
 
-export const ToolIconWrapper = styled.div`
+export const ToolIconWrapperStyled = styled.div`
     position: relative;
 `;
 
-export const StickerBuilderContainer = styled.div`
+export const StickerBuilderContainerStyled = styled.div`
     background: white;
     border-radius: 16px;
     padding: 24px;
@@ -199,7 +199,7 @@ export const StickerBuilderContainer = styled.div`
     overflow: hidden;
 `;
 
-export const StickerCanvas = styled.div`
+export const StickerCanvasStyled = styled.div`
     width: 100%;
     height: 30vh;
     max-height: 240px;
@@ -210,7 +210,7 @@ export const StickerCanvas = styled.div`
     overflow: hidden;
 `;
 
-export const StickerPreview = styled.svg`
+export const StickerPreviewStyled = styled.svg`
     width: 1024px;
     height: 1024px;
     cursor: pointer;
@@ -228,7 +228,7 @@ export const StickerPreview = styled.svg`
     }
 `;
 
-export const PieceSelector = styled.div`
+export const PieceSelectorStyled = styled.div`
     display: flex;
     gap: 16px;
     flex-wrap: wrap;
@@ -237,7 +237,7 @@ export const PieceSelector = styled.div`
     max-height: 15vh;
 `;
 
-export const ChatButton = styled(Button)`
+export const ChatButtonStyled = styled(Button)`
     position: fixed;
     bottom: 24px;
     right: 24px;
@@ -256,7 +256,7 @@ export const ChatButton = styled(Button)`
     }
 `;
 
-export const DropZone = styled.div<{ $isDragging: boolean }>`
+export const DropZoneStyled = styled.div<{ $isDragging: boolean }>`
     border: 2px dashed ${props => props.$isDragging ? 'var(--purple-7)' : 'var(--gray-7)'};
     border-radius: 8px;
     padding: 16px;
@@ -267,7 +267,7 @@ export const DropZone = styled.div<{ $isDragging: boolean }>`
     margin-bottom: 16px;
 `;
 
-export const FileGrid = styled.div`
+export const FileGridStyled = styled.div`
     display: flex;
     gap: 16px;
     margin-top: 16px;
@@ -275,7 +275,7 @@ export const FileGrid = styled.div`
     max-height: 25vh;
 `;
 
-export const FileCard = styled.div`
+export const FileCardStyled = styled.div`
     padding: 16px;
     border: 1px solid var(--gray-7);
     border-radius: 8px;
@@ -292,7 +292,7 @@ export const FileCard = styled.div`
     }
 `;
 
-export const ThumbnailContainer = styled.div`
+export const ThumbnailContainerStyled = styled.div`
     width: 100%;
     height: 120px;
     border-radius: 4px;
@@ -315,13 +315,13 @@ export const ThumbnailContainer = styled.div`
     }
 `;
 
-export const FileInfo = styled.div`
+export const FileInfoStyled = styled.div`
     display: flex;
     flex-direction: column;
     gap: 4px;
 `;
 
-export const FilePreview = styled.div`
+export const FilePreviewStyled = styled.div`
     width: 100%;
     flex: 1;
     display: flex;
@@ -350,7 +350,7 @@ export const FilePreview = styled.div`
     }
 `;
 
-export const ImageContainer = styled.div`
+export const ImageContainerStyled = styled.div`
     position: relative;
     display: flex;
     justify-content: center;
@@ -365,7 +365,7 @@ export const ImageContainer = styled.div`
     }
 `;
 
-export const CategoryPill = styled.div`
+export const CategoryPillStyled = styled.div`
     position: absolute;
     top: -30px;
     left: 50%;
@@ -379,7 +379,7 @@ export const CategoryPill = styled.div`
     z-index: 1;
 `;
 
-export const LoadingOverlay = styled.div<{ $visible: boolean }>`
+export const LoadingOverlayStyled = styled.div<{ $visible: boolean }>`
     position: absolute;
     top: 0;
     left: 0;
@@ -396,7 +396,7 @@ export const LoadingOverlay = styled.div<{ $visible: boolean }>`
     pointer-events: ${props => props.$visible ? 'auto' : 'none'};
 `;
 
-export const LoadingSpinner = styled.div`
+export const LoadingSpinnerStyled = styled.div`
     width: 40px;
     height: 40px;
     border: 3px solid var(--purple-3);
@@ -411,7 +411,7 @@ export const LoadingSpinner = styled.div`
     }
 `;
 
-export const ChatFooter = styled.div`
+export const ChatFooterStyled = styled.div`
     display: flex;
     gap: 8px;
     padding: 16px;
@@ -421,12 +421,12 @@ export const ChatFooter = styled.div`
     box-sizing: border-box;
 `;
 
-export const ChatInput = styled(TextField.Input)`
+export const ChatInputStyled = styled(TextField.Input)`
     flex: 1;
     min-width: 0;
 `;
 
-export const TabList = styled.div`
+export const TabListStyled = styled.div`
     display: flex;
     gap: 8px;
     padding: 0 16px;
@@ -434,7 +434,7 @@ export const TabList = styled.div`
     border-bottom: 1px solid var(--gray-5);
 `;
 
-export const TabButton = styled.button<{ $active: boolean }>`
+export const TabButtonStyled = styled.button<{ $active: boolean }>`
     padding: 8px 16px;
     border: none;
     background: none;
@@ -448,7 +448,8 @@ export const TabButton = styled.button<{ $active: boolean }>`
     }
 `;
 
-export const TabContent = styled.div`
+export const TabContentStyled = styled.div`
     flex: 1;
     overflow: auto;
 `;
+

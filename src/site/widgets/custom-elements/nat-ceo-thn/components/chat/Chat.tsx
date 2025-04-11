@@ -1,10 +1,7 @@
 import React from 'react';
 import {Button, Dialog, Text} from '@radix-ui/themes';
-import {
-    ChatButton,
-    ChatFooter,
-    ChatInput
-} from '../../styledComponents';
+import {ChatButtonStyled, ChatFooterStyled, ChatInputStyled} from "../../styledComponents";
+
 
 interface ChatProps {
     isOpen: boolean;
@@ -14,9 +11,9 @@ interface ChatProps {
 export const Chat: React.FC<ChatProps> = ({ isOpen, onToggle }) => {
     return (
         <>
-            <ChatButton onClick={onToggle}>
+            <ChatButtonStyled onClick={onToggle}>
                 <span role="img" aria-label="Chat with Josh">💬</span>
-            </ChatButton>
+            </ChatButtonStyled>
 
             {isOpen && (
                 <Dialog.Root open={isOpen} onOpenChange={onToggle}>
@@ -36,12 +33,12 @@ export const Chat: React.FC<ChatProps> = ({ isOpen, onToggle }) => {
                             </div>
                             {/* Add message history here */}
                         </div>
-                        <ChatFooter>
-                            <ChatInput
+                        <ChatFooterStyled>
+                            <ChatInputStyled
                                 placeholder="Type your message..."
                             />
                             <Button>Send</Button>
-                        </ChatFooter>
+                        </ChatFooterStyled>
                         <Dialog.Close>
                             <Button variant="soft" style={{margin: '0 16px 16px'}}>
                                 Close Chat

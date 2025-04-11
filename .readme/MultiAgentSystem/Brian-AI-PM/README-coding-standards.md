@@ -1,0 +1,1 @@
+ - Styled components are named with the word Styled at the end

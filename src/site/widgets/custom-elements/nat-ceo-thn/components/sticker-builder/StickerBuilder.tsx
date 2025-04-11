@@ -1,28 +1,28 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Button, Dialog, Text} from '@radix-ui/themes';
 import {FileData, FileVersion, StickerImage, StickerPiece} from '../../types';
 import {saveAs} from 'file-saver';
-import {ImageOverlay} from '../image-overlay/ImageOverlay';
+import {ImageToolKitOverlay} from '../image-overlay/ImageToolKitOverlay';
 import {v4 as uuidv4} from 'uuid';
 import {Chat} from '../chat/Chat';
 import {
-    CategoryPill,
-    DropZone,
-    FileCard,
-    FileGrid,
-    FileInfo,
-    FilePreview,
-    ImageContainer,
-    LoadingOverlay,
-    LoadingSpinner,
-    PieceSelector,
-    StickerBuilderContainer,
-    StickerCanvas,
-    StickerPreview,
-    TabButton,
-    TabContent,
-    TabList,
-    ThumbnailContainer
+    CategoryPillStyled,
+    DropZoneStyled,
+    FileCardStyled,
+    FileGridStyled,
+    FileInfoStyled,
+    FilePreviewStyled,
+    ImageContainerStyled,
+    LoadingOverlayStyled,
+    LoadingSpinnerStyled,
+    PieceSelectorStyled,
+    StickerBuilderContainerStyled,
+    StickerCanvasStyled,
+    StickerPreviewStyled,
+    TabButtonStyled,
+    TabContentStyled,
+    TabListStyled,
+    ThumbnailContainerStyled
 } from '../../styledComponents';
 
 export const StickerBuilder: React.FC = () => {
@@ -35,51 +35,6 @@ export const StickerBuilder: React.FC = () => {
     const [isHoveringImage, setIsHoveringImage] = useState(false);
     const [isConverting, setIsConverting] = useState(false);
     const [activeTab, setActiveTab] = useState('preview');
-
-    useEffect(() => {
-        const loadImages = async () => {
-            try {
-                // Example of loading SVG data - in production this would come from your assets
-                const mockImages: StickerImage[] = [
-                    {
-                        id: '1',
-                        name: 'Basic Avatar',
-                        pieces: [
-                            {
-                                id: 'head1',
-                                type: 'head',
-                                paths: ['M50,50 C50,30 70,20 90,20 C110,20 130,30 130,50 C130,70 110,90 90,90 C70,90 50,70 50,50'],
-                                transform: 'translate(0,0) scale(1)',
-                                selected: false
-                            },
-                            {
-                                id: 'eyes1',
-                                type: 'eyes',
-                                paths: [
-                                    'M70,40 C70,35 75,35 75,40 C75,45 70,45 70,40',
-                                    'M110,40 C110,35 115,35 115,40 C115,45 110,45 110,40'
-                                ],
-                                transform: 'translate(0,0) scale(1)',
-                                selected: false
-                            },
-                            {
-                                id: 'hair1',
-                                type: 'hair',
-                                paths: ['M40,30 C60,10 120,10 140,30 C140,40 130,50 120,45 C110,40 70,40 60,45 C50,50 40,40 40,30'],
-                                transform: 'translate(0,0) scale(1)',
-                                selected: false
-                            }
-                        ]
-                    }
-                ];
-                setImages(mockImages);
-            } catch (error) {
-                console.error('Error loading sticker images:', error);
-            }
-        };
-
-        loadImages();
-    }, []);
 
     const handlePieceClick = (piece: StickerPiece) => {
         if (piece.selected) {
@@ -272,28 +227,31 @@ export const StickerBuilder: React.FC = () => {
     const renderFileContent = (file: FileData) => {
         if (isImageFile(file.type)) {
             return (
-                <div style={{ width: '100%', height: '100%' }}>
-                    <CategoryPill>{getFileCategory(file.type)}</CategoryPill>
-                    <ImageContainer
+                <div style={{width: '100%', height: '100%'}}>
+                    <CategoryPillStyled>{getFileCategory(file.type)}</CategoryPillStyled>
+                    <ImageContainerStyled
                         onMouseEnter={() => setIsHoveringImage(true)}
                         onMouseLeave={() => setIsHoveringImage(false)}>
-                        <img
-                            src={file.content}
-                            alt={file.name}
-                        />
-                        <ImageOverlay
+                        <img src={file.content} alt={file.name}/>
+                        <ImageToolKitOverlay
                             $visible={isHoveringImage}
-                            fileType={file.type}
-                            handleSaveFile={() => handleSaveFile(file)}
-                            handleStickerify={() => handleStickerify(file)}
-                            handleSplitSvg={() => handleSplitSvg(file)}
-                            handleConvertToSvg={() => handleConvertToSvg(file)}
+                            file={file}
+                            onLoad={handleMockImagesLoad}
+                            onSave={(updatedFile) => {
+                                setFiles(prev => prev.map(f => f.id === file.id ? updatedFile : f));
+                            }}
+                            onSplit={(updatedFile) => {
+                                setFiles(prev => prev.map(f => f.id === file.id ? updatedFile : f));
+                            }}
+                            onStickerify={(updatedFile) => {
+                                setFiles(prev => prev.map(f => f.id === file.id ? updatedFile : f));
+                            }}
                         />
-                        <LoadingOverlay $visible={isConverting}>
-                            <LoadingSpinner/>
+                        <LoadingOverlayStyled $visible={isConverting}>
+                            <LoadingSpinnerStyled/>
                             <Text>Converting image...</Text>
-                        </LoadingOverlay>
-                    </ImageContainer>
+                        </LoadingOverlayStyled>
+                    </ImageContainerStyled>
                 </div>
             );
         }
@@ -345,26 +303,62 @@ export const StickerBuilder: React.FC = () => {
         setIsDragging(false);
     }, []);
 
+    const handleFileCreated = (newFile: FileData) => {
+        setFiles(prev => [...prev, newFile]);
+    };
+
+    const handleMockImagesLoad = (stickerImages: StickerImage[]) => {
+        setImages(stickerImages);
+        
+        // Create files from the mock images
+        stickerImages.forEach(image => {
+            const svgContent = createSvgFromPieces(image.pieces);
+            const newFile: FileData = {
+                id: `mock-${image.id}`,
+                name: `${image.name}.svg`,
+                type: 'image/svg+xml',
+                size: svgContent.length,
+                lastModified: Date.now(),
+                content: svgContent,
+                versions: []
+            };
+            setFiles(prev => [...prev, newFile]);
+        });
+    };
+
+    const createSvgFromPieces = (pieces: StickerImage['pieces']): string => {
+        const svgContent = `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+                ${pieces.map(piece => `
+                    <g transform="${piece.transform}">
+                        ${piece.paths.map(path => `<path d="${path}" fill="#000" />`).join('\n')}
+                    </g>
+                `).join('\n')}
+            </svg>
+        `;
+        return `data:image/svg+xml;base64,${btoa(svgContent)}`;
+    };
+
     return (
-        <StickerBuilderContainer>
+        <StickerBuilderContainerStyled>
             <h1>Sticker Builder</h1>
 
-            <DropZone
+            <DropZoneStyled
                 $isDragging={isDragging}
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
             >
                 Drop files here to import
-            </DropZone>
+            </DropZoneStyled>
 
-            <FileGrid>
+            <FileGridStyled>
                 {files.map(file => (
-                    <FileCard
+                    <FileCardStyled
                         key={file.id}
                         onClick={() => setSelectedFile(file)}
                     >
-                        <ThumbnailContainer>
+                        <ThumbnailContainerStyled>
                             {isImageFile(file.type) ? (
                                 <img src={file.content} alt={`Thumbnail of ${file.name}`}/>
                             ) : (
@@ -373,60 +367,60 @@ export const StickerBuilder: React.FC = () => {
                                     <path d="M13 2v7h7"/>
                                 </svg>
                             )}
-                        </ThumbnailContainer>
-                        <FileInfo>
+                        </ThumbnailContainerStyled>
+                        <FileInfoStyled>
                             <Text weight="medium">{file.name}</Text>
                             <Text size="1" color="gray">{Math.round(file.size / 1024)} KB</Text>
-                        </FileInfo>
-                    </FileCard>
+                        </FileInfoStyled>
+                    </FileCardStyled>
                 ))}
-            </FileGrid>
+            </FileGridStyled>
 
             <Dialog.Root open={!!selectedFile} onOpenChange={() => setSelectedFile(null)}>
                 <Dialog.Content>
                     <Dialog.Title>{selectedFile?.name}</Dialog.Title>
-                    <TabList>
-                        <TabButton
+                    <TabListStyled>
+                        <TabButtonStyled
                             $active={activeTab === 'preview'}
                             onClick={() => setActiveTab('preview')}
                         >
                             Preview
-                        </TabButton>
-                        <TabButton
+                        </TabButtonStyled>
+                        <TabButtonStyled
                             $active={activeTab === 'versions'}
                             onClick={() => setActiveTab('versions')}
                         >
                             Versions ({selectedFile?.versions?.length || 0})
-                        </TabButton>
-                    </TabList>
-                    <TabContent>
+                        </TabButtonStyled>
+                    </TabListStyled>
+                    <TabContentStyled>
                         {activeTab === 'preview' && (
-                            <FilePreview>
+                            <FilePreviewStyled>
                                 {selectedFile && renderFileContent(selectedFile)}
-                            </FilePreview>
+                            </FilePreviewStyled>
                         )}
                         {activeTab === 'versions' && (
                             <>
                                 {selectedFile?.versions?.length ? (
-                                    <FileGrid>
+                                    <FileGridStyled>
                                         {selectedFile.versions.map((version) => (
-                                            <FileCard key={version.id}>
-                                                <ThumbnailContainer>
+                                            <FileCardStyled key={version.id}>
+                                                <ThumbnailContainerStyled>
                                                     {isImageFile(version.type) && (
-                                                        <img src={version.content} alt={`Version ${version.name}`} />
+                                                        <img src={version.content} alt={`Version ${version.name}`}/>
                                                     )}
-                                                </ThumbnailContainer>
-                                                <FileInfo>
+                                                </ThumbnailContainerStyled>
+                                                <FileInfoStyled>
                                                     <Text weight="medium">{version.name}</Text>
                                                     <Text size="1" color="gray">
                                                         {new Date(version.createdAt).toLocaleDateString()}
                                                     </Text>
-                                                </FileInfo>
-                                            </FileCard>
+                                                </FileInfoStyled>
+                                            </FileCardStyled>
                                         ))}
-                                    </FileGrid>
+                                    </FileGridStyled>
                                 ) : (
-                                    <FilePreview>
+                                    <FilePreviewStyled>
                                         <svg
                                             width={selectedFile?.content ? "100%" : "200"}
                                             height={selectedFile?.content ? "100%" : "200"}
@@ -457,19 +451,19 @@ export const StickerBuilder: React.FC = () => {
                                                 No versions yet
                                             </text>
                                         </svg>
-                                    </FilePreview>
+                                    </FilePreviewStyled>
                                 )}
                             </>
                         )}
-                    </TabContent>
+                    </TabContentStyled>
                     <Dialog.Close>
                         <Button>Close</Button>
                     </Dialog.Close>
                 </Dialog.Content>
             </Dialog.Root>
 
-            <StickerCanvas>
-                <StickerPreview>
+            <StickerCanvasStyled>
+                <StickerPreviewStyled>
                     {selectedPieces.map(piece => (
                         <g
                             key={piece.id}
@@ -482,10 +476,10 @@ export const StickerBuilder: React.FC = () => {
                             ))}
                         </g>
                     ))}
-                </StickerPreview>
-            </StickerCanvas>
+                </StickerPreviewStyled>
+            </StickerCanvasStyled>
 
-            <PieceSelector>
+            <PieceSelectorStyled>
                 {images.map(image => (
                     <div key={image.id}>
                         {image.pieces.map(piece => (
@@ -504,10 +498,10 @@ export const StickerBuilder: React.FC = () => {
                         ))}
                     </div>
                 ))}
-            </PieceSelector>
+            </PieceSelectorStyled>
 
-            <Chat isOpen={isChatOpen} onToggle={toggleChat} />
-        </StickerBuilderContainer>
+            <Chat isOpen={isChatOpen} onToggle={toggleChat}/>
+        </StickerBuilderContainerStyled>
     );
 };
 

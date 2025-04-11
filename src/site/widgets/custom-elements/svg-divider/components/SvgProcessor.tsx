@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FileInput, Error, ActionButton } from '../styledComponents';
 import styled from 'styled-components';
+import {SvgProcessorProps} from "../types";
 
 const InputToggle = styled.div`
     margin-bottom: 16px;
