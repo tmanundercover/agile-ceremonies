@@ -35,7 +35,11 @@ const ToolbarWrapper = styled.div`
     margin-bottom: 16px; // Add spacing below instead of around
 `;
 
-const ToolbarButton = styled(Button)`
+interface ToolbarButtonProps {
+    'data-state'?: 'opened' | 'closed';
+}
+
+const ToolbarButton = styled(Button)<ToolbarButtonProps>`
     display: flex;
     align-items: center;
     justify-content: center;
