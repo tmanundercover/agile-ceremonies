@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components';
-import { Button, TextField, Dialog, Text } from '@radix-ui/themes';
-import { FileData, FileVersion } from '../../types';
-import { saveAs } from 'file-saver';
-import { Tabs } from '@radix-ui/themes';
-import { v4 as uuidv4 } from 'uuid';
+import {Button, Dialog, Text, TextField} from '@radix-ui/themes';
+import {FileData, FileVersion} from '../../types';
+import {saveAs} from 'file-saver';
+import {ImageOverlay} from '../image-overlay/ImageOverlay';
+import {v4 as uuidv4} from 'uuid';
 
 interface StickerPiece {
     id: string;
@@ -14,9 +14,6 @@ interface StickerPiece {
     selected: boolean;
 }
 
-const TabsList = styled(Tabs.List)`
-    margin-bottom: 16px;
-`;
 interface StickerImage {
     id: string;
     name: string;
@@ -30,26 +27,22 @@ const StickerBuilderContainer = styled.div`
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     max-width: 1200px;
     margin: 0 auto;
+    height: 800px;
+    max-height: 800px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 `;
 
-const TabTrigger = styled(Tabs.Trigger)`
-    padding: 8px 16px;
-    border-radius: 4px 4px 0 0;
-    border: 1px solid var(--gray-7);
-    border-bottom: none;
-    
-    &[data-state="active"] {
-        background: var(--purple-3);
-        border-color: var(--purple-7);
-    }
-`;
 const StickerCanvas = styled.div`
     width: 100%;
-    height: calc(min(1024px, 100vh - 200px)); // Update height limit
+    height: 30vh;
+    max-height: 240px;
     border: 2px dashed var(--gray-7);
     border-radius: 16px;
     margin: 16px 0;
     position: relative;
+    overflow: hidden;
 `;
 
 const StickerPreview = styled.svg`
@@ -59,7 +52,7 @@ const StickerPreview = styled.svg`
 
     .sticker-piece {
         transition: transform 0.3s ease;
-        
+
         &:hover {
             transform: scale(1.05);
         }
@@ -75,6 +68,8 @@ const PieceSelector = styled.div`
     gap: 16px;
     flex-wrap: wrap;
     margin-top: 16px;
+    overflow-y: auto;
+    max-height: 15vh;
 `;
 
 const ChatButton = styled(Button)`
@@ -99,11 +94,12 @@ const ChatButton = styled(Button)`
 const DropZone = styled.div<{ $isDragging: boolean }>`
     border: 2px dashed ${props => props.$isDragging ? 'var(--purple-7)' : 'var(--gray-7)'};
     border-radius: 8px;
-    padding: 24px;
+    padding: 16px;
     text-align: center;
     background: ${props => props.$isDragging ? 'var(--purple-3)' : 'transparent'};
     transition: all 0.3s ease;
     cursor: pointer;
+    margin-bottom: 16px;
 `;
 
 const FileGrid = styled.div`
@@ -111,6 +107,8 @@ const FileGrid = styled.div`
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 16px;
     margin-top: 16px;
+    overflow-y: auto;
+    max-height: 25vh;
 `;
 
 const FileCard = styled.div`
@@ -161,8 +159,7 @@ const FileInfo = styled.div`
 
 const FilePreview = styled.div`
     width: 100%;
-    aspect-ratio: 1;
-    overflow: auto;
+    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -171,12 +168,12 @@ const FilePreview = styled.div`
     background: #f8f9fa;
     border: 1px solid var(--gray-7);
     border-radius: 16px;
+    padding: 16px;
+    box-sizing: border-box;
 
     img {
-        max-width: 100%;
-        max-height: 100%;
-        width: auto;
-        height: auto;
+        width: 100%;
+        height: 100%;
         object-fit: contain;
     }
 
@@ -184,9 +181,8 @@ const FilePreview = styled.div`
         background: var(--gray-3);
         padding: 16px;
         border-radius: 8px;
-        overflow: auto;
-        max-width: 100%;
-        max-height: 100%;
+        width: 100%;
+        height: 100%;
     }
 `;
 
@@ -196,8 +192,7 @@ const ImageContainer = styled.div`
     justify-content: center;
     align-items: center;
     width: 100%;
-    aspect-ratio: 1;
-    margin: 0 auto;
+    height: 100%;
 
     img {
         max-width: 100%;
@@ -205,45 +200,6 @@ const ImageContainer = styled.div`
         width: auto;
         height: auto;
         object-fit: contain;
-    }
-`;
-
-const ImageOverlay = styled.div<{ $visible: boolean }>`
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 16px;
-    opacity: ${props => props.$visible ? 1 : 0};
-    transition: opacity 0.3s ease;
-    pointer-events: ${props => props.$visible ? 'auto' : 'none'};
-`;
-
-const ToolIcon = styled.button`
-    background: white;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-    &:hover {
-        transform: scale(1.1);
-    }
-
-    svg {
-        width: 20px;
-        height: 20px;
     }
 `;
 
@@ -259,37 +215,6 @@ const CategoryPill = styled.div`
     font-size: 12px;
     font-weight: 500;
     z-index: 1;
-`;
-
-const Tooltip = styled.div<{ $visible: boolean }>`
-    position: absolute;
-    top: -40px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #1A1A1A;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-size: 12px;
-    opacity: ${props => props.$visible ? 1 : 0};
-    transition: opacity 0.2s ease;
-    pointer-events: none;
-    white-space: nowrap;
-    
-    &:after {
-        content: '';
-        position: absolute;
-        bottom: -4px;
-        left: 50%;
-        transform: translateX(-50%) rotate(45deg);
-        width: 8px;
-        height: 8px;
-        background: #1A1A1A;
-    }
-`;
-
-const ToolIconWrapper = styled.div`
-    position: relative;
 `;
 
 const LoadingOverlay = styled.div<{ $visible: boolean }>`
@@ -324,16 +249,29 @@ const LoadingSpinner = styled.div`
     }
 `;
 
+const ChatFooter = styled.div`
+    display: flex;
+    gap: 8px;
+    padding: 16px;
+    border-top: 1px solid var(--gray-5);
+    background: white;
+    width: 100%;
+    box-sizing: border-box;
+`;
+
+const ChatInput = styled(TextField.Input)`
+    flex: 1;
+    min-width: 0; // Prevents flex items from overflowing
+`;
+
 export const StickerBuilder: React.FC = () => {
     const [images, setImages] = useState<StickerImage[]>([]);
-
     const [selectedPieces, setSelectedPieces] = useState<StickerPiece[]>([]);
     const [isChatOpen, setIsChatOpen] = useState(false);
     const [files, setFiles] = useState<FileData[]>([]);
     const [isDragging, setIsDragging] = useState(false);
     const [selectedFile, setSelectedFile] = useState<FileData | null>(null);
     const [isHoveringImage, setIsHoveringImage] = useState(false);
-    const [hoveredTool, setHoveredTool] = useState<string | null>(null);
     const [isConverting, setIsConverting] = useState(false);
 
     useEffect(() => {
@@ -381,58 +319,6 @@ export const StickerBuilder: React.FC = () => {
         loadImages();
     }, []);
 
-    const [selectedVersionId, setSelectedVersionId] = useState<string | null>(null);
-
-    const handleStickerify = async (file: FileData) => {
-        setIsConverting(true);
-
-        try {
-            const img = new Image();
-            img.src = file.content;
-
-            await new Promise((resolve) => {
-                img.onload = resolve;
-            });
-
-            const canvas = document.createElement('canvas');
-            canvas.width = img.width;
-            canvas.height = img.height;
-
-            const ctx = canvas.getContext('2d');
-            if (!ctx) return;
-
-            // Apply sticker effect
-            ctx.drawImage(img, 0, 0);
-            ctx.globalCompositeOperation = 'destination-out';
-            ctx.beginPath();
-            ctx.arc(img.width / 2, img.height / 2, Math.min(img.width, img.height) / 2, 0, Math.PI * 2);
-            ctx.fill();
-
-            const newVersion: FileVersion = {
-                id: uuidv4(),
-                name: 'Sticker Version',
-                content: canvas.toDataURL(file.type),
-                type: file.type,
-                createdAt: new Date()
-            };
-
-            const updatedFile = {
-                ...file,
-                versions: [...(file.versions || []), newVersion]
-            };
-
-            setFiles(prev => prev.map(f => f.id === file.id ? updatedFile : f));
-            setSelectedVersionId(newVersion.id);
-        } finally {
-            setIsConverting(false);
-        }
-    };
-
-    const getCurrentContent = (file: FileData): string => {
-        if (!selectedVersionId) return file.content;
-        const version = file.versions?.find(v => v.id === selectedVersionId);
-        return version ? version.content : file.content;
-    };
     const handlePieceClick = (piece: StickerPiece) => {
         if (piece.selected) {
             setSelectedPieces(prev => prev.filter(p => p.id !== piece.id));
@@ -497,15 +383,86 @@ export const StickerBuilder: React.FC = () => {
     };
 
     const handleSplitSvg = async (file: FileData) => {
+        if (!file.content.includes('svg')) return;
+
         setIsConverting(true);
 
         try {
-            // TODO: Implement actual SVG splitting logic
-            // For now, just create a stub version
+            // Create a parser for SVG content
+            const parser = new DOMParser();
+            const svgDoc = parser.parseFromString(file.content, 'image/svg+xml');
+            const svgElement = svgDoc.querySelector('svg');
+
+            if (!svgElement) return;
+
+            // Find all major elements in the SVG
+            const layers = Array.from(svgElement.children).filter(el =>
+                ['path', 'g', 'rect', 'circle', 'ellipse'].includes(el.tagName)
+            );
+
+            // Create separate SVG files for each layer
+            const newVersions: FileVersion[] = layers.map((layer, index) => {
+                const newSvg = svgElement.cloneNode(false) as SVGElement;
+                newSvg.appendChild(layer.cloneNode(true));
+
+                return {
+                    id: uuidv4(),
+                    name: `Layer ${index + 1}`,
+                    content: `data:image/svg+xml;base64,${btoa(newSvg.outerHTML)}`,
+                    type: 'image/svg+xml',
+                    createdAt: new Date()
+                };
+            });
+
+            // Update the file with new versions
+            const updatedFile = {
+                ...file,
+                versions: [...(file.versions || []), ...newVersions]
+            };
+
+            setFiles(prev => prev.map(f => f.id === file.id ? updatedFile : f));
+        } catch (error) {
+            console.error('Error splitting SVG:', error);
+        } finally {
+            setIsConverting(false);
+        }
+    };
+
+    const getFileCategory = (type: string): string => {
+        if (type.startsWith('image/svg')) return 'SVG Vector';
+        if (type.startsWith('image/')) return 'Image';
+        return 'Document';
+    };
+
+    const handleStickerify = async (file: FileData) => {
+        setIsConverting(true);
+
+        try {
+            const img = new Image();
+            img.src = file.content;
+
+            await new Promise((resolve) => {
+                img.onload = resolve;
+            });
+
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width;
+            canvas.height = img.height;
+
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
+
+            // Apply sticker effect
+            ctx.drawImage(img, 0, 0);
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            ctx.arc(img.width / 2, img.height / 2, Math.min(img.width, img.height) / 2, 0, Math.PI * 2);
+            ctx.fill();
+
             const newVersion: FileVersion = {
                 id: uuidv4(),
-                name: 'Split Version',
-                content: file.content, // Just copying content for now
+                name: 'Sticker Version',
+                content: canvas.toDataURL(file.type),
                 type: file.type,
                 createdAt: new Date()
             };
@@ -516,16 +473,9 @@ export const StickerBuilder: React.FC = () => {
             };
 
             setFiles(prev => prev.map(f => f.id === file.id ? updatedFile : f));
-            setSelectedVersionId(newVersion.id);
         } finally {
             setIsConverting(false);
         }
-    };
-
-    const getFileCategory = (type: string): string => {
-        if (type.startsWith('image/svg')) return 'SVG Vector';
-        if (type.startsWith('image/')) return 'Image';
-        return 'Document';
     };
 
     const handleSaveFile = (file: FileData) => {
@@ -554,111 +504,34 @@ export const StickerBuilder: React.FC = () => {
             ia[i] = byteString.charCodeAt(i);
         }
 
-        return new Blob([ab], { type: mimeString });
+        return new Blob([ab], {type: mimeString});
     };
 
     const renderFileContent = (file: FileData) => {
         if (isImageFile(file.type)) {
             return (
-                <div>
+                <div style={{ width: '100%', height: '100%' }}>
                     <CategoryPill>{getFileCategory(file.type)}</CategoryPill>
-                    <Tabs.Root value={selectedVersionId || 'original'} onValueChange={(value) => setSelectedVersionId(value === 'original' ? null : value)}>
-                        <TabsList>
-                            <TabTrigger value="original">Original</TabTrigger>
-                            <TabTrigger value="svg">SVG</TabTrigger>
-                            {file.savedSvgLocation && (
-                                <TabTrigger value="saved-svg">Saved SVG</TabTrigger>
-                            )}
-                            {file.versions?.map(version => (
-                                <TabTrigger key={version.id} value={version.id}>
-                                    {version.name}
-                                </TabTrigger>
-                            ))}
-                        </TabsList>
-                        <ImageContainer
-                            onMouseEnter={() => setIsHoveringImage(true)}
-                            onMouseLeave={() => setIsHoveringImage(false)}>
-                            {selectedVersionId === 'svg' ? (
-                                <svg
-                                    width="100%"
-                                    height="100%"
-                                    viewBox="0 0 100 100"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    preserveAspectRatio="xMidYMid meet"
-                                    style={{ maxHeight: '60vh' }}
-                                >
-                                    <rect x="10" y="10" width="80" height="80" fill="#F3E5F5" stroke="#9333EA" strokeWidth="2"/>
-                                    <text x="50" y="55" textAnchor="middle" fill="#9333EA" fontSize="12">SVG Preview</text>
-                                </svg>
-                            ) : selectedVersionId === 'saved-svg' && file.savedSvgLocation ? (
-                                <img src={file.content} alt={`Saved version of ${file.name}`} style={{ maxHeight: '60vh', width: 'auto' }} />
-                            ) : (
-                                <img src={getCurrentContent(file)} alt={file.name} style={{ maxHeight: '60vh', width: 'auto' }} />
-                            )}
-                            <ImageOverlay $visible={isHoveringImage}>
-                                <ToolIconWrapper
-                                    onMouseEnter={() => setHoveredTool('convert')}
-                                    onMouseLeave={() => setHoveredTool(null)}>
-                                    <Tooltip $visible={hoveredTool === 'convert'}>
-                                        Convert to SVG
-                                    </Tooltip>
-                                    <ToolIcon onClick={() => handleConvertToSvg(file)}>
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                            <path d="M4 14h8v-4H4v4zm8 0h8v-4h-8v4z"/>
-                                            <path d="M12 6v12"/>
-                                        </svg>
-                                    </ToolIcon>
-                                </ToolIconWrapper>
-                                {file.type.startsWith('image/svg') && (
-                                    <ToolIconWrapper
-                                        onMouseEnter={() => setHoveredTool('split')}
-                                        onMouseLeave={() => setHoveredTool(null)}>
-                                        <Tooltip $visible={hoveredTool === 'split'}>
-                                            Split SVG
-                                        </Tooltip>
-                                        <ToolIcon onClick={() => handleSplitSvg(file)}>
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                                <path d="M4 20h16M4 4h16M12 4v16"/>
-                                            </svg>
-                                        </ToolIcon>
-                                    </ToolIconWrapper>
-                                )}
-                                <ToolIconWrapper
-                                    onMouseEnter={() => setHoveredTool('stickerify')}
-                                    onMouseLeave={() => setHoveredTool(null)}>
-                                    <Tooltip $visible={hoveredTool === 'stickerify'}>
-                                        Sticker-fy
-                                    </Tooltip>
-                                    <ToolIcon onClick={() => handleStickerify(file)}>
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                            <circle cx="12" cy="12" r="10"/>
-                                            <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
-                                            <line x1="9" y1="9" x2="9.01" y2="9"/>
-                                            <line x1="15" y1="9" x2="15.01" y2="9"/>
-                                        </svg>
-                                    </ToolIcon>
-                                </ToolIconWrapper>
-                                <ToolIconWrapper
-                                    onMouseEnter={() => setHoveredTool('save')}
-                                    onMouseLeave={() => setHoveredTool(null)}>
-                                    <Tooltip $visible={hoveredTool === 'save'}>
-                                        Save File
-                                    </Tooltip>
-                                    <ToolIcon onClick={() => handleSaveFile(file)}>
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                            <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
-                                            <path d="M17 21v-8H7v8"/>
-                                            <path d="M7 3v5h8"/>
-                                        </svg>
-                                    </ToolIcon>
-                                </ToolIconWrapper>
-                            </ImageOverlay>
-                            <LoadingOverlay $visible={isConverting}>
-                                <LoadingSpinner />
-                                <Text>Converting image...</Text>
-                            </LoadingOverlay>
-                        </ImageContainer>
-                    </Tabs.Root>
+                    <ImageContainer
+                        onMouseEnter={() => setIsHoveringImage(true)}
+                        onMouseLeave={() => setIsHoveringImage(false)}>
+                        <img
+                            src={file.content}
+                            alt={file.name}
+                        />
+                        <ImageOverlay
+                            $visible={isHoveringImage}
+                            fileType={file.type}
+                            handleSaveFile={() => handleSaveFile(file)}
+                            handleStickerify={() => handleStickerify(file)}
+                            handleSplitSvg={() => handleSplitSvg(file)}
+                            handleConvertToSvg={() => handleConvertToSvg(file)}
+                        />
+                        <LoadingOverlay $visible={isConverting}>
+                            <LoadingSpinner/>
+                            <Text>Converting image...</Text>
+                        </LoadingOverlay>
+                    </ImageContainer>
                 </div>
             );
         }
@@ -687,7 +560,7 @@ export const StickerBuilder: React.FC = () => {
                     content: isImageFile(file.type)
                         ? reader.result as string
                         : reader.result?.toString() || '',
-                    versions:[]
+                    versions: []
                 };
                 setFiles(prev => [...prev, newFile]);
             };
@@ -713,7 +586,7 @@ export const StickerBuilder: React.FC = () => {
     return (
         <StickerBuilderContainer>
             <h1>Sticker Builder</h1>
-            
+
             <DropZone
                 $isDragging={isDragging}
                 onDrop={handleDrop}
@@ -731,7 +604,7 @@ export const StickerBuilder: React.FC = () => {
                     >
                         <ThumbnailContainer>
                             {isImageFile(file.type) ? (
-                                <img src={file.content} alt={`Thumbnail of ${file.name}`} />
+                                <img src={file.content} alt={`Thumbnail of ${file.name}`}/>
                             ) : (
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                     <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/>
@@ -769,7 +642,7 @@ export const StickerBuilder: React.FC = () => {
                             onClick={() => handlePieceClick(piece)}
                         >
                             {piece.paths.map((path, index) => (
-                                <path key={index} d={path} />
+                                <path key={index} d={path}/>
                             ))}
                         </g>
                     ))}
@@ -787,7 +660,7 @@ export const StickerBuilder: React.FC = () => {
                                 <svg width="50" height="50">
                                     <g transform={piece.transform}>
                                         {piece.paths.map((path, index) => (
-                                            <path key={index} d={path} />
+                                            <path key={index} d={path}/>
                                         ))}
                                     </g>
                                 </svg>
@@ -803,7 +676,8 @@ export const StickerBuilder: React.FC = () => {
 
             {isChatOpen && (
                 <Dialog.Root open={isChatOpen} onOpenChange={toggleChat}>
-                    <Dialog.Content style={{ maxWidth: '500px', display: 'flex', flexDirection: 'column', height: '600px' }}>
+                    <Dialog.Content
+                        style={{maxWidth: '500px', display: 'flex', flexDirection: 'column', height: '600px'}}>
                         <Dialog.Title>Chat with Josh</Dialog.Title>
                         <div style={{
                             flex: 1,
@@ -818,23 +692,14 @@ export const StickerBuilder: React.FC = () => {
                             </div>
                             {/* Add message history here */}
                         </div>
-                        <div style={{
-                            display: 'flex',
-                            gap: '8px',
-                            padding: '16px',
-                            borderTop: '1px solid var(--gray-5)',
-                            background: 'white',
-                            width: '100%',
-                            boxSizing: 'border-box'
-                        }}>
-                            <TextField.Input
+                        <ChatFooter>
+                            <ChatInput
                                 placeholder="Type your message..."
-                                style={{ flex: 1 }}
                             />
                             <Button>Send</Button>
-                        </div>
+                        </ChatFooter>
                         <Dialog.Close>
-                            <Button variant="soft" style={{ margin: '0 16px 16px' }}>
+                            <Button variant="soft" style={{margin: '0 16px 16px'}}>
                                 Close Chat
                             </Button>
                         </Dialog.Close>

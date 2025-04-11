@@ -114,3 +114,73 @@ export const StepLabel = styled(Text)`
   margin-top: 8px;
   white-space: nowrap;
 `;
+
+export const ToolIcon = styled.button`
+    background: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+        transform: scale(1.1);
+    }
+
+    svg {
+        width: 20px;
+        height: 20px;
+    }
+`;
+
+export const ImageOverlayContainer = styled.div<{ $visible: boolean }>`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    opacity: ${props => props.$visible ? 1 : 0};
+    transition: opacity 0.3s ease;
+    pointer-events: ${props => props.$visible ? 'auto' : 'none'};
+`;
+
+export const Tooltip = styled.div<{ $visible: boolean }>`
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1A1A1A;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    opacity: ${props => props.$visible ? 1 : 0};
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    white-space: nowrap;
+    
+    &:after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 50%;
+        transform: translateX(-50%) rotate(45deg);
+        width: 8px;
+        height: 8px;
+        background: #1A1A1A;
+    }
+`;
+
+export const ToolIconWrapper = styled.div`
+    position: relative;
+`;
