@@ -103,8 +103,7 @@ const DropZone = styled.div<{ $isDragging: boolean }>`
 `;
 
 const FileGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    display: flex;
     gap: 16px;
     margin-top: 16px;
     overflow-y: auto;
@@ -168,8 +167,8 @@ const FilePreview = styled.div`
     background: #f8f9fa;
     border: 1px solid var(--gray-7);
     border-radius: 16px;
-    padding: 16px;
     box-sizing: border-box;
+    overflow: hidden;
 
     img {
         width: 100%;
@@ -195,10 +194,8 @@ const ImageContainer = styled.div`
     height: 100%;
 
     img {
-        max-width: 100%;
-        max-height: 100%;
-        width: auto;
-        height: auto;
+        width: 100%;
+        height: 100%;
         object-fit: contain;
     }
 `;
@@ -264,6 +261,33 @@ const ChatInput = styled(TextField.Input)`
     min-width: 0; // Prevents flex items from overflowing
 `;
 
+const TabList = styled.div`
+    display: flex;
+    gap: 8px;
+    padding: 0 16px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--gray-5);
+`;
+
+const TabButton = styled.button<{ $active: boolean }>`
+    padding: 8px 16px;
+    border: none;
+    background: none;
+    color: ${props => props.$active ? 'var(--purple-9)' : 'var(--gray-9)'};
+    border-bottom: 2px solid ${props => props.$active ? 'var(--purple-9)' : 'transparent'};
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        color: var(--purple-9);
+    }
+`;
+
+const TabContent = styled.div`
+    flex: 1;
+    overflow: auto;
+`;
+
 export const StickerBuilder: React.FC = () => {
     const [images, setImages] = useState<StickerImage[]>([]);
     const [selectedPieces, setSelectedPieces] = useState<StickerPiece[]>([]);
@@ -273,6 +297,7 @@ export const StickerBuilder: React.FC = () => {
     const [selectedFile, setSelectedFile] = useState<FileData | null>(null);
     const [isHoveringImage, setIsHoveringImage] = useState(false);
     const [isConverting, setIsConverting] = useState(false);
+    const [activeTab, setActiveTab] = useState('preview');
 
     useEffect(() => {
         const loadImages = async () => {
@@ -623,9 +648,46 @@ export const StickerBuilder: React.FC = () => {
             <Dialog.Root open={!!selectedFile} onOpenChange={() => setSelectedFile(null)}>
                 <Dialog.Content>
                     <Dialog.Title>{selectedFile?.name}</Dialog.Title>
-                    <FilePreview>
-                        {selectedFile && renderFileContent(selectedFile)}
-                    </FilePreview>
+                    <TabList>
+                        <TabButton
+                            $active={activeTab === 'preview'}
+                            onClick={() => setActiveTab('preview')}
+                        >
+                            Preview
+                        </TabButton>
+                        <TabButton
+                            $active={activeTab === 'versions'}
+                            onClick={() => setActiveTab('versions')}
+                        >
+                            Versions ({selectedFile?.versions?.length || 0})
+                        </TabButton>
+                    </TabList>
+                    <TabContent>
+                        {activeTab === 'preview' && (
+                            <FilePreview>
+                                {selectedFile && renderFileContent(selectedFile)}
+                            </FilePreview>
+                        )}
+                        {activeTab === 'versions' && (
+                            <FileGrid>
+                                {selectedFile?.versions?.map((version) => (
+                                    <FileCard key={version.id}>
+                                        <ThumbnailContainer>
+                                            {isImageFile(version.type) && (
+                                                <img src={version.content} alt={`Version ${version.name}`} />
+                                            )}
+                                        </ThumbnailContainer>
+                                        <FileInfo>
+                                            <Text weight="medium">{version.name}</Text>
+                                            <Text size="1" color="gray">
+                                                {new Date(version.createdAt).toLocaleDateString()}
+                                            </Text>
+                                        </FileInfo>
+                                    </FileCard>
+                                ))}
+                            </FileGrid>
+                        )}
+                    </TabContent>
                     <Dialog.Close>
                         <Button>Close</Button>
                     </Dialog.Close>
