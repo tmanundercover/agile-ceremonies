@@ -44,3 +44,17 @@ export interface FileData {
     versions: FileVersion[];
     savedSvgLocation?: string;
 }
+
+export interface StickerPiece {
+    id: string;
+    type: 'head' | 'hair' | 'headphones' | 'facial' | 'eyes';
+    paths: string[];
+    transform: string;
+    selected: boolean;
+}
+
+export interface StickerImage {
+    id: string;
+    name: string;
+    pieces: StickerPiece[];
+}
