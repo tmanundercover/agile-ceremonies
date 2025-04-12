@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { StyleGuideModal } from '../../StyleGuideModal';
+import { StyleGuideModal } from '../StyleGuideModal';
 import { StyleGuide } from '../../sticker-builder-types';
 
 const mockStyleGuide: StyleGuide = {

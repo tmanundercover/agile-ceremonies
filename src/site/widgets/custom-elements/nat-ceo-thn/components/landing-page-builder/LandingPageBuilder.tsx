@@ -10,10 +10,10 @@ import {
   Input,
   TextArea,
   Preview,
-  Button
+  Button, SuccessMessage, SavedDesignPreview
 } from './sticker-builder-styled-components';
-import { PromptViewer } from './PromptViewer';
-import { StyleGuideModal } from './StyleGuideModal';
+import { PromptViewer } from './components/PromptViewer';
+import { StyleGuideModal } from './components/StyleGuideModal';
 
 export const LandingPageBuilder: React.FC = () => {
   const [formData, setFormData] = useState<LandingPageData>({
@@ -30,6 +30,8 @@ export const LandingPageBuilder: React.FC = () => {
   const [currentRequest, setCurrentRequest] = useState<OpenAIApiRequest | null>(null);
   const [promptViewerStatus, setPromptViewerStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [showPromptViewer, setShowPromptViewer] = useState(false);
+  const [savedDesign, setSavedDesign] = useState<string | null>(null);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,6 +50,7 @@ export const LandingPageBuilder: React.FC = () => {
         previewContainer.innerHTML = generatedContent;
       }
       setPromptViewerStatus('success');
+      setError('Generation completed successfully!'); // Set success message
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'An error occurred';
       setError(errorMessage);
@@ -76,6 +79,30 @@ export const LandingPageBuilder: React.FC = () => {
       ...formData,
       styleGuide: newStyleGuide
     });
+  };
+
+  const handleVote = (vote: string) => {
+    console.log('User voted:', vote);
+
+    switch (vote){
+        case 'upvote':
+            setPromptViewerStatus('success');
+            break;
+        case 'downvote':
+            setPromptViewerStatus('error');
+            break;
+        default:
+            setPromptViewerStatus('loading');
+    }
+  };
+
+  const handleLockVote = (vote: string) => {
+    const previewContent = document.getElementById('prompt-preview')?.innerHTML;
+    if (previewContent) {
+      setSavedDesign(previewContent);
+      setShowSuccessMessage(true);
+      setShowPromptViewer(false);
+    }
   };
 
   return (
@@ -137,15 +164,31 @@ export const LandingPageBuilder: React.FC = () => {
         </Button>
       </Form>
 
-      <Preview id="preview">
-        {/* Preview will be rendered here */}
-      </Preview>
+      {showSuccessMessage && (
+        <SuccessMessage data-testid="success-message">
+          Design saved successfully! Your selected design is shown below.
+        </SuccessMessage>
+      )}
+
+      {savedDesign ? (
+        <SavedDesignPreview
+          id="saved-preview"
+          data-testid="saved-preview"
+          dangerouslySetInnerHTML={{ __html: savedDesign }}
+        />
+      ) : (
+        <Preview id="preview">
+          {/* Preview will be rendered here */}
+        </Preview>
+      )}
 
       {showPromptViewer && currentRequest && (
         <PromptViewer
           request={currentRequest}
           status={promptViewerStatus}
           error={error}
+          onVote={handleVote}
+          onLockVote={handleLockVote}
           data-testid="prompt-viewer"
           onClose={() => setShowPromptViewer(false)}
         />

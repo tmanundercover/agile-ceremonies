@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { OpenAIApiRequest } from './OpenAIBackendAPI';
-import { StatusIndicator } from './components/StatusIndicator';
+import { OpenAIApiRequest } from '../OpenAIBackendAPI';
+import { StatusIndicator } from './StatusIndicator';
+import { VoteDesign, VoteType } from './VoteDesign';
 
 const ViewerContainer = styled.div<{ status?: 'loading' | 'success' | 'error' }>`
   position: fixed;
@@ -17,10 +18,11 @@ const ViewerContainer = styled.div<{ status?: 'loading' | 'success' | 'error' }>
   max-width: 90vw;
   width: 1200px;
   min-width: 800px;
-  height: calc(100vh - 100px); // Fixed height
+  height: calc(100vh - 164px); // Fixed height
   display: grid;
   grid-template-columns: 400px 1fr;
   gap: 2rem;
+  grid-template-rows: 1fr auto;  // Add this line to support the vote section
   border: 2px solid ${({ status }) => {
     switch (status) {
       case 'loading':
@@ -137,11 +139,22 @@ const PreviewContainer = styled.div`
   }
 `;
 
+const VoteSection = styled.div`
+  grid-column: 1 / -1;  // Span all columns
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0;
+  border-top: 1px solid #e2e8f0;
+  margin-top: 1rem;
+`;
+
 interface PromptViewerProps {
   request: OpenAIApiRequest;
   status: 'loading' | 'success' | 'error';
   error: string | null;
   onClose: () => void;
+  onVote?: (vote: VoteType) => void;
+  onLockVote?: (vote: VoteType) => void;
   'data-testid'?: string;
 }
 
@@ -150,6 +163,8 @@ export const PromptViewer: React.FC<PromptViewerProps> = ({
   status,
   error,
   onClose,
+  onVote,
+  onLockVote,
   'data-testid': dataTestId
 }) => {
   const formatConfig = (config: Partial<OpenAIApiRequest>) => {
@@ -169,7 +184,7 @@ export const PromptViewer: React.FC<PromptViewerProps> = ({
     <ViewerContainer status={status} data-testid={dataTestId}>
       <StatusIndicator
         status={status}
-        message={status === 'success' ? 'Generation completed successfully' : error || undefined}
+        message={status === 'success' ? 'Generation completed successfully!' : error || undefined}
         data-testid="status-indicator"
       />
       <CloseButton onClick={onClose} data-testid="prompt-viewer-close">&times;</CloseButton>
@@ -203,6 +218,16 @@ export const PromptViewer: React.FC<PromptViewerProps> = ({
       <PreviewContainer id="prompt-preview">
         {/* Preview content will be injected here */}
       </PreviewContainer>
+
+      {status === 'success' && onVote && onLockVote && (
+        <VoteSection>
+          <VoteDesign
+            onVote={onVote}
+            onLock={onLockVote}
+            data-testid="design-vote"
+          />
+        </VoteSection>
+      )}
     </ViewerContainer>
   );
 };

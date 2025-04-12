@@ -185,3 +185,16 @@ export const Button = styled.button<{ variant?: 'primary' | 'secondary' | 'succe
   }
 `;
 
+export const SavedDesignPreview = styled(Preview)`
+  margin-top: 2rem;
+  border: 2px solid #22C55E;
+`;
+
+export const SuccessMessage = styled.div`
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #F0FDF4;
+  border-radius: 8px;
+  color: #22C55E;
+  font-weight: 500;
+`;

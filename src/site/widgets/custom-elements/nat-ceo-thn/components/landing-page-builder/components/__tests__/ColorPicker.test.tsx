@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { ColorPicker } from '../../ColorPicker';
+import { ColorPicker } from '../ColorPicker';
 
 describe('ColorPicker', () => {
   const mockOnChange = jest.fn();
@@ -10,7 +10,7 @@ describe('ColorPicker', () => {
     jest.clearAllMocks();
   });
 
-  it('renders color swatch with initial value', () => {
+  it('renders color swatch with initial value and correct styling', () => {
     render(
       <ColorPicker
         id="testColor"
@@ -46,20 +46,23 @@ describe('ColorPicker', () => {
     expect(mockClick).toHaveBeenCalled();
   });
 
-  it('handles hex input changes', () => {
-    render(
-      <ColorPicker
-        id="testColor"
-        value="#ff0000"
-        onChange={mockOnChange}
-        data-testid="test-color"
-      />
-    );
+  describe('hex input behavior', () => {
+    it('allows valid hex color input', () => {
+      render(
+        <ColorPicker
+          id="testColor"
+          value="#ff0000"
+          onChange={mockOnChange}
+          data-testid="test-color"
+        />
+      );
 
-    const hexInput = screen.getByTestId('test-color-hex');
-    fireEvent.change(hexInput, { target: { value: '#00ff00' } });
-    expect(mockOnChange).toHaveBeenCalledWith('#00ff00');
-  });
+      const hexInput = screen.getByTestId('test-color-hex');
+      fireEvent.change(hexInput, { target: { value: '#00ff00' } });
+
+      expect(hexInput).toHaveValue('#00ff00');
+      expect(mockOnChange).toHaveBeenCalledWith('#00ff00');
+    });
 
   describe('hex input validation', () => {
     it('allows valid hex color input', () => {
@@ -112,6 +115,25 @@ describe('ColorPicker', () => {
 
       expect(hexInput).toHaveValue('#ff0000');
     });
+  });
+
+  it('updates all inputs when using the color picker input', () => {
+    render(
+      <ColorPicker
+        id="testColor"
+        value="#ff0000"
+        onChange={mockOnChange}
+        data-testid="test-color"
+      />
+    );
+
+    const colorPicker = screen.getByTestId('test-color-picker');
+    fireEvent.change(colorPicker, { target: { value: '#00ff00' } });
+
+      expect(screen.getByTestId('test-color-hex')).toHaveValue('#00ff00');
+      expect(screen.getByTestId('test-color-swatch')).toHaveStyle({ backgroundColor: '#00ff00' });
+      expect(mockOnChange).toHaveBeenCalledWith('#00ff00');
+    });
 
     it('ignores non-hex inputs', () => {
       render(
@@ -131,7 +153,7 @@ describe('ColorPicker', () => {
     });
   });
 
-  it('updates color when using the color picker input', () => {
+  it('renders with proper styled-components structure', () => {
     render(
       <ColorPicker
         id="testColor"
@@ -141,10 +163,11 @@ describe('ColorPicker', () => {
       />
     );
 
-    const colorPicker = screen.getByTestId('test-color-picker');
-    fireEvent.change(colorPicker, { target: { value: '#00ff00' } });
-
-    expect(screen.getByTestId('test-color-hex')).toHaveValue('#00ff00');
-    expect(mockOnChange).toHaveBeenCalledWith('#00ff00');
+    const container = screen.getByTestId('test-color-swatch').closest('div');
+    expect(container).toHaveStyle({
+      display: 'flex',
+      gap: '1rem',
+      alignItems: 'center'
+    });
   });
 });

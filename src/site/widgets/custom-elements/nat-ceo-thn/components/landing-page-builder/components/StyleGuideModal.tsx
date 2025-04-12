@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { StyleGuide } from './sticker-builder-types';
+import { StyleGuide } from '../sticker-builder-types';
 import { ColorPicker } from './ColorPicker';
 
 const Modal = styled.div`

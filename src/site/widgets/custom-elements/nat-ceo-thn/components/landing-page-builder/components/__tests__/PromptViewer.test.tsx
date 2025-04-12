@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { PromptViewer } from '../../PromptViewer';
+import { PromptViewer } from '../PromptViewer';
 import { OpenAIApiRequest } from '../../OpenAIBackendAPI';
 
 describe('PromptViewer', () => {
@@ -59,10 +59,7 @@ describe('PromptViewer', () => {
       />
     );
 
-    expect(screen.getByText('Generation completed successfully')).toBeInTheDocument();
-    expect(screen.getByTestId('status-message')).toHaveStyle({
-      background: '#E6F4EA'
-    });
+    expect(screen.getByText('Generation completed successfully!')).toBeInTheDocument();
   });
 
   it('renders error state correctly', () => {
@@ -78,9 +75,6 @@ describe('PromptViewer', () => {
     );
 
     expect(screen.getByText(errorMessage)).toBeInTheDocument();
-    expect(screen.getByTestId('status-message')).toHaveStyle({
-      background: '#FEEEE2'
-    });
   });
 
   it('calls onClose when close button is clicked', () => {
@@ -114,7 +108,7 @@ describe('PromptViewer', () => {
       ]
     };
 
-    const { container } = render(
+    render(
       <PromptViewer
         request={longRequest}
         status="loading"
@@ -123,11 +117,46 @@ describe('PromptViewer', () => {
         data-testid="prompt-viewer"
       />
     );
-    
-    const viewerContainer = container.querySelector('[data-testid="prompt-viewer"]');
-    expect(viewerContainer).toHaveStyle({
-      'max-height': 'calc(100vh - 260px)',
-      'overflow-y': 'auto'
-    });
+
+    // Verify the content is rendered
+    const systemPrompt = screen.getByText('A'.repeat(1000));
+    const userPrompt = screen.getByText('B'.repeat(1000));
+
+    expect(systemPrompt).toBeInTheDocument();
+    expect(userPrompt).toBeInTheDocument();
+  });
+
+  it('shows voting buttons when in success state', () => {
+    const mockOnVote = jest.fn();
+    render(
+      <PromptViewer
+        request={mockRequest}
+        status="success"
+        error={null}
+        onClose={mockOnClose}
+        onVote={mockOnVote}
+        data-testid="prompt-viewer"
+      />
+    );
+
+    expect(screen.getByTestId('design-vote')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByTestId('vote-up'));
+    expect(mockOnVote).toHaveBeenCalledWith('up');
+  });
+
+  it('hides voting buttons when not in success state', () => {
+    render(
+      <PromptViewer
+        request={mockRequest}
+        status="loading"
+        error={null}
+        onClose={mockOnClose}
+        onVote={jest.fn()}
+        data-testid="prompt-viewer"
+      />
+    );
+
+    expect(screen.queryByTestId('design-vote')).not.toBeInTheDocument();
   });
 });

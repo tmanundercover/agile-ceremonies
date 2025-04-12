@@ -26,7 +26,7 @@ const fadeOut = keyframes`
 const IndicatorContainer = styled.div<{ isVisible: boolean }>`
   position: absolute;
   left: 50%;
-  top: 0;
+  top: -60px;
   transform: translateX(-50%);
   z-index: 1001; // Higher than PromptViewer
   min-width: 300px;
@@ -96,6 +96,7 @@ export const StatusIndicator: React.FC<StatusIndicatorProps> = ({
   return (
     <IndicatorContainer
       data-testid={dataTestId}
+      data-visible={isVisible.toString()}
       isVisible={isVisible}
     >
       {status === 'loading' && (
