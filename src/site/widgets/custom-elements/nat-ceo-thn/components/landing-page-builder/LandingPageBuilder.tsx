@@ -15,7 +15,7 @@ import {
 import { PromptViewer } from './PromptViewer';
 import { StyleGuideModal } from './StyleGuideModal';
 
-export const StickerBuilder: React.FC = () => {
+export const LandingPageBuilder: React.FC = () => {
   const [formData, setFormData] = useState<LandingPageData>({
     mainText: 'Join our team of AI experts and shape the future of technology',
     keywords: ['AI', 'Machine Learning', 'Remote Work', 'Technical Consulting'],
@@ -43,7 +43,7 @@ export const StickerBuilder: React.FC = () => {
 
     try {
       const generatedContent = await callOpenAI(formData);
-      const previewContainer = document.getElementById('preview');
+      const previewContainer = document.getElementById('prompt-preview');
       if (previewContainer) {
         previewContainer.innerHTML = generatedContent;
       }

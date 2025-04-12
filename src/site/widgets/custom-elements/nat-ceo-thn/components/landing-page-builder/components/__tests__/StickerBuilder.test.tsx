@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { StickerBuilder } from '../../StickerBuilder';
+import { LandingPageBuilder } from '../../LandingPageBuilder';
 import { generateLandingPage } from '../../../../../../../../server/api/openai/landing-page';
 
 jest.mock('../../../../../../../../server/api/openai/landing-page');
@@ -13,7 +13,7 @@ describe('StickerBuilder', () => {
   });
 
   it('renders form fields correctly', () => {
-    render(<StickerBuilder />);
+    render(<LandingPageBuilder />);
 
     expect(screen.getByLabelText(/Main Message/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Keywords/i)).toBeInTheDocument();
@@ -35,7 +35,7 @@ describe('StickerBuilder', () => {
       }]
     });
 
-    render(<StickerBuilder />);
+    render(<LandingPageBuilder />);
 
     // Fill in form fields
     fireEvent.change(screen.getByLabelText(/Main Message/i), {
@@ -85,7 +85,7 @@ describe('StickerBuilder', () => {
   it('handles API error properly', async () => {
     mockedGenerateLandingPage.mockRejectedValueOnce(new Error('Failed to generate landing page'));
 
-    render(<StickerBuilder />);
+    render(<LandingPageBuilder />);
 
     const submitButton = screen.getByText('Generate Preview');
     fireEvent.click(submitButton);
@@ -102,7 +102,7 @@ describe('StickerBuilder', () => {
       choices: []
     });
 
-    render(<StickerBuilder />);
+    render(<LandingPageBuilder />);
 
     const submitButton = screen.getByText('Generate Preview');
     fireEvent.click(submitButton);
@@ -131,7 +131,7 @@ describe('StickerBuilder with PromptViewer', () => {
       }), 1000))
     );
 
-    render(<StickerBuilder />);
+    render(<LandingPageBuilder />);
 
     // Submit form
     fireEvent.click(screen.getByText('Generate Preview'));
@@ -152,7 +152,7 @@ describe('StickerBuilder with PromptViewer', () => {
       }]
     });
 
-    render(<StickerBuilder />);
+    render(<LandingPageBuilder />);
     fireEvent.click(screen.getByText('Generate Preview'));
 
     await waitFor(() => {
@@ -170,7 +170,7 @@ describe('StickerBuilder with PromptViewer', () => {
   it('shows error state in PromptViewer after failed generation', async () => {
     mockedGenerateLandingPage.mockRejectedValueOnce(new Error('API Error'));
 
-    render(<StickerBuilder />);
+    render(<LandingPageBuilder />);
     fireEvent.click(screen.getByText('Generate Preview'));
 
     await waitFor(() => {
@@ -194,7 +194,7 @@ describe('StickerBuilder with PromptViewer', () => {
       }]
     });
 
-    render(<StickerBuilder />);
+    render(<LandingPageBuilder />);
     fireEvent.click(screen.getByText('Generate Preview'));
 
     await waitFor(() => {

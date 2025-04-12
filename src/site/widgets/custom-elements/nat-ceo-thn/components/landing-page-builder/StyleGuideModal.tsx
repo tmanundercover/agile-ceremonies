@@ -14,6 +14,12 @@ const Modal = styled.div`
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   max-width: 500px;
   width: 90%;
+
+  h2 {
+    color: #1A1A1A;
+    font-size: 24px;
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const Overlay = styled.div`
@@ -28,7 +34,7 @@ const Overlay = styled.div`
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
 `;
 
 const InputGroup = styled.div`
@@ -39,7 +45,8 @@ const InputGroup = styled.div`
 
 const Label = styled.label`
   font-weight: 600;
-  color: #333;
+  color: #1A1A1A;
+  font-size: 14px;
 `;
 
 const Input = styled.input`
@@ -66,22 +73,25 @@ const HexInput = styled(Input)`
 
 const Select = styled.select`
   padding: 0.75rem;
-  border: 2px solid #ddd;
+  border: 2px solid #EDF2F7;
   border-radius: 4px;
-  font-size: 1rem;
+  font-size: 14px;
+  color: #4A5568;
+  background: white;
   
   &:focus {
-    border-color: #0066ff;
+    border-color: #9333EA;
     outline: none;
+    box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
   }
 `;
 
-const RangeInput = styled(Input)`
+const RangeInput = styled.input`
   &[type="range"] {
     -webkit-appearance: none;
     width: 100%;
     height: 4px;
-    background: #ddd;
+    background: #EDF2F7;
     border-radius: 2px;
     outline: none;
     padding: 0;
@@ -93,9 +103,13 @@ const RangeInput = styled(Input)`
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #0066ff;
+    background: #9333EA;
     cursor: pointer;
     transition: background .15s ease-in-out;
+    
+    &:hover {
+      background: #7928CA;
+    }
   }
 `;
 
@@ -103,22 +117,27 @@ const ButtonGroup = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
-  margin-top: 1.5rem;
+  margin-top: 2rem;
 `;
 
 const Button = styled.button<{ variant?: 'secondary' }>`
   padding: 0.75rem 1.5rem;
-  background: ${props => props.variant === 'secondary' ? '#fff' : '#0066ff'};
-  color: ${props => props.variant === 'secondary' ? '#0066ff' : '#fff'};
-  border: ${props => props.variant === 'secondary' ? '2px solid #0066ff' : 'none'};
+  background: ${props => props.variant === 'secondary' ? '#fff' : '#9333EA'};
+  color: ${props => props.variant === 'secondary' ? '#9333EA' : '#fff'};
+  border: ${props => props.variant === 'secondary' ? '2px solid #9333EA' : 'none'};
   border-radius: 4px;
-  font-size: 1rem;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
 
   &:hover {
-    background: ${props => props.variant === 'secondary' ? '#f0f7ff' : '#0052cc'};
+    background: ${props => props.variant === 'secondary' ? '#F3E5F5' : '#7928CA'};
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
   }
 `;
 

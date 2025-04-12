@@ -59,7 +59,7 @@ describe('PromptViewer', () => {
       />
     );
 
-    expect(screen.getByText('Success!')).toBeInTheDocument();
+    expect(screen.getByText('Generation completed successfully')).toBeInTheDocument();
     expect(screen.getByTestId('status-message')).toHaveStyle({
       background: '#E6F4EA'
     });
@@ -126,7 +126,7 @@ describe('PromptViewer', () => {
     
     const viewerContainer = container.querySelector('[data-testid="prompt-viewer"]');
     expect(viewerContainer).toHaveStyle({
-      'max-height': '80vh',
+      'max-height': 'calc(100vh - 260px)',
       'overflow-y': 'auto'
     });
   });

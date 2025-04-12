@@ -40,7 +40,7 @@ const LoadingText = styled.div`
   padding: 0.75rem 1.5rem;
   margin-bottom: -20px; // Pull the indicator closer to the container
   font-weight: bold;
-  color: #0066ff;
+  color: #3B82F6; // Updated to use info color
   background: white;
   border-radius: 6px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
@@ -52,8 +52,8 @@ const StatusBanner = styled.div<{ status: 'success' | 'error' }>`
   padding: 0.75rem 1.5rem;
   margin-bottom: -20px; // Pull the indicator closer to the container
   border-radius: 6px;
-  background: ${({ status }) => status === 'success' ? '#E6F4EA' : '#FEEEE2'};
-  color: ${({ status }) => status === 'success' ? '#1B873B' : '#B42318'};
+  background: ${({status}) => status === 'success' ? '#E6F4EA' : '#FEEEE2'};
+  color: #2c2929;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   text-align: center;
   display: flex;

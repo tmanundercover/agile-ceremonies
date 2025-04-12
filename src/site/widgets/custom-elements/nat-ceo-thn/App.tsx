@@ -1,12 +1,12 @@
 import React from "react";
 import {Theme} from '@radix-ui/themes';
 import '@radix-ui/themes/styles.css';
-import {StickerBuilder} from "./components/sticker-builder/StickerBuilder";
+import { LandingPageBuilder } from "./components/landing-page-builder/LandingPageBuilder";
 
 export const App: React.FC = () => {
     return (
         <Theme style={{maxHeight:"800px"}}>
-            <StickerBuilder />
+            <LandingPageBuilder />
         </Theme>
     );
 }

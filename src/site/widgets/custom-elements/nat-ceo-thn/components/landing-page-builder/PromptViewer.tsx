@@ -5,27 +5,30 @@ import { StatusIndicator } from './components/StatusIndicator';
 
 const ViewerContainer = styled.div<{ status?: 'loading' | 'success' | 'error' }>`
   position: fixed;
-  top: 10px; // Increased from 100px to allow space for status indicator
+  top: 10px;
   left: 50%;
   transform: translateX(-50%);
   background: white;
   padding: 2rem;
-  padding-top: 3rem; // Increased top padding
-  margin-top: 60px; // Add margin for status indicator
+  padding-top: 3rem;
+  margin-top: 60px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  max-width: 600px;
-  width: 90%;
-  max-height: calc(100vh - 260px); // Adjusted to account for top margin and status
-  overflow-y: auto;
+  max-width: 90vw;
+  width: 1200px;
+  min-width: 800px;
+  height: calc(100vh - 100px); // Fixed height
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 2rem;
   border: 2px solid ${({ status }) => {
     switch (status) {
       case 'loading':
-        return '#FFB800';
+        return '#3B82F6';
       case 'success':
-        return '#00CC88';
+        return '#22C55E';
       case 'error':
-        return '#FF4444';
+        return '#EF4444';
       default:
         return '#ddd';
     }
@@ -37,7 +40,7 @@ const LoadingSpinner = styled.div`
   text-align: center;
   margin-top: 1rem;
   font-weight: bold;
-  color: #0066ff;
+  color: #3B82F6;
 `;
 
 const StatusBanner = styled.div<{ status: 'success' | 'error' }>`
@@ -45,7 +48,7 @@ const StatusBanner = styled.div<{ status: 'success' | 'error' }>`
   margin: 1rem 0;
   border-radius: 4px;
   background: ${({ status }) => status === 'success' ? '#E6F4EA' : '#FEEEE2'};
-  color: ${({ status }) => status === 'success' ? '#1B873B' : '#B42318'};
+  color: ${({ status }) => status === 'success' ? '#22C55E' : '#EF4444'};
 `;
 
 const CloseButton = styled.button`
@@ -100,6 +103,40 @@ const ConfigField = styled(FormField)`
     color: #ea580c;
   }
 `;
+
+const FormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow-y: auto; // Enable scrolling
+  padding-right: 1rem; // Add padding for scrollbar
+  max-height: 100%; // Take full height
+`;
+
+const PreviewContainer = styled.div`
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 1rem;
+  min-height: 300px;
+  min-width: 300px;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  // Add SVG placeholder when empty
+  &:empty::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3Cpath d='M30,50 L70,50 M50,30 L50,70' stroke='%23cbd5e1' stroke-width='4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 50%;
+  }
+`;
+
 interface PromptViewerProps {
   request: OpenAIApiRequest;
   status: 'loading' | 'success' | 'error';
@@ -136,29 +173,36 @@ export const PromptViewer: React.FC<PromptViewerProps> = ({
         data-testid="status-indicator"
       />
       <CloseButton onClick={onClose} data-testid="prompt-viewer-close">&times;</CloseButton>
-      <h3>Landing Page Generation Request</h3>
-      <FormSection>
-        <FormLabel>System Prompt</FormLabel>
-        <FormField>
-          {request.messages[0].content}
-        </FormField>
-      </FormSection>
 
-      <FormSection>
-        <FormLabel>User Prompt</FormLabel>
-        <FormField>
-          {request.messages[1].content}
-        </FormField>
-      </FormSection>
+      <FormContainer>
+        <h3>Landing Page Generation Request</h3>
+        <FormSection>
+          <FormLabel>System Prompt</FormLabel>
+          <FormField>
+            {request.messages[0].content}
+          </FormField>
+        </FormSection>
 
-      <FormSection>
-        <FormLabel>Configuration</FormLabel>
-        <ConfigField
-          dangerouslySetInnerHTML={{
-            __html: formatConfig(request)
-          }}
-        />
-      </FormSection>
+        <FormSection>
+          <FormLabel>User Prompt</FormLabel>
+          <FormField>
+            {request.messages[1].content}
+          </FormField>
+        </FormSection>
+
+        <FormSection>
+          <FormLabel>Configuration</FormLabel>
+          <ConfigField
+            dangerouslySetInnerHTML={{
+              __html: formatConfig(request)
+            }}
+          />
+        </FormSection>
+      </FormContainer>
+
+      <PreviewContainer id="prompt-preview">
+        {/* Preview content will be injected here */}
+      </PreviewContainer>
     </ViewerContainer>
   );
 };
