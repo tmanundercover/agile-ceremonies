@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { StyleGuide } from './sticker-builder-types';
+import { ColorPicker } from './ColorPicker';
 
 const Modal = styled.div`
   position: fixed;
@@ -136,12 +137,10 @@ export const StyleGuideModal: React.FC<StyleGuideModalProps> = ({
   const fontOptions = ['Inter, system-ui, sans-serif', 'Roboto, sans-serif', 'Montserrat, sans-serif'];
 
   const handleColorChange = (field: 'primaryColor' | 'secondaryColor', value: string) => {
-    if (/^#[0-9A-Fa-f]{6}$/.test(value) || value.length <= 7) {
-      setLocalStyleGuide({
-        ...localStyleGuide,
-        [field]: value
-      });
-    }
+    setLocalStyleGuide({
+      ...localStyleGuide,
+      [field]: value
+    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -157,44 +156,22 @@ export const StyleGuideModal: React.FC<StyleGuideModalProps> = ({
         <Form onSubmit={handleSubmit} role="form">
           <InputGroup>
             <Label htmlFor="primaryColor">Primary Color</Label>
-            <ColorInputGroup>
-              <Input
-                id="primaryColor"
-                type="color"
-                value={localStyleGuide.primaryColor}
-                onChange={(e) => handleColorChange('primaryColor', e.target.value)}
-                data-testid="primary-color-picker"
-              />
-              <HexInput
-                id="primaryColorHex"
-                type="text"
-                value={localStyleGuide.primaryColor}
-                onChange={(e) => handleColorChange('primaryColor', e.target.value)}
-                placeholder="#000000"
-                data-testid="primary-color-hex"
-              />
-            </ColorInputGroup>
+            <ColorPicker
+              id="primaryColor"
+              value={localStyleGuide.primaryColor}
+              onChange={(value) => handleColorChange('primaryColor', value)}
+              data-testid="primary-color"
+            />
           </InputGroup>
 
           <InputGroup>
             <Label htmlFor="secondaryColor">Secondary Color</Label>
-            <ColorInputGroup>
-              <Input
-                id="secondaryColor"
-                type="color"
-                value={localStyleGuide.secondaryColor}
-                onChange={(e) => handleColorChange('secondaryColor', e.target.value)}
-                data-testid="secondary-color-picker"
-              />
-              <HexInput
-                id="secondaryColorHex"
-                type="text"
-                value={localStyleGuide.secondaryColor}
-                onChange={(e) => handleColorChange('secondaryColor', e.target.value)}
-                placeholder="#000000"
-                data-testid="secondary-color-hex"
-              />
-            </ColorInputGroup>
+            <ColorPicker
+              id="secondaryColor"
+              value={localStyleGuide.secondaryColor}
+              onChange={(value) => handleColorChange('secondaryColor', value)}
+              data-testid="secondary-color"
+            />
           </InputGroup>
 
           <InputGroup>

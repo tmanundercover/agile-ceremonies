@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { PromptViewer } from '../PromptViewer';
-import { OpenAIApiRequest } from '../OpenAIBackendAPI';
+import { PromptViewer } from '../../PromptViewer';
+import { OpenAIApiRequest } from '../../OpenAIBackendAPI';
 
 describe('PromptViewer', () => {
   const mockRequest: OpenAIApiRequest = {

@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { StickerBuilder } from '../StickerBuilder';
-import { generateLandingPage } from '../../../../../../../server/api/openai/landing-page';
+import { StickerBuilder } from '../../StickerBuilder';
+import { generateLandingPage } from '../../../../../../../../server/api/openai/landing-page';
 
-jest.mock('../../../../../../../server/api/openai/landing-page');
+jest.mock('../../../../../../../../server/api/openai/landing-page');
 const mockedGenerateLandingPage = generateLandingPage as jest.MockedFunction<typeof generateLandingPage>;
 
 describe('StickerBuilder', () => {

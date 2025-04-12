@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { StyleGuideModal } from '../StyleGuideModal';
-import { StyleGuide } from '../sticker-builder-types';
+import { StyleGuideModal } from '../../StyleGuideModal';
+import { StyleGuide } from '../../sticker-builder-types';
 
 const mockStyleGuide: StyleGuide = {
   primaryColor: '#0066ff',
@@ -32,8 +32,8 @@ describe('StyleGuideModal', () => {
     expect(screen.getByLabelText(/Primary Color/i)).toHaveValue(mockStyleGuide.primaryColor);
     expect(screen.getByLabelText(/Secondary Color/i)).toHaveValue(mockStyleGuide.secondaryColor);
     expect(screen.getByLabelText(/Font Family/i)).toHaveValue(mockStyleGuide.fontFamily);
-    expect(screen.getByLabelText(/Spacing/i)).toHaveValue(mockStyleGuide.spacing);
-    expect(screen.getByLabelText(/Border Radius/i)).toHaveValue(mockStyleGuide.borderRadius);
+    expect(screen.getByLabelText(/Spacing/i)).toHaveValue(String(mockStyleGuide.spacing));
+    expect(screen.getByLabelText(/Border Radius/i)).toHaveValue(String(mockStyleGuide.borderRadius));
   });
 
   it('handles color input changes', () => {
@@ -108,22 +108,65 @@ describe('StyleGuideModal', () => {
     const spacingInput = screen.getByLabelText(/Spacing/i);
     const form = screen.getByRole('form');
 
-    // Test invalid input
+    // Test invalid input - negative numbers should be converted to 0
     fireEvent.change(spacingInput, { target: { value: '-1' } });
-    expect(spacingInput).toHaveValue(-1);
+    expect(spacingInput).toHaveValue('0');
 
     // Submit form using form submission
     fireEvent.submit(form);
 
-    // Verify the form submission triggered the save callback
+    // Verify the form submission triggered the save callback with valid value
     expect(mockOnSave).toHaveBeenCalledWith(expect.objectContaining({
       ...mockStyleGuide,
-      spacing: -1
+      spacing: 0
     }));
     expect(mockOnClose).toHaveBeenCalled();
   });
 
   describe('Color Inputs', () => {
+    it('renders ColorPickers with swatches for primary and secondary colors', () => {
+      render(
+        <StyleGuideModal
+          styleGuide={mockStyleGuide}
+          onClose={mockOnClose}
+          onSave={mockOnSave}
+        />
+      );
+
+      // Check primary color swatch
+      const primarySwatch = screen.getByTestId('primary-color-swatch');
+      expect(primarySwatch).toBeInTheDocument();
+      expect(primarySwatch).toHaveStyle({ backgroundColor: mockStyleGuide.primaryColor });
+
+      // Check secondary color swatch
+      const secondarySwatch = screen.getByTestId('secondary-color-swatch');
+      expect(secondarySwatch).toBeInTheDocument();
+      expect(secondarySwatch).toHaveStyle({ backgroundColor: mockStyleGuide.secondaryColor });
+
+      // Verify only one swatch exists for each color
+      expect(screen.getAllByTestId(/.*-color-swatch$/)).toHaveLength(2);
+    });
+
+    it('shows color picker when swatch is clicked', () => {
+      render(
+        <StyleGuideModal
+          styleGuide={mockStyleGuide}
+          onClose={mockOnClose}
+          onSave={mockOnSave}
+        />
+      );
+
+      // Click primary swatch and verify picker appears
+      const primarySwatch = screen.getByTestId('primary-color-swatch');
+      fireEvent.click(primarySwatch);
+      expect(screen.getByTestId('primary-color-picker')).toBeInTheDocument();
+
+      // Click secondary swatch and verify picker appears
+      const secondarySwatch = screen.getByTestId('secondary-color-swatch');
+      fireEvent.click(secondarySwatch);
+      expect(screen.getByTestId('secondary-color-picker')).toBeInTheDocument();
+    });
+
     it('handles hex code input for primary color', () => {
       render(
         <StyleGuideModal
@@ -159,6 +202,30 @@ describe('StyleGuideModal', () => {
       // Partial hex while typing should be allowed
       fireEvent.change(hexInput, { target: { value: '#ff' } });
       expect(hexInput).toHaveValue('#ff');
+    });
+
+    it('handles color changes through ColorPicker', () => {
+      render(
+        <StyleGuideModal
+          styleGuide={mockStyleGuide}
+          onClose={mockOnClose}
+          onSave={mockOnSave}
+        />
+      );
+
+      const primaryColorPicker = screen.getByTestId('primary-color-picker');
+      fireEvent.change(primaryColorPicker, { target: { value: '#ff5500' } });
+
+      const secondaryColorPicker = screen.getByTestId('secondary-color-picker');
+      fireEvent.change(secondaryColorPicker, { target: { value: '#00ff00' } });
+
+      // Submit form and verify new values
+      fireEvent.click(screen.getByText('Save Changes'));
+
+      expect(mockOnSave).toHaveBeenCalledWith(expect.objectContaining({
+        primaryColor: '#ff5500',
+        secondaryColor: '#00ff00'
+      }));
     });
   });
 
@@ -249,3 +316,4 @@ describe('StyleGuideModal', () => {
     });
   });
 });
+
