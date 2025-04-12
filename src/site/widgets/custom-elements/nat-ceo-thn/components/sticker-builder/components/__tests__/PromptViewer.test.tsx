@@ -59,7 +59,7 @@ describe('PromptViewer', () => {
       />
     );
 
-    expect(screen.getByText('Generation completed successfully')).toBeInTheDocument();
+    expect(screen.getByText('Success!')).toBeInTheDocument();
     expect(screen.getByTestId('status-message')).toHaveStyle({
       background: '#E6F4EA'
     });

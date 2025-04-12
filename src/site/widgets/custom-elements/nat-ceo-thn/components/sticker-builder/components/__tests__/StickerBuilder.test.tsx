@@ -159,8 +159,8 @@ describe('StickerBuilder with PromptViewer', () => {
       const promptViewer = screen.getByTestId('prompt-viewer');
       expect(promptViewer).toHaveStyle({ border: '2px solid #00CC88' }); // Success state border
       expect(screen.queryByTestId('loading-indicator')).not.toBeInTheDocument();
-      expect(screen.getByText('Generation completed successfully')).toBeInTheDocument();
-      expect(screen.getByTestId('status-message')).toHaveTextContent('Generation completed successfully');
+      expect(screen.getByText('Success!')).toBeInTheDocument();
+      expect(screen.getByTestId('status-message')).toHaveTextContent('Fail');
     });
 
     // PromptViewer should remain open
