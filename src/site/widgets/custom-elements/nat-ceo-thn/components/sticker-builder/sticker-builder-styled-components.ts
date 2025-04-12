@@ -1,158 +1,99 @@
 import styled from 'styled-components';
-import { ImagePreviewContainerProps } from './sticker-builder-types';
 
-export const StickerBuilderContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-`;
-
-export const PreviewContainer = styled.div`
+export const Container = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  justify-content: center;
-  align-items: start;
-  width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
-`;
-
-export const ImagePreviewContainer = styled.div<ImagePreviewContainerProps>`
-  aspect-ratio: 1;
-  min-height: 400px;
-  border: 2px solid ${props => props.$isOriginal ? '#ccc' : '#666'};
-  border-radius: 8px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: ${props => props.$isOriginal ? '#f5f5f5' : '#ffffff'};
-  position: relative;
-
-  img, svg {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-  }
-`;
-
-export const LayerControlsContainer = styled.div`
-  padding: 20px;
+  grid-template-columns: 400px 1fr;
+  gap: 2rem;
+  padding: 2rem;
+  min-height: 100vh;
   background: #f5f5f5;
-  border-radius: 8px;
-  max-width: 300px;
 `;
 
-export const LayerControlItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px;
-  border-bottom: 1px solid #ddd;
-  
-  &:last-child {
-    border-bottom: none;
-  }
-`;
-
-export const FileInputContainer = styled.div`
+export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  align-items: center;
-`;
-
-export const StyledButton = styled.button`
-  padding: 8px 16px;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-
-  &:hover {
-    background: #0056b3;
-  }
-
-  &:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-  }
-`;
-
-export const HiddenFileInput = styled.input`
-  display: none;
-`;
-
-export const FileInputButton = styled.button`
-  padding: 8px 16px;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  margin-bottom: 10px;
-
-  &:hover {
-    background: #0056b3;
-  }
-
-  &:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-  }
-`;
-
-export const ProcessingOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-`;
-
-export const LayerInfoContainer = styled.div`
-  margin-top: 20px;
-  padding: 20px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  max-width: 800px;
-  
-  h3 {
-    margin-top: 0;
-    margin-bottom: 16px;
-    color: #333;
-  }
-`;
-
-export const LayerInfo = styled.div`
-  padding: 12px;
-  margin-bottom: 12px;
+  gap: 1.5rem;
+  padding: 2rem;
   background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+`;
+
+export const InputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+export const Label = styled.label`
+  font-weight: 600;
+  color: #333;
+`;
+
+export const Input = styled.input`
+  padding: 0.75rem;
+  border: 2px solid #ddd;
   border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-
-  h4 {
-    margin: 0 0 8px 0;
-    color: #007bff;
+  font-size: 1rem;
+  
+  &:focus {
+    border-color: #0066ff;
+    outline: none;
   }
+`;
 
-  p {
-    margin: 4px 0;
-    font-family: monospace;
-    font-size: 0.9em;
-    color: #666;
+export const TextArea = styled.textarea`
+  padding: 0.75rem;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  min-height: 100px;
+  resize: vertical;
+  
+  &:focus {
+    border-color: #0066ff;
+    outline: none;
+  }
+`;
+
+export const Preview = styled.div`
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 2rem;
+  min-height: 600px;
+`;
+
+export const Modal = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  z-index: 1000;
+`;
+
+// Update Button component to support variants
+export const Button = styled.button<{ variant?: 'primary' | 'secondary' }>`
+  padding: 0.75rem 1.5rem;
+  background: ${props => props.variant === 'secondary' ? '#f1f5f9' : '#0066ff'};
+  color: ${props => props.variant === 'secondary' ? '#1e293b' : 'white'};
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  
+  &:hover {
+    background: ${props => props.variant === 'secondary' ? '#e2e8f0' : '#0052cc'};
   }
 `;
 

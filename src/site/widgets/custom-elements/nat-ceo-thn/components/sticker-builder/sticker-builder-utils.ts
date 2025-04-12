@@ -1,199 +1,80 @@
-import {
-  PabloAttributes,
-  PabloCollection,
-  PabloEventCallback,
-  PabloEventOptions,
-  Layer,
-  LayerTransform,
-  LayerStyle,
-  LayerManipulationOptions,
-  LayerOperationResult
-} from './sticker-builder-types';
 
-// SVG namespace constant
-export const SVG_NS = 'http://www.w3.org/2000/svg';
+import { PreviewDimensions, StyleGuide } from './sticker-builder-types';
 
-// Basic SVG element creation utilities
-export function createSvgElement(type: string, attributes: Record<string, any> = {}): SVGElement {
-  const el = document.createElementNS(SVG_NS, type);
-  setSvgAttributes(el, attributes);
-  return el;
-}
-
-export function setSvgAttributes(el: SVGElement, attributes: Record<string, any>): void {
-  Object.entries(attributes).forEach(([key, value]) => {
-    el.setAttribute(key, value.toString());
-  });
-}
-
-export function getSvgAttribute(el: SVGElement, attribute: string): string | null {
-  return el.getAttribute(attribute);
-}
-
-export function removeSvgAttribute(el: SVGElement, attribute: string): void {
-  el.removeAttribute(attribute);
-}
-
-export function appendSvgChild(parent: SVGElement, child: SVGElement): void {
-  parent.appendChild(child);
-}
-
-// SVG Creation Helpers
-export function createSvg(attributes: Record<string, any> = {}): SVGElement {
-  const el = document.createElementNS(SVG_NS, 'svg');
-  setSvgAttributes(el, {
-    version: '1.1',
-    xmlns: SVG_NS,
-    ...attributes
-  });
-  return el;
-}
-
-export function createGroup(attributes: Record<string, any> = {}): SVGElement {
-  const el = document.createElementNS(SVG_NS, 'g');
-  setSvgAttributes(el, attributes);
-  return el;
-}
-
-export function createPath(attributes: Record<string, any> = {}): SVGElement {
-  const el = document.createElementNS(SVG_NS, 'path');
-  setSvgAttributes(el, attributes);
-  return el;
-}
-
-// Transform utilities
-export function applyTransform(el: SVGElement, transform: LayerTransform): void {
-  const transforms: string[] = [];
-  
-  if (transform.translate) {
-    transforms.push(`translate(${transform.translate.join(',')})`);
-  }
-  if (transform.rotate !== undefined) {
-    transforms.push(`rotate(${transform.rotate})`);
-  }
-  if (transform.scale) {
-    transforms.push(`scale(${transform.scale.join(',')})`);
-  }
-  if (transform.skew) {
-    transforms.push(`skew(${transform.skew.join(',')})`);
-  }
-  if (transform.matrix) {
-    transforms.push(`matrix(${transform.matrix.join(',')})`);
-  }
-  
-  el.setAttribute('transform', transforms.join(' '));
-}
-
-export function getTransform(el: SVGElement): LayerTransform {
-  const transform: LayerTransform = {};
-  const transformStr = el.getAttribute('transform') || '';
-  
-  const translateMatch = /translate\(([-\d.,\s]+)\)/.exec(transformStr);
-  if (translateMatch) {
-    transform.translate = translateMatch[1].split(',').map(Number) as [number, number];
-  }
-  
-  const rotateMatch = /rotate\(([-\d.]+)\)/.exec(transformStr);
-  if (rotateMatch) {
-    transform.rotate = Number(rotateMatch[1]);
-  }
-  
-  const scaleMatch = /scale\(([-\d.,\s]+)\)/.exec(transformStr);
-  if (scaleMatch) {
-    transform.scale = scaleMatch[1].split(',').map(Number) as [number, number];
-  }
-  
-  return transform;
-}
-
-// Style utilities
-export function applyStyle(el: SVGElement, style: LayerStyle): void {
-  Object.entries(style).forEach(([prop, value]) => {
-    if (value !== undefined) {
-      el.style[prop as any] = value.toString();
-    }
-  });
-}
-
-export function getStyle(el: SVGElement): LayerStyle {
-  const style: LayerStyle = {};
-  const computedStyle = window.getComputedStyle(el);
-  
-  ['fill', 'stroke', 'strokeWidth', 'opacity'].forEach(prop => {
-    const value = computedStyle.getPropertyValue(prop);
-    if (value) {
-      style[prop as keyof LayerStyle] = value;
-    }
-  });
-  
-  return style;
-}
-
-// Layer manipulation
-export function createLayer(type: string, options: Partial<Layer> = {}): SVGElement {
-  const el = document.createElementNS(SVG_NS, type);
-  
-  if (options.transform) {
-    applyTransform(el, options.transform);
-  }
-  if (options.style) {
-    applyStyle(el, options.style);
-  }
-  if (options.id) {
-    el.id = options.id;
-  }
-  
-  return el;
-}
-
-// Convert SVG to data URL
-export function svgToDataUrl(svg: SVGElement): string {
-  const serializer = new XMLSerializer();
-  const svgString = serializer.serializeToString(svg);
-  const encoded = window.btoa(unescape(encodeURIComponent(svgString)));
-  return `data:image/svg+xml;base64,${encoded}`;
-}
-
-// Animation utilities
-export function animateTransform(
-  el: SVGElement,
-  transform: LayerTransform,
-  options: LayerManipulationOptions = {}
-): void {
-  const duration = options.duration || 300;
-  const easing = options.easing || 'ease';
-  const delay = options.delay || 0;
-  
-  el.style.transition = `transform ${duration}ms ${easing} ${delay}ms`;
-  applyTransform(el, transform);
-}
-
-export function animateStyle(
-  el: SVGElement,
-  style: LayerStyle,
-  options: LayerManipulationOptions = {}
-): void {
-  const duration = options.duration || 300;
-  const easing = options.easing || 'ease';
-  const delay = options.delay || 0;
-  
-  const properties = Object.keys(style).join(',');
-  el.style.transition = `${properties} ${duration}ms ${easing} ${delay}ms`;
-  applyStyle(el, style);
-}
-
-// Pablo namespace (minimal implementation)
-export const Pablo = {
-  svg: createSvg,
-  g: createGroup,
-  path: createPath,
-  load: (url: string, callback: (collection: any) => void): void => {
-    const img = new Image();
-    img.onload = () => {
-      callback([img]);
-    };
-    img.src = url;
-  }
+export const defaultStyleGuide: StyleGuide = {
+  primaryColor: '#0066ff',
+  secondaryColor: '#00cc88',
+  fontFamily: 'Inter, system-ui, sans-serif',
+  spacing: 24,
+  borderRadius: 8
 };
 
-export type { PabloCollection as Collection };
+export const getPreviewDimensions = (): PreviewDimensions => ({
+  width: 1200,
+  height: 800,
+  padding: 40
+});
+
+export const extractColorsFromSvg = (svgString: string): string[] => {
+  const colors: string[] = [];
+  const colorRegex = /#[0-9A-Fa-f]{6}|rgb\(\d+,\s*\d+,\s*\d+\)/g;
+  const matches = svgString.match(colorRegex) || [];
+  return [...new Set(matches)];
+};
+
+export const generateMockLandingPage = (dimensions: PreviewDimensions, styleGuide: StyleGuide): string => {
+  return `
+    <svg width="${dimensions.width}" height="${dimensions.height}" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap');
+        </style>
+      </defs>
+      
+      <!-- Background -->
+      <rect width="100%" height="100%" fill="#f8fafc"/>
+      
+      <!-- Header -->
+      <g transform="translate(${dimensions.padding}, ${dimensions.padding})">
+        <text font-family="${styleGuide.fontFamily}" font-size="48" font-weight="bold" fill="${styleGuide.primaryColor}">
+          AI Model Evaluation Expert
+        </text>
+        <text y="80" font-family="${styleGuide.fontFamily}" font-size="24" fill="#475569">
+          Join our team as a Remote Technical Consultant
+        </text>
+      </g>
+
+      <!-- Main Content -->
+      <g transform="translate(${dimensions.padding}, 200)">
+        <rect width="500" height="400" rx="${styleGuide.borderRadius}" fill="white" filter="url(#shadow)"/>
+        <text x="40" y="60" font-family="${styleGuide.fontFamily}" font-size="20" fill="#1e293b">
+          We're looking for passionate AI experts to:
+        </text>
+        <text x="60" y="120" font-family="${styleGuide.fontFamily}" font-size="18" fill="#475569">
+          • Evaluate and fine-tune large language models
+        </text>
+        <text x="60" y="160" font-family="${styleGuide.fontFamily}" font-size="18" fill="#475569">
+          • Provide technical consultation on AI implementation
+        </text>
+        <text x="60" y="200" font-family="${styleGuide.fontFamily}" font-size="18" fill="#475569">
+          • Collaborate with global remote teams
+        </text>
+      </g>
+
+      <!-- CTA -->
+      <g transform="translate(${dimensions.padding}, 650)">
+        <rect width="300" height="60" rx="${styleGuide.borderRadius}" fill="${styleGuide.secondaryColor}"/>
+        <text x="150" y="38" font-family="${styleGuide.fontFamily}" font-size="20" fill="white" text-anchor="middle">
+          Apply Now →
+        </text>
+      </g>
+
+      <!-- Shadow Filter -->
+      <defs>
+        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.1"/>
+        </filter>
+      </defs>
+    </svg>
+  `;
+};

@@ -8,6 +8,7 @@ interface Props {
   displayName?: string;
 }
 
+
 const CustomElement: FC<Props> = ({
   displayName = `Your Widget's Title`,
 }) => {

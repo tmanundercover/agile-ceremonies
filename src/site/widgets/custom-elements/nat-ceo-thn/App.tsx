@@ -5,7 +5,7 @@ import {StickerBuilder} from "./components/sticker-builder/StickerBuilder";
 
 export const App: React.FC = () => {
     return (
-        <Theme>
+        <Theme style={{maxHeight:"800px"}}>
             <StickerBuilder />
         </Theme>
     );
