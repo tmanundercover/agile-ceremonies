@@ -14,6 +14,7 @@ import {
 } from './sticker-builder-styled-components';
 import { PromptViewer } from './components/PromptViewer';
 import { StyleGuideModal } from './components/StyleGuideModal';
+import {VoteType} from "./components/VoteDesign";
 
 export const LandingPageBuilder: React.FC = () => {
   const [formData, setFormData] = useState<LandingPageData>({
@@ -81,14 +82,14 @@ export const LandingPageBuilder: React.FC = () => {
     });
   };
 
-  const handleVote = (vote: string) => {
+  const handleVote = (vote:VoteType) => {
     console.log('User voted:', vote);
 
     switch (vote){
-        case 'upvote':
+        case 'up':
             setPromptViewerStatus('success');
             break;
-        case 'downvote':
+        case 'down':
             setPromptViewerStatus('error');
             break;
         default:
@@ -102,6 +103,9 @@ export const LandingPageBuilder: React.FC = () => {
       setSavedDesign(previewContent);
       setShowSuccessMessage(true);
       setShowPromptViewer(false);
+      setCurrentRequest(null);
+      setPromptViewerStatus('loading'); // Reset status for next time
+      setError(null); // Clear any existing error messages
     }
   };
 
@@ -188,7 +192,6 @@ export const LandingPageBuilder: React.FC = () => {
           status={promptViewerStatus}
           error={error}
           onVote={handleVote}
-          onLockVote={handleLockVote}
           data-testid="prompt-viewer"
           onClose={() => setShowPromptViewer(false)}
         />

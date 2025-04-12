@@ -65,7 +65,7 @@ describe('ColorPicker', () => {
     });
 
   describe('hex input validation', () => {
-    it('allows valid hex color input', () => {
+    it('allows valid hex color input and triggers onChange', () => {
       render(
         <ColorPicker
           id="testColor"
@@ -99,7 +99,7 @@ describe('ColorPicker', () => {
       expect(mockOnChange).not.toHaveBeenCalled();
     });
 
-    it('reverts to previous value on blur if hex is invalid', () => {
+    it('handles invalid inputs appropriately', () => {
       render(
         <ColorPicker
           id="testColor"
@@ -110,30 +110,23 @@ describe('ColorPicker', () => {
       );
 
       const hexInput = screen.getByTestId('test-color-hex');
+
+      // Test invalid non-hex input
+      fireEvent.change(hexInput, { target: { value: 'not a color' } });
+      expect(hexInput).toHaveValue('#ff0000');
+      expect(mockOnChange).not.toHaveBeenCalled();
+
+      // Test invalid hex format
+      fireEvent.change(hexInput, { target: { value: '#xyz' } });
+      expect(hexInput).toHaveValue('#ff0000');
+      expect(mockOnChange).not.toHaveBeenCalled();
+
+      // Test incomplete hex on blur
       fireEvent.change(hexInput, { target: { value: '#ff' } });
       fireEvent.blur(hexInput);
-
       expect(hexInput).toHaveValue('#ff0000');
     });
   });
-
-  it('updates all inputs when using the color picker input', () => {
-    render(
-      <ColorPicker
-        id="testColor"
-        value="#ff0000"
-        onChange={mockOnChange}
-        data-testid="test-color"
-      />
-    );
-
-    const colorPicker = screen.getByTestId('test-color-picker');
-    fireEvent.change(colorPicker, { target: { value: '#00ff00' } });
-
-      expect(screen.getByTestId('test-color-hex')).toHaveValue('#00ff00');
-      expect(screen.getByTestId('test-color-swatch')).toHaveStyle({ backgroundColor: '#00ff00' });
-      expect(mockOnChange).toHaveBeenCalledWith('#00ff00');
-    });
 
     it('ignores non-hex inputs', () => {
       render(

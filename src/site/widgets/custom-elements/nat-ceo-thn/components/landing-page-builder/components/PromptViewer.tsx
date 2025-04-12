@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState } from 'react';
+import styled, { keyframes } from 'styled-components';
 import { OpenAIApiRequest } from '../OpenAIBackendAPI';
 import { StatusIndicator } from './StatusIndicator';
 import { VoteDesign, VoteType } from './VoteDesign';
@@ -38,12 +38,7 @@ const ViewerContainer = styled.div<{ status?: 'loading' | 'success' | 'error' }>
   z-index: 1000;
 `;
 
-const LoadingSpinner = styled.div`
-  text-align: center;
-  margin-top: 1rem;
-  font-weight: bold;
-  color: #3B82F6;
-`;
+
 
 const StatusBanner = styled.div<{ status: 'success' | 'error' }>`
   padding: 1rem;
@@ -148,13 +143,25 @@ const VoteSection = styled.div`
   margin-top: 1rem;
 `;
 
+const ThankYouMessage = styled.div`
+  text-align: center;
+  color: #22C55E;
+  font-weight: 600;
+  padding: 1rem;
+  animation: fadeIn 0.3s ease-in;
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+`;
+
 interface PromptViewerProps {
   request: OpenAIApiRequest;
   status: 'loading' | 'success' | 'error';
   error: string | null;
   onClose: () => void;
   onVote?: (vote: VoteType) => void;
-  onLockVote?: (vote: VoteType) => void;
   'data-testid'?: string;
 }
 
@@ -164,9 +171,9 @@ export const PromptViewer: React.FC<PromptViewerProps> = ({
   error,
   onClose,
   onVote,
-  onLockVote,
   'data-testid': dataTestId
 }) => {
+
   const formatConfig = (config: Partial<OpenAIApiRequest>) => {
     const configObj = {
       model: config.model,
@@ -182,6 +189,7 @@ export const PromptViewer: React.FC<PromptViewerProps> = ({
 
   return (
     <ViewerContainer status={status} data-testid={dataTestId}>
+
       <StatusIndicator
         status={status}
         message={status === 'success' ? 'Generation completed successfully!' : error || undefined}
@@ -219,13 +227,12 @@ export const PromptViewer: React.FC<PromptViewerProps> = ({
         {/* Preview content will be injected here */}
       </PreviewContainer>
 
-      {status === 'success' && onVote && onLockVote && (
+      {status === 'success' && onVote && (
         <VoteSection>
-          <VoteDesign
-            onVote={onVote}
-            onLock={onLockVote}
-            data-testid="design-vote"
-          />
+            <VoteDesign
+              onVote={onVote}
+              data-testid="design-vote"
+            />
         </VoteSection>
       )}
     </ViewerContainer>

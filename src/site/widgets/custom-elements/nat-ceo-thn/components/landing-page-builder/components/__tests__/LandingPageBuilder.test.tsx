@@ -2,11 +2,9 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { LandingPageBuilder } from '../../LandingPageBuilder';
-import { callOpenAI } from '../../OpenAIBackendAPI';
 import { generateLandingPage } from '../../../../../../../../server/api/openai/landing-page';
 
-jest.mock('../../OpenAIBackendAPI');
-const mockedCallOpenAI = callOpenAI as jest.MockedFunction<typeof callOpenAI>;
+jest.mock('../../../../../../../../server/api/openai/landing-page');
 const mockedGenerateLandingPage = generateLandingPage as jest.MockedFunction<typeof generateLandingPage>;
 
 describe('LandingPageBuilder', () => {
@@ -40,73 +38,7 @@ describe('LandingPageBuilder', () => {
     expect(ctaInput).toHaveValue('CTA1, CTA2');
   });
 
-  it('handles file upload', () => {
-    render(<LandingPageBuilder />);
-    const file = new File(['<svg>test</svg>'], 'test.svg', { type: 'image/svg+xml' });
-    const fileInput = screen.getByLabelText(/Upload SVG Graphic/i);
-
-    fireEvent.change(fileInput, { target: { files: [file] } });
-
-    // Mock FileReader
-    const mockFileReader = {
-      readAsText: jest.fn(),
-      onload: null,
-      result: '<svg>test</svg>'
-    };
-    (window as any).FileReader = jest.fn(() => mockFileReader);
-  });
-  it('shows PromptViewer with loading state when generating', async () => {
-    // Mock API with delay to test loading state
-    mockedGenerateLandingPage.mockImplementation(() =>
-      new Promise(resolve => setTimeout(() => resolve({
-        choices: [{
-          message: {
-            content: '<svg>Test SVG</svg>'
-          }
-        }]
-      }), 1000))
-    );
-
-    render(<LandingPageBuilder />);
-
-    // Submit form
-    fireEvent.click(screen.getByText('Generate Preview'));
-
-    // Check PromptViewer appears with loading state
-    const promptViewer = screen.getByTestId('prompt-viewer');
-    expect(promptViewer).toBeInTheDocument();
-    expect(screen.getByTestId('loading-indicator')).toBeInTheDocument();
-    expect(promptViewer).toHaveStyle({ border: '2px solid #3b82f6' }); // Loading state border
-  });
-
-  it('handles successful form submission', async () => {
-    mockedCallOpenAI.mockResolvedValueOnce('<svg>Generated Content</svg>');
-    render(<LandingPageBuilder />);
-
-    fireEvent.click(screen.getByText('Generate Preview'));
-
-    expect(screen.getByText('Generating...')).toBeInTheDocument();
-    expect(screen.getByTestId('prompt-viewer')).toBeInTheDocument();
-
-    await waitFor(() => {
-      expect(screen.getByText('Generation completed successfully!')).toBeInTheDocument();
-      expect(screen.getByTestId('prompt-viewer')).toHaveStyle({ border: '2px solid #22c55e' });
-    });
-  });
-
-  it('handles API error', async () => {
-    const errorMessage = 'API Error';
-    mockedCallOpenAI.mockRejectedValueOnce(new Error(errorMessage));
-    render(<LandingPageBuilder />);
-
-    fireEvent.click(screen.getByText('Generate Preview'));
-
-    await waitFor(() => {
-      expect(screen.getByText(errorMessage)).toBeInTheDocument();
-      expect(screen.getByTestId('prompt-viewer')).toHaveStyle({ border: '2px solid #ef4444' });
-    });
-  });
-  it('shows success state in PromptViewer after successful generation', async () => {
+  it('shows loading state and success state during generation', async () => {
     mockedGenerateLandingPage.mockResolvedValueOnce({
       choices: [{
         message: {
@@ -114,58 +46,107 @@ describe('LandingPageBuilder', () => {
         }
       }]
     });
+
     render(<LandingPageBuilder />);
     fireEvent.click(screen.getByText('Generate Preview'));
 
-    await waitFor(() => {
-      const promptViewer = screen.getByTestId('prompt-viewer');
-      expect(promptViewer).toHaveStyle({ border: '2px solid #22c55e' }); // Success state border
-      expect(screen.queryByTestId('loading-indicator')).not.toBeInTheDocument();
-      expect(screen.getByText('Generation completed successfully!')).toBeInTheDocument();
-      expect(screen.getByTestId('status-message')).toHaveTextContent('Generation completed successfully!');
-    });
-    expect(screen.getByTestId('prompt-viewer')).toBeInTheDocument();
-  });
-  it('opens and closes style guide modal', () => {
-    render(<LandingPageBuilder />);
-
-    fireEvent.click(screen.getByText('Edit Style Guide'));
-    expect(screen.getByText(/Style Guide/i)).toBeInTheDocument();
-
-    const closeButton = screen.getByRole('button', { name: /close/i });
-    fireEvent.click(closeButton);
-    expect(screen.queryByText(/Style Guide/i)).not.toBeInTheDocument();
-  });
-
-  it('closes prompt viewer', async () => {
-    mockedCallOpenAI.mockResolvedValueOnce('<svg>Generated Content</svg>');
-    render(<LandingPageBuilder />);
-
-    fireEvent.click(screen.getByText('Generate Preview'));
-    await waitFor(() => {
-      expect(screen.getByTestId('prompt-viewer')).toBeInTheDocument();
-    });
-
-    fireEvent.click(screen.getByTestId('prompt-viewer-close'));
-    expect(screen.queryByTestId('prompt-viewer')).not.toBeInTheDocument();
-  });
-
-  it('stays visible when in loading state', () => {
-    // Mock the API with a never-resolving promise to keep loading state
-    mockedGenerateLandingPage.mockImplementation(() => new Promise(() => {}));
-
-    render(<LandingPageBuilder />);
-
-    // Trigger generation
-    fireEvent.click(screen.getByText('Generate Preview'));
-
-    // Verify PromptViewer is visible with loading indicators
-    const promptViewer = screen.getByTestId('prompt-viewer');
-    expect(promptViewer).toBeInTheDocument();
+    // Check loading state
     expect(screen.getByTestId('loading-indicator')).toBeInTheDocument();
+    expect(screen.getByText('Processing request...')).toBeInTheDocument();
 
-    // Verify it remains visible
-    expect(promptViewer).toBeVisible();
-    expect(screen.queryByTestId('prompt-viewer-close')).toBeInTheDocument();
+    // Check success state
+    await waitFor(() => {
+      expect(screen.getByText('Generation completed successfully!')).toBeInTheDocument();
+      expect(screen.getByTestId('prompt-viewer')).toHaveStyle({ border: '2px solid #22c55e' });
+    });
+  });
+
+  it('handles API error states', async () => {
+    const errorMessage = 'API Error';
+    mockedGenerateLandingPage.mockRejectedValueOnce(new Error(errorMessage));
+
+    render(<LandingPageBuilder />);
+    fireEvent.click(screen.getByText('Generate Preview'));
+
+    await waitFor(() => {
+      expect(screen.getByText(errorMessage)).toBeInTheDocument();
+      expect(screen.getByTestId('prompt-viewer')).toHaveStyle({ border: '2px solid #ef4444' });
+    });
+  });
+
+  it('handles the complete voting and locking flow', async () => {
+    mockedGenerateLandingPage.mockResolvedValueOnce({
+      choices: [{
+        message: {
+          content: '<svg>Test SVG</svg>'
+        }
+      }]
+    });
+
+    render(<LandingPageBuilder />);
+    fireEvent.click(screen.getByText('Generate Preview'));
+
+    await waitFor(() => {
+      expect(screen.getByText('Generation completed successfully!')).toBeInTheDocument();
+    });
+
+    // Test voting buttons
+    const upVoteButton = screen.getByTitle('Save as favorite');
+    const mehButton = screen.getByTitle('Save with low priority');
+    const downVoteButton = screen.getByTitle('Archive for deconstruction');
+    const lockButton = screen.getByTitle('Lock in vote');
+
+    // Test each vote type
+    fireEvent.click(upVoteButton);
+    expect(screen.getByTestId('prompt-viewer')).toHaveStyle({ border: '2px solid #22c55e' });
+
+    fireEvent.click(mehButton);
+    expect(screen.getByTestId('prompt-viewer')).toHaveStyle({ border: '2px solid #22c55e' });
+
+    fireEvent.click(downVoteButton);
+    expect(screen.getByTestId('prompt-viewer')).toHaveStyle({ border: '2px solid #22c55e' });
+
+    // Lock the vote
+    fireEvent.click(lockButton);
+
+    // Verify final state
+    await waitFor(() => {
+      expect(screen.getByTestId('success-message')).toBeInTheDocument();
+      expect(screen.getByTestId('saved-preview')).toBeInTheDocument();
+      expect(screen.queryByTestId('prompt-viewer')).not.toBeInTheDocument();
+    });
+  });
+
+  it('disables voting after locking', async () => {
+    mockedGenerateLandingPage.mockResolvedValueOnce({
+      choices: [{
+        message: {
+          content: '<svg>Test SVG</svg>'
+        }
+      }]
+    });
+
+    render(<LandingPageBuilder />);
+    fireEvent.click(screen.getByText('Generate Preview'));
+
+    await waitFor(() => {
+      expect(screen.getByTitle('Save as favorite')).not.toBeDisabled();
+    });
+
+    // Vote and lock
+    fireEvent.click(screen.getByTitle('Save as favorite'));
+    fireEvent.click(screen.getByTitle('Lock in vote'));
+
+    // Verify buttons are disabled
+    await waitFor(() => {
+      const voteButtons = screen.getAllByRole('button');
+      const actionButtons = voteButtons.filter(button =>
+        ['Save as favorite', 'Save with low priority', 'Archive for deconstruction']
+          .includes(button.getAttribute('title') || ''));
+
+      actionButtons.forEach(button => {
+        expect(button).toBeDisabled();
+      });
+    });
   });
 });

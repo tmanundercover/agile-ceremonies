@@ -126,25 +126,6 @@ describe('PromptViewer', () => {
     expect(userPrompt).toBeInTheDocument();
   });
 
-  it('shows voting buttons when in success state', () => {
-    const mockOnVote = jest.fn();
-    render(
-      <PromptViewer
-        request={mockRequest}
-        status="success"
-        error={null}
-        onClose={mockOnClose}
-        onVote={mockOnVote}
-        data-testid="prompt-viewer"
-      />
-    );
-
-    expect(screen.getByTestId('design-vote')).toBeInTheDocument();
-
-    fireEvent.click(screen.getByTestId('vote-up'));
-    expect(mockOnVote).toHaveBeenCalledWith('up');
-  });
-
   it('hides voting buttons when not in success state', () => {
     render(
       <PromptViewer
@@ -158,5 +139,103 @@ describe('PromptViewer', () => {
     );
 
     expect(screen.queryByTestId('design-vote')).not.toBeInTheDocument();
+  });
+
+  it('shows voting buttons when in success state', () => {
+    const mockOnVote = jest.fn();
+    const mockOnLockVote = jest.fn();
+
+    render(
+        <PromptViewer
+            request={mockRequest}
+            status="success"
+            error={null}
+            onClose={mockOnClose}
+            onVote={mockOnVote}
+            onLockVote={mockOnLockVote}
+            data-testid="prompt-viewer"
+        />
+    );
+
+    expect(screen.getByTestId('design-vote')).toBeInTheDocument();
+
+    // Test each vote type using data-testid
+    fireEvent.click(screen.getByTestId('vote-up'));
+    expect(mockOnVote).toHaveBeenCalledWith('up');
+
+    fireEvent.click(screen.getByTestId('vote-meh'));
+    expect(mockOnVote).toHaveBeenCalledWith('meh');
+
+    fireEvent.click(screen.getByTestId('vote-down'));
+    expect(mockOnVote).toHaveBeenCalledWith('down');
+
+    // Test lock button
+    fireEvent.click(screen.getByTestId('vote-lock'));
+    expect(mockOnLockVote).toHaveBeenCalledWith('down'); // Last selected vote
+  });
+
+  it('hides vote buttons and shows thank you message after vote is locked', () => {
+    const mockOnVote = jest.fn();
+    const mockOnLockVote = jest.fn();
+
+    render(
+      <PromptViewer
+        request={mockRequest}
+        status="success"
+        error={null}
+        onClose={mockOnClose}
+        onVote={mockOnVote}
+        onLockVote={mockOnLockVote}
+        data-testid="prompt-viewer"
+      />
+    );
+
+    // Vote and lock
+    fireEvent.click(screen.getByTestId('vote-up'));
+    fireEvent.click(screen.getByTestId('vote-lock'));
+
+    // Verify voting UI is hidden and thank you message is shown
+    expect(screen.queryByTestId('design-vote')).not.toBeVisible();
+    expect(screen.getByText(/Thanks for your feedback!/)).toBeInTheDocument();
+  });
+
+  it('shows different emoji based on vote type', () => {
+    const mockOnVote = jest.fn();
+    const mockOnLockVote = jest.fn();
+
+    const { rerender } = render(
+      <PromptViewer
+        request={mockRequest}
+        status="success"
+        error={null}
+        onClose={mockOnClose}
+        onVote={mockOnVote}
+        onLockVote={mockOnLockVote}
+        data-testid="prompt-viewer"
+      />
+    );
+
+    // Test each vote type
+    ['up', 'meh', 'down'].forEach((voteType) => {
+      fireEvent.click(screen.getByTestId(`vote-${voteType}`));
+      fireEvent.click(screen.getByTestId('vote-lock'));
+
+      expect(screen.getByText(/Thanks for your feedback!/)).toBeInTheDocument();
+      const expectedEmoji = voteType === 'up' ? '🎉' : voteType === 'meh' ? '👍' : '📝';
+      expect(screen.getByText(expectedEmoji)).toBeInTheDocument();
+
+      // Reset for next test
+      rerender(
+        <PromptViewer
+          request={mockRequest}
+          status="success"
+          error={null}
+          onClose={mockOnClose}
+          onVote={mockOnVote}
+          onLockVote={mockOnLockVote}
+          data-testid="prompt-viewer"
+        />
+      );
+    });
   });
 });

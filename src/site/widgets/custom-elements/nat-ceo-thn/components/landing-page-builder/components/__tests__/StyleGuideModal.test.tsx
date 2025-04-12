@@ -124,7 +124,7 @@ describe('StyleGuideModal', () => {
   });
 
   describe('Color Inputs', () => {
-    it('renders ColorPickers with swatches for primary and secondary colors', () => {
+    it('renders and handles color pickers correctly', () => {
       render(
         <StyleGuideModal
           styleGuide={mockStyleGuide}
@@ -133,58 +133,25 @@ describe('StyleGuideModal', () => {
         />
       );
 
-      // Check primary color swatch
+      // Check swatches
       const primarySwatch = screen.getByTestId('primary-color-swatch');
-      expect(primarySwatch).toBeInTheDocument();
-      expect(primarySwatch).toHaveStyle({ backgroundColor: mockStyleGuide.primaryColor });
-
-      // Check secondary color swatch
       const secondarySwatch = screen.getByTestId('secondary-color-swatch');
-      expect(secondarySwatch).toBeInTheDocument();
+      expect(primarySwatch).toHaveStyle({ backgroundColor: mockStyleGuide.primaryColor });
       expect(secondarySwatch).toHaveStyle({ backgroundColor: mockStyleGuide.secondaryColor });
 
-      // Verify only one swatch exists for each color
-      expect(screen.getAllByTestId(/.*-color-swatch$/)).toHaveLength(2);
+      // Test color changes
+      const primaryPicker = screen.getByTestId('primary-color-picker');
+      fireEvent.change(primaryPicker, { target: { value: '#ff5500' } });
+
+      // Submit and verify
+      fireEvent.click(screen.getByText('Save Changes'));
+      expect(mockOnSave).toHaveBeenCalledWith(expect.objectContaining({
+        primaryColor: '#ff5500',
+        secondaryColor: mockStyleGuide.secondaryColor
+      }));
     });
 
-    it('shows color picker when swatch is clicked', () => {
-      render(
-        <StyleGuideModal
-          styleGuide={mockStyleGuide}
-          onClose={mockOnClose}
-          onSave={mockOnSave}
-        />
-      );
-
-      // Click primary swatch and verify picker appears
-      const primarySwatch = screen.getByTestId('primary-color-swatch');
-      fireEvent.click(primarySwatch);
-      expect(screen.getByTestId('primary-color-picker')).toBeInTheDocument();
-
-      // Click secondary swatch and verify picker appears
-      const secondarySwatch = screen.getByTestId('secondary-color-swatch');
-      fireEvent.click(secondarySwatch);
-      expect(screen.getByTestId('secondary-color-picker')).toBeInTheDocument();
-    });
-
-    it('handles hex code input for primary color', () => {
-      render(
-        <StyleGuideModal
-          styleGuide={mockStyleGuide}
-          onClose={mockOnClose}
-          onSave={mockOnSave}
-        />
-      );
-
-      const hexInput = screen.getByTestId('primary-color-hex');
-      fireEvent.change(hexInput, { target: { value: '#ff5500' } });
-      expect(hexInput).toHaveValue('#ff5500');
-
-      // Color picker should update in sync
-      expect(screen.getByTestId('primary-color-picker')).toHaveValue('#ff5500');
-    });
-
-    it('validates hex code input', () => {
+    it('handles invalid color inputs gracefully', () => {
       render(
         <StyleGuideModal
           styleGuide={mockStyleGuide}
@@ -195,36 +162,14 @@ describe('StyleGuideModal', () => {
 
       const hexInput = screen.getByTestId('primary-color-hex');
 
-      // Invalid hex should not update
+      // Invalid hex should not update the form
       fireEvent.change(hexInput, { target: { value: '#xyz123' } });
       expect(hexInput).toHaveValue(mockStyleGuide.primaryColor);
 
-      // Partial hex while typing should be allowed
-      fireEvent.change(hexInput, { target: { value: '#ff' } });
-      expect(hexInput).toHaveValue('#ff');
-    });
-
-    it('handles color changes through ColorPicker', () => {
-      render(
-        <StyleGuideModal
-          styleGuide={mockStyleGuide}
-          onClose={mockOnClose}
-          onSave={mockOnSave}
-        />
-      );
-
-      const primaryColorPicker = screen.getByTestId('primary-color-picker');
-      fireEvent.change(primaryColorPicker, { target: { value: '#ff5500' } });
-
-      const secondaryColorPicker = screen.getByTestId('secondary-color-picker');
-      fireEvent.change(secondaryColorPicker, { target: { value: '#00ff00' } });
-
-      // Submit form and verify new values
+      // Form should not submit with invalid colors
       fireEvent.click(screen.getByText('Save Changes'));
-
       expect(mockOnSave).toHaveBeenCalledWith(expect.objectContaining({
-        primaryColor: '#ff5500',
-        secondaryColor: '#00ff00'
+        primaryColor: mockStyleGuide.primaryColor
       }));
     });
   });

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, {keyframes} from 'styled-components';
 
 // Design tokens from style guide
 const tokens = {
@@ -186,15 +186,111 @@ export const Button = styled.button<{ variant?: 'primary' | 'secondary' | 'succe
 `;
 
 export const SavedDesignPreview = styled(Preview)`
-  margin-top: 2rem;
-  border: 2px solid #22C55E;
+    margin-top: 2rem;
+    border: 2px solid #22C55E;
 `;
 
 export const SuccessMessage = styled.div`
-  margin-top: 1rem;
-  padding: 1rem;
-  background-color: #F0FDF4;
-  border-radius: 8px;
-  color: #22C55E;
-  font-weight: 500;
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #F0FDF4;
+    border-radius: 8px;
+    color: #22C55E;
+    font-weight: 500;
+`;
+
+const rotate = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+export const OpenAIIcon = styled.svg`
+    width: 32px;
+    height: 32px;
+    animation: ${rotate} 2s linear infinite;
+    margin-bottom: 0.5rem;
+`;
+
+export const LoadingSpinner = styled.div`
+    text-align: center;
+    margin-top: 1rem;
+    font-weight: bold;
+    color: #3B82F6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .loading-text {
+        margin-top: 0.5rem;
+        font-size: 0.875rem;
+    }
+`;
+
+export const slideUp = keyframes`
+    from {
+        transform: translate(-50%, 20px);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+`;
+
+export const fadeOut = keyframes`
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+`;
+
+export const IndicatorContainer = styled.div<{ isVisible: boolean }>`
+    position: absolute;
+    left: 50%;
+    top: -60px;
+    transform: translateX(-50%);
+    z-index: 1001; // Higher than PromptViewer
+    min-width: 300px;
+    max-width: 600px;
+    animation: ${slideUp} 0.3s ease-out forwards,
+    ${({isVisible}) => !isVisible && fadeOut} 0.5s ease-out forwards;
+    pointer-events: none; // Allows clicking through the indicator
+`;
+
+export const LoadingText = styled.div`
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1.5rem;
+    margin-bottom: -20px;
+    font-weight: bold;
+    color: #3B82F6;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    pointer-events: auto;
+`;
+
+export const StatusBanner = styled.div<{ status: 'success' | 'error' }>`
+    padding: 0.75rem 1.5rem;
+    margin-bottom: -20px; // Pull the indicator closer to the container
+    border-radius: 6px;
+    background: ${({status}) => status === 'success' ? '#E6F4EA' : '#FEEEE2'};
+    color: #2c2929;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    pointer-events: auto; // Re-enable pointer events for the actual message
 `;
