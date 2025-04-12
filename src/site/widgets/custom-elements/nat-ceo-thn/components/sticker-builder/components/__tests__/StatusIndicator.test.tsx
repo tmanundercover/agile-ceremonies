@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { StatusIndicator } from '../StatusIndicator';
 import { CheckIcon, CrossCircledIcon } from '@radix-ui/react-icons';
@@ -62,5 +62,64 @@ describe('StatusIndicator', () => {
     rerender(<StatusIndicator status="error" message="Operation failed" />);
     expect(screen.getByTestId('cross-icon')).toBeInTheDocument();
   });
-});
 
+  it('stays visible when in loading state', () => {
+    jest.useFakeTimers();
+    render(<StatusIndicator status="loading" />);
+
+    act(() => {
+      jest.advanceTimersByTime(5000);
+    });
+
+    expect(screen.getByTestId('loading-indicator').parentElement).toHaveStyle({ opacity: '1' });
+
+    jest.useRealTimers();
+  });
+
+  it('fades out success message after 3 seconds', () => {
+    jest.useFakeTimers();
+    const { container } = render(
+      <StatusIndicator status="success" message="Operation successful" />
+    );
+
+    act(() => {
+      jest.advanceTimersByTime(3000);
+    });
+
+    expect(container.firstChild).toHaveStyle({ animation: expect.stringContaining('fadeOut') });
+
+    jest.useRealTimers();
+  });
+
+  it('fades out error message after 5 seconds', () => {
+    jest.useFakeTimers();
+    const { container } = render(
+      <StatusIndicator status="error" message="Operation failed" />
+    );
+
+    act(() => {
+      jest.advanceTimersByTime(5000);
+    });
+
+    expect(container.firstChild).toHaveStyle({ animation: expect.stringContaining('fadeOut') });
+
+    jest.useRealTimers();
+  });
+
+  it('resets visibility when status changes', () => {
+    jest.useFakeTimers();
+    const { rerender, container } = render(
+      <StatusIndicator status="success" message="Success" />
+    );
+
+    act(() => {
+      jest.advanceTimersByTime(2000);
+    });
+
+    rerender(<StatusIndicator status="error" message="Error" />);
+
+    expect(container.firstChild).not.toHaveStyle({ animation: expect.stringContaining('fadeOut') });
+
+    jest.useRealTimers();
+  });
+});

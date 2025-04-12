@@ -4,17 +4,19 @@ import { OpenAIApiRequest } from './OpenAIBackendAPI';
 import { StatusIndicator } from './components/StatusIndicator';
 
 const ViewerContainer = styled.div<{ status?: 'loading' | 'success' | 'error' }>`
-  position: relative;
-  top: 50%;
+  position: fixed;
+  top: 10px; // Increased from 100px to allow space for status indicator
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   background: white;
   padding: 2rem;
+  padding-top: 3rem; // Increased top padding
+  margin-top: 60px; // Add margin for status indicator
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   max-width: 600px;
   width: 90%;
-  max-height: 80vh;
+  max-height: calc(100vh - 260px); // Adjusted to account for top margin and status
   overflow-y: auto;
   border: 2px solid ${({ status }) => {
     switch (status) {
@@ -28,6 +30,7 @@ const ViewerContainer = styled.div<{ status?: 'loading' | 'success' | 'error' }>
         return '#ddd';
     }
   }};
+  z-index: 1000;
 `;
 
 const LoadingSpinner = styled.div`
@@ -159,3 +162,4 @@ export const PromptViewer: React.FC<PromptViewerProps> = ({
     </ViewerContainer>
   );
 };
+

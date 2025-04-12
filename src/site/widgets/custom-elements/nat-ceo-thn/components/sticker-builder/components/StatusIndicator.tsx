@@ -1,41 +1,56 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { CheckIcon, CrossCircledIcon } from '@radix-ui/react-icons';
 
 const slideUp = keyframes`
   from {
-    transform: translateY(100%);
+    transform: translate(-50%, 20px);
     opacity: 0;
   }
   to {
-    transform: translateY(0);
+    transform: translate(-50%, 0);
     opacity: 1;
   }
 `;
 
-const IndicatorContainer = styled.div`
+const fadeOut = keyframes`
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+`;
+
+const IndicatorContainer = styled.div<{ isVisible: boolean }>`
   position: absolute;
   left: 50%;
-  top: -80px; // Position above the PromptViewer
+  top: 0;
   transform: translateX(-50%);
-  z-index: 2000;
+  z-index: 1001; // Higher than PromptViewer
   min-width: 300px;
   max-width: 600px;
-  animation: ${slideUp} 0.3s ease-out forwards;
+  animation: ${slideUp} 0.3s ease-out forwards,
+             ${({ isVisible }) => !isVisible && fadeOut} 0.5s ease-out forwards;
+  pointer-events: none; // Allows clicking through the indicator
 `;
 
 const LoadingText = styled.div`
-  padding: 1rem 2rem;
+  padding: 0.75rem 1.5rem;
+  margin-bottom: -20px; // Pull the indicator closer to the container
   font-weight: bold;
   color: #0066ff;
   background: white;
   border-radius: 6px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   text-align: center;
+  pointer-events: auto; // Re-enable pointer events for the actual message
 `;
 
 const StatusBanner = styled.div<{ status: 'success' | 'error' }>`
-  padding: 1rem 2rem;
+  padding: 0.75rem 1.5rem;
+  margin-bottom: -20px; // Pull the indicator closer to the container
   border-radius: 6px;
   background: ${({ status }) => status === 'success' ? '#E6F4EA' : '#FEEEE2'};
   color: ${({ status }) => status === 'success' ? '#1B873B' : '#B42318'};
@@ -45,6 +60,7 @@ const StatusBanner = styled.div<{ status: 'success' | 'error' }>`
   align-items: center;
   justify-content: center;
   gap: 8px;
+  pointer-events: auto; // Re-enable pointer events for the actual message
 `;
 
 interface StatusIndicatorProps {
@@ -58,8 +74,30 @@ export const StatusIndicator: React.FC<StatusIndicatorProps> = ({
   message,
   'data-testid': dataTestId
 }) => {
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    // Reset visibility when status changes
+    setIsVisible(true);
+
+    // Don't set timeout for loading state
+    if (status === 'loading') return;
+
+    // Set timeout duration based on status
+    const timeout = status === 'success' ? 3000 : 5000;
+
+    const timer = setTimeout(() => {
+      setIsVisible(false);
+    }, timeout);
+
+    return () => clearTimeout(timer);
+  }, [status]);
+
   return (
-    <IndicatorContainer data-testid={dataTestId}>
+    <IndicatorContainer
+      data-testid={dataTestId}
+      isVisible={isVisible}
+    >
       {status === 'loading' && (
         <LoadingText data-testid="loading-indicator">
           Processing request...
