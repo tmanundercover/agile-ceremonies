@@ -11,22 +11,33 @@ export const StickerBuilderContainer = styled.div`
 `;
 
 export const PreviewContainer = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   justify-content: center;
   align-items: start;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
 `;
 
 export const ImagePreviewContainer = styled.div<ImagePreviewContainerProps>`
-  width: 400px;
-  height: 400px;
+  aspect-ratio: 1;
+  min-height: 400px;
   border: 2px solid ${props => props.$isOriginal ? '#ccc' : '#666'};
   border-radius: 8px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f5f5f5;
+  background: ${props => props.$isOriginal ? '#f5f5f5' : '#ffffff'};
+  position: relative;
+
+  img, svg {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
 `;
 
 export const LayerControlsContainer = styled.div`
@@ -63,6 +74,30 @@ export const StyledButton = styled.button`
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
+
+  &:hover {
+    background: #0056b3;
+  }
+
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+`;
+
+export const HiddenFileInput = styled.input`
+  display: none;
+`;
+
+export const FileInputButton = styled.button`
+  padding: 8px 16px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 10px;
 
   &:hover {
     background: #0056b3;
