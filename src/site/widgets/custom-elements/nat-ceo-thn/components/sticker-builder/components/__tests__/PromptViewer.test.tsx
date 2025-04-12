@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { PromptViewer } from '../../PromptViewer';
 import { OpenAIApiRequest } from '../../OpenAIBackendAPI';
@@ -21,38 +21,82 @@ describe('PromptViewer', () => {
     max_tokens: 2000
   };
 
-  it('renders correctly with request data', () => {
-    render(<PromptViewer request={mockRequest} />);
+  const mockOnClose = jest.fn();
 
-    // Check heading
-    expect(screen.getByText('Generating Landing Page')).toBeInTheDocument();
+  beforeEach(() => {
+    mockOnClose.mockClear();
+  });
 
-    // Check prompt sections
-    expect(screen.getByText('System Prompt:')).toBeInTheDocument();
-    expect(screen.getByText('User Prompt:')).toBeInTheDocument();
-    expect(screen.getByText('Configuration:')).toBeInTheDocument();
+  it('renders correctly in loading state', () => {
+    render(
+      <PromptViewer
+        request={mockRequest}
+        status="loading"
+        error={null}
+        onClose={mockOnClose}
+        data-testid="prompt-viewer"
+      />
+    );
 
-    // Check content
+    // Check content sections
+    expect(screen.getByText('Landing Page Generation Request')).toBeInTheDocument();
     expect(screen.getByText(mockRequest.messages[0].content)).toBeInTheDocument();
     expect(screen.getByText(mockRequest.messages[1].content)).toBeInTheDocument();
-    expect(screen.getByText(/Model: gpt-4/)).toBeInTheDocument();
-    expect(screen.getByText(/Temperature: 0.7/)).toBeInTheDocument();
-    expect(screen.getByText(/Max Tokens: 2000/)).toBeInTheDocument();
 
-    // Check loading spinner
+    // Check loading state
+    expect(screen.getByTestId('loading-indicator')).toBeInTheDocument();
     expect(screen.getByText('Processing request...')).toBeInTheDocument();
   });
 
-  it('renders within a modal-like container', () => {
-    const { container } = render(<PromptViewer request={mockRequest} />);
-    
-    // Check if the container has modal-like styling
-    const viewerContainer = container.firstChild;
-    expect(viewerContainer).toHaveStyle({
-      position: 'fixed',
-      background: 'white',
-      padding: '2rem'
+  it('renders success state correctly', () => {
+    render(
+      <PromptViewer
+        request={mockRequest}
+        status="success"
+        error={null}
+        onClose={mockOnClose}
+        data-testid="prompt-viewer"
+      />
+    );
+
+    expect(screen.getByText('Generation completed successfully')).toBeInTheDocument();
+    expect(screen.getByTestId('status-message')).toHaveStyle({
+      background: '#E6F4EA'
     });
+  });
+
+  it('renders error state correctly', () => {
+    const errorMessage = 'Something went wrong';
+    render(
+      <PromptViewer
+        request={mockRequest}
+        status="error"
+        error={errorMessage}
+        onClose={mockOnClose}
+        data-testid="prompt-viewer"
+      />
+    );
+
+    expect(screen.getByText(errorMessage)).toBeInTheDocument();
+    expect(screen.getByTestId('status-message')).toHaveStyle({
+      background: '#FEEEE2'
+    });
+  });
+
+  it('calls onClose when close button is clicked', () => {
+    render(
+      <PromptViewer
+        request={mockRequest}
+        status="success"
+        error={null}
+        onClose={mockOnClose}
+        data-testid="prompt-viewer"
+      />
+    );
+
+    const closeButton = screen.getByTestId('prompt-viewer-close');
+    fireEvent.click(closeButton);
+    expect(mockOnClose).toHaveBeenCalledTimes(1);
   });
 
   it('handles long content with scrolling', () => {
@@ -60,24 +104,30 @@ describe('PromptViewer', () => {
       ...mockRequest,
       messages: [
         {
-          role: 'system' as const,
+          role: 'system',
           content: 'A'.repeat(1000)
         },
         {
-          role: 'user' as const,
+          role: 'user',
           content: 'B'.repeat(1000)
         }
       ]
     };
 
-    const { container } = render(<PromptViewer request={longRequest} />);
+    const { container } = render(
+      <PromptViewer
+        request={longRequest}
+        status="loading"
+        error={null}
+        onClose={mockOnClose}
+        data-testid="prompt-viewer"
+      />
+    );
     
-    // Check if container has overflow handling
-    const viewerContainer = container.firstChild;
+    const viewerContainer = container.querySelector('[data-testid="prompt-viewer"]');
     expect(viewerContainer).toHaveStyle({
       'max-height': '80vh',
       'overflow-y': 'auto'
     });
   });
 });
-

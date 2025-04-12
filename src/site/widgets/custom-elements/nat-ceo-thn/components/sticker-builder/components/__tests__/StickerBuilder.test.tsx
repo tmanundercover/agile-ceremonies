@@ -113,3 +113,97 @@ describe('StickerBuilder', () => {
     });
   });
 });
+
+describe('StickerBuilder with PromptViewer', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('shows PromptViewer with loading state when generating', async () => {
+    // Mock API with delay to test loading state
+    mockedGenerateLandingPage.mockImplementation(() =>
+      new Promise(resolve => setTimeout(() => resolve({
+        choices: [{
+          message: {
+            content: '<svg>Test SVG</svg>'
+          }
+        }]
+      }), 1000))
+    );
+
+    render(<StickerBuilder />);
+
+    // Submit form
+    fireEvent.click(screen.getByText('Generate Preview'));
+
+    // Check PromptViewer appears with loading state
+    const promptViewer = screen.getByTestId('prompt-viewer');
+    expect(promptViewer).toBeInTheDocument();
+    expect(screen.getByTestId('loading-indicator')).toBeInTheDocument();
+    expect(promptViewer).toHaveStyle({ border: '2px solid #FFB800' }); // Loading state border
+  });
+
+  it('shows success state in PromptViewer after successful generation', async () => {
+    mockedGenerateLandingPage.mockResolvedValueOnce({
+      choices: [{
+        message: {
+          content: '<svg>Test SVG</svg>'
+        }
+      }]
+    });
+
+    render(<StickerBuilder />);
+    fireEvent.click(screen.getByText('Generate Preview'));
+
+    await waitFor(() => {
+      const promptViewer = screen.getByTestId('prompt-viewer');
+      expect(promptViewer).toHaveStyle({ border: '2px solid #00CC88' }); // Success state border
+      expect(screen.queryByTestId('loading-indicator')).not.toBeInTheDocument();
+      expect(screen.getByText('Generation completed successfully')).toBeInTheDocument();
+      expect(screen.getByTestId('status-message')).toHaveTextContent('Generation completed successfully');
+    });
+
+    // PromptViewer should remain open
+    expect(screen.getByTestId('prompt-viewer')).toBeInTheDocument();
+  });
+
+  it('shows error state in PromptViewer after failed generation', async () => {
+    mockedGenerateLandingPage.mockRejectedValueOnce(new Error('API Error'));
+
+    render(<StickerBuilder />);
+    fireEvent.click(screen.getByText('Generate Preview'));
+
+    await waitFor(() => {
+      const promptViewer = screen.getByTestId('prompt-viewer');
+      expect(promptViewer).toHaveStyle({ border: '2px solid #FF4444' }); // Error state border
+      expect(screen.queryByTestId('loading-indicator')).not.toBeInTheDocument();
+      expect(screen.getByText('API Error')).toBeInTheDocument();
+      expect(screen.getByTestId('status-message')).toHaveTextContent('API Error');
+    });
+
+    // PromptViewer should remain open
+    expect(screen.getByTestId('prompt-viewer')).toBeInTheDocument();
+  });
+
+  it('closes PromptViewer only when close button is clicked', async () => {
+    mockedGenerateLandingPage.mockResolvedValueOnce({
+      choices: [{
+        message: {
+          content: '<svg>Test SVG</svg>'
+        }
+      }]
+    });
+
+    render(<StickerBuilder />);
+    fireEvent.click(screen.getByText('Generate Preview'));
+
+    await waitFor(() => {
+      expect(screen.getByTestId('prompt-viewer')).toBeInTheDocument();
+    });
+
+    // Click close button
+    fireEvent.click(screen.getByTestId('prompt-viewer-close'));
+    expect(screen.queryByTestId('prompt-viewer')).not.toBeInTheDocument();
+  });
+});
+

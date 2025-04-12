@@ -28,11 +28,15 @@ export const StickerBuilder: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [currentRequest, setCurrentRequest] = useState<OpenAIApiRequest | null>(null);
+  const [promptViewerStatus, setPromptViewerStatus] = useState<'loading' | 'success' | 'error'>('loading');
+  const [showPromptViewer, setShowPromptViewer] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setShowPromptViewer(true);
+    setPromptViewerStatus('loading');
 
     const request = convertFormDataToApiRequest(formData);
     setCurrentRequest(request);
@@ -43,11 +47,13 @@ export const StickerBuilder: React.FC = () => {
       if (previewContainer) {
         previewContainer.innerHTML = generatedContent;
       }
+      setPromptViewerStatus('success');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      const errorMessage = err instanceof Error ? err.message : 'An error occurred';
+      setError(errorMessage);
+      setPromptViewerStatus('error');
     } finally {
       setLoading(false);
-      setCurrentRequest(null);
     }
   };
 
@@ -126,8 +132,6 @@ export const StickerBuilder: React.FC = () => {
           Edit Style Guide
         </Button>
 
-        {error && <div style={{ color: 'red' }}>{error}</div>}
-
         <Button type="submit" disabled={loading}>
           {loading ? 'Generating...' : 'Generate Preview'}
         </Button>
@@ -137,8 +141,14 @@ export const StickerBuilder: React.FC = () => {
         {/* Preview will be rendered here */}
       </Preview>
 
-      {loading && currentRequest && (
-        <PromptViewer request={currentRequest} />
+      {showPromptViewer && currentRequest && (
+        <PromptViewer
+          request={currentRequest}
+          status={promptViewerStatus}
+          error={error}
+          data-testid="prompt-viewer"
+          onClose={() => setShowPromptViewer(false)}
+        />
       )}
 
       {styleGuideOpen && (
