@@ -316,13 +316,15 @@ export const LoadingSpinnerStyled = styled.div`
 `;
 
 export const IndicatorContainerStyled = styled.div<{ $isVisible: boolean }>`
-    position: relative;
+    position: absolute;
+    top: ${tokens.spacing.xl};
     left: 50%;
-    z-index: 1001; 
+    transform: translateX(-50%);
+    z-index: 1001;
     min-width: 300px;
     max-width: 600px;
     animation: ${slideUp} 0.3s ease-out forwards,
-    ${({$isVisible}) => !$isVisible && slideOut} 0.5s ease-out forwards;
+              ${({$isVisible}) => !$isVisible && slideOut} 0.5s ease-out forwards;
     pointer-events: none;
 `;
 
@@ -330,14 +332,15 @@ export const LoadingTextStyled = styled.div`
     display: grid;
     grid-template-columns: auto 1fr;
     align-items: center;
-    gap: 1rem;
-    padding: 0.75rem 1.5rem;
-    margin-bottom: -20px;
-    font-weight: bold;
-    color: #3B82F6;
-    background: white;
-    border-radius: 6px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    gap: ${tokens.spacing.md};
+    padding: ${tokens.spacing.md} ${tokens.spacing.xl};
+    font-weight: 600;
+    color: ${tokens.colors.info};
+    background: ${tokens.colors.neutral[100]};
+    border: 1px solid ${tokens.colors.info};
+    border-radius: ${tokens.borderRadius.md};
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(8px);
     pointer-events: auto;
 `;
 
@@ -353,9 +356,9 @@ export const ViewerContainerStyled = styled.div<{ status?: 'loading' | 'success'
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   max-width: 90vw;
-  width: 1200px;
-  min-width: 800px;
-  height: calc(100vh - 164px); // Fixed height
+  width: calc(100vw - 450px); // Account for sidebar width
+  min-width: auto; // Remove min-width constraint
+  height: calc(100vh - 164px);
   display: flex;
   flex-direction: column;
   gap: ${tokens.spacing.lg};
@@ -410,6 +413,9 @@ export const FormFieldStyled = styled.div`
   white-space: pre-wrap;
   max-height: 200px;
   overflow-y: auto;
+  overflow-x: auto;
+  width: 100%;
+  box-sizing: border-box;
   
   &:hover {
     border-color: #cbd5e1;
@@ -444,7 +450,7 @@ export const PreviewContainerStyled = styled.div`
   min-height: 400px;
   background: white;
   border-radius: ${tokens.borderRadius.lg};
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1); // Using medium shadow from guide
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   padding: ${tokens.spacing.md};
   display: flex;
   align-items: center;
@@ -452,6 +458,7 @@ export const PreviewContainerStyled = styled.div`
   border: 1px solid ${tokens.colors.neutral[200]};
   position: relative;
   margin-bottom: ${tokens.spacing.xl};
+  box-sizing: border-box;
   
   svg {
     width: 100%;
@@ -511,11 +518,14 @@ export const PreviewSectionStyled = styled.div<{ $isHidden?: boolean }>`
   display: flex;
   flex-direction: column;
   margin-left: ${props => props.$isHidden ? '32px' : '400px'};
+  padding: ${tokens.spacing.xl};
   transition: margin-left 0.3s ease;
   height: 100vh;
   overflow-y: auto;
-  padding: ${tokens.spacing.xl};
+  overflow-x: hidden; // Prevent horizontal scroll
   box-sizing: border-box;
+  position: relative;
+  max-width: 100%;
 `;
 
 export const PreviewWrapperStyled = styled.div`
@@ -553,6 +563,9 @@ export const PreviewControlsStyled = styled.div`
   padding: ${tokens.spacing.lg};
   margin-bottom: ${tokens.spacing.xl};
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: auto;
 `;
 
 export const StyledButtonStyled = styled.button<{ $color: string }>`
@@ -736,11 +749,21 @@ export const LoadingTextContainerStyled = styled.div`
 
 export const StatusBannerStyled = styled.div<{ status: 'success' | 'error' }>`
     padding: ${tokens.spacing.md} ${tokens.spacing.xl};
-    margin-bottom: -20px;
     border-radius: ${tokens.borderRadius.md};
-    background: ${({status}) => status === 'success' ? '#E6F4EA' : '#FEEEE2'};
-    color: ${tokens.colors.neutral[900]};
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    background: ${({status}) => status === 'success' ? 
+        `${tokens.colors.success}10` : 
+        `${tokens.colors.error}10`
+    };
+    color: ${({status}) => status === 'success' ? 
+        tokens.colors.success : 
+        tokens.colors.error
+    };
+    border: 1px solid ${({status}) => status === 'success' ? 
+        tokens.colors.success : 
+        tokens.colors.error
+    };
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(8px);
     text-align: center;
     display: flex;
     align-items: center;
@@ -748,6 +771,7 @@ export const StatusBannerStyled = styled.div<{ status: 'success' | 'error' }>`
     gap: ${tokens.spacing.sm};
     pointer-events: auto;
     animation: ${slideRight} 0.3s ease-out forwards;
+    font-weight: 600;
 `;
 
 export const ColorInputGroupStyled = styled.div`
@@ -800,14 +824,4 @@ export const HexInputStyled = styled.input`
     outline: none;
   }
 `;
-
-
-
-
-
-
-
-
-
-
 

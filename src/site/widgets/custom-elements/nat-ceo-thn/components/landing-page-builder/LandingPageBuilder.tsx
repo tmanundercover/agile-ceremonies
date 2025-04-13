@@ -223,7 +223,13 @@ export const LandingPageBuilder: React.FC = () => {
                 <PreviewTitleStyled>
                     {loading ? 'Generating Preview...' : 'Landing Page Preview'}
                 </PreviewTitleStyled>
-                {error && <StatusIndicator status={promptViewerStatus} message={error} />}
+                {error && (
+                    <StatusIndicator
+                        status={promptViewerStatus}
+                        message={error}
+                        data-testid="status-indicator"
+                    />
+                )}
                 <PreviewContainerStyled 
                     id="prompt-preview"
                     style={{ opacity: showMockPreview ? 0.6 : 1 }}
@@ -281,3 +287,4 @@ export const LandingPageBuilder: React.FC = () => {
         </ContainerStyled>
     );
 };
+
