@@ -6,7 +6,7 @@ import {
     LoadingText,
     OpenAIIcon,
     StatusBanner
-} from "../sticker-builder-styled-components";
+} from "../landing-page-builder-styled-components";
 
 interface StatusIndicatorProps {
     status: 'loading' | 'success' | 'error';
@@ -39,7 +39,7 @@ export const StatusIndicator: React.FC<StatusIndicatorProps> = ({
         <IndicatorContainer
             data-testid={dataTestId}
             data-visible={isVisible.toString()}
-            isVisible={isVisible}
+            $isVisible={isVisible}  // Changed from isVisible to $isVisible
         >
             {status === 'loading' && !message && (
                 <LoadingText data-testid="loading-indicator">

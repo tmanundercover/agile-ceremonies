@@ -23,7 +23,7 @@ const requestSchema = z.object({
     temperature: z.number(),
     max_tokens: z.number()
 });
-export async function generateLandingPage(req) {
+export async function generateLandingPage(req, mockSVG) {
     try {
         const validatedRequest = requestSchema.parse(req);
         // Simulate API delay
@@ -31,7 +31,7 @@ export async function generateLandingPage(req) {
         return {
             choices: [{
                     message: {
-                        content: `
+                        content: mockSVG ? mockSVG : `
             <svg width="1200" height="800">
               <!-- Mock SVG content for testing -->
               <text x="50%" y="50%" text-anchor="middle">Mock Landing Page</text>

@@ -1,7 +1,7 @@
 import styled, {keyframes} from 'styled-components';
 
 // Design tokens from style guide
-const tokens = {
+export const tokens = {
   colors: {
     primary: '#9333EA',
     primaryLight: '#A855F7',
@@ -44,12 +44,17 @@ const tokens = {
 
 export const Container = styled.div`
   display: grid;
-  grid-template-columns: 400px 1fr;
+  grid-template-columns: minmax(300px, 400px) 1fr;
   gap: ${tokens.spacing.xl};
   padding: ${tokens.spacing.xl};
-  min-height: 100vh;
+  height: 100vh;
   background: ${tokens.colors.neutral[100]};
   font-family: 'Inter', system-ui, sans-serif;
+  overflow-y: auto;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 export const Form = styled.form`
@@ -57,9 +62,12 @@ export const Form = styled.form`
   flex-direction: column;
   gap: ${tokens.spacing.lg};
   padding: ${tokens.spacing.xl};
-  background: white;
+  background: #f0f4f8;
   border-radius: ${tokens.borderRadius.md};
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 
+    8px 8px 16px #d1d9e6,
+    -8px -8px 16px #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.18);
 `;
 
 export const InputGroup = styled.div`
@@ -80,6 +88,10 @@ export const Input = styled.input`
   border-radius: ${tokens.borderRadius.sm};
   font-size: ${tokens.fontSizes.base};
   transition: all 0.2s;
+  background: #f0f4f8;
+  box-shadow: 
+    inset 4px 4px 8px #d1d9e6,
+    inset -4px -4px 8px #ffffff;
   
   &:focus {
     border-color: ${tokens.colors.primary};
@@ -96,6 +108,10 @@ export const TextArea = styled.textarea`
   min-height: 100px;
   resize: vertical;
   transition: all 0.2s;
+  background: #f0f4f8;
+  box-shadow: 
+    inset 4px 4px 8px #d1d9e6,
+    inset -4px -4px 8px #ffffff;
   
   &:focus {
     border-color: ${tokens.colors.primary};
@@ -133,7 +149,7 @@ export const Button = styled.button<{ variant?: 'primary' | 'secondary' | 'succe
   background: ${props => {
     switch (props.variant) {
       case 'secondary':
-        return tokens.colors.neutral[100];
+        return 'transparent';
       case 'success':
         return tokens.colors.success;
       case 'error':
@@ -142,13 +158,16 @@ export const Button = styled.button<{ variant?: 'primary' | 'secondary' | 'succe
         return tokens.colors.primary;
     }
   }};
-  color: ${props => props.variant === 'secondary' ? tokens.colors.neutral[900] : 'white'};
-  border: none;
+  color: ${props => props.variant === 'secondary' ? tokens.colors.primary : 'white'};
+  border: ${props => props.variant === 'secondary' ? `2px solid ${tokens.colors.primary}` : 'none'};
   border-radius: ${tokens.borderRadius.sm};
   font-size: ${tokens.fontSizes.base};
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+  box-shadow: 
+    6px 6px 12px #d1d9e6,
+    -6px -6px 12px #ffffff;
   
   &:hover {
     background: ${props => {
@@ -183,6 +202,12 @@ export const Button = styled.button<{ variant?: 'primary' | 'secondary' | 'succe
     opacity: 0.5;
     cursor: not-allowed;
   }
+
+  &:active {
+    box-shadow: 
+      inset 6px 6px 12px #d1d9e6,
+      inset -6px -6px 12px #ffffff;
+  }
 `;
 
 export const SavedDesignPreview = styled(Preview)`
@@ -199,7 +224,7 @@ export const SuccessMessage = styled.div`
     font-weight: 500;
 `;
 
-const rotate = keyframes`
+export const rotate = keyframes`
   from {
     transform: rotate(0deg);
   }
@@ -209,9 +234,9 @@ const rotate = keyframes`
 `;
 
 export const OpenAIIcon = styled.svg`
-    width: 32px;
-    height: 32px;
-    animation: ${rotate} 2s linear infinite;
+    width: 24px;
+    height: 24px;
+    animation: ${rotate} 3.5s linear infinite;
     margin-bottom: 0.5rem;
 `;
 
@@ -252,17 +277,15 @@ export const fadeOut = keyframes`
     }
 `;
 
-export const IndicatorContainer = styled.div<{ isVisible: boolean }>`
-    position: absolute;
+export const IndicatorContainer = styled.div<{ $isVisible: boolean }>`
+    position: relative;
     left: 50%;
-    top: -60px;
-    transform: translateX(-50%);
-    z-index: 1001; // Higher than PromptViewer
+    z-index: 1001; 
     min-width: 300px;
     max-width: 600px;
     animation: ${slideUp} 0.3s ease-out forwards,
-    ${({isVisible}) => !isVisible && fadeOut} 0.5s ease-out forwards;
-    pointer-events: none; // Allows clicking through the indicator
+    ${({$isVisible}) => !$isVisible && fadeOut} 0.5s ease-out forwards;
+    pointer-events: none;
 `;
 
 export const LoadingText = styled.div`
@@ -294,3 +317,196 @@ export const StatusBanner = styled.div<{ status: 'success' | 'error' }>`
     gap: 8px;
     pointer-events: auto; // Re-enable pointer events for the actual message
 `;
+
+export const ViewerContainer = styled.div<{ status?: 'loading' | 'success' | 'error' }>`
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 2rem;
+  padding-top: 3rem;
+  margin-top: 60px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  max-width: 90vw;
+  width: 1200px;
+  min-width: 800px;
+  height: calc(100vh - 164px); // Fixed height
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 2rem;
+  grid-template-rows: 1fr auto;  // Add this line to support the vote section
+  border: 2px solid ${({ status }) => {
+  switch (status) {
+    case 'loading':
+      return '#3B82F6';
+    case 'success':
+      return '#22C55E';
+    case 'error':
+      return '#EF4444';
+    default:
+      return '#ddd';
+  }
+}};
+  z-index: 1000;
+`;
+
+export const CloseButton = styled.button`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  
+  &:hover {
+    color: #333;
+  }
+`;
+
+export const FormSection = styled.div`
+  margin-bottom: 1.5rem;
+`;
+
+export const FormLabel = styled.label`
+  display: block;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+`;
+
+export const FormField = styled.div`
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 1rem;
+  font-family: monospace;
+  white-space: pre-wrap;
+  max-height: 200px;
+  overflow-y: auto;
+  
+  &:hover {
+    border-color: #cbd5e1;
+  }
+`;
+
+export const ConfigField = styled(FormField)`
+  .json-key {
+    color: #0066ff;
+  }
+  .json-value {
+    color: #16a34a;
+  }
+  .json-string {
+    color: #ea580c;
+  }
+`;
+
+export const FormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow-y: auto; // Enable scrolling
+  padding-right: 1rem; // Add padding for scrollbar
+  max-height: 100%; // Take full height
+  margin-bottom: 80px; // Add margin to prevent overlap with vote section
+`;
+
+export const PreviewContainer = styled.div`
+  flex: 1;
+  min-height: 500px;
+  background: #f0f4f8;
+  border-radius: ${tokens.borderRadius.lg};
+  box-shadow: 
+    20px 20px 60px #d1d9e6,
+    -20px -20px 60px #ffffff;
+  padding: ${tokens.spacing.md};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  
+  svg {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+`;
+
+export const VoteSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${tokens.spacing.md};
+  padding: ${tokens.spacing.md} 0;
+`;
+
+export const ThankYouMessage = styled.div`
+          text-align: center;
+          color: #22C55E;
+          font-weight: 600;
+          padding: 1rem;
+          animation: fadeIn 0.3s ease-in;
+
+          @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+          `;
+
+export const PreviewSection = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: ${tokens.spacing.lg};
+  padding: ${tokens.spacing.xl};
+  height: calc(100vh - ${tokens.spacing.xl} * 2);
+  overflow-y: auto;
+  background: ${tokens.colors.neutral[100]};
+`;
+
+export const PreviewWrapper = styled.div`
+  width: 100%;
+  height: calc(100vh - 200px); // Fixed height
+  max-width: 100%;
+  margin-bottom: 0; // Remove margin bottom
+  flex: 1; // Allow flex growing
+`;
+
+export const PreviewTitle = styled.h2`
+  font-size: ${tokens.fontSizes['2xl']};
+  font-weight: 600;
+  color: ${tokens.colors.neutral[900]};
+  margin: 0;
+`;
+
+export const OpenAIIconWrapper = styled.div`
+  display: flex;
+  padding: 0;
+  padding-top: 4px;
+  justify-content: center;
+  height: 12px;
+  align-items: center;
+`;
+
+export const StyledOpenAIIcon = styled(OpenAIIcon)`
+  width: 20px;
+  height: 20px;
+  align-content: center;
+`;
+
+export const PreviewControls = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${tokens.spacing.md};
+  padding: ${tokens.spacing.lg};
+  background: white;
+  border-radius: ${tokens.borderRadius.md};
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+`;
+

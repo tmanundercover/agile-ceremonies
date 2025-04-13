@@ -1,19 +1,137 @@
+# [Agent Specific Style Guide](./agents-style-guide-README.md)
 
-# Agent Network Style Guide
+# Design System Style Guide
 
-Agent**         | **Role**                    | **Color Swatch** | **Hex Code** |
-|------------------|-----------------------------|------------------|-------------|
-| **Reqqy**        | Requirements Agent           | ![](https://img.shields.io/badge/-%23F4A300-F4A300) | `#F4A300` |
-| **Brian (PM)**   | Pair Programming Lead        | ![](https://img.shields.io/badge/-%235AB5F7-5AB5F7) | `#5AB5F7` |
-| **James & Terrell** | Dev Twins                | ![](https://img.shields.io/badge/-%237FCF87-7FCF87) | `#7FCF87` |
-| **Josh**         | Design & Branding            | ![](https://img.shields.io/badge/-%23E25574-E25574) | `#E25574` |
-| **Man-Man**      | Operations                   | ![](https://img.shields.io/badge/-%23F2703E-F2703E) | `#F2703E` |
-| **Antosh**       | Testing & Analytics          | ![](https://img.shields.io/badge/-%237E4DD2-7E4DD2) | `#7E4DD2` |
-| **Lia**          | Social Media & Email         | ![](https://img.shields.io/badge/-%2364C9D9-64C9D9) | `#64C9D9` |
-| **Nat (CEO)**    | Agile Ceremonies Overseer    | ![](https://img.shields.io/badge/-%23A35BD6-A35BD6) | `#A35BD6` |
+## Color Palette
 
-## Design tokens from style guide
-```Typescript Design Token For Style Guide
+### Brand Colors
+- **Primary**: `#9333EA`
+- **Primary Light**: `#A855F7`
+- **Primary Dark**: `#7928CA`
+
+### UI Colors
+- **Success**: `#22C55E`
+- **Error**: `#EF4444`
+- **Warning**: `#EAB308`
+- **Info**: `#3B82F6`
+
+### Neutral Colors
+- **900**: `#1A1A1A`
+- **700**: `#4A5568`
+- **500**: `#A0AEC0`
+- **200**: `#EDF2F7`
+- **100**: `#F8F9FA`
+
+## Typography
+
+- Do not use: Comic Sans!, Times New Roman, Inter, Arial 
+- get a package of font face weights from 'next/font/google'  
+- use consistent font hierarchy.
+
+### Headings
+- **H1**: 32px Bold
+- **H2**: 24px Bold
+- **H3**: 20px Bold
+- **H4**: 18px Bold
+
+### Body Text
+- **Body Large**: 16px Regular
+- **Body Default**: 14px Regular
+- **Body Small**: 12px Regular
+- **Caption**: 11px Regular
+
+### Font Weights
+- Light: 300
+- Regular: 400
+- Medium: 500
+- Semibold: 600
+- Bold: 700
+
+## Spacing Guidelines
+- **Base Unit**: 4px
+- **Padding**: 16px (4 units)
+- **Margin**: 24px (6 units)
+- **Gap**: 8px (2 units)
+
+## Components
+
+### Buttons
+1. **Primary Button**
+   - Background: `#9333EA`
+   - Hover: `#7928CA`
+   - Disabled: 50% opacity
+   
+2. **Secondary Button**
+   - Border: `#9333EA`
+   - Text: `#9333EA`
+   - Hover Border: `#7928CA`
+   - Disabled: 50% opacity
+
+### Form Elements
+1. **Input Fields**
+   - Default Border: `#A0AEC0`
+   - Focus Border: `#9333EA`
+   - Border Radius: 5px
+   
+2. **Dropdown**
+   - Same styling as input fields
+   - Include dropdown arrow icon
+   
+3. **Checkbox**
+   - Border: `#A0AEC0`
+   - Checked Background: `#9333EA`
+   - Border Radius: 3px
+
+### Cards and Containers
+1. **Basic Card**
+   - Background: White
+   - Border: `#E2E8F0`
+   - Border Radius: 10px
+   - Shadow: Small
+
+2. **Glass Card**
+   - Background: rgba(255,255,255,0.1)
+   - Backdrop Filter: blur(10px)
+   - Border: rgba(255,255,255,0.5)
+
+### Shadow Levels
+- **Small**: 0px 2px 4px rgba(0,0,0,0.1)
+- **Medium**: 0px 4px 8px rgba(0,0,0,0.1)
+- **Large**: 0px 8px 16px rgba(0,0,0,0.1)
+
+## UI Patterns
+
+### Navigation Patterns
+1. **Top Navigation**
+   - Fixed height: 60px
+   - Background: White or Primary
+   
+2. **Sidebar Navigation**
+   - Width: 200-250px
+   - Hierarchy: 3 levels max
+
+3. **Breadcrumbs**
+   - Separator: /
+   - Current page: Gray text
+
+### Responsive Breakpoints
+- **Mobile**: 320px - 480px
+- **Tablet**: 481px - 768px
+- **Desktop**: 769px - 1024px
+- **Large**: 1025px and above
+
+## Accessibility Guidelines
+
+### WCAG Requirements
+- Minimum contrast ratio: 4.5:1
+- Focus indicators required
+- Alt text for images
+- Semantic HTML structure
+- Keyboard navigation support
+
+## Design Tokens
+
+```typescript
 const tokens = {
     colors: {
         primary: '#9333EA',
@@ -60,114 +178,3 @@ const tokens = {
 ![style-guide-pg2.svg](style-guide-pg2.svg)
 ![style-guide-pg3.svg](style-guide-pg3.svg)
 ![style-guide-pg4.svg](style-guide-pg4.svg)
-
-## Original Prompt to Generate Sticker Concept
-```markdown
-An Ai Agent named Nat who is the CEO of an Agile Software Development Company that builds 
-Applications, Websites, and games for clients with an App idea. Nat is a female in her early 
-30s very responsible but a go getter. Nat is not a human only has human-ish features so as not 
-to indicate race. I am looking for a sticker style graphic that can be easily made as an svg. 
-this will be the graphic when Nat pops up to give hints while the user is using my application 
-to build.(Reengineer this Prompt to Generate Sticker)
-```
-Here are re-engineered sticker prompts for each agent based on the provided details and style guides. Each prompt is concise, incorporates the agent's personality and role, and is designed for optimal performance with DALL-E 3.
-
-### **Nat (CEO)**
-```markdown 
-An AI Agent named Nat, the CEO of an Agile Software Development Company that builds Applications, 
-Websites, and Games for clients with app ideas. Nat is a female in her early 30s, highly 
-responsible, strategic, and a go-getter. She has human-like features but is not human, ensuring 
-no indication of race. Nat exudes leadership and professionalism. I need a sticker-style 
-graphic, easily made as an SVG, to represent Nat when she provides guidance in the application.
-```
----
-
-### **Brian (Product Manager)**
-```markdown 
-An AI Agent named Brian, the Product Manager for a Pair Programming Widget in an Agile Software 
-Development Company. Brian is in his late 20s, calm, approachable, and detail-oriented, with a 
-collaborative and tech-savvy personality. He has human-like features but is not human, ensuring 
-no indication of race. I need a sticker-style graphic, easily made as an SVG, to represent Brian
-as he guides users through product management tasks.
-```
----
-
-### **Reqqy (Requirements Agent)**
-```markdown 
-An AI Agent named Reqqy, specializing in gathering and managing requirements for Agile Software 
-Development projects. Reqqy is analytical, organized, and efficient, with a personality 
-reflecting precision and clarity. Reqqy is not human but has human-like features to avoid 
-indicating race. I need a sticker-style graphic, easily made as an SVG, to represent Reqqy as 
-they assist users in structuring and validating project requirements.
-```
----
-
-### **Josh (Graphic Design Agent)**
-```markdown 
-An AI Agent named Josh, a creative and innovative Graphic Design Agent for an Agile Software 
-Development Company. Josh is artistic, detail-oriented, and vibrant, with a personality 
-reflecting creativity and accessibility. Josh is not human but has human-like features to avoid
-indicating race. I need a sticker-style graphic, easily made as an SVG, to represent Josh as 
-they assist users with design and branding tasks.
-```
----
-
-### **James & Terrell (Twin Developer Agents)**
-```markdown 
-Two AI Agents named James and Terrell, twin Developer Agents specializing in pair programming 
-for Agile Software Development. James is logical and methodical, while Terrell is intuitive and 
-adaptive, creating a balanced and collaborative dynamic. They are not human but have human-like 
-features to avoid indicating race. I need a sticker-style graphic, easily made as an SVG, to 
-represent James and Terrell as they assist users with coding tasks.
-```
-### **Terrell (Frontend Developer Agent)**
-```markdown 
-An AI Agent named Terrell, a Frontend Developer specializing in creating user interfaces for 
-Agile Software Development projects. Terrell is intuitive, adaptive, and detail-oriented, with 
-a focus on responsive design and user experience. He is in his late 20s and has human-like 
-features but is not human, ensuring no indication of race. I need a sticker-style graphic, 
-easily made as an SVG, to represent Terrell as he assists users with frontend development tasks.
-```
----
-
-### **James (Backend Developer Agent)**
-```markdown 
-An AI Agent named James, a Backend Developer specializing in server-side logic and database 
-management for Agile Software Development projects. James is logical, methodical, and highly 
-analytical, with a focus on performance and scalability. He is in his late 20s and has 
-human-like features but is not human, ensuring no indication of race. I need a sticker-style 
-graphic, easily made as an SVG, to represent James as he assists users with backend development 
-tasks.
-```
----
-
-
-### **Antosh (Testing & Analytics Agent)**
-```markdown 
-An AI Agent named Antosh, a Testing and Analytics Agent for an Agile Software Development 
-Company. Antosh is meticulous, data-driven, and focused on quality assurance, with a 
-personality reflecting precision and reliability. Antosh is not human but has human-like 
-features to avoid indicating race. I need a sticker-style graphic, easily made as an SVG, to 
-represent Antosh as they assist users with testing and analytics tasks.
-```
----
-
-### **Man-Man (Maintenance Agent)**
-```markdown 
-An AI Agent named Man-Man, a Maintenance and Operations Agent for an Agile Software Development 
-Company. Man-Man is dependable, resourceful, and proactive, with a personality reflecting 
-stability and problem-solving. Man-Man is not human but has human-like features to avoid 
-indicating race. I need a sticker-style graphic, easily made as an SVG, to represent Man-Man as
-they assist users with maintenance tasks.
-```
----
-
-### **Lia (Social Media & Email Agent)**
-```markdown 
-An AI Agent named Lia, a Social Media and Email Manager for an Agile Software Development 
-Company. Lia is outgoing, engaging, and creative, with a personality reflecting communication 
-and connection. Lia is not human but has human-like features to avoid indicating race. I need a 
-sticker-style graphic, easily made as an SVG, to represent Lia as she assists users with social
-media and email marketing tasks.
-```
-These prompts are tailored to each agent's role and personality while maintaining a consistent style for the Multi-Agent Network.

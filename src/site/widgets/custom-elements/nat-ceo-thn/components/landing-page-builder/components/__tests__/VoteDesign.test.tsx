@@ -125,5 +125,24 @@ describe('VoteDesign', () => {
             expect(getComputedStyle(button).cursor).toBe('pointer');
         });
     });
-});
 
+    it('displays thank you message after voting', () => {
+        render(<VoteDesign onVote={mockOnVote} data-testid="vote-design"/>);
+
+        // Message should not be visible initially
+        expect(screen.queryByText('Thank you for your feedback!')).not.toBeInTheDocument();
+
+        // Test with each vote type
+        const voteTypes = ['vote-up', 'vote-meh', 'vote-down'];
+
+        voteTypes.forEach((voteType) => {
+            // Click vote button
+            fireEvent.click(screen.getByTestId(voteType));
+            expect(screen.getByText('Thank you for your feedback!')).toBeInTheDocument();
+
+            // Click again to deselect
+            fireEvent.click(screen.getByTestId(voteType));
+            expect(screen.queryByText('Thank you for your feedback!')).not.toBeInTheDocument();
+        });
+    });
+});

@@ -1,5 +1,6 @@
-import { LandingPageData } from './sticker-builder-types';
+import {LandingPageData, StyleGuide} from './landing-page-builder-types';
 import {generateLandingPage} from "../../../../../../server/api/openai/landing-page";
+import {generateMockLandingPage} from "./landing-page-builder-utils";
 
 export interface OpenAIApiRequest {
   messages: {
@@ -66,11 +67,12 @@ interface OpenAIApiResponse {
   };
 }
 
-export const callOpenAI = async (formData: LandingPageData): Promise<string> => {
+export const callOpenAI = async (formData: LandingPageData, styleGuide:StyleGuide): Promise<string> => {
   const apiRequest = convertFormDataToApiRequest(formData);
   
   try {
-    const response = await generateLandingPage(apiRequest);
+    const mockSVG = generateMockLandingPage({width:1200, height:800, padding:8}, styleGuide)
+    const response = await generateLandingPage(apiRequest, mockSVG);
 
     if (!response.choices?.[0]?.message?.content) {
       throw new Error('Invalid response format from landing page generator');
