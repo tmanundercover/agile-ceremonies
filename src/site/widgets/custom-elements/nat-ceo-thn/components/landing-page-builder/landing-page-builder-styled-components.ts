@@ -298,21 +298,6 @@ export const LoadingTextStyled = styled.div`
     pointer-events: auto;
 `;
 
-export const StatusBannerStyled = styled.div<{ status: 'success' | 'error' }>`
-    padding: 0.75rem 1.5rem;
-    margin-bottom: -20px; // Pull the indicator closer to the container
-    border-radius: 6px;
-    background: ${({status}) => status === 'success' ? '#E6F4EA' : '#FEEEE2'};
-    color: #2c2929;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    pointer-events: auto; // Re-enable pointer events for the actual message
-`;
-
 export const ViewerContainerStyled = styled.div<{ status?: 'loading' | 'success' | 'error' }>`
   position: fixed;
   top: 10px;
@@ -466,18 +451,21 @@ export const VoteSectionStyled = styled.div`
   padding: ${tokens.spacing.md} 0;
 `;
 
-export const ThankYouMessageStyled = styled.div`
-          text-align: center;
-          color: #22C55E;
-          font-weight: 600;
-          padding: 1rem;
-          animation: fadeIn 0.3s ease-in;
+export const ThankYouMessageStyled = styled.div<{ $visible: boolean }>`
+    text-align: center;
+    color: #22C55E;
+    font-weight: 600;
+    padding: 1rem;
+    animation: fadeIn 0.3s ease-in;
+    opacity: ${({ $visible }) => ($visible ? 1 : 0)};
+    visibility: ${({ $visible }) => ($visible ? 'visible' : 'hidden')};
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 
-          @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-          `;
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+`;
 
 export const PreviewSectionStyled = styled.div`
   display: grid;
@@ -672,3 +660,102 @@ export const ButtonGroupStyled = styled.div`
   margin-top: ${tokens.spacing.lg};
 `;
 
+export const VoteContainerStyled = styled.div`
+    display: flex;
+    justify-content: center;
+    gap: ${tokens.spacing.lg};
+`;
+
+export const VoteLabelStyled = styled.span`
+    font-size: ${tokens.fontSizes.sm};
+    color: ${tokens.colors.neutral[700]};
+    display: block;
+    text-align: center;
+    margin-top: ${tokens.spacing.xs};
+`;
+
+export const VoteWrapperStyled = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+export const LoadingTextContainerStyled = styled.div`
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: ${tokens.spacing.md};
+    padding: ${tokens.spacing.md} ${tokens.spacing.xl};
+    margin-bottom: -20px;
+    font-weight: 600;
+    color: ${tokens.colors.info};
+    background: white;
+    border-radius: ${tokens.borderRadius.md};
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    pointer-events: auto;
+`;
+
+export const StatusBannerStyled = styled.div<{ status: 'success' | 'error' }>`
+    padding: ${tokens.spacing.md} ${tokens.spacing.xl};
+    margin-bottom: -20px;
+    border-radius: ${tokens.borderRadius.md};
+    background: ${({status}) => status === 'success' ? '#E6F4EA' : '#FEEEE2'};
+    color: ${tokens.colors.neutral[900]};
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: ${tokens.spacing.sm};
+    pointer-events: auto;
+`;
+
+export const ColorInputGroupStyled = styled.div`
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  gap: ${tokens.spacing.md};
+  align-items: center;
+`;
+
+export const ColorSwatchStyled = styled.button`
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: ${props => props.color};
+  
+  &:hover {
+    border-color: #0066ff;
+  }
+  
+  &:focus {
+    outline: none;
+    border-color: #0066ff;
+  }
+`;
+
+export const ColorInputStyled = styled.input`
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+`;
+
+export const HexInputStyled = styled.input`
+  padding: 0.75rem;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  width: 100px;
+  
+  &:focus {
+    border-color: #0066ff;
+    outline: none;
+  }
+`;

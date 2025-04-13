@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {CheckIcon, CrossCircledIcon} from '@radix-ui/react-icons';
 import {
-    IndicatorContainer,
-    LoadingSpinner,
-    LoadingText,
-    OpenAIIcon,
-    StatusBanner
+    IndicatorContainerStyled,
+    LoadingSpinnerStyled,
+    LoadingTextContainerStyled,
+    OpenAIIconStyled,
+    StatusBannerStyled
 } from "../landing-page-builder-styled-components";
 
 interface StatusIndicatorProps {
@@ -15,10 +15,10 @@ interface StatusIndicatorProps {
 }
 
 export const StatusIndicator: React.FC<StatusIndicatorProps> = ({
-                                                                    status,
-                                                                    message,
-                                                                    'data-testid': dataTestId
-                                                                }) => {
+    status,
+    message,
+    'data-testid': dataTestId
+}) => {
     const [isVisible, setIsVisible] = useState(true);
 
     useEffect(() => {
@@ -36,27 +36,27 @@ export const StatusIndicator: React.FC<StatusIndicatorProps> = ({
     }, [status, message]);
 
     return (
-        <IndicatorContainer
+        <IndicatorContainerStyled
             data-testid={dataTestId}
             data-visible={isVisible.toString()}
-            $isVisible={isVisible}  // Changed from isVisible to $isVisible
+            $isVisible={isVisible}
         >
             {status === 'loading' && !message && (
-                <LoadingText data-testid="loading-indicator">
-                    <LoadingSpinner data-testid="loading-indicator">
-                        <OpenAIIcon viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <LoadingTextContainerStyled data-testid="loading-indicator">
+                    <LoadingSpinnerStyled>
+                        <OpenAIIconStyled viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M21.3333 11.9996C21.3333 17.155 17.155 21.3333 11.9996 21.3333C6.84417 21.3333 2.66663 17.155 2.66663 11.9996C2.66663 6.84417 6.84417 2.66663 11.9996 2.66663"
                                 stroke="currentColor"
                                 strokeWidth="2"
                                 strokeLinecap="round"/>
-                        </OpenAIIcon>
-                    </LoadingSpinner>
+                        </OpenAIIconStyled>
+                    </LoadingSpinnerStyled>
                     Processing request...
-                </LoadingText>
+                </LoadingTextContainerStyled>
             )}
             {(status === 'success' || status === 'error') && message && (
-                <StatusBanner
+                <StatusBannerStyled
                     status={status as 'success' | 'error'}
                     data-testid="status-message"
                 >
@@ -71,9 +71,8 @@ export const StatusIndicator: React.FC<StatusIndicatorProps> = ({
                             {message}
                         </>
                     )}
-                </StatusBanner>
+                </StatusBannerStyled>
             )}
-        </IndicatorContainer>
+        </IndicatorContainerStyled>
     );
 };
-

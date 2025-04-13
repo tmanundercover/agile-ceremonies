@@ -1,50 +1,13 @@
 import React, {useState} from 'react';
-import styled from 'styled-components';
 import {ToggleButton} from './ToggleButton';
+import {
+    VoteContainerStyled,
+    VoteLabelStyled,
+    VoteWrapperStyled,
+    ThankYouMessageStyled
+} from '../landing-page-builder-styled-components';
 
-const VoteContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    gap: 24px;
-`;
-
-const VoteLabel = styled.span`
-    font-size: 12px;
-    color: #4A5568;
-    display: block;
-    text-align: center;
-    margin-top: 4px;
-`;
-
-const ThankYouMessage = styled.div<{ $visible: boolean }>`
-    text-align: center;
-    color: #22C55E;
-    font-weight: 600;
-    height: 48px; // Fixed height to prevent layout shift
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    animation: ${props => props.$visible ? 'fadeIn' : 'fadeOut'} 0.3s ease-in forwards;
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
-    }
-
-    @keyframes fadeOut {
-        from {
-            opacity: 1;
-        }
-        to {
-            opacity: 0;
-        }
-    }
-`;
+export type VoteType = 'up' | 'down' | 'meh' | null;
 
 const getColorForVariant = (variant: VoteType): string => {
     switch (variant) {
@@ -59,8 +22,6 @@ const getColorForVariant = (variant: VoteType): string => {
     }
 };
 
-export type VoteType = 'up' | 'down' | 'meh' | null;
-
 interface VoteDesignProps {
     onVote: (vote: VoteType) => void;
     'data-testid'?: string;
@@ -68,10 +29,10 @@ interface VoteDesignProps {
 }
 
 export const VoteDesign: React.FC<VoteDesignProps> = ({
-                                                          onVote,
-                                                          'data-testid': dataTestId,
-                                                          selectedVote: initialVote
-                                                      }) => {
+    onVote,
+    'data-testid': dataTestId,
+    selectedVote: initialVote
+}) => {
     const [selectedVote, setSelectedVote] = useState<VoteType>(initialVote || null);
 
     const handleVote = (vote: VoteType) => {
@@ -81,8 +42,8 @@ export const VoteDesign: React.FC<VoteDesignProps> = ({
     };
 
     return (
-        <div style={{display:"flex", flexDirection:'column'}}>
-            <VoteContainer data-testid={dataTestId}>
+        <VoteWrapperStyled>
+            <VoteContainerStyled data-testid={dataTestId}>
                 <div>
                     <ToggleButton
                         isSelected={selectedVote === 'up'}
@@ -94,7 +55,7 @@ export const VoteDesign: React.FC<VoteDesignProps> = ({
                     >
                         👍
                     </ToggleButton>
-                    <VoteLabel>Love it!</VoteLabel>
+                    <VoteLabelStyled>Love it!</VoteLabelStyled>
                 </div>
 
                 <div>
@@ -108,7 +69,7 @@ export const VoteDesign: React.FC<VoteDesignProps> = ({
                     >
                         😐
                     </ToggleButton>
-                    <VoteLabel>Meh...</VoteLabel>
+                    <VoteLabelStyled>Meh...</VoteLabelStyled>
                 </div>
 
                 <div>
@@ -122,13 +83,13 @@ export const VoteDesign: React.FC<VoteDesignProps> = ({
                     >
                         👎
                     </ToggleButton>
-                    <VoteLabel>Nope</VoteLabel>
+                    <VoteLabelStyled>Nope</VoteLabelStyled>
                 </div>
-            </VoteContainer>
-            <ThankYouMessage $visible={!!selectedVote}>
+            </VoteContainerStyled>
+            <ThankYouMessageStyled $visible={!!selectedVote}>
                 Thank you for your feedback!
-            </ThankYouMessage>
-        </div>
+            </ThankYouMessageStyled>
+        </VoteWrapperStyled>
     );
 };
 
