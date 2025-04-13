@@ -34,6 +34,7 @@ import {StyleGuideModal} from './components/StyleGuideModal';
 import {VoteDesign, VoteType} from "./components/VoteDesign";
 import {StatusIndicator} from './components/StatusIndicator';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
+import { FileSelector } from './components/FileSelector';
 
 export const LandingPageBuilder: React.FC = () => {
     const [formData, setFormData] = useState<LandingPageData>({
@@ -96,20 +97,6 @@ export const LandingPageBuilder: React.FC = () => {
             setPromptViewerStatus('error');
         } finally {
             setLoading(false);
-        }
-    };
-
-    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                setFormData({
-                    ...formData,
-                    svgGraphic: event.target?.result as string
-                });
-            };
-            reader.readAsText(file);
         }
     };
 
@@ -184,11 +171,19 @@ export const LandingPageBuilder: React.FC = () => {
 
                 <InputGroupStyled>
                     <LabelStyled htmlFor="svgUpload">Upload SVG Graphic</LabelStyled>
-                    <InputStyled
-                        id="svgUpload"
-                        type="file"
+                    <FileSelector
+                        onFileSelected={(file) => {
+                            const reader = new FileReader();
+                            reader.onload = (event) => {
+                                setFormData({
+                                    ...formData,
+                                    svgGraphic: event.target?.result as string
+                                });
+                            };
+                            reader.readAsText(file);
+                        }}
                         accept=".svg"
-                        onChange={handleFileUpload}
+                        data-testid="svg-upload"
                     />
                 </InputGroupStyled>
 

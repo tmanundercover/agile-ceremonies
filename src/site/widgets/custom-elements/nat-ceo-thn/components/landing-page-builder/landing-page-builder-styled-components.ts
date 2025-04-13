@@ -825,3 +825,52 @@ export const HexInputStyled = styled.input`
   }
 `;
 
+export const FileSelectorStyled = styled.div<{ $isDragging: boolean }>`
+  border: 2px dashed ${props => props.$isDragging ? tokens.colors.primary : tokens.colors.neutral[500]};
+  border-radius: ${tokens.borderRadius.md};
+  background: ${props => props.$isDragging ? `${tokens.colors.primary}10` : tokens.colors.neutral[100]};
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  
+  &:hover {
+    border-color: ${tokens.colors.primary};
+    background: ${tokens.colors.primary}10;
+  }
+`;
+
+export const DropzoneContentStyled = styled.div<{ $hasFile?: boolean }>`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: ${tokens.spacing.md};
+  color: ${tokens.colors.neutral[700]};
+  height: 100%;
+  justify-content: center;
+  
+  ${props => props.$hasFile && `
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    
+    &:hover {
+      opacity: 1;
+    }
+  `}
+  
+  svg {
+    color: ${tokens.colors.primary};
+  }
+`;
+
+export const FileInputStyled = styled.input`
+  display: none;
+`;
+
