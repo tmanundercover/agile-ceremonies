@@ -43,26 +43,30 @@ export const tokens = {
 };
 
 export const ContainerStyled = styled.div`
-  display: grid;
-  grid-template-rows: auto 1fr;
-  gap: ${tokens.spacing.xl};
-  padding: ${tokens.spacing.xl};
+  display: block;
+  position: relative;
   min-height: 100vh;
   background: ${tokens.colors.neutral[100]};
   font-family: 'Inter', system-ui, sans-serif;
+  overflow: hidden; // Add this to contain the fixed form
 `;
 
 export const FormStyled = styled.form`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 400px;
+  height: 100vh;
   display: grid;
   grid-template-columns: 1fr;
   gap: ${tokens.spacing.lg};
   padding: ${tokens.spacing.xl};
   background: #f0f4f8;
-  border-radius: ${tokens.borderRadius.md};
-  box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 0;
+  box-shadow: 8px 0 16px #d1d9e6;
+  border-right: 1px solid rgba(255, 255, 255, 0.18);
   overflow-y: auto;
-  max-height: 100%;
+  z-index: 1;
 `;
 
 export const InputGroupStyled = styled.div`
@@ -491,13 +495,18 @@ export const ThankYouMessageStyled = styled.div<{ $visible: boolean }>`
 `;
 
 export const PreviewSectionStyled = styled.div`
+  position: relative;
+  margin-left: 400px;
+  min-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
   gap: ${tokens.spacing.lg};
   padding: ${tokens.spacing.xl};
-  width: 100%;
-  overflow-y: auto;
+  width: calc(100% - 400px);
   background: ${tokens.colors.neutral[100]};
+  z-index: 2;
+  transform: translateZ(0); // Optimize performance
+  will-change: transform; // Hint to browser about animations
 `;
 
 export const PreviewWrapperStyled = styled.div`
@@ -784,4 +793,5 @@ export const HexInputStyled = styled.input`
     outline: none;
   }
 `;
+
 
