@@ -83,6 +83,26 @@ Please generate an SVG that includes:
 Additional Note:
 I’m James, an African American freelance developer helping Black-owned businesses thrive online. From mobile-ready websites to full apps with Flutter, I’ve got you. Hire me on Fiverr (https://www.fiverr.com/jamessinglet735), view my work on GitHub (https://github.com/tmanundercover), or connect on LinkedIn (https://www.linkedin.com/in/the-handsomest-nerd/). Let's build something powerful together.
 
+Create a landing page with the following content:
+Main Message: Future-ready websites with built-in AI — crafted by a developer who understands the tech
+Keywords: AI-Powered, Web Development, NLP, Prompt Engineering, Smart Websites
+Calls to Action: Build With AI, View Capabilities
+Style Guide:
+- Primary Color: #9333EA
+- Secondary Color: #4A5568
+- Font Family: Appropriate but not Inter, comic sans, times new roman
+- Spacing: 16px
+- Border Radius: 8px
+
+Please generate an SVG that includes:
+1. A hero section with the main message
+2. Visual elements highlighting the keywords
+3. prominent call-to-action buttons
+4. Responsive layout that works well at different sizes
+
+Additional Note:
+I’m James — a web developer and AI model evaluation specialist. I build smart, responsive websites and apps that integrate AI features like chatbots, natural language interfaces, and automation tools. My experience includes prompt engineering, interaction testing, model QA, and dataset development. Let’s build a smarter web experience. Hire me on Fiverr (https://www.fiverr.com/jamessinglet735), explore my work on GitHub (https://github.com/tmanundercover), or connect on LinkedIn (https://www.linkedin.com/in/the-handsomest-nerd/).
+
 
 # Prompt
 Build a one component React app that is a sticker builder. Take in a set of images with filenames that hint at what should be taken from the image.

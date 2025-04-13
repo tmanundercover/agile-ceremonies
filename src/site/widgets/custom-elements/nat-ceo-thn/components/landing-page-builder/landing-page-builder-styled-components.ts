@@ -42,47 +42,42 @@ export const tokens = {
   }
 };
 
-export const Container = styled.div`
+export const ContainerStyled = styled.div`
   display: grid;
-  grid-template-columns: minmax(300px, 400px) 1fr;
+  grid-template-rows: auto 1fr;
   gap: ${tokens.spacing.xl};
   padding: ${tokens.spacing.xl};
-  height: 100vh;
+  min-height: 100vh;
   background: ${tokens.colors.neutral[100]};
   font-family: 'Inter', system-ui, sans-serif;
-  overflow-y: auto;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
 `;
 
-export const Form = styled.form`
-  display: flex;
-  flex-direction: column;
+export const FormStyled = styled.form`
+  display: grid;
+  grid-template-columns: 1fr;
   gap: ${tokens.spacing.lg};
   padding: ${tokens.spacing.xl};
   background: #f0f4f8;
   border-radius: ${tokens.borderRadius.md};
-  box-shadow: 
-    8px 8px 16px #d1d9e6,
-    -8px -8px 16px #ffffff;
+  box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.18);
+  overflow-y: auto;
+  max-height: 100%;
 `;
 
-export const InputGroup = styled.div`
-  display: flex;
-  flex-direction: column;
+export const InputGroupStyled = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
   gap: ${tokens.spacing.sm};
 `;
 
-export const Label = styled.label`
+export const LabelStyled = styled.label`
   font-weight: 600;
   color: ${tokens.colors.neutral[900]};
   font-size: ${tokens.fontSizes.base};
 `;
 
-export const Input = styled.input`
+export const InputStyled = styled.input`
   padding: ${tokens.spacing.md};
   border: 2px solid ${tokens.colors.neutral[200]};
   border-radius: ${tokens.borderRadius.sm};
@@ -100,7 +95,7 @@ export const Input = styled.input`
   }
 `;
 
-export const TextArea = styled.textarea`
+export const TextAreaStyled = styled.textarea`
   padding: ${tokens.spacing.md};
   border: 2px solid ${tokens.colors.neutral[200]};
   border-radius: ${tokens.borderRadius.sm};
@@ -120,7 +115,7 @@ export const TextArea = styled.textarea`
   }
 `;
 
-export const Preview = styled.div`
+export const PreviewStyled = styled.div`
   background: white;
   border-radius: ${tokens.borderRadius.md};
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -128,7 +123,7 @@ export const Preview = styled.div`
   min-height: 600px;
 `;
 
-export const Modal = styled.div`
+export const ModalStyled = styled.div`
   position: fixed;
   top: 50%;
   left: 50%;
@@ -144,7 +139,7 @@ export const Modal = styled.div`
   z-index: 1000;
 `;
 
-export const Button = styled.button<{ variant?: 'primary' | 'secondary' | 'success' | 'error' }>`
+export const ButtonStyled = styled.button<{ variant?: 'primary' | 'secondary' | 'success' | 'error' }>`
   padding: ${tokens.spacing.md} ${tokens.spacing.lg};
   background: ${props => {
     switch (props.variant) {
@@ -210,12 +205,12 @@ export const Button = styled.button<{ variant?: 'primary' | 'secondary' | 'succe
   }
 `;
 
-export const SavedDesignPreview = styled(Preview)`
+export const SavedDesignPreviewStyled = styled(PreviewStyled)`
     margin-top: 2rem;
     border: 2px solid #22C55E;
 `;
 
-export const SuccessMessage = styled.div`
+export const SuccessMessageStyled = styled.div`
     margin-top: 1rem;
     padding: 1rem;
     background-color: #F0FDF4;
@@ -233,14 +228,14 @@ export const rotate = keyframes`
   }
 `;
 
-export const OpenAIIcon = styled.svg`
+export const OpenAIIconStyled = styled.svg`
     width: 24px;
     height: 24px;
     animation: ${rotate} 3.5s linear infinite;
     margin-bottom: 0.5rem;
 `;
 
-export const LoadingSpinner = styled.div`
+export const LoadingSpinnerStyled = styled.div`
     text-align: center;
     margin-top: 1rem;
     font-weight: bold;
@@ -277,7 +272,7 @@ export const fadeOut = keyframes`
     }
 `;
 
-export const IndicatorContainer = styled.div<{ $isVisible: boolean }>`
+export const IndicatorContainerStyled = styled.div<{ $isVisible: boolean }>`
     position: relative;
     left: 50%;
     z-index: 1001; 
@@ -288,7 +283,7 @@ export const IndicatorContainer = styled.div<{ $isVisible: boolean }>`
     pointer-events: none;
 `;
 
-export const LoadingText = styled.div`
+export const LoadingTextStyled = styled.div`
     display: grid;
     grid-template-columns: auto 1fr;
     align-items: center;
@@ -303,7 +298,7 @@ export const LoadingText = styled.div`
     pointer-events: auto;
 `;
 
-export const StatusBanner = styled.div<{ status: 'success' | 'error' }>`
+export const StatusBannerStyled = styled.div<{ status: 'success' | 'error' }>`
     padding: 0.75rem 1.5rem;
     margin-bottom: -20px; // Pull the indicator closer to the container
     border-radius: 6px;
@@ -318,7 +313,7 @@ export const StatusBanner = styled.div<{ status: 'success' | 'error' }>`
     pointer-events: auto; // Re-enable pointer events for the actual message
 `;
 
-export const ViewerContainer = styled.div<{ status?: 'loading' | 'success' | 'error' }>`
+export const ViewerContainerStyled = styled.div<{ status?: 'loading' | 'success' | 'error' }>`
   position: fixed;
   top: 10px;
   left: 50%;
@@ -352,7 +347,7 @@ export const ViewerContainer = styled.div<{ status?: 'loading' | 'success' | 'er
   z-index: 1000;
 `;
 
-export const CloseButton = styled.button`
+export const CloseButtonStyled = styled.button`
   position: absolute;
   top: 1rem;
   right: 1rem;
@@ -367,18 +362,18 @@ export const CloseButton = styled.button`
   }
 `;
 
-export const FormSection = styled.div`
+export const FormSectionStyled = styled.div`
   margin-bottom: 1.5rem;
 `;
 
-export const FormLabel = styled.label`
+export const FormLabelStyled = styled.label`
   display: block;
   font-weight: 600;
   color: #333;
   margin-bottom: 0.5rem;
 `;
 
-export const FormField = styled.div`
+export const FormFieldStyled = styled.div`
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 6px;
@@ -393,7 +388,7 @@ export const FormField = styled.div`
   }
 `;
 
-export const ConfigField = styled(FormField)`
+export const ConfigFieldStyled = styled(FormFieldStyled)`
   .json-key {
     color: #0066ff;
   }
@@ -405,19 +400,19 @@ export const ConfigField = styled(FormField)`
   }
 `;
 
-export const FormContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  overflow-y: auto; // Enable scrolling
-  padding-right: 1rem; // Add padding for scrollbar
-  max-height: 100%; // Take full height
-  margin-bottom: 80px; // Add margin to prevent overlap with vote section
+export const FormContainerStyled = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: ${tokens.spacing.lg};
+  overflow-y: auto;
+  padding-right: ${tokens.spacing.md};
+  max-height: 100%;
+  margin-bottom: ${tokens.spacing.xl};
 `;
 
-export const PreviewContainer = styled.div`
-  flex: 1;
-  min-height: 500px;
+export const PreviewContainerStyled = styled.div`
+  aspect-ratio: 16/9;
+  width: 100%;
   background: #f0f4f8;
   border-radius: ${tokens.borderRadius.lg};
   box-shadow: 
@@ -427,8 +422,8 @@ export const PreviewContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.18);
+  position: relative;
   
   svg {
     width: 100%;
@@ -439,14 +434,39 @@ export const PreviewContainer = styled.div`
   }
 `;
 
-export const VoteSection = styled.div`
+export const PreviewOverlayStyled = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  
+  ${PreviewContainerStyled}:hover & {
+    opacity: 1;
+  }
+`;
+
+export const OverlayControlsStyled = styled.div`
+  background: white;
+  padding: ${tokens.spacing.lg};
+  border-radius: ${tokens.borderRadius.md};
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+`;
+
+export const VoteSectionStyled = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${tokens.spacing.md};
   padding: ${tokens.spacing.md} 0;
 `;
 
-export const ThankYouMessage = styled.div`
+export const ThankYouMessageStyled = styled.div`
           text-align: center;
           color: #22C55E;
           font-weight: 600;
@@ -459,33 +479,29 @@ export const ThankYouMessage = styled.div`
         }
           `;
 
-export const PreviewSection = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+export const PreviewSectionStyled = styled.div`
+  display: grid;
+  grid-template-rows: auto 1fr auto;
   gap: ${tokens.spacing.lg};
   padding: ${tokens.spacing.xl};
-  height: calc(100vh - ${tokens.spacing.xl} * 2);
+  width: 100%;
   overflow-y: auto;
   background: ${tokens.colors.neutral[100]};
 `;
 
-export const PreviewWrapper = styled.div`
+export const PreviewWrapperStyled = styled.div`
   width: 100%;
-  height: calc(100vh - 200px); // Fixed height
-  max-width: 100%;
-  margin-bottom: 0; // Remove margin bottom
-  flex: 1; // Allow flex growing
+  margin: 0 auto;
 `;
 
-export const PreviewTitle = styled.h2`
+export const PreviewTitleStyled = styled.h2`
   font-size: ${tokens.fontSizes['2xl']};
   font-weight: 600;
   color: ${tokens.colors.neutral[900]};
   margin: 0;
 `;
 
-export const OpenAIIconWrapper = styled.div`
+export const OpenAIIconWrapperStyled = styled.div`
   display: flex;
   padding: 0;
   padding-top: 4px;
@@ -494,19 +510,165 @@ export const OpenAIIconWrapper = styled.div`
   align-items: center;
 `;
 
-export const StyledOpenAIIcon = styled(OpenAIIcon)`
+export const StyledOpenAIIconStyled = styled(OpenAIIconStyled)`
   width: 20px;
   height: 20px;
   align-content: center;
 `;
 
-export const PreviewControls = styled.div`
-  display: flex;
-  flex-direction: column;
+export const PreviewControlsStyled = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
   gap: ${tokens.spacing.md};
   padding: ${tokens.spacing.lg};
   background: white;
   border-radius: ${tokens.borderRadius.md};
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  overflow-y: auto;
+  max-height: 300px;
+`;
+
+export const StyledButtonStyled = styled.button<{ $color: string }>`
+    background: none;
+    border: none;
+    font-size: 2.5rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+    padding: 0.5rem;
+    color: ${props => props.$color};
+
+    &:hover:not(:disabled) {
+        transform: scale(1.1);
+    }
+
+    &:active:not(:disabled) {
+        transform: scale(0.95);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+`;
+
+export const ToggleButtonGroupStyled = styled.div`
+  display: flex;
+  gap: ${tokens.spacing.sm};
+  justify-content: center;
+  align-items: center;
+  padding: ${tokens.spacing.md} 0;
+`;
+
+export const ToggleButtonContainerStyled = styled.div`
+  position: relative;
+  
+  &:hover {
+    .tooltip {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+`;
+
+export const TooltipStyled = styled.span`
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: ${tokens.spacing.xs} ${tokens.spacing.sm};
+  background: ${tokens.colors.neutral[900]};
+  color: white;
+  font-size: ${tokens.fontSizes.xs};
+  border-radius: ${tokens.borderRadius.sm};
+  white-space: nowrap;
+  transition: opacity 0.2s;
+  margin-bottom: ${tokens.spacing.xs};
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 4px;
+    border-style: solid;
+    border-color: ${tokens.colors.neutral[900]} transparent transparent transparent;
+  }
+`;
+
+export const OverlayStyled = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+`;
+
+export const SelectStyled = styled.select`
+  padding: ${tokens.spacing.md};
+  border: 2px solid ${tokens.colors.neutral[200]};
+  border-radius: ${tokens.borderRadius.sm};
+  font-size: ${tokens.fontSizes.base};
+  background: #f0f4f8;
+  box-shadow: 
+    inset 4px 4px 8px #d1d9e6,
+    inset -4px -4px 8px #ffffff;
+  width: 100%;
+  
+  &:focus {
+    border-color: ${tokens.colors.primary};
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+  }
+`;
+
+export const RangeInputStyled = styled.input`
+  width: 100%;
+  -webkit-appearance: none;
+  margin: ${tokens.spacing.md} 0;
+  background: transparent;
+
+  &::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 8px;
+    background: #f0f4f8;
+    border-radius: ${tokens.borderRadius.full};
+    box-shadow: 
+      inset 4px 4px 8px #d1d9e6,
+      inset -4px -4px 8px #ffffff;
+  }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: ${tokens.colors.primary};
+    margin-top: -6px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+
+  &:focus {
+    outline: none;
+    
+    &::-webkit-slider-thumb {
+      box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+    }
+  }
+`;
+
+export const ButtonGroupStyled = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: ${tokens.spacing.md};
+  margin-top: ${tokens.spacing.lg};
 `;
 

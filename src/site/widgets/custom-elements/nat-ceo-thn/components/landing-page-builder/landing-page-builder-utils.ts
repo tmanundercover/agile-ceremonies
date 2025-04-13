@@ -11,14 +11,14 @@ export const defaultStyleGuide: StyleGuide = {
 };
 
 export const getPreviewDimensions = (): PreviewDimensions => {
-    const viewportWidth = Math.min(window.innerWidth - 100, 1200); // Max width of 1200px
-    const aspectRatio = 1.5; // 3:2 aspect ratio
+    const size = Math.min(window.innerWidth - 100, 800); // Max size of 800px
     return {
-        width: viewportWidth,
-        height: viewportWidth / aspectRatio,
-        padding: Math.round(viewportWidth * 0.033) // 3.3% of width for padding
+        width: size,
+        height: size,
+        padding: Math.round(size * 0.033) // 3.3% of width for padding
     };
 };
+
 
 export const extractColorsFromSvg = (svgString: string): string[] => {
     const colors: string[] = [];

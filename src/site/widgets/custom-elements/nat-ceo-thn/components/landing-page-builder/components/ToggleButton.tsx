@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import {StyledButtonStyled} from "../landing-page-builder-styled-components";
 
 interface ToggleButtonProps {
     isSelected: boolean;
@@ -11,31 +11,7 @@ interface ToggleButtonProps {
     title?: string;
 }
 
-const StyledButton = styled.button<{ $color: string }>`
-    background: none;
-    border: none;
-    font-size: 2.5rem;
-    cursor: pointer;
-    transition: transform 0.2s;
-    padding: 0.5rem;
-    color: ${props => props.$color};
-
-    &:hover:not(:disabled) {
-        transform: scale(1.1);
-    }
-
-    &:active:not(:disabled) {
-        transform: scale(0.95);
-    }
-
-    &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-`;
-
 export const ToggleButton: React.FC<ToggleButtonProps> = ({
-    isSelected,
     onClick,
     disabled,
     color,
@@ -44,7 +20,7 @@ export const ToggleButton: React.FC<ToggleButtonProps> = ({
     title
 }) => {
     return (
-        <StyledButton
+        <StyledButtonStyled
             onClick={onClick}
             disabled={disabled}
             $color={color}
@@ -52,6 +28,7 @@ export const ToggleButton: React.FC<ToggleButtonProps> = ({
             title={title}
         >
             {children}
-        </StyledButton>
+        </StyledButtonStyled>
     );
 };
+

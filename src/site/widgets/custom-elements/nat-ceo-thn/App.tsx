@@ -5,7 +5,7 @@ import { LandingPageBuilder } from "./components/landing-page-builder/LandingPag
 
 export const App: React.FC = () => {
     return (
-        <Theme style={{maxHeight:"800px"}}>
+        <Theme style={{width:"100%", height:"100%"}}>
             <LandingPageBuilder />
         </Theme>
     );

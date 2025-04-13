@@ -1,9 +1,11 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
+import {tokens} from "../landing-page-builder-styled-components";
 
 const ColorInputGroup = styled.div`
-  display: flex;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  gap: ${tokens.spacing.md};
   align-items: center;
 `;
 
