@@ -49,8 +49,10 @@ export const ContainerStyled = styled.div<{ $isHidden?: boolean }>`
   display: flex;
   position: relative;
   min-height: 100vh;
+  width: 100%;
   background: ${tokens.colors.neutral[100]};
   font-family: 'Inter', system-ui, sans-serif;
+  overflow: hidden;
 `;
 
 export const ToggleButtonStyled = styled.button<{ $isHidden?: boolean }>`
@@ -354,23 +356,23 @@ export const ViewerContainerStyled = styled.div<{ status?: 'loading' | 'success'
   width: 1200px;
   min-width: 800px;
   height: calc(100vh - 164px); // Fixed height
-  display: grid;
-  grid-template-columns: 400px 1fr;
-  gap: 2rem;
-  grid-template-rows: 1fr auto;  // Add this line to support the vote section
+  display: flex;
+  flex-direction: column;
+  gap: ${tokens.spacing.lg};
   border: 2px solid ${({ status }) => {
-  switch (status) {
-    case 'loading':
-      return '#3B82F6';
-    case 'success':
-      return '#22C55E';
-    case 'error':
-      return '#EF4444';
-    default:
-      return '#ddd';
-  }
-}};
+    switch (status) {
+      case 'loading':
+        return '#3B82F6';
+      case 'success':
+        return '#22C55E';
+      case 'error':
+        return '#EF4444';
+      default:
+        return '#ddd';
+    }
+  }};
   z-index: 1000;
+  overflow: hidden;
 `;
 
 export const CloseButtonStyled = styled.button`
@@ -438,8 +440,8 @@ export const FormContainerStyled = styled.div`
 
 export const PreviewContainerStyled = styled.div`
   width: 100%;
+  height: auto;
   min-height: 400px;
-  flex-grow: 1;
   background: white;
   border-radius: ${tokens.borderRadius.lg};
   box-shadow: 0 4px 8px rgba(0,0,0,0.1); // Using medium shadow from guide
@@ -506,19 +508,21 @@ export const ThankYouMessageStyled = styled.div<{ $visible: boolean }>`
 
 export const PreviewSectionStyled = styled.div<{ $isHidden?: boolean }>`
   flex: 1;
-  padding: ${tokens.spacing.xl};
-  min-height: 100vh;
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: ${tokens.spacing.lg};
   margin-left: ${props => props.$isHidden ? '32px' : '400px'};
   transition: margin-left 0.3s ease;
+  height: 100vh;
+  overflow-y: auto;
+  padding: ${tokens.spacing.xl};
+  box-sizing: border-box;
 `;
 
 export const PreviewWrapperStyled = styled.div`
   width: 100%;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: ${tokens.spacing.lg};
 `;
 
 export const PreviewTitleStyled = styled.h2`
@@ -549,8 +553,6 @@ export const PreviewControlsStyled = styled.div`
   padding: ${tokens.spacing.lg};
   margin-bottom: ${tokens.spacing.xl};
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  overflow-y: auto;
-  max-height: 300px;
 `;
 
 export const StyledButtonStyled = styled.button<{ $color: string }>`
@@ -798,6 +800,8 @@ export const HexInputStyled = styled.input`
     outline: none;
   }
 `;
+
+
 
 
 
