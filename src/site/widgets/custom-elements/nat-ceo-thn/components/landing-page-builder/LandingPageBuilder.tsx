@@ -236,18 +236,14 @@ export const LandingPageBuilder: React.FC = () => {
                     <PreviewContainerStyled 
                         id="prompt-preview"
                         style={{ opacity: showMockPreview ? 0.6 : 1 }}
-                    >
-                        {promptViewerStatus === 'success' && !loading && !showMockPreview && (
-                            <PreviewOverlayStyled>
-                                <OverlayControlsStyled>
-                                    <VoteDesign
-                                        onVote={handleVote}
-                                        data-testid="design-vote"
-                                    />
-                                </OverlayControlsStyled>
-                            </PreviewOverlayStyled>
-                        )}
-                    </PreviewContainerStyled>
+                    />
+
+                    {promptViewerStatus === 'success' && !loading && !showMockPreview && (
+                        <VoteDesign
+                            onVote={handleVote}
+                            data-testid="design-vote"
+                        />
+                    )}
                     
                     {promptViewerStatus === "success" && currentRequest && !showMockPreview && (
                         <PreviewControlsStyled>

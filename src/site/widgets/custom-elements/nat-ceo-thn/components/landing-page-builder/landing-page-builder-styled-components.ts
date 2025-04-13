@@ -201,16 +201,32 @@ export const slideOut = keyframes`
 export const fadeOut = slideOut;
 
 export const ModalStyled = styled.div`
-  position: relative; // Changed from fixed to relative
+  position: relative;
   background: ${tokens.colors.neutral[100]};
   padding: ${tokens.spacing.xl};
   border-radius: ${tokens.borderRadius.md};
-  box-shadow: 0 8px 32px rgba(0,0,0,0.2); // Enhanced shadow for better elevation
-  max-width: 500px;
-  width: 90%;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  width: 100%;
+  max-width: 600px;
   max-height: 90vh;
   overflow-y: auto;
   animation: ${slideUp} 0.3s ease-out forwards;
+
+  h2 {
+    margin: 0 0 ${tokens.spacing.lg};
+    color: ${tokens.colors.neutral[900]};
+    font-size: ${tokens.fontSizes['2xl']};
+  }
+
+  ${FormStyled} {
+    position: static;
+    width: 100%;
+    height: auto;
+    padding: 0;
+    box-shadow: none;
+    border-right: none;
+    background: transparent;
+  }
 `;
 
 export const ButtonStyled = styled.button<{ variant?: 'primary' | 'secondary' | 'success' | 'error' }>`
@@ -234,7 +250,7 @@ export const ButtonStyled = styled.button<{ variant?: 'primary' | 'secondary' | 
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1); // Using small shadow from guide
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   
   &:hover {
     background: ${props => {
@@ -350,8 +366,8 @@ export const ViewerContainerStyled = styled.div<{ status?: 'loading' | 'success'
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   max-width: 90vw;
-  width: calc(100vw - 450px); // Account for sidebar width
-  min-width: auto; // Remove min-width constraint
+  width: calc(100vw - 450px);
+  min-width: auto;
   height: calc(100vh - 164px);
   display: flex;
   flex-direction: column;
@@ -435,27 +451,32 @@ export const FormContainerStyled = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   gap: ${tokens.spacing.lg};
-  width: 100%; // Added width 100%
-  height: 100%; // Changed from auto to 100%
-  overflow-y: auto; // Changed from visible to auto
-  padding-right: ${tokens.spacing.md}; // Added padding right for scrollbar
-  margin-bottom: 0; // Removed margin bottom
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding-right: ${tokens.spacing.md};
+  margin-bottom: 0;
 
   h3 {
     margin: 0;
     color: ${tokens.colors.neutral[900]};
     font-size: ${tokens.fontSizes.xl};
-    position: sticky; // Added sticky positioning
-    top: 0; // Stick to top
-    background: white; // Ensure text is readable when scrolling
-    padding: ${tokens.spacing.md} 0; // Add some padding
-    z-index: 1; // Ensure it stays on top
+    position: sticky;
+    top: 0;
+    background: white;
+    padding: ${tokens.spacing.md} 0;
+    z-index: 1;
+  }
+
+  > *:not(h3) {
+    position: relative;
+    z-index: 2;
   }
 `;
 
 export const PreviewContainerStyled = styled.div<{ $isHidden?: boolean }>`
-  width: 100%;  // Changed from calc width to 100%
-  height: 100%; // Changed from auto to 100%
+  width: 100%;
+  height: 100%;
   min-height: 400px;
   background: transparent;
   padding: 0;
@@ -463,10 +484,10 @@ export const PreviewContainerStyled = styled.div<{ $isHidden?: boolean }>`
   align-items: center;
   justify-content: center;
   position: relative;
-  margin-bottom: 0; // Removed margin bottom
+  margin-bottom: 0;
   box-sizing: border-box;
   transition: width 0.3s ease;
-  flex: 1; // Added flex grow
+  flex: 1;
   
   svg {
     width: 100%;
@@ -505,20 +526,21 @@ export const OverlayControlsStyled = styled.div`
 export const VoteSectionStyled = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${tokens.spacing.md};
-  padding: ${tokens.spacing.md} 0;
+  gap: ${tokens.spacing.sm};
+  padding: ${tokens.spacing.sm} 0;
 `;
 
 export const ThankYouMessageStyled = styled.div<{ $visible: boolean }>`
-    text-align: center;
-    color: #22C55E;
-    font-weight: 600;
-    padding: 1rem;
-    animation: ${slideDown} 0.3s ease-in;
-    opacity: ${({ $visible }) => ($visible ? 1 : 0)};
-    visibility: ${({ $visible }) => ($visible ? 'visible' : 'hidden')};
-    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out, transform 0.3s ease-in-out;
-    transform: translateY(${({ $visible }) => ($visible ? 0 : '20px')});
+  text-align: center;
+  color: #22C55E;
+  font-weight: 600;
+  padding: ${tokens.spacing.sm} ${tokens.spacing.md};
+  animation: ${slideDown} 0.3s ease-in;
+  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
+  visibility: ${({ $visible }) => ($visible ? 'visible' : 'hidden')};
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out, transform 0.3s ease-in-out;
+  transform: translateY(${({ $visible }) => ($visible ? 0 : '20px')});
+  margin-bottom: 0;
 `;
 
 export const PreviewSectionStyled = styled.div<{ $isHidden?: boolean }>`
@@ -526,7 +548,7 @@ export const PreviewSectionStyled = styled.div<{ $isHidden?: boolean }>`
   display: flex;
   flex-direction: column;
   margin-left: ${props => props.$isHidden ? '32px' : '400px'};
-  padding: ${tokens.spacing.xl};
+  padding: "0px";
   transition: all 0.3s ease;
   height: 100vh;
   overflow-y: auto;
@@ -535,7 +557,7 @@ export const PreviewSectionStyled = styled.div<{ $isHidden?: boolean }>`
   position: relative;
   max-width: 100%;
   background: white;
-  gap: ${tokens.spacing.lg}; // Added gap between children
+  gap: ${tokens.spacing.lg};
 `;
 
 export const PreviewWrapperStyled = styled.div`
@@ -549,8 +571,8 @@ export const PreviewTitleStyled = styled.h2`
   font-size: ${tokens.fontSizes['2xl']};
   font-weight: 600;
   color: ${tokens.colors.neutral[900]};
-  margin: 0;
-  z-index: 0;
+  padding-left: calc(${tokens.spacing.xl} * 2);
+  z-index: 0 !important;
 `;
 
 export const OpenAIIconWrapperStyled = styled.div`
@@ -570,16 +592,16 @@ export const StyledOpenAIIconStyled = styled(OpenAIIconStyled)`
 
 export const PreviewControlsStyled = styled.div`
   background: transparent;
-  padding: ${tokens.spacing.xl} 0;
-  margin-top: 0; // Removed margin top
+  padding-left: 64px;
+  margin-top: -${tokens.spacing.lg};
   width: 100%;
   box-sizing: border-box;
   min-height: fit-content;
-  height: 100%; // Changed from auto to 100%
-  flex: 1; // Added flex grow
-  overflow: hidden; // Prevent double scrollbars
-  display: flex; // Added display flex
-  flex-direction: column; // Stack children vertically
+  height: 100%;
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const StyledButtonStyled = styled.button<{ $color: string }>`
@@ -658,13 +680,15 @@ export const OverlayStyled = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-width: 100%;
+  width: 100%;
+  height: 100%;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999; // Increased z-index to be above everything
+  z-index: 9999;
   animation: ${slideUp} 0.3s ease-out forwards;
+  padding: ${tokens.spacing.xl};
 `;
 
 export const SelectStyled = styled.select`
@@ -924,6 +948,7 @@ export const CopyButtonStyled = styled.button`
     transform: scale(0.98);
   }
 `;
+
 
 
 
