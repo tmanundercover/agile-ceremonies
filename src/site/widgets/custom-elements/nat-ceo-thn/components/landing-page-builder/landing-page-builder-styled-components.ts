@@ -148,9 +148,7 @@ export const TextAreaStyled = styled.textarea`
 `;
 
 export const PreviewStyled = styled.div`
-  background: white;
-  border-radius: ${tokens.borderRadius.md};
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background: transparent;
   padding: ${tokens.spacing.xl};
   min-height: 600px;
 `;
@@ -203,19 +201,15 @@ export const slideOut = keyframes`
 export const fadeOut = slideOut;
 
 export const ModalStyled = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative; // Changed from fixed to relative
   background: ${tokens.colors.neutral[100]};
   padding: ${tokens.spacing.xl};
   border-radius: ${tokens.borderRadius.md};
-  box-shadow: 0 8px 16px rgba(0,0,0,0.1); // Using large shadow from guide
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2); // Enhanced shadow for better elevation
   max-width: 500px;
   width: 90%;
   max-height: 90vh;
   overflow-y: auto;
-  z-index: 1000;
   animation: ${slideUp} 0.3s ease-out forwards;
 `;
 
@@ -404,33 +398,36 @@ export const FormLabelStyled = styled.label`
   margin-bottom: 0.5rem;
 `;
 
-export const FormFieldStyled = styled.div`
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  padding: 1rem;
-  font-family: monospace;
+export const RequestFieldStyled = styled.div`
+  background: ${tokens.colors.neutral[100]};
+  border: 1px solid ${tokens.colors.neutral[200]};
+  border-radius: ${tokens.borderRadius.md};
+  padding: ${tokens.spacing.lg};
+  font-family: 'Fira Code', monospace;
   white-space: pre-wrap;
-  max-height: 200px;
-  overflow-y: auto;
-  overflow-x: auto;
   width: 100%;
   box-sizing: border-box;
+  color: ${tokens.colors.neutral[900]};
+  font-size: ${tokens.fontSizes.sm};
+  line-height: 1.6;
+  min-height: fit-content;
+  height: auto;
+  transition: border-color 0.2s ease;
   
   &:hover {
-    border-color: #cbd5e1;
+    border-color: ${tokens.colors.primary};
   }
 `;
 
-export const ConfigFieldStyled = styled(FormFieldStyled)`
+export const RequestConfigFieldStyled = styled(RequestFieldStyled)`
   .json-key {
-    color: #0066ff;
+    color: ${tokens.colors.info};
   }
   .json-value {
-    color: #16a34a;
+    color: ${tokens.colors.success};
   }
   .json-string {
-    color: #ea580c;
+    color: ${tokens.colors.secondary};
   }
 `;
 
@@ -438,27 +435,38 @@ export const FormContainerStyled = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   gap: ${tokens.spacing.lg};
-  overflow-y: auto;
-  padding-right: ${tokens.spacing.md};
-  max-height: 100%;
-  margin-bottom: ${tokens.spacing.xl};
+  width: 100%; // Added width 100%
+  height: 100%; // Changed from auto to 100%
+  overflow-y: auto; // Changed from visible to auto
+  padding-right: ${tokens.spacing.md}; // Added padding right for scrollbar
+  margin-bottom: 0; // Removed margin bottom
+
+  h3 {
+    margin: 0;
+    color: ${tokens.colors.neutral[900]};
+    font-size: ${tokens.fontSizes.xl};
+    position: sticky; // Added sticky positioning
+    top: 0; // Stick to top
+    background: white; // Ensure text is readable when scrolling
+    padding: ${tokens.spacing.md} 0; // Add some padding
+    z-index: 1; // Ensure it stays on top
+  }
 `;
 
-export const PreviewContainerStyled = styled.div`
-  width: 100%;
-  height: auto;
+export const PreviewContainerStyled = styled.div<{ $isHidden?: boolean }>`
+  width: 100%;  // Changed from calc width to 100%
+  height: 100%; // Changed from auto to 100%
   min-height: 400px;
-  background: white;
-  border-radius: ${tokens.borderRadius.lg};
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  padding: ${tokens.spacing.md};
+  background: transparent;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid ${tokens.colors.neutral[200]};
   position: relative;
-  margin-bottom: ${tokens.spacing.xl};
+  margin-bottom: 0; // Removed margin bottom
   box-sizing: border-box;
+  transition: width 0.3s ease;
+  flex: 1; // Added flex grow
   
   svg {
     width: 100%;
@@ -519,13 +527,15 @@ export const PreviewSectionStyled = styled.div<{ $isHidden?: boolean }>`
   flex-direction: column;
   margin-left: ${props => props.$isHidden ? '32px' : '400px'};
   padding: ${tokens.spacing.xl};
-  transition: margin-left 0.3s ease;
+  transition: all 0.3s ease;
   height: 100vh;
   overflow-y: auto;
-  overflow-x: hidden; // Prevent horizontal scroll
+  overflow-x: hidden;
   box-sizing: border-box;
   position: relative;
   max-width: 100%;
+  background: white;
+  gap: ${tokens.spacing.lg}; // Added gap between children
 `;
 
 export const PreviewWrapperStyled = styled.div`
@@ -540,6 +550,7 @@ export const PreviewTitleStyled = styled.h2`
   font-weight: 600;
   color: ${tokens.colors.neutral[900]};
   margin: 0;
+  z-index: 0;
 `;
 
 export const OpenAIIconWrapperStyled = styled.div`
@@ -558,14 +569,17 @@ export const StyledOpenAIIconStyled = styled(OpenAIIconStyled)`
 `;
 
 export const PreviewControlsStyled = styled.div`
-  background: white;
-  border-radius: ${tokens.borderRadius.md};
-  padding: ${tokens.spacing.lg};
-  margin-bottom: ${tokens.spacing.xl};
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background: transparent;
+  padding: ${tokens.spacing.xl} 0;
+  margin-top: 0; // Removed margin top
   width: 100%;
   box-sizing: border-box;
-  overflow-x: auto;
+  min-height: fit-content;
+  height: 100%; // Changed from auto to 100%
+  flex: 1; // Added flex grow
+  overflow: hidden; // Prevent double scrollbars
+  display: flex; // Added display flex
+  flex-direction: column; // Stack children vertically
 `;
 
 export const StyledButtonStyled = styled.button<{ $color: string }>`
@@ -644,11 +658,12 @@ export const OverlayStyled = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
+width: 100%;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999;
+  z-index: 9999; // Increased z-index to be above everything
   animation: ${slideUp} 0.3s ease-out forwards;
 `;
 
@@ -873,4 +888,42 @@ export const DropzoneContentStyled = styled.div<{ $hasFile?: boolean }>`
 export const FileInputStyled = styled.input`
   display: none;
 `;
+
+export const FormFieldWrapperStyled = styled.div`
+  position: relative;
+  margin-bottom: ${tokens.spacing.lg};
+`;
+
+export const CopyButtonStyled = styled.button`
+  position: absolute;
+  top: ${tokens.spacing.sm};
+  right: ${tokens.spacing.sm};
+  background: ${tokens.colors.neutral[100]};
+  border: 1px solid ${tokens.colors.neutral[200]};
+  border-radius: ${tokens.borderRadius.sm};
+  padding: ${tokens.spacing.xs} ${tokens.spacing.sm};
+  display: flex;
+  align-items: center;
+  gap: ${tokens.spacing.xs};
+  cursor: pointer;
+  font-size: ${tokens.fontSizes.sm};
+  color: ${tokens.colors.neutral[700]};
+  opacity: 0;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: ${tokens.colors.neutral[200]};
+    color: ${tokens.colors.neutral[900]};
+  }
+  
+  ${FormFieldWrapperStyled}:hover & {
+    opacity: 1;
+  }
+  
+  &:active {
+    transform: scale(0.98);
+  }
+`;
+
+
 

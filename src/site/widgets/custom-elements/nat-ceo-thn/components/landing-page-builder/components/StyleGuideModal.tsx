@@ -39,7 +39,7 @@ export const StyleGuideModal: React.FC<StyleGuideModalProps> = ({
   return (
     <OverlayStyled>
       <ModalStyled>
-        <h2>Edit Style Guide</h2>
+        <h2>Style Guide Settings</h2>
         <FormStyled onSubmit={handleSubmit} role="form">
           <InputGroupStyled>
             <LabelStyled htmlFor="primaryColor">Primary Color</LabelStyled>

@@ -2,6 +2,15 @@ import {LandingPageData, StyleGuide} from './landing-page-builder-types';
 import {generateLandingPage} from "../../../../../../server/api/openai/landing-page";
 import {generateMockLandingPage} from "./landing-page-builder-utils";
 
+export interface OpenAIConfig {
+  frequency_penalty?: number;
+  presence_penalty?: number;
+  top_p?: number;
+  stop?: string | string[];
+  stream?: boolean;
+  n?: number;
+}
+
 export interface OpenAIApiRequest {
   messages: {
     role: 'system' | 'user';
@@ -10,6 +19,7 @@ export interface OpenAIApiRequest {
   model: string;
   temperature: number;
   max_tokens: number;
+  config?: OpenAIConfig;
 }
 
 export const convertFormDataToApiRequest = (formData: LandingPageData): OpenAIApiRequest => {
@@ -52,35 +62,47 @@ Please generate an SVG that includes:
     ],
     model: 'gpt-4',
     temperature: 0.7,
-    max_tokens: 2000
+    max_tokens: 2000,
   };
 };
 
 interface OpenAIApiResponse {
-  choices: {
+  choices: Array<{
     message: {
+      role: string;
       content: string;
     };
-  }[];
+    index: number;
+    finish_reason: string;
+  }>;
   error?: {
     message: string;
   };
 }
 
-export const callOpenAI = async (formData: LandingPageData, styleGuide:StyleGuide): Promise<string> => {
+export const callOpenAI = async (formData: LandingPageData, styleGuide: StyleGuide): Promise<string> => {
   const apiRequest = convertFormDataToApiRequest(formData);
   
   try {
-    const mockSVG = generateMockLandingPage({width:1200, height:800, padding:8}, styleGuide)
-    const response = await generateLandingPage(apiRequest, mockSVG);
+    const mockSVG = generateMockLandingPage({width:1200, height:800, padding:8}, styleGuide);
 
-    if (!response.choices?.[0]?.message?.content) {
+    // Explicitly type the response
+    const response = await generateLandingPage(apiRequest, mockSVG) as OpenAIApiResponse;
+
+    if (response.error) {
+      throw new Error(response.error.message);
+    }
+
+    const content = response.choices?.[0]?.message?.content;
+    if (!content) {
       throw new Error('Invalid response format from landing page generator');
     }
 
-    return response.choices[0].message.content;
+    return content;
   } catch (error) {
-    console.error('Error generating landing page:', error);
-    throw error;
+    if (error instanceof Error) {
+      throw new Error(`Failed to generate landing page: ${error.message}`);
+    }
+    throw new Error('An unknown error occurred while generating the landing page');
   }
 };
