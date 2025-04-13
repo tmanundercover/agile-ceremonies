@@ -6,6 +6,9 @@ export const tokens = {
     primary: '#9333EA',
     primaryLight: '#A855F7',
     primaryDark: '#7928CA',
+    secondary: '#E25574',
+    secondaryLight: '#F06C88', // 15% lighter
+    secondaryDark: '#C94B68', // 15% darker
     success: '#22C55E',
     error: '#EF4444',
     warning: '#EAB308',
@@ -42,31 +45,54 @@ export const tokens = {
   }
 };
 
-export const ContainerStyled = styled.div`
-  display: block;
+export const ContainerStyled = styled.div<{ $isHidden?: boolean }>`
+  display: flex;
   position: relative;
   min-height: 100vh;
   background: ${tokens.colors.neutral[100]};
   font-family: 'Inter', system-ui, sans-serif;
-  overflow: hidden; // Add this to contain the fixed form
 `;
 
-export const FormStyled = styled.form`
+export const ToggleButtonStyled = styled.button<{ $isHidden?: boolean }>`
+  position: fixed;
+  top: ${tokens.spacing.md};
+  left: ${props => props.$isHidden ? '0' : '400px'};
+  z-index: 10;
+  background: ${tokens.colors.primary};
+  color: white;
+  border: none;
+  border-radius: ${tokens.borderRadius.full};
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: left 0.3s ease;
+  
+  &:hover {
+    background: ${tokens.colors.primaryDark};
+  }
+`;
+
+export const FormStyled = styled.form<{ $isHidden?: boolean }>`
   position: fixed;
   top: 0;
-  left: 0;
+  left: ${props => props.$isHidden ? '-400px' : '0'};
   width: 400px;
   height: 100vh;
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   gap: ${tokens.spacing.lg};
   padding: ${tokens.spacing.xl};
-  background: #f0f4f8;
+  background: ${tokens.colors.neutral[100]};
   border-radius: 0;
-  box-shadow: 8px 0 16px #d1d9e6;
-  border-right: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: ${props => props.$isHidden ? 'none' : `0 8px 16px rgba(0,0,0,0.1)`};
+  border-right: ${props => props.$isHidden ? 'none' : '1px solid rgba(255, 255, 255, 0.18)'};
   overflow-y: auto;
   z-index: 1;
+  transition: left 0.3s ease;
+  padding-bottom: ${tokens.spacing.xl};
 `;
 
 export const InputGroupStyled = styled.div`
@@ -83,7 +109,7 @@ export const LabelStyled = styled.label`
 
 export const InputStyled = styled.input`
   padding: ${tokens.spacing.md};
-  border: 2px solid ${tokens.colors.neutral[200]};
+  border: 1px solid ${tokens.colors.neutral[500]};
   border-radius: ${tokens.borderRadius.sm};
   font-size: ${tokens.fontSizes.base};
   transition: all 0.2s;
@@ -179,10 +205,10 @@ export const ModalStyled = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: white;
+  background: ${tokens.colors.neutral[100]};
   padding: ${tokens.spacing.xl};
   border-radius: ${tokens.borderRadius.md};
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1); // Using large shadow from guide
   max-width: 500px;
   width: 90%;
   max-height: 90vh;
@@ -196,7 +222,7 @@ export const ButtonStyled = styled.button<{ variant?: 'primary' | 'secondary' | 
   background: ${props => {
     switch (props.variant) {
       case 'secondary':
-        return 'transparent';
+        return tokens.colors.secondary;
       case 'success':
         return tokens.colors.success;
       case 'error':
@@ -205,42 +231,26 @@ export const ButtonStyled = styled.button<{ variant?: 'primary' | 'secondary' | 
         return tokens.colors.primary;
     }
   }};
-  color: ${props => props.variant === 'secondary' ? tokens.colors.primary : 'white'};
-  border: ${props => props.variant === 'secondary' ? `2px solid ${tokens.colors.primary}` : 'none'};
+  color: white;
+  border: none;
   border-radius: ${tokens.borderRadius.sm};
   font-size: ${tokens.fontSizes.base};
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
-  box-shadow: 
-    6px 6px 12px #d1d9e6,
-    -6px -6px 12px #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); // Using small shadow from guide
   
   &:hover {
     background: ${props => {
       switch (props.variant) {
         case 'secondary':
-          return tokens.colors.neutral[200];
+          return tokens.colors.secondaryDark;
         case 'success':
           return '#1CAD52';
         case 'error':
           return '#DC3030';
         default:
           return tokens.colors.primaryDark;
-      }
-    }};
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px ${props => {
-      switch (props.variant) {
-        case 'success':
-          return 'rgba(34, 197, 94, 0.2)';
-        case 'error':
-          return 'rgba(239, 68, 68, 0.2)';
-        default:
-          return 'rgba(147, 51, 234, 0.1)';
       }
     }};
   }
@@ -427,19 +437,19 @@ export const FormContainerStyled = styled.div`
 `;
 
 export const PreviewContainerStyled = styled.div`
-  aspect-ratio: 16/9;
   width: 100%;
-  background: #f0f4f8;
+  min-height: 400px;
+  flex-grow: 1;
+  background: white;
   border-radius: ${tokens.borderRadius.lg};
-  box-shadow: 
-    20px 20px 60px #d1d9e6,
-    -20px -20px 60px #ffffff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); // Using medium shadow from guide
   padding: ${tokens.spacing.md};
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid ${tokens.colors.neutral[200]};
   position: relative;
+  margin-bottom: ${tokens.spacing.xl};
   
   svg {
     width: 100%;
@@ -494,19 +504,16 @@ export const ThankYouMessageStyled = styled.div<{ $visible: boolean }>`
     transform: translateY(${({ $visible }) => ($visible ? 0 : '20px')});
 `;
 
-export const PreviewSectionStyled = styled.div`
-  position: relative;
-  margin-left: 400px;
-  min-height: 100vh;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  gap: ${tokens.spacing.lg};
+export const PreviewSectionStyled = styled.div<{ $isHidden?: boolean }>`
+  flex: 1;
   padding: ${tokens.spacing.xl};
-  width: calc(100% - 400px);
-  background: ${tokens.colors.neutral[100]};
-  z-index: 2;
-  transform: translateZ(0); // Optimize performance
-  will-change: transform; // Hint to browser about animations
+  min-height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: ${tokens.spacing.lg};
+  margin-left: ${props => props.$isHidden ? '32px' : '400px'};
+  transition: margin-left 0.3s ease;
 `;
 
 export const PreviewWrapperStyled = styled.div`
@@ -537,12 +544,10 @@ export const StyledOpenAIIconStyled = styled(OpenAIIconStyled)`
 `;
 
 export const PreviewControlsStyled = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: ${tokens.spacing.md};
-  padding: ${tokens.spacing.lg};
   background: white;
   border-radius: ${tokens.borderRadius.md};
+  padding: ${tokens.spacing.lg};
+  margin-bottom: ${tokens.spacing.xl};
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   overflow-y: auto;
   max-height: 300px;
@@ -793,5 +798,12 @@ export const HexInputStyled = styled.input`
     outline: none;
   }
 `;
+
+
+
+
+
+
+
 
 

@@ -27,11 +27,13 @@ import {
     PreviewSectionStyled,
     PreviewTitleStyled,
     StyledOpenAIIconStyled,
-    TextAreaStyled
+    TextAreaStyled,
+    ToggleButtonStyled
 } from './landing-page-builder-styled-components';
 import {StyleGuideModal} from './components/StyleGuideModal';
 import {VoteDesign, VoteType} from "./components/VoteDesign";
 import {StatusIndicator} from './components/StatusIndicator';
+import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 
 export const LandingPageBuilder: React.FC = () => {
     const [formData, setFormData] = useState<LandingPageData>({
@@ -49,6 +51,7 @@ export const LandingPageBuilder: React.FC = () => {
     const [promptViewerStatus, setPromptViewerStatus] = useState<'loading' | 'success' | 'error'>('loading');
     const [showMockPreview, setShowMockPreview] = useState(false);
     const [generatedContent, setGeneratedContent] = useState<string | null>(null);
+    const [isHidden, setIsHidden] = useState(false);
 
     useEffect(() => {
         const previewContainer = document.getElementById('prompt-preview');
@@ -134,7 +137,15 @@ export const LandingPageBuilder: React.FC = () => {
 
     return (
         <ContainerStyled>
-            <FormStyled onSubmit={handleSubmit}>
+            <ToggleButtonStyled
+                onClick={() => setIsHidden(!isHidden)}
+                $isHidden={isHidden}
+                aria-label={isHidden ? "Show builder" : "Hide builder"}
+            >
+                {isHidden ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            </ToggleButtonStyled>
+
+            <FormStyled onSubmit={handleSubmit} $isHidden={isHidden}>
                 <h2>Landing Page Builder</h2>
                 <InputGroupStyled>
                     <LabelStyled htmlFor="mainMessage">Main Message</LabelStyled>
@@ -208,7 +219,7 @@ export const LandingPageBuilder: React.FC = () => {
                 </ButtonStyled>
             </FormStyled>
 
-            <PreviewSectionStyled>
+            <PreviewSectionStyled $isHidden={isHidden}>
                 <PreviewTitleStyled>
                     {loading ? 'Generating Preview...' : 'Landing Page Preview'}
                 </PreviewTitleStyled>
@@ -270,4 +281,3 @@ export const LandingPageBuilder: React.FC = () => {
         </ContainerStyled>
     );
 };
-
