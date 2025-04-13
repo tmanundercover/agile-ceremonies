@@ -31,6 +31,7 @@ import {
 } from './landing-page-builder-styled-components';
 import {StyleGuideModal} from './components/StyleGuideModal';
 import {VoteDesign, VoteType} from "./components/VoteDesign";
+import {StatusIndicator} from './components/StatusIndicator';
 
 export const LandingPageBuilder: React.FC = () => {
     const [formData, setFormData] = useState<LandingPageData>({
@@ -211,8 +212,12 @@ export const LandingPageBuilder: React.FC = () => {
                 <PreviewTitleStyled>
                     {loading ? 'Generating Preview...' : 'Landing Page Preview'}
                 </PreviewTitleStyled>
-                <PreviewContainerStyled id="prompt-preview">
-                    {promptViewerStatus === 'success' && !loading && (
+                {error && <StatusIndicator status={promptViewerStatus} message={error} />}
+                <PreviewContainerStyled 
+                    id="prompt-preview"
+                    style={{ opacity: showMockPreview ? 0.6 : 1 }}
+                >
+                    {promptViewerStatus === 'success' && !loading && !showMockPreview && (
                         <PreviewOverlayStyled>
                             <OverlayControlsStyled>
                                 <VoteDesign
@@ -223,7 +228,8 @@ export const LandingPageBuilder: React.FC = () => {
                         </PreviewOverlayStyled>
                     )}
                 </PreviewContainerStyled>
-                {promptViewerStatus === "success" && currentRequest && (
+                
+                {promptViewerStatus === "success" && currentRequest && !showMockPreview && (
                     <PreviewControlsStyled>
                         <FormContainerStyled>
                             <h3>Landing Page Generation Request</h3>
@@ -264,3 +270,4 @@ export const LandingPageBuilder: React.FC = () => {
         </ContainerStyled>
     );
 };
+

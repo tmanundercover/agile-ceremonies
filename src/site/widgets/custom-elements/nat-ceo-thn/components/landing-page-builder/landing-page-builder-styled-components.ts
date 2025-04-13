@@ -123,6 +123,53 @@ export const PreviewStyled = styled.div`
   min-height: 600px;
 `;
 
+export const slideUp = keyframes`
+    from {
+        transform: translate(-50%, 20px);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+`;
+
+export const slideDown = keyframes`
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+`;
+
+export const slideRight = keyframes`
+    from {
+        transform: translateX(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+`;
+
+export const slideOut = keyframes`
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(20px);
+        opacity: 0;
+        visibility: hidden;
+    }
+`;
+
+export const fadeOut = slideOut;
+
 export const ModalStyled = styled.div`
   position: fixed;
   top: 50%;
@@ -137,6 +184,7 @@ export const ModalStyled = styled.div`
   max-height: 90vh;
   overflow-y: auto;
   z-index: 1000;
+  animation: ${slideUp} 0.3s ease-out forwards;
 `;
 
 export const ButtonStyled = styled.button<{ variant?: 'primary' | 'secondary' | 'success' | 'error' }>`
@@ -251,27 +299,6 @@ export const LoadingSpinnerStyled = styled.div`
     }
 `;
 
-export const slideUp = keyframes`
-    from {
-        transform: translate(-50%, 20px);
-        opacity: 0;
-    }
-    to {
-        transform: translate(-50%, 0);
-        opacity: 1;
-    }
-`;
-
-export const fadeOut = keyframes`
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-        visibility: hidden;
-    }
-`;
-
 export const IndicatorContainerStyled = styled.div<{ $isVisible: boolean }>`
     position: relative;
     left: 50%;
@@ -279,7 +306,7 @@ export const IndicatorContainerStyled = styled.div<{ $isVisible: boolean }>`
     min-width: 300px;
     max-width: 600px;
     animation: ${slideUp} 0.3s ease-out forwards,
-    ${({$isVisible}) => !$isVisible && fadeOut} 0.5s ease-out forwards;
+    ${({$isVisible}) => !$isVisible && slideOut} 0.5s ease-out forwards;
     pointer-events: none;
 `;
 
@@ -456,15 +483,11 @@ export const ThankYouMessageStyled = styled.div<{ $visible: boolean }>`
     color: #22C55E;
     font-weight: 600;
     padding: 1rem;
-    animation: fadeIn 0.3s ease-in;
+    animation: ${slideDown} 0.3s ease-in;
     opacity: ${({ $visible }) => ($visible ? 1 : 0)};
     visibility: ${({ $visible }) => ($visible ? 'visible' : 'hidden')};
-    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transform: translateY(${({ $visible }) => ($visible ? 0 : '20px')});
 `;
 
 export const PreviewSectionStyled = styled.div`
@@ -597,6 +620,7 @@ export const OverlayStyled = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 999;
+  animation: ${slideUp} 0.3s ease-out forwards;
 `;
 
 export const SelectStyled = styled.select`
@@ -707,6 +731,7 @@ export const StatusBannerStyled = styled.div<{ status: 'success' | 'error' }>`
     justify-content: center;
     gap: ${tokens.spacing.sm};
     pointer-events: auto;
+    animation: ${slideRight} 0.3s ease-out forwards;
 `;
 
 export const ColorInputGroupStyled = styled.div`
@@ -759,3 +784,4 @@ export const HexInputStyled = styled.input`
     outline: none;
   }
 `;
+
