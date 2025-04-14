@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import {
     ActionButtonStyled,
     AppContainerStyled,
@@ -12,7 +11,8 @@ import {
     ResultsSectionStyled,
     ResultBoxStyled,
     HeadingStyled,
-    StatusIndicatorStyled
+    StatusIndicatorStyled,
+    ErrorMessageStyled
 } from './AudioTranscriber-styled-components';
 import { AudioStateType, AudioTranscriberProps } from './AudioTranscriber-types';
 import { createAudioUrl, generateSummary } from './AudioTranscriber-utils';
@@ -23,29 +23,46 @@ const AudioTranscriber: React.FC<AudioTranscriberProps> = ({ className }) => {
         transcription: '',
         summary: '',
         isLoading: false,
-        isListening: false
+        isListening: false,
+        permissionStatus: 'granted' // Default to granted since we're skipping the check
     });
     const [error, setError] = useState<string>('');
     const audioRef = useRef<HTMLAudioElement>(null);
-
-    const {
-        transcript,
-        listening,
-        resetTranscript,
-        browserSupportsSpeechRecognition
-    } = useSpeechRecognition();
+    const recognitionRef = useRef<any>(null);
 
     useEffect(() => {
-        if (!browserSupportsSpeechRecognition) {
-            setError('Speech recognition is not supported in this browser.');
+        // Check if Web Speech API is supported
+        if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+            setError('Speech recognition is not supported in your browser.');
+            return;
         }
-    }, [browserSupportsSpeechRecognition]);
 
-    useEffect(() => {
-        if (transcript) {
+        // Initialize speech recognition
+        const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+        recognitionRef.current = new SpeechRecognition();
+        recognitionRef.current.continuous = true;
+        recognitionRef.current.interimResults = true;
+
+        recognitionRef.current.onresult = (event: any) => {
+            const transcript = Array.from(event.results)
+                .map((result: any) => result[0])
+                .map((result: any) => result.transcript)
+                .join('');
             setState(prev => ({ ...prev, transcription: transcript }));
-        }
-    }, [transcript]);
+        };
+
+        recognitionRef.current.onerror = (event: any) => {
+            setState(prev => ({ ...prev, transcription: event.message.toString() }));
+            // setError('An error occurred with speech recognition');
+            // setState(prev => ({ ...prev, isListening: false }));
+        };
+
+        return () => {
+            if (recognitionRef.current) {
+                recognitionRef.current.stop();
+            }
+        };
+    }, []);
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -60,15 +77,20 @@ const AudioTranscriber: React.FC<AudioTranscriberProps> = ({ className }) => {
         }
     };
 
-    const handleStartListening = () => {
-        resetTranscript();
-        setState(prev => ({ ...prev, isListening: true }));
-        SpeechRecognition.startListening({ continuous: true });
+    const handleStartListening = async () => {
+        try {
+            setState(prev => ({ ...prev, isListening: true }));
+            setError('');
+            await recognitionRef.current.start();
+        } catch (err: any) {
+            setError(err.message || 'Failed to start recording');
+            setState(prev => ({ ...prev, isListening: false }));
+        }
     };
 
     const handleStopListening = () => {
+        recognitionRef.current?.stop();
         setState(prev => ({ ...prev, isListening: false }));
-        SpeechRecognition.stopListening();
     };
 
     const handleGenerateSummary = async () => {
@@ -78,9 +100,8 @@ const AudioTranscriber: React.FC<AudioTranscriberProps> = ({ className }) => {
         try {
             const summary = await generateSummary(state.transcription);
             setState(prev => ({ ...prev, summary }));
-        } catch (error) {
+        } catch (err) {
             setError('Failed to generate summary');
-            console.error('Summarization error:', error);
         } finally {
             setState(prev => ({ ...prev, isLoading: false }));
         }
@@ -102,16 +123,16 @@ const AudioTranscriber: React.FC<AudioTranscriberProps> = ({ className }) => {
                     <AudioPlayerStyled ref={audioRef} controls />
                 </UploadSectionStyled>
 
-                <StatusIndicatorStyled $isListening={listening}>
-                    {listening ? 'Listening...' : 'Not listening'}
+                <StatusIndicatorStyled $isListening={state.isListening}>
+                    {state.isListening ? 'Listening...' : 'Not listening'}
                 </StatusIndicatorStyled>
 
                 <ButtonGroupStyled>
                     <ActionButtonStyled
-                        onClick={listening ? handleStopListening : handleStartListening}
-                        disabled={!browserSupportsSpeechRecognition}
+                        onClick={state.isListening ? handleStopListening : handleStartListening}
+                        disabled={state.permissionStatus === 'unsupported'}
                     >
-                        {listening ? 'Stop Recording' : 'Start Recording'}
+                        {state.isListening ? 'Stop Recording' : 'Start Recording'}
                     </ActionButtonStyled>
                     <ActionButtonStyled
                         onClick={handleGenerateSummary}
@@ -121,9 +142,7 @@ const AudioTranscriber: React.FC<AudioTranscriberProps> = ({ className }) => {
                     </ActionButtonStyled>
                 </ButtonGroupStyled>
 
-                {error && (
-                    <p style={{ color: 'red', marginBottom: '10px' }}>{error}</p>
-                )}
+                {error && <ErrorMessageStyled>{error}</ErrorMessageStyled>}
 
                 <ResultsSectionStyled>
                     <ResultBoxStyled>
@@ -141,4 +160,3 @@ const AudioTranscriber: React.FC<AudioTranscriberProps> = ({ className }) => {
 };
 
 export default AudioTranscriber;
-

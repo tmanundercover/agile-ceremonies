@@ -105,3 +105,13 @@ export const StatusIndicatorStyled = styled.div<{ $isListening: boolean }>`
   }
 `;
 
+export const ErrorMessageStyled = styled.p`
+  color: #dc3545;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  text-align: center;
+`;
+
