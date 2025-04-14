@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import CopyButton from '../../../svg-divider/components/CopyButton';
 import {
     ActionButtonStyled,
     AppContainerStyled,
@@ -12,7 +13,8 @@ import {
     ResultBoxStyled,
     HeadingStyled,
     StatusIndicatorStyled,
-    ErrorMessageStyled
+    ErrorMessageStyled,
+    ResultContentStyled
 } from './AudioTranscriber-styled-components';
 import { AudioStateType, AudioTranscriberProps } from './AudioTranscriber-types';
 import { createAudioUrl, generateSummary } from './AudioTranscriber-utils';
@@ -20,8 +22,8 @@ import { createAudioUrl, generateSummary } from './AudioTranscriber-utils';
 const AudioTranscriber: React.FC<AudioTranscriberProps> = ({ className }) => {
     const [state, setState] = useState<AudioStateType>({
         audioFile: null,
-        transcription: '',
-        summary: '',
+        transcription: 'Waiting for audio input...',
+        summary: 'Waiting for audio transcript...',
         isLoading: false,
         isListening: false,
         permissionStatus: 'granted' // Default to granted since we're skipping the check
@@ -147,11 +149,13 @@ const AudioTranscriber: React.FC<AudioTranscriberProps> = ({ className }) => {
                 <ResultsSectionStyled>
                     <ResultBoxStyled>
                         <HeadingStyled>Transcription</HeadingStyled>
-                        {state.transcription || 'No transcription available'}
+                        {state.transcription && (<CopyButton content={state.transcription} label={"Transcription"}/>) }
+                        {state.transcription}
                     </ResultBoxStyled>
                     <ResultBoxStyled>
                         <HeadingStyled>Summary</HeadingStyled>
-                        {state.summary || 'No summary available'}
+                        {state.summary && <CopyButton content={state.summary} label={"Summary"}/>}
+                        {state.summary}
                     </ResultBoxStyled>
                 </ResultsSectionStyled>
             </AppMainStyled>

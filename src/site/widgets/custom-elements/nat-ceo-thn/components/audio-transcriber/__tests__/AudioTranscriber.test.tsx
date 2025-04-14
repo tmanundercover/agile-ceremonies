@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import AudioTranscriber from '../AudioTranscriber';
 import * as utils from '../AudioTranscriber-utils';
@@ -17,6 +17,11 @@ global.URL.createObjectURL = jest.fn();
 describe('AudioTranscriber', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    Object.assign(navigator, {
+      clipboard: {
+        writeText: jest.fn(),
+      },
+    });
   });
 
   it('renders without crashing', () => {
@@ -144,4 +149,41 @@ describe('AudioTranscriber', () => {
 
     consoleError.mockRestore();
   });
+
+  it('shows copy buttons when content is available', () => {
+    render(<AudioTranscriber />);
+    const transcription = 'Test transcription';
+    const summary = 'Test summary';
+
+    // Set state with content
+    act(() => {
+      setState(prev => ({
+        ...prev,
+        transcription,
+        summary,
+      }));
+    });
+
+    const copyButtons = screen.getAllByRole('button', { name: /copy/i });
+    expect(copyButtons).toHaveLength(2);
+  });
+
+  it('copies content to clipboard when copy button is clicked', async () => {
+    const transcription = 'Test transcription';
+    render(<AudioTranscriber />);
+
+    // Set state with content
+    act(() => {
+      setState(prev => ({
+        ...prev,
+        transcription,
+      }));
+    });
+
+    const copyButton = screen.getByRole('button', { name: /copy transcription/i });
+    fireEvent.click(copyButton);
+
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(transcription);
+  });
 });
+

@@ -55,11 +55,18 @@ export const ResultsSectionStyled = styled.div`
 `;
 
 export const ResultBoxStyled = styled.div`
+  position: relative;
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 4px;
   min-height: 200px;
   text-align: left;
+`;
+
+export const ResultContentStyled = styled.div`
+  margin-top: 10px;
+  white-space: pre-wrap;
+  word-break: break-word;
 `;
 
 export const HeadingStyled = styled.h2`
