@@ -4,7 +4,9 @@ import {
     defaultStyleGuide,
     formatConfig,
     generateMockLandingPage,
-    getPreviewDimensions
+    getPreviewDimensions,
+    saveSvgAsImage,
+    generateDevelopmentFiles
 } from './landing-page-builder-utils';
 import {callOpenAI, convertFormDataToApiRequest, OpenAIApiRequest} from './OpenAIBackendAPI';
 import {
@@ -37,10 +39,30 @@ import {VoteDesign, VoteType} from "./components/VoteDesign";
 import {StatusIndicator} from './components/StatusIndicator';
 import { ChevronLeftIcon, ChevronRightIcon, ClipboardCopyIcon } from '@radix-ui/react-icons';
 import { FileSelector } from './components/FileSelector';
+import { PreviewToolsOverlay } from './components/PreviewToolsOverlay';
 
-const copyToClipboard = (text: string) => {
-  navigator.clipboard.writeText(text)
-    .catch(err => console.error('Failed to copy text:', err));
+const copyToClipboard = async (text: string): Promise<boolean> => {
+  try {
+    // Try using the modern Clipboard API first
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch (err) {
+    try {
+      // Fallback to the older execCommand approach
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      const success = document.execCommand('copy');
+      document.body.removeChild(textarea);
+      return success;
+    } catch (fallbackErr) {
+      console.error('Copy failed:', fallbackErr);
+      return false;
+    }
+  }
 };
 
 export const LandingPageBuilder: React.FC = () => {
@@ -60,6 +82,10 @@ export const LandingPageBuilder: React.FC = () => {
     const [showMockPreview, setShowMockPreview] = useState(false);
     const [generatedContent, setGeneratedContent] = useState<string | null>(null);
     const [isHidden, setIsHidden] = useState(false);
+    const [copyStatus, setCopyStatus] = useState<{
+        message: string;
+        type: 'success' | 'error' | null;
+    }>({ message: '', type: null });
 
     useEffect(() => {
         const previewContainer = document.getElementById('prompt-preview');
@@ -126,6 +152,45 @@ export const LandingPageBuilder: React.FC = () => {
                 break;
             default:
                 setPromptViewerStatus('loading');
+        }
+    };
+
+    const handleCopy = async (text: string) => {
+        const success = await copyToClipboard(text);
+        setCopyStatus({
+            message: success ? 'Copied to clipboard!' : 'Failed to copy. Please try selecting and copying manually.',
+            type: success ? 'success' : 'error'
+        });
+
+        // Clear the status after 3 seconds
+        setTimeout(() => {
+            setCopyStatus({ message: '', type: null });
+        }, 3000);
+    };
+
+    const handleSaveImage = async () => {
+        const svgElement = document.querySelector('#prompt-preview svg');
+        if (svgElement instanceof SVGElement) {
+            try {
+                await saveSvgAsImage(svgElement);
+            } catch (error) {
+                setError('Failed to save image');
+                setPromptViewerStatus('error');
+            }
+        }
+    };
+
+    const handleDevelopPage = () => {
+        const svgElement = document.querySelector('#prompt-preview svg');
+        if (svgElement) {
+            const developmentFiles = generateDevelopmentFiles(svgElement.outerHTML);
+            const blob = new Blob([developmentFiles], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'landing-page.html';
+            link.click();
+            URL.revokeObjectURL(url);
         }
     };
 
@@ -236,7 +301,17 @@ export const LandingPageBuilder: React.FC = () => {
                     <PreviewContainerStyled 
                         id="prompt-preview"
                         style={{ opacity: showMockPreview ? 0.6 : 1 }}
-                    />
+                    >
+                        {generatedContent && !showMockPreview && (
+                            <div dangerouslySetInnerHTML={{ __html: generatedContent }} />
+                        )}
+                        {!showMockPreview && (
+                            <PreviewToolsOverlay
+                                onSaveImage={handleSaveImage}
+                                onDevelopPage={handleDevelopPage}
+                            />
+                        )}
+                    </PreviewContainerStyled>
 
                     {promptViewerStatus === 'success' && !loading && !showMockPreview && (
                         <VoteDesign
@@ -256,10 +331,18 @@ export const LandingPageBuilder: React.FC = () => {
                                             {currentRequest.messages[0].content}
                                         </RequestFieldStyled>
                                         <CopyButtonStyled
-                                            onClick={() => copyToClipboard(currentRequest.messages[0].content)}
+                                            onClick={() => handleCopy(currentRequest.messages[0].content)}
                                             title="Copy to clipboard"
                                         >
                                             <ClipboardCopyIcon /> Copy
+                                            {copyStatus.message && (
+                                                <span style={{
+                                                    marginLeft: '8px',
+                                                    color: copyStatus.type === 'success' ? '#22C55E' : '#EF4444'
+                                                }}>
+                                                    {copyStatus.message}
+                                                </span>
+                                            )}
                                         </CopyButtonStyled>
                                     </FormFieldWrapperStyled>
                                 </FormSectionStyled>
@@ -271,10 +354,18 @@ export const LandingPageBuilder: React.FC = () => {
                                             {currentRequest.messages[1].content}
                                         </RequestFieldStyled>
                                         <CopyButtonStyled
-                                            onClick={() => copyToClipboard(currentRequest.messages[1].content)}
+                                            onClick={() => handleCopy(currentRequest.messages[1].content)}
                                             title="Copy to clipboard"
                                         >
                                             <ClipboardCopyIcon /> Copy
+                                            {copyStatus.message && (
+                                                <span style={{
+                                                    marginLeft: '8px',
+                                                    color: copyStatus.type === 'success' ? '#22C55E' : '#EF4444'
+                                                }}>
+                                                    {copyStatus.message}
+                                                </span>
+                                            )}
                                         </CopyButtonStyled>
                                     </FormFieldWrapperStyled>
                                 </FormSectionStyled>
@@ -288,10 +379,18 @@ export const LandingPageBuilder: React.FC = () => {
                                             }}
                                         />
                                         <CopyButtonStyled
-                                            onClick={() => copyToClipboard(JSON.stringify(currentRequest.config, null, 2))}
+                                            onClick={() => handleCopy(JSON.stringify(currentRequest.config, null, 2))}
                                             title="Copy to clipboard"
                                         >
                                             <ClipboardCopyIcon /> Copy
+                                            {copyStatus.message && (
+                                                <span style={{
+                                                    marginLeft: '8px',
+                                                    color: copyStatus.type === 'success' ? '#22C55E' : '#EF4444'
+                                                }}>
+                                                    {copyStatus.message}
+                                                </span>
+                                            )}
                                         </CopyButtonStyled>
                                     </FormFieldWrapperStyled>
                                 </FormSectionStyled>

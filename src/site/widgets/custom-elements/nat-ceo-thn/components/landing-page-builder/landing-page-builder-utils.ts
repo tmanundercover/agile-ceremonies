@@ -28,9 +28,12 @@ export const extractColorsFromSvg = (svgString: string): string[] => {
 };
 
 export const generateMockLandingPage = (dimensions: PreviewDimensions, styleGuide: StyleGuide): string => {
+    // Add type safety for dimensions and styleGuide usage
+    const { width, height, padding } = dimensions;
+    const { primaryColor, secondaryColor, fontFamily, borderRadius } = styleGuide;
 
-
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" font-family="sans-serif">
+    // Return the SVG string...
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" font-family="${fontFamily}">
   <defs>
     <filter id="neumorphism" x="-50%" y="-50%" width="200%" height="200%">
       <feDropShadow dx="8" dy="8" stdDeviation="8" flood-color="#d1d9e6" />
@@ -79,7 +82,7 @@ export const generateMockLandingPage = (dimensions: PreviewDimensions, styleGuid
 };
 
 export const formatConfig = (config: Partial<OpenAIApiRequest>) => {
-    const configObj = {
+    const configObj: Record<string, unknown> = {
         model: config.model,
         temperature: config.temperature,
         max_tokens: config.max_tokens
@@ -89,5 +92,63 @@ export const formatConfig = (config: Partial<OpenAIApiRequest>) => {
         .replace(/"([^"]+)":/g, '<span class="json-key">"$1":</span>')
         .replace(/: "([^"]+)"/g, ': <span class="json-string">$1"</span>')
         .replace(/: ([0-9.]+)/g, ': <span class="json-value">$1</span>');
+};
+
+export const saveSvgAsImage = async (svgElement: SVGElement, fileName: string = 'landing-page.png'): Promise<void> => {
+    try {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const svg = new XMLSerializer().serializeToString(svgElement);
+        const img = new Image();
+
+        // Check if the element is an SVGSVGElement and get dimensions
+        if (svgElement instanceof SVGSVGElement) {
+            canvas.width = svgElement.viewBox.baseVal.width || svgElement.clientWidth;
+            canvas.height = svgElement.viewBox.baseVal.height || svgElement.clientHeight;
+        } else {
+            canvas.width = svgElement.clientWidth;
+            canvas.height = svgElement.clientHeight;
+        }
+
+        return new Promise((resolve, reject) => {
+            img.onload = () => {
+                ctx?.drawImage(img, 0, 0);
+                const link = document.createElement('a');
+                link.download = fileName;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                resolve();
+            };
+            img.onerror = reject;
+            img.src = 'data:image/svg+xml;base64,' + btoa(svg);
+        });
+    } catch (error) {
+        console.error('Error saving SVG as image:', error);
+        throw new Error('Failed to save image');
+    }
+};
+
+export const generateDevelopmentFiles = (svgContent: string): string => {
+    const colors = extractColorsFromSvg(svgContent);
+    const template = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <style>
+        :root {
+            ${colors.map((color, index) => `--color-${index}: ${color};`).join('\n            ')}
+        }
+        /* Add your custom styles here */
+    </style>
+</head>
+<body>
+    ${svgContent}
+</body>
+</html>`;
+
+    return template.trim();
 };
 

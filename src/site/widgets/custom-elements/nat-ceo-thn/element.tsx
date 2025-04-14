@@ -1,9 +1,9 @@
-import React, { type FC } from 'react';
+import React, {type FC} from 'react';
 import ReactDOM from 'react-dom';
 import reactToWebComponent from 'react-to-webcomponent';
-import styles from './element.module.css';
-import {App} from "./App";
 import styled from 'styled-components';
+import AIAgentCompass from "./components/ai-agent-compass/AIAgentCompass";
+import AudioTranscriber from "./components/Audio Transcriber/AudioTranscriber";
 
 const WidgetContainerStyled = styled.div`
   display: grid;
@@ -22,7 +22,7 @@ const CustomElement: FC<Props> = ({
 }) => {
   return (
     <WidgetContainerStyled>
-      <App />
+      <AudioTranscriber />
     </WidgetContainerStyled>
   );
 };

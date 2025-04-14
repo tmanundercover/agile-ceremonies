@@ -13,6 +13,7 @@ export const tokens = {
     error: '#EF4444',
     warning: '#EAB308',
     info: '#3B82F6',
+    white: '#FFFFFF', // Add white color
     neutral: {
       900: '#1A1A1A',
       700: '#4A5568',
@@ -42,6 +43,12 @@ export const tokens = {
     xl: '20px',
     '2xl': '24px',
     '3xl': '32px'
+  },
+  shadows: {
+    sm: '0 1px 2px rgba(0, 0, 0, 0.05)',
+    md: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    lg: '0 10px 15px rgba(0, 0, 0, 0.1)',
+    xl: '0 20px 25px rgba(0, 0, 0, 0.15)'
   }
 };
 
@@ -92,15 +99,23 @@ export const FormStyled = styled.form<{ $isHidden?: boolean }>`
   box-shadow: ${props => props.$isHidden ? 'none' : `0 8px 16px rgba(0,0,0,0.1)`};
   border-right: ${props => props.$isHidden ? 'none' : '1px solid rgba(255, 255, 255, 0.18)'};
   overflow-y: auto;
+  overflow-x: hidden;
   z-index: 1;
   transition: left 0.3s ease;
   padding-bottom: ${tokens.spacing.xl};
+  box-sizing: border-box;
+
+  > * {
+    max-width: 100%;
+  }
 `;
 
 export const InputGroupStyled = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   gap: ${tokens.spacing.sm};
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 export const LabelStyled = styled.label`
@@ -119,6 +134,9 @@ export const InputStyled = styled.input`
   box-shadow: 
     inset 4px 4px 8px #d1d9e6,
     inset -4px -4px 8px #ffffff;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 100%;
   
   &:focus {
     border-color: ${tokens.colors.primary};
@@ -139,6 +157,9 @@ export const TextAreaStyled = styled.textarea`
   box-shadow: 
     inset 4px 4px 8px #d1d9e6,
     inset -4px -4px 8px #ffffff;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 100%;
   
   &:focus {
     border-color: ${tokens.colors.primary};
@@ -474,53 +495,14 @@ export const FormContainerStyled = styled.div`
   }
 `;
 
-export const PreviewContainerStyled = styled.div<{ $isHidden?: boolean }>`
-  width: 100%;
-  height: 100%;
-  min-height: 400px;
-  background: transparent;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  margin-bottom: 0;
-  box-sizing: border-box;
-  transition: width 0.3s ease;
-  flex: 1;
-  
-  svg {
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-  }
-`;
-
-export const PreviewOverlayStyled = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  
-  ${PreviewContainerStyled}:hover & {
-    opacity: 1;
-  }
-`;
 
 export const OverlayControlsStyled = styled.div`
+  display: flex;
+  gap: ${tokens.spacing.md};
+  padding: ${tokens.spacing.md};
   background: white;
-  padding: ${tokens.spacing.lg};
   border-radius: ${tokens.borderRadius.md};
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: ${tokens.shadows.lg};
 `;
 
 export const VoteSectionStyled = styled.div`
@@ -558,6 +540,7 @@ export const PreviewSectionStyled = styled.div<{ $isHidden?: boolean }>`
   max-width: 100%;
   background: white;
   gap: ${tokens.spacing.lg};
+  z-index: 1; // Add explicit z-index
 `;
 
 export const PreviewWrapperStyled = styled.div`
@@ -818,6 +801,9 @@ export const ColorInputGroupStyled = styled.div`
   grid-template-columns: auto auto 1fr;
   gap: ${tokens.spacing.md};
   align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
 `;
 
 export const ColorSwatchStyled = styled.button`
@@ -916,6 +902,16 @@ export const FileInputStyled = styled.input`
 export const FormFieldWrapperStyled = styled.div`
   position: relative;
   margin-bottom: ${tokens.spacing.lg};
+  width: 100%;
+  box-sizing: border-box;
+`;
+
+export const CopyFeedbackStyled = styled.span<{ $type: 'success' | 'error' | null }>`
+  margin-left: ${tokens.spacing.sm};
+  color: ${props => props.$type === 'success' ? tokens.colors.success : tokens.colors.error};
+  font-size: ${tokens.fontSizes.sm};
+  opacity: ${props => props.$type ? 1 : 0};
+  transition: opacity 0.2s ease;
 `;
 
 export const CopyButtonStyled = styled.button`
@@ -929,6 +925,7 @@ export const CopyButtonStyled = styled.button`
   display: flex;
   align-items: center;
   gap: ${tokens.spacing.xs};
+  min-width: 120px; // Add minimum width to prevent layout shift when feedback appears
   cursor: pointer;
   font-size: ${tokens.fontSizes.sm};
   color: ${tokens.colors.neutral[700]};
@@ -949,6 +946,35 @@ export const CopyButtonStyled = styled.button`
   }
 `;
 
+export const PreviewContainerStyled = styled.div`
+  position: relative;
+  width: 100%;
+  min-height: 400px;
+  border-radius: ${tokens.borderRadius.lg};
+  background: ${tokens.colors.white};
+  box-shadow: ${tokens.shadows.md};
+  overflow: hidden;
+  z-index: 1;
 
+  &:hover .preview-overlay {
+    opacity: 1;
+    pointer-events: all;
+  }
+`;
 
+export const PreviewOverlayStyled = styled.div.attrs({ className: 'preview-overlay' })`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 10;
+`;
 
