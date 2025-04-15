@@ -1,12 +1,13 @@
 import styled from 'styled-components';
+import { audioTranscriberStylesToken } from './AudioTranscriber-tokens';
 
 export const AppContainerStyled = styled.div`
   text-align: center;
-  padding: 20px;
+  padding: ${audioTranscriberStylesToken.spacing.lg};
 `;
 
 export const AppHeaderStyled = styled.header`
-  margin-bottom: 30px;
+  margin-bottom: ${audioTranscriberStylesToken.spacing.xl};
 `;
 
 export const AppMainStyled = styled.main`
@@ -15,39 +16,29 @@ export const AppMainStyled = styled.main`
 `;
 
 export const UploadSectionStyled = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: ${audioTranscriberStylesToken.spacing.md};
 `;
 
 export const FileInputStyled = styled.input`
-  margin-bottom: 10px;
+  margin-bottom: ${audioTranscriberStylesToken.spacing.sm};
 `;
 
 export const AudioPlayerStyled = styled.audio`
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: ${audioTranscriberStylesToken.spacing.md};
 `;
 
 export const ButtonGroupStyled = styled.div`
   display: flex;
-  gap: 10px;
+  gap: ${audioTranscriberStylesToken.spacing.sm};
   justify-content: center;
-  margin-bottom: 20px;
-`;
-
-export const ActionButtonStyled = styled.button<{ disabled?: boolean }>`
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
-  background-color: ${props => props.disabled ? '#cccccc' : '#007bff'};
-  color: white;
-  border: none;
-  border-radius: 4px;
+  margin-bottom: ${audioTranscriberStylesToken.spacing.md};
 `;
 
 export const ResultsSectionStyled = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: ${audioTranscriberStylesToken.spacing.md};
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -56,17 +47,11 @@ export const ResultsSectionStyled = styled.div`
 
 export const ResultBoxStyled = styled.div`
   position: relative;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: ${audioTranscriberStylesToken.spacing.md};
+  border: 1px solid ${audioTranscriberStylesToken.colors.neutral[200]};
+  border-radius: ${audioTranscriberStylesToken.borderRadius.md};
   min-height: 200px;
   text-align: left;
-`;
-
-export const ResultContentStyled = styled.div`
-  margin-top: 10px;
-  white-space: pre-wrap;
-  word-break: break-word;
 `;
 
 export const HeadingStyled = styled.h2`
@@ -76,13 +61,13 @@ export const HeadingStyled = styled.h2`
 export const StatusIndicatorStyled = styled.div<{ $isListening: boolean }>`
   display: inline-flex;
   align-items: center;
-  padding: 8px 16px;
-  margin: 10px 0;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 500;
-  background-color: ${props => props.$isListening ? '#4CAF50' : '#9e9e9e'};
-  color: white;
+  padding: ${audioTranscriberStylesToken.spacing.sm} ${audioTranscriberStylesToken.spacing.md};
+  margin: ${audioTranscriberStylesToken.spacing.sm} 0;
+  border-radius: ${audioTranscriberStylesToken.borderRadius.full};
+  font-size: ${audioTranscriberStylesToken.fontSizes.sm};
+  font-weight: ${audioTranscriberStylesToken.fontWeights.medium};
+  background-color: ${props => (props.$isListening ? audioTranscriberStylesToken.colors.success : audioTranscriberStylesToken.colors.neutral[500])};
+  color: ${audioTranscriberStylesToken.colors.neutral[100]};
   transition: all 0.3s ease;
 
   &::before {
@@ -90,10 +75,10 @@ export const StatusIndicatorStyled = styled.div<{ $isListening: boolean }>`
     display: inline-block;
     width: 8px;
     height: 8px;
-    margin-right: 8px;
+    margin-right: ${audioTranscriberStylesToken.spacing.xs};
     border-radius: 50%;
-    background-color: white;
-    animation: ${props => props.$isListening ? 'pulse 1.5s infinite' : 'none'};
+    background-color: ${audioTranscriberStylesToken.colors.neutral[100]};
+    animation: ${props => (props.$isListening ? 'pulse 1.5s infinite' : 'none')};
   }
 
   @keyframes pulse {
@@ -113,12 +98,25 @@ export const StatusIndicatorStyled = styled.div<{ $isListening: boolean }>`
 `;
 
 export const ErrorMessageStyled = styled.p`
-  color: #dc3545;
-  margin: 10px 0;
-  padding: 10px;
-  border-radius: 4px;
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
+  color: ${audioTranscriberStylesToken.colors.error};
+  margin: ${audioTranscriberStylesToken.spacing.sm} 0;
+  padding: ${audioTranscriberStylesToken.spacing.sm};
+  border-radius: ${audioTranscriberStylesToken.borderRadius.sm};
+  background-color: ${audioTranscriberStylesToken.colors.errorBackground};
+  border: 1px solid ${audioTranscriberStylesToken.colors.errorBorder};
   text-align: center;
 `;
 
+export const ActionButtonStyled = styled.button<{ disabled?: boolean }>`
+  padding: ${audioTranscriberStylesToken.spacing.sm} ${audioTranscriberStylesToken.spacing.md};
+  font-size: ${audioTranscriberStylesToken.fontSizes.base};
+  cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
+  background-color: ${props => (props.disabled ? audioTranscriberStylesToken.colors.neutral[500] : audioTranscriberStylesToken.colors.accent)};
+  color: ${audioTranscriberStylesToken.colors.neutral[100]};
+  border: none;
+  border-radius: ${audioTranscriberStylesToken.borderRadius.sm};
+
+  &:nth-of-type(2) {
+    background-color: ${props => (props.disabled ? audioTranscriberStylesToken.colors.neutral[500] : '#9333EA')}; /* Primary color */
+  }
+`;

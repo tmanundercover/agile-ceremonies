@@ -1,4 +1,4 @@
-# [Agent Specific Style Guide](./agents-style-guide-README.md)
+# [Agent Page Specific Style Guide](./agents-style-guide-README.md)
 
 # Design System Style Guide
 
@@ -8,6 +8,7 @@
 - **Primary**: `#9333EA`
 - **Primary Light**: `#A855F7`
 - **Primary Dark**: `#7928CA`
+- **Accent**: ["This should be the agent color that this widget falls under"]
 
 ### UI Colors
 - **Success**: `#22C55E`

@@ -2,6 +2,7 @@
 - The images will be turned into SVG stickers
 - The svg stickers will be animated
 
+# Landing Page User Prompts
 Shopify Store Landing Page User Prompt
 Create a landing page with the following content:
 Main Message: Launch a stunning Shopify store that sells while you sleep

@@ -1,6 +1,6 @@
 {
   "$schema": "https://dev.wix.com/wix-cli/schemas/custom-element.json",
-  "id": "c01ad80d-8ddf-4678-af1e-15e45ae4b4bd",
+  "id": "5f6a9c0e-8161-4bb0-a8ca-6bdb7763c1ca",
   "name": "SVG Divider",
   "width": {
     "defaultWidth": 450,

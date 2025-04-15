@@ -4,6 +4,7 @@ import reactToWebComponent from 'react-to-webcomponent';
 import styled from 'styled-components';
 import AIAgentCompass from "./components/ai-agent-compass/AIAgentCompass";
 import AudioTranscriber from "./components/Audio Transcriber/AudioTranscriber";
+import {LandingPageBuilder} from "./components/landing-page-builder/LandingPageBuilder";
 
 const WidgetContainerStyled = styled.div`
   display: grid;
@@ -22,7 +23,7 @@ const CustomElement: FC<Props> = ({
 }) => {
   return (
     <WidgetContainerStyled>
-      <AudioTranscriber />
+      <LandingPageBuilder/>
     </WidgetContainerStyled>
   );
 };

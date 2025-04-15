@@ -1,5 +1,7 @@
-import RadixThemeWrapper from "../src/test/RadixThemeWrapper";
+ import RadixThemeWrapper from "../src/test/RadixThemeWrapper";
 import React from 'react';
+ import {StoryFn, StoryObj} from "@storybook/react";
+
 const preview = {
     parameters: {
         controls: {
@@ -10,12 +12,12 @@ const preview = {
         },
     },
     decorators: [
-        (Story) => {
-            return React.createElement(RadixThemeWrapper, null,
-                React.createElement(Story, null));
+        (Story:StoryFn) => {
+            return <RadixThemeWrapper><Story/></RadixThemeWrapper>
         },
     ],
+
     tags: ["autodocs"]
 };
+
 export default preview;
-//# sourceMappingURL=preview.js.map

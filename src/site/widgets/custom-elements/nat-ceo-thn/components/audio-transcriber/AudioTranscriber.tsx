@@ -14,7 +14,6 @@ import {
     HeadingStyled,
     StatusIndicatorStyled,
     ErrorMessageStyled,
-    ResultContentStyled
 } from './AudioTranscriber-styled-components';
 import { AudioStateType, AudioTranscriberProps } from './AudioTranscriber-types';
 import { createAudioUrl, generateSummary } from './AudioTranscriber-utils';

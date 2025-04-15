@@ -228,10 +228,10 @@ export const ModalStyled = styled.div`
   border-radius: ${tokens.borderRadius.md};
   box-shadow: 0 8px 32px rgba(0,0,0,0.2);
   width: 100%;
-  max-width: 600px;
+  max-width: 300px;
   max-height: 90vh;
   overflow-y: auto;
-  animation: ${slideUp} 0.3s ease-out forwards;
+  //animation: ${slideUp} 0.3s ease-out forwards;
 
   h2 {
     margin: 0 0 ${tokens.spacing.lg};
@@ -670,7 +670,7 @@ export const OverlayStyled = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  animation: ${slideUp} 0.3s ease-out forwards;
+  // animation: ${slideUp} 0.3s ease-out forwards;
   padding: ${tokens.spacing.xl};
 `;
 
