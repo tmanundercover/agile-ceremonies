@@ -2,7 +2,7 @@
 - The images will be turned into SVG stickers
 - The svg stickers will be animated
 
-# Landing Page User Prompts
+# Shopify Store Landing Page User Prompt
 Shopify Store Landing Page User Prompt
 Create a landing page with the following content:
 Main Message: Launch a stunning Shopify store that sells while you sleep
@@ -24,7 +24,7 @@ Please generate an SVG that includes:
 Additional Note:
 If you need help building your Shopify store from the ground up, The Handsomest Nerd, LLC has you covered. We develop custom websites, web & mobile applications for entrepreneurs who want professional, SEO-optimized online stores. Learn more at https://www.thehandsomestnerd.com
 
-Create a landing page with the following content:
+## Printful Dropshipping Landing Page User Prompt
 Main Message: Start your Printful dropshipping business with a pro-built Shopify store
 Keywords: Shopify, Printful, Dropshipping, Passive Income
 Calls to Action: Launch Now, See Examples
@@ -44,7 +44,7 @@ Please generate an SVG that includes:
 Additional Note:
 If you're looking to launch a Printful-powered dropshipping brand, The Handsomest Nerd, LLC can build your entire Shopify store from scratch. We specialize in custom web development, eCommerce optimization, and mobile-ready designs that help your products stand out. Visit https://www.thehandsomestnerd.com to learn more.
 
-Create a landing page with the following content:
+## Shopify Store Landing Page User Prompt
 Main Message: Shopify stores built to convert — especially on mobile
 Keywords: Shopify, Mobile-First, Conversion, Responsive Design
 Calls to Action: Book a Demo, Explore Services
@@ -64,7 +64,7 @@ Please generate an SVG that includes:
 Additional Note:
 Mobile shoppers dominate eCommerce — and The Handsomest Nerd, LLC builds Shopify stores that thrive on small screens. We design, develop, and optimize sites for speed, SEO, and user experience. See how we can help at https://www.thehandsomestnerd.com
 
-Create a landing page with the following content:
+## Black Owned Business Landing Page User Prompt
 Main Message: Build your digital empire — custom websites and apps for Black-owned businesses
 Keywords: Black-Owned, Web Development, Mobile Apps, Community Empowerment
 Calls to Action: Work With Me, See My Portfolio
@@ -84,7 +84,7 @@ Please generate an SVG that includes:
 Additional Note:
 I’m James, an African American freelance developer helping Black-owned businesses thrive online. From mobile-ready websites to full apps with Flutter, I’ve got you. Hire me on Fiverr (https://www.fiverr.com/jamessinglet735), view my work on GitHub (https://github.com/tmanundercover), or connect on LinkedIn (https://www.linkedin.com/in/the-handsomest-nerd/). Let's build something powerful together.
 
-Create a landing page with the following content:
+## AI Landing Page User Prompt
 Main Message: Future-ready websites with built-in AI — crafted by a developer who understands the tech
 Keywords: AI-Powered, Web Development, NLP, Prompt Engineering, Smart Websites
 Calls to Action: Build With AI, View Capabilities
@@ -104,8 +104,7 @@ Please generate an SVG that includes:
 Additional Note:
 I’m James — a web developer and AI model evaluation specialist. I build smart, responsive websites and apps that integrate AI features like chatbots, natural language interfaces, and automation tools. My experience includes prompt engineering, interaction testing, model QA, and dataset development. Let’s build a smarter web experience. Hire me on Fiverr (https://www.fiverr.com/jamessinglet735), explore my work on GitHub (https://github.com/tmanundercover), or connect on LinkedIn (https://www.linkedin.com/in/the-handsomest-nerd/).
 
-
-# Prompt
+# Sticker Builder App Prompt
 Build a one component React app that is a sticker builder. Take in a set of images with filenames that hint at what should be taken from the image.
 The app should be able to turn each image into an svg and separate it out into logical visual pieces.(human head, hair, headphones, facial markings, eyes, etc.) 
 The user can select to combine pieces into one. 
@@ -113,7 +112,7 @@ The image still remains an svg tag even though the user can manipulate the visua
 animations and hover states can be added manually. there should be an always visible button to chat with an agent(open AI form chat box) made to look like a sticker Agent(Josh).
 Please adhere to the style guide in the style-guide*.svg files for the slick fast and modern ui with level 1 animations.
 
-# System prompt
+# Josh Main System prompt
 You are a professional web designer specializing in designing one page landing pages for react development.
 You will create an SVG-based landing page optimized for conversion.
 Consider these design principles:
@@ -122,10 +121,7 @@ Consider these design principles:
 - Ensure high contrast for readability
 - Use consistent brand colors
 
-
-complete copy-paste ready
-
-# another version of User prompt
+# another version of Landing Page User prompt
 I need a detailed mockup for a tech-focused landing page that promotes AI-enhanced web development services. Here's what I need:
 
 Design Style:
@@ -156,8 +152,7 @@ Final Deliverable:
 Provide the mockup as a React component that includes the entire page layout and the embedded AI icon within a single SVG tag. Make sure all styling is handled inside the SVG with a <style> tag, and that the layout is simple and optimized for conversion. The component should be responsive and look great on different devices.
 
 
-# another version of system prompt
-
+# another version of Landing Page system prompt
 You are a professional web designer specializing in modern, tech-inspired landing pages with a focus on animations, hover states, and responsive layouts. Your task is to generate a high-conversion landing page mockup for an AI-driven web development service. The design should use an SVG component that incorporates a detailed icon and layout, following the following principles:
 
 Design Style: A tech-meets-flat aesthetic with bold outlines and dotted accents. The icon should feel like a modern infographic visual with personality, blending futuristic tech elements with a simple, clean flat design.
