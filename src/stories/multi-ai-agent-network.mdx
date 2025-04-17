@@ -1,0 +1,183 @@
+import {Meta} from '@storybook/blocks';
+import {ThemeSwitcherStyled} from "./components/ThemeSwitcherStyled";
+import {StyledAgentCard, StyledAgentOverview, StyledMdxContent} from "./components/styled-components";
+import {ProgressIndicator} from "./components/ProgressIndicator";
+import AnimatedDiagram from "./components/AnimatedDiagram";
+import CollapsibleSection from "./components/CollapsibleSection";
+import TabPanel from "./components/TabPanel";
+import TimelineComponentStyled from "./components/TimelineComponent";
+import {AnimatedOrgChartStyled} from "./components/AnimatedOrgChartStyled";
+import FloatingNav from "./components/FloatingNav";
+import TimelineComponent from "./components/TimelineComponent";
+
+<Meta title="Documentation/Multi-Agent System" />
+
+<ThemeSwitcherStyled />
+<StyledMdxContent>
+
+<FloatingNav
+  sections={[
+    { id: 'intro', label: 'Introduction' },
+    { id: 'original-prompt', label: 'Original Prompt' },
+    { id: 'org-charts', label: 'Organization Charts' },
+    { id: 'timeline', label: 'Timeline' }
+  ]}
+  activeSection="intro"
+  scrolled={true}
+  onSectionClick={(id) => document.getElementById(id).scrollIntoView({ behavior: 'smooth' })}
+/>
+
+<ProgressIndicator />
+
+<div id="intro">
+    <h1>Multi-Agent AI System</h1>
+
+    <p>
+        Welcome to the documentation for our Multi-Agent AI System - a comprehensive platform designed to model an Agile team with standups and pair programming capabilities. This system consists of multiple specialized AI agents working together to handle different aspects of the software development lifecycle.
+    </p>
+
+    <AnimatedDiagram title="System Overview">
+        <StyledAgentOverview>
+            <StyledAgentCard>
+                <div className="agent-icon">👑</div>
+                <h3>Nat (CEO)</h3>
+                <p>Oversees all operations</p>
+            </StyledAgentCard>
+            <StyledAgentCard>
+                <div className="agent-icon">📊</div>
+                <h3>Brian (PM)</h3>
+                <p>Manages projects</p>
+            </StyledAgentCard>
+            <StyledAgentCard>
+                <div className="agent-icon">📝</div>
+                <h3>Reqqy</h3>
+                <p>Gathers requirements</p>
+            </StyledAgentCard>
+            <StyledAgentCard>
+                <div className="agent-icon">🎨</div>
+                <h3>Josh</h3>
+                <p>Design & mockups</p>
+            </StyledAgentCard>
+            <StyledAgentCard>
+                <div className="agent-icon">👨‍💻</div>
+                <h3>James & Terrell</h3>
+                <p>Development team</p>
+            </StyledAgentCard>
+            <StyledAgentCard>
+                <div className="agent-icon">🔍</div>
+                <h3>Antosh</h3>
+                <p>Testing & analytics</p>
+            </StyledAgentCard>
+            <StyledAgentCard>
+                <div className="agent-icon">📱</div>
+                <h3>Lia</h3>
+                <p>Social media & emails</p>
+            </StyledAgentCard>
+            <StyledAgentCard>
+                <div className="agent-icon">🔧</div>
+                <h3>Man-Man</h3>
+                <p>Maintenance & DevOps</p>
+            </StyledAgentCard>
+        </StyledAgentOverview>
+    </AnimatedDiagram>
+</div>
+<div id="original-prompt">
+    <h2>The Original Project Prompt</h2>
+
+    <CollapsibleSection title="Project Requirements" defaultExpanded={true}>
+        <p>
+            The scenario I'm trying to model is an Agile team with scrums(standups) that does pair programming. I want to start with the AI PM Agent(Nat) but i know she is gonna have friend agents that help her: Reqqy the Requirements Agent, Josh the Mockup and Graphic Design Agent, James & Terrell the Twin Developer Agents, Antosh the Testing & Analytics Agent, Man-Man the Maintenance Agent, and Lia the Email & Social Media Manager Agent. These will be how I refer to them while we build them.
+        </p>
+        <p>
+            I'm building the Pair Programing Widget as part of a larger App Called Agile Ceremonies. Nat(CEO) is in charge of Agile Ceremonies and can see everything everywhere with no access restrictions. Brian is the PM and is the Agent for Pair Programming Widget. The Dev Team are two twin Agents James & Terrell and they mainly pair program to get development tasks done, Operations is Man-Man who also does the maintenance on the apps the Product Manager Produces. Josh is the Graphics Design Agent and does anything with video, images and Branding. Antosh is the Testing Agent and is responsible for testing the App. He will be writing & running tests and have a TDD mode. Reqqy is the Requirements agent who collects requirements and creates issues. Lia is the Email and Social Media Agent and is in charge of interfacing with social media and maintaining email lists and getting new leads. I want to do this in 7 days one agent a day(two on the day we work on the twin dev agents Terrell & James).
+        </p>
+    </CollapsibleSection>
+
+    <div className="resource-links">
+        <h3>Documentation & Resources</h3>
+        <div className="link-cards">
+            <a href="README-current-progress.md" className="resource-card">
+                <span className="resource-icon">📄</span>
+                <span className="resource-title">Current Prompt and Progress</span>
+            </a>
+            <a href=".readme/MultiAgentSystem/Josh-AI-Graphic-Designer/style-guide/README.md" className="resource-card">
+                <span className="resource-icon">🎨</span>
+                <span className="resource-title">Style Guide</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div id="org-charts">
+    <h2>Organization Charts</h2>
+
+    <TabPanel tabs={[
+        {
+            label: "Personalized Org Chart",
+            content: (
+                <>
+                    <p>The personalized organization chart showing the relationship between all agents:</p>
+                    <img
+                        src=".readme/thn-personalized-org-chart.png"
+                        alt="THN Personalized Organization Chart"
+                        className="interactive-image"
+                    />
+                </>
+            )
+        },
+        {
+            label: "Alternate Org Chart",
+            content: (
+                <>
+                    <p>An alternate visualization of the agent organization structure:</p>
+                    <img
+                        src=".readme/MultiAgentSystem/alternate-org-chart.svg"
+                        alt="Alternate Organization Chart"
+                        className="interactive-image"
+                    />
+                </>
+            )
+        },
+        {
+            label: "Interactive Chart",
+            content: (
+                <>
+                    <p>Hover over the different nodes to see agent relationships:</p>
+                    <AnimatedOrgChartStyled />
+                </>
+            )
+        }
+    ]} />
+
+    <div className="mermaid-diagram">
+        <h3>Hierarchical Structure</h3>
+        <pre className="mermaid">
+      {`
+CEO (You)
+|
+├── AI Project Manager
+|   ├── Requirements Gathering Bot
+|   └── Project Timeline Bot
+|
+├── Development Team
+|   ├── AI Code Assistant
+|   |   ├── Frontend Bot
+|   |   └── Backend Bot
+|   └── AI Testing Bot
+|
+├── Business Development
+|   ├── Lead Generation AI
+|   └── Client Communication Bot
+|
+└── Operations
+    ├── Documentation AI
+    ├── DevOps Bot
+    └── Billing/Invoice AI
+      `}
+    </pre>
+    </div>
+</div>
+
+
+
+</StyledMdxContent>

@@ -1,0 +1,84 @@
+.docs-container {
+  padding: 2rem;
+  background-color: #1A1A1A;
+  color: #F8F9FA;
+  border-radius: 8px;
+}
+
+.doc-section {
+  margin-bottom: 2rem;
+}
+
+.highlight-box {
+  background-color: rgba(147, 51, 234, 0.15);
+  border-left: 4px solid #9333EA;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.component-preview {
+  margin: 2rem 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.property-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.property-table th,
+.property-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.property-table th {
+  color: #A855F7;
+  font-weight: bold;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.action-button {
+  background-color: transparent;
+  color: #A855F7;
+  border: 1px solid #A855F7;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.action-button:hover {
+  background-color: rgba(147, 51, 234, 0.1);
+  transform: translateY(-2px);
+}
+
+.action-button.primary {
+  background-color: #9333EA;
+  color: white;
+  border: 1px solid #7928CA;
+}
+
+.action-button.primary:hover {
+  background-color: #7928CA;
+  transform: translateY(-2px);
+}
+
+.code-block {
+  background: rgba(0,0,0,0.2);
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
+}

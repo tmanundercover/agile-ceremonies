@@ -12,6 +12,7 @@ import {
 } from "./StyledComponents";
 import { CalendarIcon } from '@radix-ui/react-icons';
 import React from 'react';
+import ActualStandupModal from "./standup/ActualStandupModal";
 
 const App: React.FC = () => {
     const [currentTeammateIndex, setCurrentTeammateIndex] = useState(0);
@@ -172,15 +173,10 @@ const App: React.FC = () => {
             )}
 
             {showStandupModal && (
-                <StandupModal
+                <ActualStandupModal
+                    onClose={() => setShowStandupModal(false)}
                     teammate={selectedTeammate}
-                    onClose={(data) => {
-                        setShowStandupModal(false);
-                        setSelectedTeammate(null);
-                        // Handle standup data
-                    }}
-                    isEntering={true}
-                />
+                    isEntering={false}                />
             )}
         </AppContainer>
     );

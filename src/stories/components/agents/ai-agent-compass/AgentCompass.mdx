@@ -1,0 +1,94 @@
+import {Meta} from '@storybook/blocks';
+import {ScrollReveal} from "../../ScrollReveal";
+import InfoCard from "../../InfoCard";
+import CollapsibleSection from "../../CollapsibleSection";
+import {StyledMdxContent} from "../../styled-components";
+import FirebaseArchitecture from "../../FirebaseArchitecture";
+import ResponsibilitiesCard from "../../ResponsibilitiesCard";
+import WorkflowSteps from "../../WorkflowSteps";
+import WorkflowSchematic from "../../WorkflowSchematic";
+import AgentCommunicationProtocol from "../../AgentCommunicationProtocol";
+import {compassRoutingWorkflow} from "../../../data/workflowData";
+import {compassCommunicationProtocols} from "../../../data/communicationProtocolData";
+import TimelineComponentStyled from "../../TimelineComponent";
+import agentCompassTodoList from "../../../data/AgentCompassTodoList";
+
+<Meta title="Documentation/Agents/Compass"/>
+const tasks = []
+<StyledMdxContent>
+    # AI Agent Compass - Multi-Agent Communications & Routing Specialist
+
+    <div className="hero-image">
+        <img style={{maxWidth: "500px"}} src="/src/stories/images/ai-agent-compass-comunication.png"
+             alt="Compass Communication Flow" className="interactive-image"/>
+    </div>
+
+    <ScrollReveal>
+        ## Overview
+
+        Compass serves as the central nervous system of our Multi-Agent Network, ensuring smooth communication and
+        precise
+        task routing between agents. Think of Compass as "Alexa meets DevOps PM with HR energy" - a specialized
+        component
+        that interprets requests and directs them to the right specialized agent.
+    </ScrollReveal>
+
+    <InfoCard
+        title="Agent Responsibilities"
+        icon="🧭"
+        actions={[
+            {
+                label: "View n8n Workflow",
+                link: "#n8n-workflow"
+            },
+            {
+                label: "See Communications Protocol",
+                link: "#communication-protocol"
+            }
+        ]}
+    >
+        Compass acts as the central intelligence of the Multi-Agent System, interpreting incoming prompts,
+        routing requests to appropriate agents, and maintaining system workflow integrity.
+    </InfoCard>
+
+    <ScrollReveal>
+        <ResponsibilitiesCard responsibilities={[
+            "Route incoming requests to the most appropriate agent",
+            "Maintain agent registry and capability mapping",
+            "Handle communication errors and request re-routing",
+            "Optimize workflow selection based on request context",
+            "Update feedback routes based on agent performance",
+            "Manage multi-agent collaboration for complex tasks"
+        ]}/>
+    </ScrollReveal>
+
+    <CollapsibleSection title="MCP Compass Workflow - Centralized Routing Process">
+        <WorkflowSteps title={compassRoutingWorkflow.title} steps={compassRoutingWorkflow.steps} />
+    </CollapsibleSection>
+
+    <WorkflowSchematic
+        id="n8n-workflow"
+        title="n8n Workflow Schematic"
+        imageSrc="/src/stories/images/ai-agent-compass-n8n-schematic-mockup.png"
+        imageAlt="n8n Workflow Schematic"
+        imageStyle={{maxWidth: "500px"}}
+        legendItems={[
+            { color: '#3B82F6', text: '🔵 Blue Box - Agent Trigger Node (Webhook/Prompt from Nat)' },
+            { color: '#22C55E', text: '🟢 Green Box - Firecrawl/GitHub Scraping' },
+            { color: '#EAB308', text: '🟡 Yellow Box - Library Query (Prompt/Workflow Collection)' },
+            { color: '#9333EA', text: '🟣 Purple Box - Prompt Package Creation' },
+            { color: '#F97316', text: '🟠 Orange Box - Queue Send to Target Agent' },
+            { color: '#EF4444', text: '🔴 Red Box - Error Handling/Reroute Logging' }
+        ]}
+    />
+
+    <FirebaseArchitecture />
+
+    <AgentCommunicationProtocol
+      protocols={compassCommunicationProtocols}
+      title="Agent Communication Protocol"
+    />
+
+    <TimelineComponentStyled timelineData={agentCompassTodoList} unit={'phases'}/>
+
+</StyledMdxContent>

@@ -149,7 +149,7 @@ Animations & Hover States:
 Include hover effects on the buttons (and any other interactive elements) that alter their background color when the user hovers over them, offering a dynamic user experience without overwhelming them. Any transitions or animations should be subtle, enhancing the design rather than distracting from the content.
 
 Final Deliverable:
-Provide the mockup as a React component that includes the entire page layout and the embedded AI icon within a single SVG tag. Make sure all styling is handled inside the SVG with a <style> tag, and that the layout is simple and optimized for conversion. The component should be responsive and look great on different devices.
+Provide the mockup as a React component that includes the entire page layout and the embedded AI icon within a single SVG tag. Make sure all styling is handled inside the SVG with a `<style>` tag, and that the layout is simple and optimized for conversion. The component should be responsive and look great on different devices.
 
 
 # another version of Landing Page system prompt
@@ -194,3 +194,31 @@ Background should be dark with a subtle tech grid
 The eyes should have that same clean, high-tech medical/robotic aesthetic from the reference image, with precise mechanical details but still feeling elegant and sophisticated. The headphones should feel like they're part of the same design language - sleek, white, with blue accent lighting.
 
 Focus on making the mechanical iris look exactly like the reference - with its distinctive circular pattern and blue glow. The white casing should have that same dimensional quality with subtle shadows and highlights."
+
+
+# Agent n8n Schematic Prompts
+
+## 🟣 Nat (CEO)
+A flat-style digital illustration of an AI Agent named Nat, the CEO of an Agile Software Development Company. Nat is a sharp, confident female-presenting agent in her early 30s with professional but energetic vibes. She is not human—she has soft, humanoid features but no distinct race or ethnicity. She wears a sleek digital blazer with accent trim in deep lavender (#A35BD6), blending well with a futuristic UI palette. Her pose is assertive yet approachable, with a holographic task orb in one hand and a glowing roadmap in the other. This sticker-style image should feel empowering and strategic, made to fit within an SVG n8n schematic dashboard.
+
+## 🟡 Reqqy (Requirements Agent)
+A sticker-style digital illustration of an AI Agent named Reqqy, the Requirements Agent for Agile projects. Reqqy has a futuristic clipboard and glowing digital post-its floating around. They are nonbinary in presentation with calm, precise energy. Their dominant accent is a bright amber yellow (#F4A300), used on a headset visor, UI panels, and wrist tools. Their expression is thoughtful and analytical. This SVG-ready image should blend with a cool purple UI while standing out as a beacon of clarity and structure in the n8n schematic flow.
+
+## 🔵 Brian (Pair Programming Lead)
+A clean sticker-style illustration of an AI Agent named Brian, a calm and collected Pair Programming Lead. Brian is in his late 20s, cool-toned and focused, with human-like features and a soft tech-nerd style. He wears a layered smart hoodie with electric sky-blue (#5AB5F7) tech patches and AR glasses. His expression is collaborative, and he holds a pair-programming hologram showing mirrored cursor actions. SVG-friendly layout for integration into a purple-accented app interface.
+
+## 🟢 James & Terrell (Dev Twins)
+A duo-style sticker showing two AI Agents: James and Terrell, the twin developers. Terrell is expressive and frontend-focused, James is calm and backend-oriented. They stand back to back with stylized code UIs hovering behind them—CSS animations for Terrell and server logic/data clouds for James. Their coordinated attire includes soft green (#7FCF87) elements like circuit lines and utility belts. Human-adjacent, but clearly digital beings. The style should be SVG-compatible and harmonious with purple UI backdrops.
+
+## 🩷 Josh (Design & Branding Agent)
+A bold, vibrant sticker of AI Agent Josh, the creative heart of the team. Josh has a design tablet in one hand and a holographic color wheel in the other. He's stylish and a bit flamboyant, wearing layered jackets with pops of fuchsia-pink (#E25574) and glowing UI frames behind him featuring icon mockups and typography. He is animated mid-gesture, expressing creativity and design flow. Human-like, but abstract enough to keep race ambiguous. Flat digital style for SVG use.
+
+## 🟠 Man-Man (Operations & Maintenance Agent)
+A digital sticker of Man-Man, the dependable Operations Agent. Broad-shouldered, toolbelt-equipped, and always ready to troubleshoot. Man-Man wears a utility jumpsuit with orange accents (#F2703E), his sleeves rolled up, and a friendly smirk on his face. One hand holds a wrench and the other a holographic control panel showing gears and uptime graphs. Designed in a flat vector style with techy details to match purple interface environments. This sticker should radiate resourcefulness and calm in the flow diagram.
+
+## 🟣 Antosh (Testing & Analytics Agent)
+An SVG-style sticker illustration of Antosh, the data-focused Testing & Analytics Agent. Antosh is meticulous and quiet, shown mid-inspection of a bug report magnified in a hologram. Their outfit features sharp violet-blue (#7E4DD2) paneling, with data streams flowing in lines behind them. Their headgear resembles a visor scanning lines of code and performance graphs. Gender-neutral and digitally humanoid, their entire aesthetic should evoke calm, methodical precision in a purple UI workspace.
+
+## 🩵 Lia (Social Media & Email Agent)
+A digital agent sticker for Lia, the energetic Social Media & Email Agent. She's expressive, quirky, and plugged into a digital dashboard showing email stats, hashtags, and chat bubbles. Her outfit is accented with teal-blue (#64C9D9) and she wears over-ear comms and a digital clipboard. Lia has a youthful vibe, hovering midair with emoji icons orbiting her head. Friendly, vibrant, SVG-friendly — she fits perfectly into UI flows while commanding attention with charm.
+```

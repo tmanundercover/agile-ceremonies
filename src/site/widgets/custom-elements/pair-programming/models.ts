@@ -62,6 +62,8 @@ export interface Teammate {
   name: string;
   role: 'PM' | 'Developer' | 'Graphic Designer' | 'Marketing';
   helpRequests: HelpRequest[];
+  email: string;
+  avatarUrl: string;
 }
 
 export interface Desk {

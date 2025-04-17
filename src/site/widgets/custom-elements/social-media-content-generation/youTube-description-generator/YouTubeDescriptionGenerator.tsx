@@ -1,7 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { getYoutubeDescriptionResponse } from './openAI.web';
 import './YouTubeDescriptionGenerator.css';
+import { getYoutubeDescriptionResponse } from '../../../../../backend/get-description.web';
+import {
+  YouTubeDescriptionGeneratorContainerStyled,
+  TextAreaStyled,
+  GenerateButtonStyled,
+  LoaderContainerStyled,
+  ResultContainerStyled,
+  TitleStyled,
+  DescriptionTextStyled,
+  TagsContainerStyled,
+  TagStyled,
+  CommaDelimitedTagsContainerStyled,
+  LoaderStyled,
+} from './YouTubeDescriptionGenerator-styled-components';
 
 interface Tag {
   tagTitle: string;
@@ -20,11 +33,11 @@ const YouTubeDescriptionGenerator: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [inputText, setInputText] = useState('');
   const [tags, setTags] = useState<Tag[]>([]);
-  const [containerStyle, setContainerStyle] = useState({ backgroundColor: '#15191E' });
   const [descriptionText, setDescriptionText] = useState('Let me help you plan your day. Please enter your tasks for today, one per line above. I\'ll tell you what order and times you should do them.');
   const [title, setTitle] = useState('');
   const [commaDelimitedTags, setCommaDelimitedTags] = useState('');
   const [showTags, setShowTags] = useState(false);
+  const [containerStyle, setContainerStyle] = useState<React.CSSProperties>({ backgroundColor: 'black' });
 
   const handleSuccess = (response: DescriptionResponse) => {
     setContainerStyle({ backgroundColor: '#06ac06' });
@@ -48,8 +61,8 @@ const YouTubeDescriptionGenerator: React.FC = () => {
     setDescriptionText('');
 
     try {
-      const response = await getYoutubeDescriptionResponse(inputText);
-      
+      const response = await getYoutubeDescriptionResponse(inputText, {});
+
       if (response.error) {
         handleError(response.error);
       } else {
@@ -65,45 +78,46 @@ const YouTubeDescriptionGenerator: React.FC = () => {
   };
 
   return (
-    <div className="youtube-description-generator">
-      <textarea
+    <YouTubeDescriptionGeneratorContainerStyled>
+      <TextAreaStyled
         value={inputText}
         onChange={(e) => setInputText(e.target.value)}
         placeholder="Enter your text here"
       />
-      
-      <button onClick={handleGenerate} disabled={isLoading}>
+
+      <GenerateButtonStyled onClick={handleGenerate} disabled={isLoading}>
         Generate Description
-      </button>
+      </GenerateButtonStyled>
 
       {isLoading && (
-        <div className="loader">
-          <img src="/path-to-your-loader-image.gif" alt="Loading..." />
-        </div>
+        <LoaderContainerStyled>
+          <LoaderStyled />
+        </LoaderContainerStyled>
       )}
 
-      <div className="description-container" style={containerStyle}>
-        <h3>{title}</h3>
-        <p>{descriptionText}</p>
-      </div>
+      <ResultContainerStyled style={containerStyle}>
+        <TitleStyled>{title}</TitleStyled>
+        <DescriptionTextStyled>{descriptionText}</DescriptionTextStyled>
+      </ResultContainerStyled>
 
       {showTags && (
         <>
-          <div className="tags-container" style={containerStyle}>
+          <TagsContainerStyled>
             {tags.map(tag => (
-              <span key={tag._id} className="tag">
+              <TagStyled key={tag._id}>
                 {tag.tagTitle}
-              </span>
+              </TagStyled>
             ))}
-          </div>
-          
-          <div className="comma-delimited-tags" style={containerStyle}>
-            <p>{commaDelimitedTags}</p>
-          </div>
+          </TagsContainerStyled>
+
+          <CommaDelimitedTagsContainerStyled>
+            <DescriptionTextStyled>{commaDelimitedTags}</DescriptionTextStyled>
+          </CommaDelimitedTagsContainerStyled>
         </>
       )}
-    </div>
+    </YouTubeDescriptionGeneratorContainerStyled>
   );
 };
 
 export default YouTubeDescriptionGenerator;
+

@@ -1,0 +1,206 @@
+import {Meta} from '@storybook/blocks';
+import {AnimatedHero} from "../components/AnimatedHero";
+import {ScrollReveal} from "../components/ScrollReveal";
+import AnimatedDiagram from "../components/AnimatedDiagram";
+import {AgentShowcase} from "../components/AgentShowcase";
+import {FeatureGrid} from "../components/FeatureGrid";
+import InfoCard from "../components/InfoCard";
+import TimelineComponentStyled from "../components/TimelineComponent";
+import StandupModalDocs from "../components/StandupModalDocs";
+import timelineData from "../data/AgentWeeklyTimelineTodoList";
+
+<Meta title="Documentation/Introduction" />
+
+<AnimatedHero 
+  title="Multi-Agent AI System" 
+  subtitle="An intelligent ecosystem of specialized AI agents working together to streamline the software development lifecycle"
+  cta="Explore the system"
+  ctaLink="/?path=/docs/documentation-multi-agent-system--docs"
+/>
+
+<ScrollReveal>
+  ## Welcome to Agile Ceremonies
+
+  The Multi-Agent System is a comprehensive platform designed to model an Agile team with standups and pair programming capabilities. This intelligent ecosystem consists of multiple specialized AI agents working together to handle different aspects of the software development lifecycle.
+
+  Our system represents a new paradigm in software development assistance, where each agent has defined responsibilities and expertise, yet collaborates seamlessly with other agents to achieve project goals.
+</ScrollReveal>
+
+<AnimatedDiagram/>
+
+<ScrollReveal>
+  ## Meet the Agents
+
+  Each agent in our system has been carefully designed to fulfill specific roles in the software development process. Together, they form a complete team capable of taking projects from requirements to deployment.
+</ScrollReveal>
+
+<AgentShowcase 
+  agents={[
+    {
+      name: "Nat (CEO)",
+      icon: "👑",
+      color: "#9333EA",
+      description: "The chief executive agent overseeing all operations with complete access across all systems.",
+      link: ".readme/MultiAgentSystem/Nat-AI-CEO/README.md"
+    },
+    {
+      name: "Brian (PM)",
+      icon: "📊",
+      color: "#A855F7",
+      description: "The Project Manager agent specifically responsible for the Pair Programming Widget.",
+      link: ".readme/MultiAgentSystem/Brian-AI-PM/README.md"
+    },
+    {
+      name: "Reqqy (Requirements)",
+      icon: "📝",
+      color: "#7928CA",
+      description: "Requirements agent who collects requirements and creates issues for the development team.",
+      link: ".readme/MultiAgentSystem/Reqqy-AI-Requirements/README.md"
+    },
+    {
+      name: "Josh (Design)",
+      icon: "🎨",
+      color: "#EAB308",
+      description: "Graphics Design Agent handling all visual aspects including videos, images and branding.",
+      link: ".readme/MultiAgentSystem/Josh-AI-Graphic-Designer/README.md"
+    },
+    {
+      name: "James & Terrell (Developers)",
+      icon: "👨‍💻",
+      color: "#22C55E",
+      description: "Twin Developer Agents who pair program to complete development tasks.",
+      link: ".readme/MultiAgentSystem/JnT-AI-Dev-Team/README.md"
+    },
+    {
+      name: "Antosh (Testing)",
+      icon: "🔍",
+      color: "#3B82F6",
+      description: "Testing & Analytics Agent responsible for writing tests and having a TDD mode.",
+      link: ".readme/MultiAgentSystem/Antosh-AI-Tester/README.md"
+    },
+    {
+      name: "Lia (Communications)",
+      icon: "📱",
+      color: "#EC4899",
+      description: "Email and Social Media Agent interfacing with social channels and maintaining email lists.",
+      link: ".readme/MultiAgentSystem/Lia-AI-Communications/README.md"
+    },
+    {
+      name: "Man-Man (Maintenance)",
+      icon: "🔧",
+      color: "#F97316",
+      description: "Maintenance Agent handling operations and maintaining apps produced by the team.",
+      link: ".readme/MultiAgentSystem/ManMan-AI-Devops/README.md"
+    }
+  ]}
+/>
+
+<ScrollReveal>
+  ## System Architecture
+
+  Our Multi-Agent System is built on a modern, scalable architecture designed for flexibility and performance. The system leverages several key technologies to enable agent communication and task orchestration.
+</ScrollReveal>
+
+<AnimatedDiagram id="system-architecture">
+  {/* System architecture diagram will be rendered here */}
+</AnimatedDiagram>
+
+<ScrollReveal>
+  ## Key Features
+
+  Our Multi-Agent System provides a comprehensive set of capabilities to enhance and streamline the software development process.
+</ScrollReveal>
+
+<FeatureGrid 
+  features={[
+    {
+      title: "Pair Programming",
+      icon: "👥",
+      description: "Collaborative coding environment where twin developer agents work together in real-time."
+    },
+    {
+      title: "Agile Ceremonies",
+      icon: "🔄",
+      description: "Structured process for standups, planning, reviews, and retrospectives."
+    },
+    {
+      title: "Requirements Management",
+      icon: "📋",
+      description: "Automated collection, prioritization, and tracking of project requirements."
+    },
+    {
+      title: "Design System Integration",
+      icon: "🎨",
+      description: "Seamless workflow between design and development with UI component libraries."
+    },
+    {
+      title: "Test-Driven Development",
+      icon: "✅",
+      description: "Automated test creation and execution before implementation."
+    },
+    {
+      title: "DevOps Automation",
+      icon: "🚀",
+      description: "Continuous integration, deployment, and maintenance pipelines."
+    }
+  ]}
+/>
+
+<ScrollReveal>
+  ## Agile Ceremony Components
+
+  Our system includes specialized components for facilitating agile ceremonies. Below is an interactive preview of our Standup Modal component.
+</ScrollReveal>
+
+<StandupModalDocs />
+
+<ScrollReveal>
+  ## Implementation Strategy
+
+  The implementation of our Multi-Agent System follows a phased approach, ensuring that each component is properly developed and integrated.
+
+  ### Phase 1: Core Setup
+  * n8n Workflow Implementation
+  * Agent Communication Protocols
+  * Base System Architecture
+
+  ### Phase 2: Agent Development
+  * Executive Agents
+  * Development Agents
+  * Operations Agents
+
+  ### Phase 3: Integration
+  * Workflow Automation
+  * Testing & Validation
+  * Performance Optimization
+  * n8n Integration
+</ScrollReveal>
+
+<div id="timeline">
+    <h2>Implementation Timeline</h2>
+
+    <TimelineComponentStyled timelineData={timelineData}/>
+</div>
+
+<InfoCard
+  title="Want to learn more?"
+  icon="🚀"
+  actions={[
+    {
+      label: "View Full Documentation",
+      link: "/?path=/docs/documentation-multi-agent-system--docs"
+    },
+    {
+      label: "Explore Agent Details",
+      link: "/?path=/docs/documentation-table-of-contents--docs"
+    },
+    {
+      label: "Get Started",
+      link: "/?path=/docs/documentation-multi-agent-system--docs#intro",
+      primary: true
+    }
+  ]}
+>
+  Discover the complete details of our Multi-Agent System including technical architecture, 
+  implementation details, AI agent capabilities, and integration guides.
+</InfoCard>

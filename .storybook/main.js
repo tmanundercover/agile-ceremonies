@@ -1,6 +1,7 @@
 const config = {
     "stories": [
         "../src/**/*.mdx",
+        "../src/**/*.md",
         "../src/**/*.stories.@(mjs|ts|tsx)"
     ],
     "addons": [

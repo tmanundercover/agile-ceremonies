@@ -105,3 +105,5 @@ Agents communicate through a structured protocol that maintains context and ensu
 - Tech stack selection with compatibility checks
 - Asset management with agent handoffs
 - Timeline analysis with constraint detection
+## Lia
+- Youtube video description generation
