@@ -7,7 +7,7 @@ export interface Task {
   title: string;
   description: string;
   comments: Comment[];
-  type: 'feature' | 'bug' | 'wireframe' | 'spike';
+  type: 'feature' | 'bug' | 'wireframe' | 'spike' | 'design' | 'task';
   assignedTeammates: Teammate[];
   requirementId: string;
   dependencies: (Task | Requirement)[];
