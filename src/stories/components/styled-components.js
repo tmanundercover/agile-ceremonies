@@ -21,22 +21,28 @@ export const HeroContainer = styled.div`
   margin-bottom: ${theme.spacing.xl};
   color: white;
   text-align: left;
-  animation: ${fadeIn} 0.8s ease-out;
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   justify-content: space-between;
   gap: ${theme.spacing.lg};
-  flex-wrap: wrap;
+  
+  /* Changed from using animation to transition for controlled reveal */
+  opacity: ${props => props.isVisible ? 1 : 0};
+  transform: ${props => props.isVisible ? 'translateY(0)' : 'translateY(20px)'};
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  position: relative;
   
   @media (max-width: 768px) {
-    flex-direction: column;
+    padding: ${theme.spacing.lg} ${theme.spacing.md};
   }
 `;
 
 export const HeroContent = styled.div`
   flex: 1;
   min-width: 300px;
+  width: 100%;
+  margin-bottom: ${theme.spacing.lg};
 `;
 
 export const HeroSidebar = styled.div`
@@ -52,6 +58,10 @@ export const HeroTitle = styled.h1`
   font-weight: 700;
   margin-bottom: ${theme.spacing.md};
   color: white;
+  
+  @media (max-width: 768px) {
+    font-size: 32px;
+  }
 `;
 
 export const HeroSubtitle = styled.p`
@@ -59,6 +69,72 @@ export const HeroSubtitle = styled.p`
   margin-bottom: ${theme.spacing.lg};
   opacity: 0.9;
   color: white;
+  
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
+`;
+
+export const HeroSearchContainer = styled.form`
+  display: flex;
+  width: 100%;
+  max-width: 700px;
+  margin-top: ${theme.spacing.md};
+  position: relative;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+  border-radius: ${theme.borderRadius};
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+  }
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
+export const HeroSearchInput = styled.input`
+  flex: 1;
+  padding: ${theme.spacing.md};
+  font-size: 16px;
+  border: none;
+  border-radius: ${theme.borderRadius} 0 0 ${theme.borderRadius};
+  outline: none;
+  color: ${theme.colors.neutral900};
+  background: rgba(255, 255, 255, 0.95);
+  transition: background 0.3s;
+  
+  &:focus {
+    background: white;
+  }
+  
+  @media (max-width: 768px) {
+    border-radius: ${theme.borderRadius} ${theme.borderRadius} 0 0;
+    padding: ${theme.spacing.sm};
+  }
+`;
+
+export const HeroSearchButton = styled.button`
+  background: white;
+  color: ${theme.colors.primary};
+  border: none;
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  border-radius: 0 ${theme.borderRadius} ${theme.borderRadius} 0;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  
+  &:hover {
+    background: ${theme.colors.primaryLight};
+    color: white;
+  }
+  
+  @media (max-width: 768px) {
+    border-radius: 0 0 ${theme.borderRadius} ${theme.borderRadius};
+    padding: ${theme.spacing.sm};
+  }
 `;
 
 export const Button = styled.a`

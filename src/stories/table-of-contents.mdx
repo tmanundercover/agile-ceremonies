@@ -1,35 +1,78 @@
 import { Meta } from '@storybook/blocks';
 import { useState, useEffect } from 'react';
+import {
+  HeroContainer,
+  HeroContent,
+  HeroTitle,
+  HeroSubtitle,
+  RevealContainer,
+  StyledMdxContent,
+  CardContainer,
+  CardIcon,
+  CardContent,
+  CardTitle,
+  Button,
+  FeatureContainer,
+  FeatureItem,
+  FeatureIcon,
+  FeatureTitle,
+  FeatureDescription
+} from "./components/styled-components";
+import theme from "./theme";
+import StandupModalDocs from "./components/StandupModalDocs";
+import { AnimatedHero } from "./components/AnimatedHero";
 
 <Meta title="Documentation/Table of Contents" />
 
 export const NavigationCard = ({ title, description, link, icon }) => {
   return (
-    <a href={link} className="nav-card">
-      <div className="nav-card-icon">{icon}</div>
-      <div className="nav-card-content">
-        <h3>{title}</h3>
-        <p>{description}</p>
+    <a href={link} className="nav-card" style={{
+      display: "flex",
+      alignItems: "center",
+      padding: theme.spacing.md,
+      backgroundColor: theme.colors.cardBg,
+      borderRadius: theme.borderRadius,
+      boxShadow: theme.boxShadow,
+      color: theme.colors.textColor,
+      textDecoration: "none",
+      margin: `${theme.spacing.sm} 0`,
+      transition: `all ${theme.transitionSpeed}`,
+      ':hover': {
+        transform: 'translateY(-3px)',
+        boxShadow: '0 8px 16px rgba(0, 0, 0, 0.15)'
+      }
+    }}>
+      <div className="nav-card-icon" style={{
+        fontSize: '28px',
+        marginRight: theme.spacing.md,
+        display: 'flex',
+        justifyContent: 'center',
+        width: '40px'
+      }}>{icon}</div>
+      <div className="nav-card-content" style={{
+        flex: 1
+      }}>
+        <h3 style={{
+          margin: `0 0 ${theme.spacing.xs} 0`,
+          fontSize: '18px',
+          fontWeight: 600,
+          color: theme.colors.primary
+        }}>{title}</h3>
+        <p style={{
+          margin: 0,
+          color: theme.colors.neutral700,
+          fontSize: '14px'
+        }}>{description}</p>
       </div>
-      <div className="nav-card-arrow">→</div>
+      <div className="nav-card-arrow" style={{
+        fontSize: '20px',
+        opacity: 0.6,
+        transition: `opacity ${theme.transitionSpeed}`,
+        ':hover': {
+          opacity: 1
+        }
+      }}>→</div>
     </a>
-  );
-};
-
-export const SearchBar = () => {
-  const [query, setQuery] = useState('');
-  
-  return (
-    <div className="search-container">
-      <input 
-        type="text" 
-        placeholder="Search documentation..." 
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        className="search-input"
-      />
-      <button className="search-button">Search</button>
-    </div>
   );
 };
 
@@ -37,369 +80,384 @@ export const CategorySection = ({ title, children }) => {
   const [isExpanded, setIsExpanded] = useState(true);
   
   return (
-    <div className="category-section">
+    <div className="category-section" style={{
+      marginBottom: theme.spacing.lg,
+      borderRadius: theme.borderRadius,
+      overflow: 'hidden',
+      border: `1px solid ${theme.colors.neutral200}`,
+      backgroundColor: theme.colors.cardBg
+    }}>
       <div 
         className="category-header"
         onClick={() => setIsExpanded(!isExpanded)}
+        style={{
+          padding: theme.spacing.md,
+          background: theme.colors.neutral100,
+          cursor: 'pointer',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          borderBottom: isExpanded ? `1px solid ${theme.colors.neutral200}` : 'none'
+        }}
       >
-        <h2>{title}</h2>
-        <span className="toggle-icon">{isExpanded ? '−' : '+'}</span>
+        <h2 style={{
+          margin: 0,
+          fontSize: theme.typography.heading3.fontSize,
+          fontWeight: theme.typography.heading3.fontWeight,
+          color: theme.colors.primary
+        }}>{title}</h2>
+        <span className="toggle-icon" style={{
+          fontSize: '20px',
+          color: theme.colors.neutral700,
+          transition: `transform ${theme.transitionSpeed}`,
+          transform: isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)'
+        }}>{isExpanded ? '−' : '+'}</span>
       </div>
-      <div className={`category-content ${isExpanded ? 'expanded' : ''}`}>
+      <div className={`category-content ${isExpanded ? 'expanded' : ''}`}
+        style={{
+          padding: isExpanded ? theme.spacing.md : '0',
+          maxHeight: isExpanded ? '2000px' : '0',
+          overflow: 'hidden',
+          transition: `max-height 0.5s ease, padding 0.3s ease`
+        }}>
         {children}
       </div>
     </div>
   );
 };
 
-<style jsx global>{`
+<AnimatedHero 
+  title="Agile Ceremonies Documentation" 
+  subtitle="Your complete guide to the Multi-Agent AI System for agile software development"
+  cta="Get Started"
+  ctaLink="/?path=/docs/documentation-multi-agent-system--docs"
+  withSearch={true}
+/>
+
+<StyledMdxContent>
+  <RevealContainer isVisible={true}>
+    <CategorySection title="Discover the AI Agile Team">
+      <div className="nav-cards">
+        <NavigationCard
+          title="Introduction"
+          description="Overview of the Multi-Agent AI System and how it works"
+          link="/docs/documentation-introduction--docs"
+          icon="🚀"
+        />
+        <NavigationCard
+          title="Quick Start Guide"
+          description="Get up and running quickly with Agile Ceremonies"
+          link="/docs/documentation-multi-agent-system--docs"
+          icon="⚡"
+        />
+        <NavigationCard
+          title="System Architecture"
+          description="Technical details and implementation overview"
+          link="/?path=/docs/documentation-multi-agent-system--docs#architecture"
+          icon="🏗️"
+        />
+      </div>
+    </CategorySection>
+  </RevealContainer>
+  
+  <RevealContainer isVisible={true}>
+    <h2>Daily Standup Widget</h2>
+    <p>Streamline your daily standups with our interactive widget that keeps everyone in sync.</p>
+    <StandupModalDocs />
+  </RevealContainer>
+  
+  <RevealContainer isVisible={true}>
+    <h2>Meet The Team</h2>
+    <p>Our Multi-Agent AI System represents a complete Agile team with specialized roles and expertise</p>
+
+    <FeatureContainer>
+      <FeatureItem>
+        <FeatureIcon>👑</FeatureIcon>
+        <FeatureTitle>Nat (CEO)</FeatureTitle>
+        <FeatureDescription>Executive oversight for all operations</FeatureDescription>
+        <Button href=".readme/MultiAgentSystem/Nat-AI-CEO/README.md" style={{marginTop: theme.spacing.sm}}>Learn More</Button>
+      </FeatureItem>
+      
+      <FeatureItem>
+        <FeatureIcon>📊</FeatureIcon>
+        <FeatureTitle>Brian (PM)</FeatureTitle>
+        <FeatureDescription>Project management and coordination</FeatureDescription>
+        <Button href=".readme/MultiAgentSystem/Brian-AI-PM/README.md" style={{marginTop: theme.spacing.sm}}>Learn More</Button>
+      </FeatureItem>
+      
+      <FeatureItem>
+        <FeatureIcon>🧭</FeatureIcon>
+        <FeatureTitle>Compass</FeatureTitle>
+        <FeatureDescription>Communications routing specialist</FeatureDescription>
+        <Button href="/docs/documentation-agents-compass--docs" style={{marginTop: theme.spacing.sm}}>Learn More</Button>
+      </FeatureItem>
+      
+      <FeatureItem>
+        <FeatureIcon>👨‍💻</FeatureIcon>
+        <FeatureTitle>James & Terrell</FeatureTitle>
+        <FeatureDescription>Developer pair programming team</FeatureDescription>
+        <Button href=".readme/MultiAgentSystem/JnT-AI-Dev-Team/README.md" style={{marginTop: theme.spacing.sm}}>Learn More</Button>
+      </FeatureItem>
+    </FeatureContainer>
+    
+    <RevealContainer isVisible={true}>
+      <CategorySection title="All Team Members">
+        <div className="nav-cards">
+          <NavigationCard
+            title="Nat (CEO)"
+            description="The chief executive agent overseeing all operations"
+            link=".readme/MultiAgentSystem/Nat-AI-CEO/README.md"
+            icon="👑"
+          />
+          <NavigationCard
+            title="Brian (PM)"
+            description="Project management agent"
+            link=".readme/MultiAgentSystem/Brian-AI-PM/README.md"
+            icon="📊"
+          />
+          <NavigationCard
+            title="Compass (Communications Router)"
+            description="Multi-Agent Communications & Routing Specialist"
+            link="/docs/documentation-agents-compass--docs"
+            icon="🧭"
+          />
+          <NavigationCard
+            title="Reqqy (Requirements)"
+            description="Requirements gathering and issue creation agent"
+            link=".readme/MultiAgentSystem/Reqqy-AI-Requirements/README.md"
+            icon="📝"
+          />
+          <NavigationCard
+            title="Josh (Design)"
+            description="Mockup and graphic design agent"
+            link=".readme/MultiAgentSystem/Josh-AI-Graphic-Designer/README.md"
+            icon="🎨"
+          />
+          <NavigationCard
+            title="James & Terrell (Developers)"
+            description="Twin developer agents for pair programming"
+            link=".readme/MultiAgentSystem/JnT-AI-Dev-Team/README.md"
+            icon="👨‍💻"
+          />
+          <NavigationCard
+            title="Antosh (Testing)"
+            description="Testing and analytics agent"
+            link=".readme/MultiAgentSystem/Antosh-AI-Tester/README.md"
+            icon="🔍"
+          />
+          <NavigationCard
+            title="Man Man (DevOps)"
+            description="Maintenance and DevOps agent"
+            link=".readme/MultiAgentSystem/ManMan-AI-Devops/README.md"
+            icon="🔧"
+          />
+          <NavigationCard
+            title="Lia (Communications)"
+            description="Email and social media manager agent"
+            link=".readme/MultiAgentSystem/Lia-AI-Communications/README.md"
+            icon="📱"
+          />
+        </div>
+      </CategorySection>
+    </RevealContainer>
+  </RevealContainer>
+
+  <RevealContainer isVisible={true}>
+    <CategorySection title="System Documentation">
+      <div className="nav-cards">
+        <NavigationCard
+          title="System Architecture"
+          description="Technical architecture and design patterns"
+          link="/?path=/docs/documentation-multi-agent-system--docs#architecture"
+          icon="🏗️"
+        />
+        <NavigationCard
+          title="API Documentation"
+          description="API references and integration guides"
+          link="/?path=/docs/documentation-multi-agent-system--docs#implementation"
+          icon="🔌"
+        />
+        <NavigationCard
+          title="Database Schema"
+          description="Data models and relationships"
+          link="/?path=/docs/documentation-multi-agent-system--docs#architecture"
+          icon="💾"
+        />
+        <NavigationCard
+          title="Workflow Automation"
+          description="n8n workflow configurations"
+          link="/?path=/docs/documentation-multi-agent-system--docs#implementation"
+          icon="⚙️"
+        />
+      </div>
+    </CategorySection>
+  </RevealContainer>
+
+  <RevealContainer isVisible={true}>
+    <CategorySection title="Guides & Tutorials">
+      <div className="nav-cards">
+        <NavigationCard
+          title="Pair Programming Guide"
+          description="How to use the pair programming widget"
+          link="/?path=/docs/documentation-multi-agent-system--docs"
+          icon="👥"
+        />
+        <NavigationCard
+          title="Setting Up Your Agile Team"
+          description="Configure your team structure and ceremonies"
+          link="/?path=/docs/documentation-multi-agent-system--docs#org-charts"
+          icon="👪"
+        />
+        <NavigationCard
+          title="Custom Agent Development"
+          description="Create your own AI agents for the system"
+          link="/?path=/docs/documentation-multi-agent-system--docs#agents"
+          icon="🤖"
+        />
+      </div>
+    </CategorySection>
+  </RevealContainer>
+
+  <RevealContainer isVisible={true}>
+    <CategorySection title="Resources">
+      <div className="nav-cards">
+        <NavigationCard
+          title="Style Guide"
+          description="Visual design standards and components"
+          link=".readme/MultiAgentSystem/Josh-AI-Graphic-Designer/style-guide/README.md"
+          icon="🎨"
+        />
+        <NavigationCard
+          title="Development Timeline"
+          description="Project development schedule and milestones"
+          link="/?path=/docs/documentation-multi-agent-system--docs#timeline"
+          icon="📅"
+        />
+        <NavigationCard
+          title="AI Concepts Glossary"
+          description="Terminology and concepts explained"
+          link="/?path=/docs/documentation-multi-agent-system--docs#concepts"
+          icon="📚"
+        />
+        <NavigationCard
+          title="Career Opportunities"
+          description="New career paths in AI development"
+          link="/?path=/docs/documentation-multi-agent-system--docs#careers"
+          icon="💼"
+        />
+      </div>
+    </CategorySection>
+  </RevealContainer>
+
+  <CardContainer background={theme.colors.info}>
+    <CardIcon>🔗</CardIcon>
+    <CardContent>
+      <CardTitle>Quick Links</CardTitle>
+      <div style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: theme.spacing.md
+      }}>
+        <a href="README-current-progress.md" className="quick-link" style={{
+          background: 'rgba(255,255,255,0.2)',
+          padding: `${theme.spacing.xs} ${theme.spacing.md}`,
+          borderRadius: '20px',
+          color: 'white',
+          textDecoration: 'none',
+          transition: `all ${theme.transitionSpeed}`,
+          ':hover': {
+            background: 'rgba(255,255,255,0.3)',
+            transform: 'translateY(-2px)'
+          }
+        }}>Current Progress</a>
+        <a href="/?path=/docs/documentation-multi-agent-system--docs#org-charts" className="quick-link" style={{
+          background: 'rgba(255,255,255,0.2)',
+          padding: `${theme.spacing.xs} ${theme.spacing.md}`,
+          borderRadius: '20px',
+          color: 'white',
+          textDecoration: 'none',
+          transition: `all ${theme.transitionSpeed}`,
+          ':hover': {
+            background: 'rgba(255,255,255,0.3)',
+            transform: 'translateY(-2px)'
+          }
+        }}>Organization Charts</a>
+        <a href=".readme/original-timeline.svg" className="quick-link" style={{
+          background: 'rgba(255,255,255,0.2)',
+          padding: `${theme.spacing.xs} ${theme.spacing.md}`,
+          borderRadius: '20px',
+          color: 'white',
+          textDecoration: 'none',
+          transition: `all ${theme.transitionSpeed}`,
+          ':hover': {
+            background: 'rgba(255,255,255,0.3)',
+            transform: 'translateY(-2px)'
+          }
+        }}>Original Timeline</a>
+        <a href=".readme/MultiAgentSystem/alternate-org-chart.svg" className="quick-link" style={{
+          background: 'rgba(255,255,255,0.2)',
+          padding: `${theme.spacing.xs} ${theme.spacing.md}`,
+          borderRadius: '20px',
+          color: 'white',
+          textDecoration: 'none',
+          transition: `all ${theme.transitionSpeed}`,
+          ':hover': {
+            background: 'rgba(255,255,255,0.3)',
+            transform: 'translateY(-2px)'
+          }
+        }}>Alternate Org Chart</a>
+        <a href=".readme/MultiAgentSystem/Josh-AI-Graphic-Designer/style-guide/README.md" className="quick-link" style={{
+          background: 'rgba(255,255,255,0.2)',
+          padding: `${theme.spacing.xs} ${theme.spacing.md}`,
+          borderRadius: '20px',
+          color: 'white',
+          textDecoration: 'none',
+          transition: `all ${theme.transitionSpeed}`,
+          ':hover': {
+            background: 'rgba(255,255,255,0.3)',
+            transform: 'translateY(-2px)'
+          }
+        }}>Style Guide</a>
+      </div>
+    </CardContent>
+  </CardContainer>
+</StyledMdxContent>
+
+<style>
+{`
+  /* Global styles */
+  .sbdocs-wrapper {
+    background: ${theme.colors.bgColor};
+    color: ${theme.colors.textColor};
+  }
+
   .main-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 24px;
+    padding: ${theme.spacing.lg};
   }
-  
-  .hero {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    border-radius: 12px;
-    padding: 48px;
-    margin-bottom: 32px;
-    color: white;
-  }
-  
-  .hero h1 {
-    font-size: 36px;
-    margin-bottom: 16px;
-  }
-  
-  .hero p {
-    font-size: 18px;
-    margin-bottom: 24px;
-    opacity: 0.9;
-  }
-  
-  .search-container {
-    display: flex;
-    margin-bottom: 24px;
-  }
-  
-  .search-input {
-    flex: 1;
-    padding: 12px 16px;
-    border: 1px solid var(--neutral-500);
-    border-radius: 6px 0 0 6px;
-    font-size: 16px;
-  }
-  
-  .search-button {
-    padding: 12px 24px;
-    background: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 0 6px 6px 0;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .search-button:hover {
-    background: var(--primary-dark);
-  }
-  
-  .nav-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 24px;
-    margin-bottom: 24px;
-  }
-  
-  .nav-card {
-    display: flex;
-    align-items: center;
-    background-color: var(--card-bg);
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-decoration: none;
-    color: var(--text-color);
-    transition: transform 0.3s, box-shadow 0.3s;
-  }
-  
-  .nav-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
-    text-decoration: none;
-  }
-  
-  .nav-card-icon {
-    font-size: 32px;
-    margin-right: 16px;
-    flex-shrink: 0;
-  }
-  
-  .nav-card-content {
-    flex: 1;
-  }
-  
-  .nav-card h3 {
-    margin: 0 0 8px 0;
-  }
-  
-  .nav-card p {
-    margin: 0;
-    color: var(--neutral-700);
-    font-size: 14px;
-  }
-  
-  .nav-card-arrow {
-    margin-left: 16px;
-    font-size: 20px;
-    opacity: 0.6;
-  }
-  
-  .category-section {
-    margin-bottom: 32px;
-  }
-  
-  .category-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    padding-bottom: 8px;
-    border-bottom: 2px solid var(--primary-light);
-  }
-  
-  .category-header h2 {
-    margin: 0;
-    border-bottom: none;
-    padding-bottom: 0;
-  }
-  
-  .toggle-icon {
-    font-size: 24px;
-    color: var(--primary);
-  }
-  
-  .category-content {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.5s ease;
-  }
-  
-  .category-content.expanded {
-    max-height: 2000px;
-  }
-  
-  .quick-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 32px;
-  }
-  
-  .quick-link {
-    padding: 8px 16px;
-    background: var(--neutral-200);
-    border-radius: 20px;
-    font-size: 14px;
-    color: var(--neutral-900);
-    text-decoration: none;
-    transition: background 0.3s;
-  }
-  
-  .quick-link:hover {
-    background: var(--primary-light);
-    color: white;
-    text-decoration: none;
-  }
-  
-  @media (max-width: 768px) {
-    .nav-cards {
-      grid-template-columns: 1fr;
-    }
-    
-    .hero {
-      padding: 32px 24px;
-    }
-  }
-`}</style>
 
-<div className="main-container">
-  <div className="hero">
-    <h1>Agile Ceremonies Documentation</h1>
-    <p>Everything you need to know about the Multi-Agent AI System and Pair Programming Widget</p>
-    <SearchBar />
-  </div>
-  
-  <CategorySection title="Getting Started">
-    <div className="nav-cards">
-      <NavigationCard 
-        title="Introduction"
-        description="Overview of the Multi-Agent AI System and how it works"
-        link="/docs/documentation-introduction--docs"
-        icon="🚀"
-      />
-      <NavigationCard 
-        title="Quick Start Guide"
-        description="Get up and running quickly with Agile Ceremonies"
-        link="/docs/documentation-multi-agent-system--docs"
-        icon="⚡"
-      />
-      <NavigationCard 
-        title="System Requirements"
-        description="Hardware and software requirements"
-        link="Documentation/Introduction"
-        icon="💻"
-      />
-    </div>
-  </CategorySection>
-  
-  <CategorySection title="AI Agents">
-    <div className="nav-cards">
-      <NavigationCard 
-        title="Nat (CEO)"
-        description="The chief executive agent overseeing all operations"
-        link=".readme/MultiAgentSystem/Nat-AI-CEO/README.md"
-        icon="👑"
-      />
-      <NavigationCard 
-        title="Brian (PM)"
-        description="Project management agent"
-        link=".readme/MultiAgentSystem/Brian-AI-PM/README.md"
-        icon="📊"
-      />
-      <NavigationCard
-        title="Compass (Communications Router)"
-        description="Multi-Agent Communications & Routing Specialist"
-        link="/docs/documentation-agents-compass--docs"
-        icon="🧭"
-      />
-      <NavigationCard
-        title="Reqqy (Requirements)"
-        description="Requirements gathering and issue creation agent"
-        link=".readme/MultiAgentSystem/Reqqy-AI-Requirements/README.md"
-        icon="📝"
-      />
-      <NavigationCard 
-        title="Josh (Design)"
-        description="Mockup and graphic design agent"
-        link=".readme/MultiAgentSystem/Josh-AI-Graphic-Designer/README.md"
-        icon="🎨"
-      />
-      <NavigationCard 
-        title="James & Terrell (Developers)"
-        description="Twin developer agents for pair programming"
-        link=".readme/MultiAgentSystem/JnT-AI-Dev-Team/README.md"
-        icon="👨‍💻"
-      />
-      <NavigationCard 
-        title="Antosh (Testing)"
-        description="Testing and analytics agent"
-        link=".readme/MultiAgentSystem/Antosh-AI-Tester/README.md"
-        icon="🔍"
-      />
-      <NavigationCard 
-        title="Man Man (DevOps)"
-        description="Maintenance and DevOps agent"
-        link=".readme/MultiAgentSystem/ManMan-AI-Devops/README.md"
-        icon="🔧"
-      />
-      <NavigationCard 
-        title="Lia (Communications)"
-        description="Email and social media manager agent"
-        link=".readme/MultiAgentSystem/Lia-AI-Communications/README.md"
-        icon="📱"
-      />
-    </div>
-  </CategorySection>
-  
-  <CategorySection title="Architecture & Implementation">
-    <div className="nav-cards">
-      <NavigationCard 
-        title="System Architecture"
-        description="Technical architecture and design patterns"
-        link="/?path=/docs/documentation-multi-agent-system--docs#architecture"
-        icon="🏗️"
-      />
-      <NavigationCard 
-        title="API Documentation"
-        description="API references and integration guides"
-        link="/?path=/docs/documentation-multi-agent-system--docs#implementation"
-        icon="🔌"
-      />
-      <NavigationCard 
-        title="Database Schema"
-        description="Data models and relationships"
-        link="/?path=/docs/documentation-multi-agent-system--docs#architecture"
-        icon="💾"
-      />
-      <NavigationCard 
-        title="Workflow Automation"
-        description="n8n workflow configurations"
-        link="/?path=/docs/documentation-multi-agent-system--docs#implementation"
-        icon="⚙️"
-      />
-    </div>
-  </CategorySection>
-  
-  <CategorySection title="Guides & Tutorials">
-    <div className="nav-cards">
-      <NavigationCard 
-        title="Pair Programming Guide"
-        description="How to use the pair programming widget"
-        link="/?path=/docs/documentation-multi-agent-system--docs"
-        icon="👥"
-      />
-      <NavigationCard 
-        title="Setting Up Your Agile Team"
-        description="Configure your team structure and ceremonies"
-        link="/?path=/docs/documentation-multi-agent-system--docs#org-charts"
-        icon="👪"
-      />
-      <NavigationCard 
-        title="Custom Agent Development"
-        description="Create your own AI agents for the system"
-        link="/?path=/docs/documentation-multi-agent-system--docs#agents"
-        icon="🤖"
-      />
-    </div>
-  </CategorySection>
-  
-  <CategorySection title="Resources">
-    <div className="nav-cards">
-      <NavigationCard 
-        title="Style Guide"
-        description="Visual design standards and components"
-        link=".readme/MultiAgentSystem/Josh-AI-Graphic-Designer/style-guide/README.md"
-        icon="🎨"
-      />
-      <NavigationCard 
-        title="Development Timeline"
-        description="Project development schedule and milestones"
-        link="/?path=/docs/documentation-multi-agent-system--docs#timeline"
-        icon="📅"
-      />
-      <NavigationCard 
-        title="AI Concepts Glossary"
-        description="Terminology and concepts explained"
-        link="/?path=/docs/documentation-multi-agent-system--docs#concepts"
-        icon="📚"
-      />
-      <NavigationCard 
-        title="Career Opportunities"
-        description="New career paths in AI development"
-        link="/?path=/docs/documentation-multi-agent-system--docs#careers"
-        icon="💼"
-      />
-    </div>
-  </CategorySection>
-  
-  <div className="quick-links">
-    <h3>Quick Links</h3>
-    <a href="README-current-progress.md" className="quick-link">Current Progress</a>
-    <a href="/?path=/docs/documentation-multi-agent-system--docs#org-charts" className="quick-link">Organization Charts</a>
-    <a href=".readme/original-timeline.svg" className="quick-link">Original Timeline</a>
-    <a href=".readme/MultiAgentSystem/alternate-org-chart.svg" className="quick-link">Alternate Org Chart</a>
-    <a href=".readme/MultiAgentSystem/Josh-AI-Graphic-Designer/style-guide/README.md" className="quick-link">Style Guide</a>
-  </div>
-</div>
+  /* Any additional styles needed for backwards compatibility */
+  .nav-cards {
+    display: flex;
+    flex-direction: column;
+    gap: ${theme.spacing.sm};
+  }
+
+  @media (max-width: 768px) {
+    .nav-card {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .nav-card-icon {
+      margin-right: 0;
+      margin-bottom: ${theme.spacing.sm};
+    }
+
+    .nav-card-arrow {
+      display: none;
+    }
+  }
+`}
+</style>
