@@ -10,16 +10,7 @@
 }
 ```
 
-## (Optional) ⏱️ triggers (collection)
-```json
-{
-  "workflowId": "workflowDocId",
-  "type": "interval",
-  "interval": 30,
-  "lastTriggeredAt": "2025-04-13T23:00:00Z",
-  "active": true
-}
-```
+
 
 ## Firestore collection structure for the AI Agent Compass:
 1. **agent_profiles** - Store metadata about each agent
@@ -79,6 +70,16 @@
   "error": null,
   "timestamp": "2025-04-13T23:00:00Z"
 }```
+5. **triggers** - These are the triggers to the workflow(collection)
+```json
+{
+  "workflowId": "workflowDocId",
+  "type": "interval",
+  "interval": 30,
+  "lastTriggeredAt": "2025-04-13T23:00:00Z",
+  "active": true
+}
+```
 
 # RTDB (Realtime Database) paths (RTDB is a giant JSON tree):
 ```
