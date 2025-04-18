@@ -15,7 +15,7 @@ import {
     Seat,
     SeatOccupied,
     Sidebar,
-    SidebarSection, SidebarToggleButton,
+    SidebarSection,
     TaskDropdown,
     TaskSelectionTitle,
     TeamIndicator,
@@ -27,12 +27,8 @@ import {
 import {CalendarIcon} from '@radix-ui/react-icons';
 import ActualStandupModal from "./standup/ActualStandupModal";
 import theme from './theme';
-import {ProjectMilestoneData} from "./data/ProjectMilestoneData";
-import BacklogSection from './BacklogSection';
 import styled from 'styled-components';
-import ChatLog from './components/ChatLog';
 import MilestoneTracker from "./task-track/MilestoneTracker";
-import MultiAgentNetworkSection from "./components/MultiAgentNetworkSection";
 
 // Create SVG icons for each tab
 const OfficeIcon = () => (
@@ -515,9 +511,6 @@ const App: React.FC = () => {
                                     Start Daily Standup
                                 </StandupButton>
                             </SidebarSection>
-
-                            {/* Replace BacklogSection with ChatLog */}
-                            <ChatLog messages={chatMessages} title="Agent Chat" />
                         </Sidebar>
 
                         <OfficeFloor>
@@ -584,20 +577,7 @@ const App: React.FC = () => {
                 )}
 
                 {activeTab === 'taskTracker' && (
-                    <TaskTrackerContainer>
-                        <SidebarToggleButton
-                            $sidebarVisible={sidebarVisible}
-                            onClick={() => setSidebarVisible(!sidebarVisible)}
-                            aria-label={sidebarVisible ? "Hide sidebar" : "Show sidebar"}
-                        />
-                        <TaskTrackerSidebar $visible={sidebarVisible}>
-                            <BacklogSection tasks={tasks}/>
-                        </TaskTrackerSidebar>
-                        <TaskTrackerContent $sidebarVisible={sidebarVisible}>
-                            <SectionTitle>Project Tasks and Milestones</SectionTitle>
-                            <MilestoneTracker milestoneData={ProjectMilestoneData}/>
-                        </TaskTrackerContent>
-                    </TaskTrackerContainer>
+                    <MilestoneTracker />
                 )}
 
                 {activeTab === 'standupRoom' && (

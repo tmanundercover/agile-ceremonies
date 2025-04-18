@@ -162,6 +162,18 @@ export const technologyTagColors: { [key: string]: string } = {
     Kotlin: "#7F52FF",
 };
 
+export const aiAgentColors:{[key:string]:string} = {
+    "Reqqy":"#F4A300",
+    "Brian":"#5AB5F7",
+    "James":"#7FCF87",
+    "Terrell":"#7FCF87",
+    "Josh":"#E25574",
+    "ManMan":"#F2703E",
+    "Antosh":"#7E4DD2",
+    "Lia":"#64C9D9",
+    "Nat":"#A35BD6",
+}
+
 // Refined shadow system with a more consistent and subtle approach
 export const shadows = {
     none: 'none',

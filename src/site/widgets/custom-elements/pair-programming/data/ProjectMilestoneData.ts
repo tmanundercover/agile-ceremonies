@@ -1,33 +1,54 @@
-import {MilestoneTracker} from "../task-track/MilestoneTracker.types";
-
-
-export const ProjectMilestoneData: MilestoneTracker[] = [{
+export const ProjectMilestoneData = {
     "milestone": "Multi-Agent Network with Firebase + Wix + React/TypeScript",
     "description": "Build a multi-agent system using Firebase and Wix, with a focus on task management and natural language processing.",
     "techOverview": [
-        {name: "frontend", description: "Wix Widgets (React/TypeScript)"},
-        {name: "backendAPI", description: "Firebase Cloud Functions"},
-        {name: "realtimeBackend", description: "Firebase Realtime Database"},
-        {name: "agentCommunication", description: "Firebase Pub/Sub via Database"},
-        {name: "naturalLanguageInterface", description: "GPT-4 API or OpenRouter"},
-        {name: "visualBuilder", description: "Custom Canvas in Wix (React)"}
+        {name: "Frontend", description: "Wix Widgets", services: ["Wix CLI", "React", "TypeScript"]},
+        {name: "Backend/API", description: "Firebase Cloud Functions", services: ["Firebase", "Node.js", "TypeScript"]},
+        {name: "Database", description: "Firebase RTDB & Firestore", services: ["Firebase", "Firestore"]},
+        {
+            name: "Agent Communication Protocols",
+            description: "Firebase Pub/Sub via Database",
+            services: ["Firebase RTDB", "Firebase Firestore"]
+        },
+        {
+            name: "Natural Language Interface",
+            description: "GPT-4 API or OpenRouter",
+            services: ["OpenAI", "OpenRouter"]
+        },
+        {
+            name: "Wix Studio",
+            description: "Custom UI in Wix (React/Typescript)",
+            services: ["Wix CLI", "React", "TypeScript"]
+        },
+        {name: "AI Agent Framework", description: "Local N8N instance hosted on Docker", services: ["n8n", "Docker"]},
+        {
+            name: "Github API",
+            description: "Access Repo data for Coding and PM Agents",
+            services: ["Github API", "Firebase Functions"]
+        },
     ],
     "phases": [
         {
-            "additionalInfo": [{
-                "title": "Tech Stack",
-                "content": "Firebase + Wix + React/TypeScript + n8n",
-                "tags": ["Firebase", "Wix", "React", "TypeScript", "n8n", "GitHub API", "Firebase Firestore", "Firebase RTDB", "Firebase Functions"],
-                "agentLinks": [
-                    {
-                        "name": "Compass (Communication Framework)",
-                        "path": "/?path=/docs/documentation-agents-compass--docs"
-                    }
-                ]
-            }],
-            "phase": "PHASE 0: AGENT COMPASS",
-            "timeline": "Weeks 1-2",
-            "agent": "Compass (Communication Framework)",
+            "additionalInfo": {
+                "title": "This is a lot for the first Phase.",
+                "content": "This first phase will include lots of infrastructure setup.",
+                "tags": ["AI Agent Compass", "Communication Framework", "Infrastructure"]
+            },
+            "agentLinks": [
+                {
+                    "name": "Nat (CEO)",
+                    "subtitle": "Agent",
+                    "path": "/?path=/docs/documentation-agents-nat--docs"
+                }
+            ],
+            "phase_id": 0,
+            "title": "PHASE 0: AGENT COMPASS",
+            "timelineEst": "Weeks 1-2",
+            "agentImplementation": {
+                "name": "AI Agent Compass",
+                "subtitle": "Communication framework",
+                "path": "/?path=/docs/documentation-agents-compass--docs"
+            },
             "description": "Setup communication routing infrastructure for all agents",
             "goals": [
                 "Build the central message routing system",
@@ -43,7 +64,8 @@ export const ProjectMilestoneData: MilestoneTracker[] = [{
                         {
                             status: "pending",
                             title: "Set up n8n on your server (Docker or bare metal)",
-                            services: ["n8n", "Docker"]
+                            services: ["n8n", "Docker"],
+                            assignedTo: "AI Agent Compass"
                         },
                         {
                             status: "pending",
@@ -82,18 +104,6 @@ export const ProjectMilestoneData: MilestoneTracker[] = [{
                             title: "Set up Firebase Storage for prompt history/log files (optional)",
                             services: ["Firebase"]
                         }
-                    ],
-                    "items": [
-                        "Set up n8n on your server (Docker or bare metal)",
-                        "Install the Agent Node and MCP Node (ensure latest version)",
-                        "Secure access (SSL, basic auth, etc.)",
-                        "Enable Firebase and GitHub API credentials as environment variables",
-                        "Create Firebase Project",
-                        "Enable Firestore (for prompt/workflow library, metadata)",
-                        "Enable Firebase RTDB (for queue messages between agents)",
-                        "Set up Firebase Authentication (email or service-to-service for agents)",
-                        "Enable Firebase Functions (Node.js/TypeScript)",
-                        "Set up Firebase Storage for prompt history/log files (optional)"
                     ]
                 },
                 {
@@ -158,15 +168,6 @@ export const ProjectMilestoneData: MilestoneTracker[] = [{
                             services: []
                         },
                     ],
-                    "items": [
-                        "Create prompt_package.ts with PromptPackage interface",
-                        "Define id, agentId, prompt, sender, timestamp, source, and confidence fields",
-                        "Set up /agent_profiles (from Firecrawi)",
-                        "Configure /prompt_logs",
-                        "Implement /errors",
-                        "Configure /agentQueue/{agentId}/incoming",
-                        "Set up /compassQueue/outgoing (optional reverse path)"
-                    ]
                 },
                 {
                     "title": "Custom Frontend Integration",
@@ -182,12 +183,6 @@ export const ProjectMilestoneData: MilestoneTracker[] = [{
                             services: ["React"]
                         }
                     ],
-                    "items": [
-                        "Use Wix's Custom Element SDK",
-                        "Build a React component to accept user input",
-                        "POST to the Compass webhook",
-                        "Display the routed result (selected agent, route info, JSON structure)"
-                    ]
                 },
                 {
                     "title": "Firebase Functions (Utility)",
@@ -210,20 +205,15 @@ export const ProjectMilestoneData: MilestoneTracker[] = [{
                             services: ["Firebase Functions", "TypeScript"]
                         }
                     ],
-                    "items": [
-                        "logRoute.ts: Writes successful route data to Firestore",
-                        "logError.ts: Handles and stores errors",
-                        "simulateAgent.ts: Optional function that mocks agent responses"
-                    ]
                 },
                 {
                     "title": "Training & Self-Correction Logic",
                     "description": "Implementing learning mechanisms",
                     "services": ["Firebase Firestore", "n8n"],
-                    "items": [
-                        "Create mechanism for Compass to log misrouted prompts",
-                        "Learn from updated prompt/agent matches",
-                        "Adjust future route confidence scores"
+                    "todos": [
+                        {status: "pending", title: "Create mechanism for Compass to log misrouted prompts"},
+                        {status: "pending", title: "Learn from updated prompt/agent matches"},
+                        {status: "pending", title: "Adjust future route confidence scores"}
                     ]
                 },
                 {
@@ -231,10 +221,10 @@ export const ProjectMilestoneData: MilestoneTracker[] = [{
                     "description": "Setting up continuous integration and testing",
                     "services": ["GitHub", "CI/CD", "Supabase"],
                     "items": [
-                        "Use GitHub for repo/CI",
-                        "Integrate GitHub with Firecrawi agent",
-                        "Write unit tests for Firestore routing logic",
-                        "Test Compass packaging and queue simulation"
+                        {status: "pending", title: "Use GitHub for repo/CI"},
+                        {status: "pending", title: "Integrate GitHub with Firecrawi agent"},
+                        {status: "pending", title: "Write unit tests for Firestore routing logic"},
+                        {status: "pending", title: "Test Compass packaging and queue simulation"}
                     ]
                 },
                 {
@@ -242,28 +232,33 @@ export const ProjectMilestoneData: MilestoneTracker[] = [{
                     "description": "Creating mock agents for system testing",
                     "services": ["Firebase Functions", "n8n", "Mock APIs"],
                     "items": [
-                        "Create Firebase Functions or mock n8n endpoints to simulate agents",
-                        "Build stubs for Brian (Product Manager), Reqqy (Requirements), Josh (Design), and James/Terrell (Dev)",
-                        "Configure simple responses like \"Agent Brian received the prompt and will begin processing.\""
+                        {
+                            status: "pending",
+                            title: "Create Firebase Functions or mock n8n endpoints to simulate agents"
+                        },
+                        {
+                            status: "pending",
+                            title: "Build stubs for Brian (Product Manager), Reqqy (Requirements), Josh (Design), and James/Terrell (Dev)"
+                        },
+                        {
+                            status: "pending",
+                            title: "Configure simple responses like \"Agent Brian received the prompt and will begin processing.\""
+                        }
                     ]
                 }
             ]
         },
         {
-            "additionalInfo": [{
-                "title": "Tech Stack",
-                "content": "Firebase + Wix + React/TypeScript + n8n",
-                "tags": ["Firebase", "Wix", "React", "TypeScript", "n8n", "GitHub API", "Calendar API", "OpenAI API", "Firebase Firestore", "Wix Secrets", "Slack/Discord", "Firebase Functions"],
-                "agentLinks": [
-                    {
-                        "name": "Compass (Communication Framework)",
-                        "path": "/?path=/docs/documentation-agents-compass--docs"
-                    }
-                ]
-            }],
-            "phase": "PHASE 1: AI AGENT NAT",
-            "timeline": "Weeks 3–5",
-            "agent": "Nat (CEO)",
+            "agentLinks": [
+                {
+                    "name": "Compass (Communication Framework)",
+                    "path": "/?path=/docs/documentation-agents-compass--docs"
+                }
+            ],
+            "phase_id": 1,
+            "title": "PHASE 1: AI AGENT NAT",
+            "timelineEst": "Weeks 3–5",
+            "agentImplementation": "Nat (CEO)",
             "description": "Setup CEO Agent & n8n Workflow Implementation",
             "goals": [
                 "MVP setup of agent creation, task handling using Compass for communication",
@@ -273,32 +268,38 @@ export const ProjectMilestoneData: MilestoneTracker[] = [{
                 {
                     "title": "Agent Schema Design",
                     "description": "Structure agent profiles in Firebase.",
-                    "services": ["Firebase Realtime Database"],
+                    "services": ["Firebase RTDB"],
                     "io": {
-                        "inputType": "JSON",
-                        input: {values: ""},
-                        "outputType": "JSON",
-                        "output": {
-                            "agent": {
-                                "id": "string",
-                                "role": "string",
-                                "status": "string",
-                                "currentTask": "string",
-                                "capabilities": ["search", "summarize"],
-                                "lastActive": "timestamp"
-                            }
+                        input: [{
+                            values: {
+                                sample: "json sample"
+                            },
+                            "type": "JSON"
+                        }],
+                        output: {
+                            values: [{
+                                "agent": {
+                                    "id": "string",
+                                    "role": "string",
+                                    "status": "string",
+                                    "currentTask": "string",
+                                    "capabilities": ["search", "summarize"],
+                                    "lastActive": "timestamp"
+                                }
+                            }],
+                            "type": "JSON",
                         },
                     }
                 },
                 {
                     "title": "Realtime Task System",
                     "description": "Nat listens for task updates via Compass routing",
-                    "services": ["Firebase Realtime Database", "Firebase Cloud Functions"],
+                    "services": ["Firebase RTDB", "Firebase Functions"],
                 },
                 {
                     "title": "Agent Cloud Functions",
                     "description": "Nat's decision making logic implemented as callable functions",
-                    "services": ["Firebase Cloud Functions"],
+                    "services": ["Firebase Functions"],
                 },
                 {
                     "title": "Wix Widget: Task Feed",
@@ -358,8 +359,9 @@ export const ProjectMilestoneData: MilestoneTracker[] = [{
             ]
         },
         {
-            "phase": "PHASE 2: NATURAL LANGUAGE INTERFACE",
-            "timeline": "Weeks 6–7",
+            "phase_id": 1,
+            "title": "PHASE 2: NATURAL LANGUAGE INTERFACE",
+            "timelineEst": "Weeks 6–7",
             "goals": [
                 "Let users describe goals in natural language and assign to agent(s).",
                 "Agent interprets and plans next steps."
@@ -392,8 +394,9 @@ export const ProjectMilestoneData: MilestoneTracker[] = [{
             ]
         },
         {
-            "phase": "PHASE 3: VISUAL WORKFLOW BUILDER",
-            "timeline": "Weeks 8–9",
+            "phase_id": 2,
+            "title": "PHASE 3: VISUAL WORKFLOW BUILDER",
+            "timelineEst": "Weeks 8–9",
             "goals": [
                 "Users drag-and-drop workflows: agents + task flows.",
                 "System converts workflows into Firebase triggers + Cloud Function calls."
@@ -422,8 +425,9 @@ export const ProjectMilestoneData: MilestoneTracker[] = [{
             ]
         },
         {
-            "phase": "PHASE 4: TESTING, SECURITY, REFINEMENT",
-            "timeline": "Weeks 9–10",
+            "phase_id": 3,
+            "title": "PHASE 4: TESTING, SECURITY, REFINEMENT",
+            "timelineEst": "Weeks 9–10",
             "goals": [
                 "Make the system robust, safe, and visually slick.",
                 "Prep for soft launch or beta."
@@ -475,7 +479,7 @@ export const ProjectMilestoneData: MilestoneTracker[] = [{
             "value": "Local development testbed using Firebase Emulator."
         }
     ],
-    "finalNotes": ["You're building a brain that thinks in tasks, a team of digital employees, and a UI for building workforces visually. ",
+    "finalNotes": ["We are building a brain that thinks in tasks, a team of digital employees, and a UI for building workforces visually. ",
         "A clean execution with Firebase + Wix could lead this low-code multi-agent space."
     ]
-}]
+}
