@@ -1,13 +1,17 @@
 # AI Agent Man Man
 # Overall DB
 🔧 users (collection)
+```json
 {
   "email": "user@example.com",
   "name": "Dev Admin",
   "role": "admin", // "editor", "viewer"
   "lastLogin": "2025-04-13T23:00:00Z"
 }
+```
+
 📜 workflows (collection)
+```json
 {
   "name": "Publish Instagram Post",
   "n8nId": "abc123xyz",
@@ -16,7 +20,9 @@
   "lastRun": "2025-04-13T23:00:00Z",
   "ownerId": "userDocId"
 }
+```
 
+```json
 📂 workflow_logs (subcollection under workflows/{workflowId}/workflow_logs)
 {
   "triggeredBy": "userDocId",
@@ -26,8 +32,10 @@
   "error": null,
   "timestamp": "2025-04-13T23:00:00Z"
 }
+```
 
 (Optional) ⏱️ triggers (collection)
+```json
 {
   "workflowId": "workflowDocId",
   "type": "interval",
@@ -35,6 +43,7 @@
   "lastTriggeredAt": "2025-04-13T23:00:00Z",
   "active": true
 }
+```
 
 #Firestore collection structure for the AI Agent Compass:
 1. **agent_profiles** - Store metadata about each agent
