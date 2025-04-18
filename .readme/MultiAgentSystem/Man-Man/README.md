@@ -7,10 +7,11 @@
   "name": "Dev Admin",
   "role": "admin", // "editor", "viewer"
   "lastLogin": "2025-04-13T23:00:00Z"
-}```
+}
+```
 
 ## (Optional) ⏱️ triggers (collection)
-```
+```json
 {
   "workflowId": "workflowDocId",
   "type": "interval",
