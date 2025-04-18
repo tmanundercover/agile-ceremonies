@@ -1,4 +1,80 @@
-export const ProjectMilestoneData = {
+export interface AgentLink {
+    name: string;
+    subtitle?: string;
+    path: string;
+}
+
+export interface TodoItem {
+    status?: string;
+    title: string;
+    services?: string[];
+    assignedTo?: string;
+}
+
+export interface TaskItem {
+    title: string;
+    description?: string;
+    services?: string[];
+    todos?: TodoItem[];
+    io?: {
+        input?: {
+            value: {
+                [key: string]: any;
+                content: string;
+            };
+            type?: string;
+        };
+        output?: {
+            value: {
+                [key: string]: any;
+                content: string;
+            };
+            type?: string;
+        };
+    }[];
+}
+
+export interface PhaseData {
+    phase_id: number;
+    title: string;
+    timelineEst: string;
+    description?: string;
+    goals?: string[];
+    tasks?: TaskItem[];
+    agentImplementation?: string | {
+        name: string;
+        subtitle: string;
+        path: string;
+    };
+    agentLinks?: AgentLink[];
+    additionalInfo?: {
+        title?: string;
+        content?: string;
+        tags?: string[];
+    };
+}
+
+export interface TechOverviewItem {
+    name: string;
+    description: string;
+    services: string[];
+}
+
+export interface StretchFeature {
+    title: string;
+    value: string;
+}
+
+export interface ProjectMilestoneType {
+    milestone: string;
+    description: string;
+    techOverview: TechOverviewItem[];
+    phases: PhaseData[];
+    stretchFeatures: StretchFeature[];
+    finalNotes: string[];
+}
+
+export const ProjectMilestoneData: ProjectMilestoneType = {
     "milestone": "Multi-Agent Network with Firebase + Wix + React/TypeScript",
     "description": "Build a multi-agent system using Firebase and Wix, with a focus on task management and natural language processing.",
     "techOverview": [
@@ -220,7 +296,7 @@ export const ProjectMilestoneData = {
                     "title": "DevOps/Testing/CI",
                     "description": "Setting up continuous integration and testing",
                     "services": ["GitHub", "CI/CD", "Supabase"],
-                    "items": [
+                    "todos": [
                         {status: "pending", title: "Use GitHub for repo/CI"},
                         {status: "pending", title: "Integrate GitHub with Firecrawi agent"},
                         {status: "pending", title: "Write unit tests for Firestore routing logic"},
@@ -231,7 +307,7 @@ export const ProjectMilestoneData = {
                     "title": "Future Agent Stubs for Testing",
                     "description": "Creating mock agents for system testing",
                     "services": ["Firebase Functions", "n8n", "Mock APIs"],
-                    "items": [
+                    "todos": [
                         {
                             status: "pending",
                             title: "Create Firebase Functions or mock n8n endpoints to simulate agents"
@@ -269,15 +345,16 @@ export const ProjectMilestoneData = {
                     "title": "Agent Schema Design",
                     "description": "Structure agent profiles in Firebase.",
                     "services": ["Firebase RTDB"],
-                    "io": {
-                        input: [{
-                            values: {
-                                sample: "json sample"
+                    "io": [{
+                        input: {
+                            value: {
+                                content: "json sample"
                             },
                             "type": "JSON"
-                        }],
+                        },
                         output: {
-                            values: [{
+                            value: {
+                                content:"AI Agent Schema",
                                 "agent": {
                                     "id": "string",
                                     "role": "string",
@@ -286,10 +363,10 @@ export const ProjectMilestoneData = {
                                     "capabilities": ["search", "summarize"],
                                     "lastActive": "timestamp"
                                 }
-                            }],
+                            },
                             "type": "JSON",
                         },
-                    }
+                    }]
                 },
                 {
                     "title": "Realtime Task System",
@@ -371,15 +448,16 @@ export const ProjectMilestoneData = {
                     "title": "Prompt-to-Task Generator",
                     "description": "Use GPT API to turn user prompts into structured tasks.",
                     "services": ["OpenAI GPT-4 API or OpenRouter"],
-                    "io": {
-                        inputType: "Text",
-                        input: {value: "Find 3 competitors to HeyBoss and compare their feature sets."},
-                        "outputType": "JSON",
-                        "output": [
-                            {"agent": "researcher", "task": "Find 3 competitors"},
-                            {"agent": "analyst", "task": "Compare feature sets"}
-                        ]
-                    }
+                    "io": [{
+                        input: {value: {content:"Prompt"}, type: "Text"},
+                        "output":
+                            {
+                                type: "JSON",
+                                value: {
+                                    content: "This will be a prompt structured like the database schema dictates"
+                                }
+                            }
+                    }]
                 },
                 {
                     "title": "Agent 'Interpreter' Function",

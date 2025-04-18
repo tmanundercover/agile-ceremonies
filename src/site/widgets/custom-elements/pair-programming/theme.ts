@@ -12,6 +12,9 @@ export const colors = {
     neutral500: '#A0AEC0',     // --neutral-500
     neutral200: '#EDF2F7',     // --neutral-200
     neutral300: '#CBD5E0',     // Medium gray that works well with backgrounds
+    neutral400: '#AAB9BD',     // --neutral-400
+    neutral600: '#8C979D',     // --neutral-600
+    neutral800: '#667C72',     // --neutral-800
     neutral100: '#F8F9FA',     // --neutral-100
     success: '#22C55E',        // --success
     error: '#EF4444',          // --error

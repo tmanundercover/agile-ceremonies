@@ -29,6 +29,7 @@ import ActualStandupModal from "./standup/ActualStandupModal";
 import theme from './theme';
 import styled from 'styled-components';
 import MilestoneTracker from "./task-track/MilestoneTracker";
+import AgentChatSidebar from "./task-track/components/AgentChatSidebar";
 
 // Create SVG icons for each tab
 const OfficeIcon = () => (
@@ -301,6 +302,36 @@ const App: React.FC = () => {
         },
     ]);
 
+// Handle sending a new message
+    const handleSendMessage = (message: string) => {
+        if (!selectedTeammate) return;
+
+        const newMessage: ChatMessage = {
+            id: Date.now().toString(),
+            sender: { name: 'User', type: 'user' },
+            content: message,
+            timestamp: new Date()
+        };
+
+        setChatMessages(prev => [...prev, newMessage]);
+
+        // Simulate a response after a short delay
+        setTimeout(() => {
+            const agentResponse: ChatMessage = {
+                id: (Date.now() + 1).toString(),
+                sender: {
+                    name: selectedTeammate.name,
+                    type: 'ai'
+                },
+                content: `I received your message: "${message}". How can I help you with this?`,
+                timestamp: new Date()
+            };
+
+            setChatMessages(prev => [...prev, agentResponse]);
+        }, 1000);
+    };
+
+
     const [teammates, setTeammates] = useState<Teammate[]>([
         {id: '1', name: 'John Dev', role: 'Developer', helpRequests: [], email: "email@thn.com", avatarUrl: ""},
         {id: '2', name: 'Jane PM', role: 'PM', helpRequests: [], email: "email@thn.com", avatarUrl: ""},
@@ -408,6 +439,15 @@ const App: React.FC = () => {
         }
     ]);
 
+    // Filter messages for the selected teammate
+    const filteredMessages = selectedTeammate
+        ? chatMessages.filter(message =>
+            message.sender.type === 'user' ||
+            message.sender.type === 'system' ||
+            message.sender.name === selectedTeammate.name)
+        : [];
+
+
     useEffect(() => {
         // Ensure that the desks and teammates are properly initialized
         if (!desks || !teammates) {
@@ -510,6 +550,15 @@ const App: React.FC = () => {
                                 >
                                     Start Daily Standup
                                 </StandupButton>
+                            </SidebarSection>
+
+                            {/* Add the Chat Sidebar component */}
+                            <SidebarSection>
+                                <AgentChatSidebar
+                                    selectedTeammate={selectedTeammate}
+                                    messages={filteredMessages}
+                                    onSendMessage={handleSendMessage}
+                                />
                             </SidebarSection>
                         </Sidebar>
 

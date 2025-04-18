@@ -1,61 +1,5 @@
-import * as React from "react";
-import {DateProps} from "@wix/wix-ui-icons-common/dist/types/general/dist/components/Date";
-import {IconProps} from "@wix/wix-ui-icons-common";
-
-export interface Task {
-  id: string;
-  title: string;
-  description: string;
-  comments: Comment[];
-  type: 'feature' | 'bug' | 'wireframe' | 'spike' | 'design' | 'task';
-  assignedTeammates: Teammate[];
-  requirementId: string;
-  dependencies: (Task | Requirement)[];
-  status: 'To Do' | 'In Progress' | 'Done';
-  priority: 'Low' | 'Medium' | 'High';
-  icon: React.ReactNode
-}
-
-export interface Requirement {
-  id: string;
-  title: string;
-  description: string;
-  assignedPM: string;
-  tasks: Task[];
-  dependencies: Requirement[];
-  assignedTo: Teammate;
-  status: 'Open' | 'In Progress' | 'Closed';
-  priority: 'Low' | 'Medium' | 'High';
-  deadline: Date;
-  acceptanceCriteria: string[];
-}
-
-export interface StandupStatus {
-  id: string;
-  teammateId: string;
-  date: Date;
-  status: string;
-  blockers: string[];
-  helpRequests: HelpRequest[];
-}
-
-export interface HelpRequest {
-  id: string;
-  requesterId: string;
-  helperId: string;
-  taskId: string;
-  description: string;
-  status: 'Pending' | 'Approved' | 'Rejected';
-  rejectionReason?: string;
-  comments: Comment[];
-}
-
-export interface Comment {
-  id: string;
-  authorId: string;
-  content: string;
-  timestamp: Date;
-}
+import { IconProps } from '@radix-ui/react-icons';
+import { ComponentType } from 'react';
 
 export interface Teammate {
   id: string;
@@ -93,6 +37,20 @@ export interface StandupData {
   tasksCompleted: Task[];
   tasksInProgress: Task[];
   tasksPlanned: Task[];
+}
+
+export interface Task {
+    id: string;
+    priority: string;
+    icon: ComponentType<IconProps>;
+    title: string;
+    type: string;
+    status: string;
+    requirementId: string;
+    assignedTeammates: any[];
+    dependencies: any[];
+    description: string;
+    comments: any[];
 }
 
 export interface ChatMessage {

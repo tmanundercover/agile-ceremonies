@@ -15,17 +15,18 @@ interface AssignmentType {
   memberId: string;
 }
 
+interface TodoItem {
+  title: string;
+  status?: string;
+  services?: string[];
+  assignedTo?: string;
+}
+
 interface TaskItem {
   title: string;
   description?: string;
   services?: string[];
   todos?: TodoItem[];
-}
-
-interface TodoItem {
-  title: string;
-  status?: string;
-  services?: string[];
 }
 
 interface PhaseData {
@@ -36,7 +37,11 @@ interface PhaseData {
   goals?: string[];
   tasks?: TaskItem[];
   agentImplementation?: any;
-  agentLinks?: any[];
+  agentLinks?: {
+    name: string;
+    subtitle?: string;
+    path: string;
+  }[];
   additionalInfo?: any;
 }
 
@@ -68,6 +73,7 @@ interface TaskProps {
   assignments: AssignmentType[];
   onAssign: (assignment: AssignmentType) => void;
   teamMembers: TeamMemberType[];
+  phaseId: number; // Add phaseId prop
 }
 
 interface TodoItemProps {
@@ -121,10 +127,10 @@ const TimelineContainerStyled = styled.div`
   }
 `;
 
-const PhaseContainerStyled = styled.div<{ isActive?: boolean }>`
+const PhaseContainerStyled = styled.div<{ $isActive?: boolean }>`
   position: relative;
   margin-bottom: 1.5rem;
-  background: ${props => props.isActive ? '#f8f9fa' : 'white'};
+  background: ${props => props.$isActive ? '#f8f9fa' : 'white'};
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
@@ -167,8 +173,8 @@ const PhaseTitleStyled = styled.h2`
   flex-grow: 1;
 `;
 
-const ExpandIconStyled = styled.span<{ isExpanded: boolean }>`
-  transform: ${props => props.isExpanded ? 'rotate(180deg)' : 'rotate(0)'};
+const ExpandIconStyled = styled.span<{ $isExpanded: boolean }>`
+  transform: ${props => props.$isExpanded ? 'rotate(180deg)' : 'rotate(0)'};
   transition: transform 0.3s ease;
   margin-left: 1rem;
   font-size: 1.2rem;
@@ -179,11 +185,11 @@ const ExpandIconStyled = styled.span<{ isExpanded: boolean }>`
   height: 24px;
 `;
 
-const PhaseContentStyled = styled.div<{ isExpanded: boolean }>`
-  max-height: ${props => props.isExpanded ? '5000px' : '0'};
+const PhaseContentStyled = styled.div<{ $isExpanded: boolean }>`
+  max-height: ${props => props.$isExpanded ? '5000px' : '0'};
   overflow: hidden;
   transition: max-height 0.5s ease;
-  padding: ${props => props.isExpanded ? '1rem' : '0 1rem'};
+  padding: ${props => props.$isExpanded ? '1rem' : '0 1rem'};
 `;
 
 const PhaseDescriptionStyled = styled.p`
@@ -236,14 +242,15 @@ const CheckboxStyled = styled.input`
   width: 18px;
   height: 18px;
   cursor: pointer;
+  accent-color: ${props => props.theme.colors?.primary || '#5AB5F7'};
 `;
 
-const TaskTitleStyled = styled.h4<{ isCompleted: boolean }>`
+const TaskTitleStyled = styled.h4<{ $isCompleted: boolean }>`
   margin: 0;
   font-size: 1rem;
   color: #333;
-  text-decoration: ${props => props.isCompleted ? 'line-through' : 'none'};
-  color: ${props => props.isCompleted ? '#999' : '#333'};
+  text-decoration: ${props => props.$isCompleted ? 'line-through' : 'none'};
+  color: ${props => props.$isCompleted ? '#999' : '#333'};
   flex-grow: 1;
 `;
 
@@ -294,9 +301,9 @@ const TodoItemStyled = styled.div`
   border-bottom: 1px dashed #eee;
 `;
 
-const TodoTitleStyled = styled.span<{ isCompleted: boolean }>`
-  text-decoration: ${props => props.isCompleted ? 'line-through' : 'none'};
-  color: ${props => props.isCompleted ? '#999' : '#333'};
+const TodoTitleStyled = styled.span<{ $isCompleted: boolean }>`
+  text-decoration: ${props => props.$isCompleted ? 'line-through' : 'none'};
+  color: ${props => props.$isCompleted ? '#999' : '#333'};
   flex-grow: 1;
   font-size: 0.9rem;
 `;
@@ -390,7 +397,7 @@ const TodoItem: React.FC<TodoItemProps> = ({
         checked={isCompleted} 
         onChange={(e) => onCheck(e.target.checked)} 
       />
-      <TodoTitleStyled isCompleted={isCompleted}>{todo.title}</TodoTitleStyled>
+      <TodoTitleStyled $isCompleted={isCompleted}>{todo.title}</TodoTitleStyled>
       
       {assignedMember && (
         <AssigneeStyled>
@@ -441,10 +448,12 @@ const Task: React.FC<TaskProps> = ({
   completedTodos, 
   assignments, 
   onAssign, 
-  teamMembers 
+  teamMembers,
+  phaseId // Use this prop
 }) => {
   const [showAssignModal, setShowAssignModal] = useState(false);
-  const taskId = `task-${taskIndex}`;
+  // Update taskId to use the passed phaseId
+  const taskId = `task-${phaseId}-${taskIndex}`;
   
   const assignee = assignments.find(a => a.itemId === taskId && a.itemType === 'task');
   const assignedMember = assignee ? teamMembers.find(m => m.id === assignee.memberId) : null;
@@ -457,7 +466,7 @@ const Task: React.FC<TaskProps> = ({
           checked={isCompleted} 
           onChange={(e) => onCheck(e.target.checked)} 
         />
-        <TaskTitleStyled isCompleted={isCompleted}>{task.title}</TaskTitleStyled>
+        <TaskTitleStyled $isCompleted={isCompleted}>{task.title}</TaskTitleStyled>
         
         {assignedMember && (
           <AssigneeStyled>
@@ -484,7 +493,14 @@ const Task: React.FC<TaskProps> = ({
       {task.todos && task.todos.length > 0 && (
         <TodosContainerStyled>
           {task.todos.map((todo: TodoItem, todoIndex: number) => {
-            const todoId = `task-${taskIndex}-todo-${todoIndex}`;
+            // Fix: We need the parent phase ID for proper todo identification
+            // Extract phase ID from the task ID when passed from the Phase component
+            const phaseIdMatch = taskId.match(/task-(\d+)-\d+/);
+            const phaseId = phaseIdMatch ? phaseIdMatch[1] : "";
+
+            // Update todoId to include phaseId consistently with handleTaskCheck and handleTodoCheck
+            const todoId = `task-${phaseId}-${taskIndex}-todo-${todoIndex}`;
+
             return (
               <TodoItem 
                 key={todoIndex}
@@ -549,7 +565,7 @@ const Phase: React.FC<PhaseProps> = ({
   const assignedMember = assignee ? teamMembers.find(m => m.id === assignee.memberId) : null;
   
   return (
-    <PhaseContainerStyled isActive={isExpanded}>
+    <PhaseContainerStyled $isActive={isExpanded}>
       <PhaseHeaderStyled onClick={onToggle}>
         <PhaseTimelineStyled>{phase.timelineEst}</PhaseTimelineStyled>
         <PhaseMarkerStyled />
@@ -569,10 +585,10 @@ const Phase: React.FC<PhaseProps> = ({
           {assignedMember ? 'Reassign' : 'Assign'}
         </AssignButtonStyled>
         
-        <ExpandIconStyled isExpanded={isExpanded}>▼</ExpandIconStyled>
+        <ExpandIconStyled $isExpanded={isExpanded}>▼</ExpandIconStyled>
       </PhaseHeaderStyled>
       
-      <PhaseContentStyled isExpanded={isExpanded}>
+      <PhaseContentStyled $isExpanded={isExpanded}>
         {phase.description && (
           <PhaseDescriptionStyled>{phase.description}</PhaseDescriptionStyled>
         )}
@@ -591,6 +607,7 @@ const Phase: React.FC<PhaseProps> = ({
         {phase.tasks && phase.tasks.length > 0 && (
           <TasksContainerStyled>
             {phase.tasks.map((task, taskIndex) => {
+              // Update how taskId is constructed to include phase_id
               const taskId = `task-${phase.phase_id}-${taskIndex}`;
               return (
                 <Task 
@@ -606,6 +623,7 @@ const Phase: React.FC<PhaseProps> = ({
                   assignments={assignments}
                   onAssign={onAssign}
                   teamMembers={teamMembers}
+                  phaseId={phase.phase_id} // Pass phaseId to Task component
                 />
               );
             })}
@@ -667,26 +685,24 @@ const MilestoneTracker: React.FC<MilestoneTrackerProps> = ({ teamMembers = [] })
   
   const handleTaskCheck = (phaseIndex: number, taskIndex: number, isChecked: boolean) => {
     const taskId = `task-${phaseIndex}-${taskIndex}`;
+
+    // Update the task completion status
     setCompletedTasks(prev => ({
       ...prev,
       [taskId]: isChecked
     }));
     
-    // If a task is marked as completed, mark all its todos as completed
-    const phases:PhaseData[] = ProjectMilestoneData.phases;
-    if (phases && phases.length > phaseIndex && phases[phaseIndex]) {
+    // If a task is marked as completed or uncompleted, update all its todos accordingly
+    const phases = ProjectMilestoneData.phases;
+    if (phases && phases.length > phaseIndex) {
       const phase = phases[phaseIndex];
-      const tasks = phase.tasks;
-
-      if (tasks && tasks.length > taskIndex) {
-        const task = tasks[taskIndex];
-        const todos = task.todos;
-
-        if (todos && Array.isArray(todos)) {
+      if (phase.tasks && phase.tasks.length > taskIndex) {
+        const task = phase.tasks[taskIndex];
+        if (task.todos && task.todos.length > 0) {
           const newCompletedTodos = {...completedTodos};
 
-          todos.forEach((_, todoIndex) => {
-            const todoId = `task-${phaseIndex}-${taskIndex}-todo-${todoIndex}`;
+          task.todos.forEach((_, todoIndex) => {
+            const todoId = `todo-${taskIndex}-${todoIndex}`;
             newCompletedTodos[todoId] = isChecked;
           });
 
@@ -697,30 +713,29 @@ const MilestoneTracker: React.FC<MilestoneTrackerProps> = ({ teamMembers = [] })
   };
   
   const handleTodoCheck = (phaseIndex: number, taskIndex: number, todoIndex: number, isChecked: boolean) => {
-    const todoId = `task-${phaseIndex}-${taskIndex}-todo-${todoIndex}`;
+    const todoId = `todo-${taskIndex}-${todoIndex}`;
+
+    // Update the specific todo completion status
     setCompletedTodos(prev => ({
       ...prev,
       [todoId]: isChecked
     }));
     
-    // Check if all todos in this task are completed
-    const phases:PhaseData[] = ProjectMilestoneData.phases;
-    if (phases && phases.length > phaseIndex && phases[phaseIndex]) {
+    // Check if all todos in the task are completed to update the task status
+    const phases = ProjectMilestoneData.phases;
+    if (phases && phases.length > phaseIndex) {
       const phase = phases[phaseIndex];
-      const tasks = phase.tasks;
-
-      if (tasks && tasks.length > taskIndex) {
-        const task = tasks[taskIndex];
-        const todos = task.todos;
-
-        if (todos && Array.isArray(todos)) {
-          const taskId = `task-${phaseIndex}-${taskIndex}`;
-
-          const allTodosCompleted = todos.every((_, idx) => {
-            const id = `task-${phaseIndex}-${taskIndex}-todo-${idx}`;
-            return idx === todoIndex ? isChecked : completedTodos[id];
+      if (phase.tasks && phase.tasks.length > taskIndex) {
+        const task = phase.tasks[taskIndex];
+        if (task.todos && task.todos.length > 0) {
+          const allTodosCompleted = task.todos.every((_, idx) => {
+            const currentTodoId = `todo-${taskIndex}-${idx}`;
+            // For the todo being changed, use the new status, otherwise use the stored status
+            return idx === todoIndex ? isChecked : (completedTodos[currentTodoId] || false);
           });
 
+          // Update the task completion status based on all todos
+          const taskId = `task-${phaseIndex}-${taskIndex}`;
           setCompletedTasks(prev => ({
             ...prev,
             [taskId]: allTodosCompleted
@@ -748,17 +763,17 @@ const MilestoneTracker: React.FC<MilestoneTrackerProps> = ({ teamMembers = [] })
       </MilestoneHeaderStyled>
       
       <TimelineContainerStyled>
-        {ProjectMilestoneData.phases.map((phase, index) => (
+        {ProjectMilestoneData.phases.map((phase) => (
           <Phase 
             key={phase.phase_id}
             phase={phase}
             isExpanded={expandedPhases[phase.phase_id] || false}
             onToggle={() => togglePhase(phase.phase_id)}
             onTaskCheck={(taskIndex, isChecked) => 
-              handleTaskCheck(index, taskIndex, isChecked)
+              handleTaskCheck(phase.phase_id, taskIndex, isChecked)
             }
             onTodoCheck={(taskIndex, todoIndex, isChecked) => 
-              handleTodoCheck(index, taskIndex, todoIndex, isChecked)
+              handleTodoCheck(phase.phase_id, taskIndex, todoIndex, isChecked)
             }
             completedTasks={completedTasks}
             completedTodos={completedTodos}
