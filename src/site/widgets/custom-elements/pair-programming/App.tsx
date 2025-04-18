@@ -30,6 +30,7 @@ import theme from './theme';
 import styled from 'styled-components';
 import MilestoneTracker from "./task-track/MilestoneTracker";
 import AgentChatSidebar from "./task-track/components/AgentChatSidebar";
+import { ThemeProvider } from 'styled-components';
 
 // Create SVG icons for each tab
 const OfficeIcon = () => (
@@ -626,7 +627,9 @@ const App: React.FC = () => {
                 )}
 
                 {activeTab === 'taskTracker' && (
-                    <MilestoneTracker />
+                    <ThemeProvider theme={theme}>
+                        <MilestoneTracker />
+                    </ThemeProvider>
                 )}
 
                 {activeTab === 'standupRoom' && (
