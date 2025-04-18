@@ -11,15 +11,18 @@ export const colors = {
     neutral700: '#4A5568',     // --neutral-700
     neutral500: '#A0AEC0',     // --neutral-500
     neutral200: '#EDF2F7',     // --neutral-200
+    neutral300: '#CBD5E0',     // Medium gray that works well with backgrounds
     neutral100: '#F8F9FA',     // --neutral-100
     success: '#22C55E',        // --success
     error: '#EF4444',          // --error
     warning: '#EAB308',        // --warning
     info: '#3B82F6',           // --info
-    textColor: 'var(--text-color)', // Dynamic based on theme
-    bgColor: 'var(--bg-color)',     // Dynamic based on theme
-    cardBg: 'white',       // Dynamic based on theme
+    textColor: '#333333',      // Default text color for light theme
+    textSecondary: '#666666',  // Secondary text color, slightly lighter
+    bgColor: '#F8F9FA',        // Default background color (matches neutral100)
+    cardBg: '#FFFFFF',         // Default card background (white)
 };
+
 
 // Spacing values from multi-ai-agent-network.mdx
 export const spacing = {
@@ -29,6 +32,15 @@ export const spacing = {
     lg: '24px',   // --spacing-lg
     xl: '32px',   // --spacing-xl
 };
+
+// Refined, more consistent border radius
+export const borderRadius = '8px';  // --border-radius
+
+// More subtle box shadow for better cohesion, replacing the neuromorphic effect with a cleaner drop shadow
+export const boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)'; // --box-shadow
+
+// Adjusted transition speed for more consistency
+export const transitionSpeed = '0.25s'; // --transition-speed
 
 export const typography = {
     heading1: {
@@ -44,14 +56,14 @@ export const typography = {
             height: '4px',
             bottom: '-8px',
             left: 0,
-            background: 'var(--primary)',
+            background: `${colors.primary}`,
             borderRadius: '2px',
         }
     },
     heading2: {
         fontSize: '24px',
         fontWeight: 700,
-        borderBottom: '2px solid var(--primary-light)',
+        borderBottom: `2px solid ${colors.primaryLight}`,
         paddingBottom: 'var(--spacing-xs)',
     },
     heading3: {
@@ -65,7 +77,6 @@ export const typography = {
     body: {
         fontSize: '16px',
         lineHeight: 1.6,
-        fontFamily: `-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif`,
         transition: 'color var(--transition-speed)',
     },
     small: {
@@ -78,9 +89,9 @@ export const typography = {
         borderRadius: '4px',
     },
     link: {
-        color: 'var(--primary)',
+        color: `${colors.primary}`,
         textDecoration: 'none',
-        transition: 'color var(--transition-speed)',
+        transition: `color ${transitionSpeed}`,
         hover: {
             color: 'var(--primary-dark)',
             textDecoration: 'underline',
@@ -88,207 +99,91 @@ export const typography = {
     }
 };
 
-// Additional styling properties from multi-ai-agent-network.mdx
-export const borderRadius = '8px';  // --border-radius
-export const boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)'; // --box-shadow
-export const transitionSpeed = '0.3s'; // --transition-speed
-
 // Theme modes from multi-ai-agent-network.mdx
 export const themeModes = {
     dark: {
-        textColor: 'var(--neutral-200)',
-        bgColor: 'var(--neutral-900)',
+        textColor: colors.neutral200,
+        bgColor: colors.neutral900,
         cardBg: '#2D3748',
     },
     light: {
-        textColor: 'var(--neutral-900)',
-        bgColor: 'var(--neutral-100)',
+        textColor: colors.neutral900,
+        bgColor: colors.neutral100,
         cardBg: 'white',
     }
+}
+
+// Define a zIndices object for consistent z-index values
+export const zIndices = {
+    base: 1,
+    content: 10,
+    navigation: 100,
+    modal: 1000,
+    tooltip: 2000,
 };
 
-// Component-specific styling
-export const components = {
-    floatingNav: {
-        position: 'fixed',
-        right: '20px',
-        top: '20px',
-        backgroundColor: 'var(--card-bg)',
-        borderRadius: 'var(--border-radius)',
-        padding: 'var(--spacing-sm)',
-        boxShadow: 'var(--box-shadow)',
-        transition: 'all var(--transition-speed)',
-        zIndex: 100,
-        maxWidth: '200px',
-        transform: 'translateY(0)',
-    },
-    animatedDiagram: {
-        opacity: 0,
-        transform: 'translateY(20px)',
-        transition: 'opacity 0.6s ease, transform 0.6s ease',
-        visible: {
-            opacity: 1,
-            transform: 'translateY(0)',
-        }
-    },
-    collapsibleSection: {
-        margin: 'var(--spacing-md) 0',
-        borderRadius: 'var(--border-radius)',
-        border: '1px solid var(--neutral-500)',
-        overflow: 'hidden',
-        header: {
-            background: 'var(--neutral-200)',
-            color: 'var(--neutral-900)',
-            padding: 'var(--spacing-md)',
-            transition: 'background var(--transition-speed)',
-        },
-        content: {
-            maxHeight: 0,
-            overflow: 'hidden',
-            transition: 'max-height 0.5s ease',
-            padding: '0 var(--spacing-md)',
-            expanded: {
-                maxHeight: '2000px',
-                padding: 'var(--spacing-md)',
-            }
-        }
-    },
-    tabPanel: {
-        margin: 'var(--spacing-lg) 0',
-        buttons: {
-            borderBottom: '2px solid var(--neutral-500)',
-            button: {
-                padding: 'var(--spacing-md)',
-                color: 'var(--text-color)',
-                position: 'relative',
-                active: {
-                    color: 'var(--primary)',
-                    afterElement: {
-                        content: "''",
-                        position: 'absolute',
-                        bottom: '-2px',
-                        left: 0,
-                        width: '100%',
-                        height: '2px',
-                        backgroundColor: 'var(--primary)',
-                    }
-                }
-            }
-        },
-        content: {
-            padding: 'var(--spacing-md)',
-            border: '1px solid var(--neutral-500)',
-            borderTop: 'none',
-            borderRadius: '0 0 var(--border-radius) var(--border-radius)',
-        }
-    },
-    progressBar: {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '4px',
-        zIndex: 1000,
-        bar: {
-            height: '100%',
-            backgroundColor: 'var(--primary)',
-            width: 0,
-            transition: 'width 0.2s ease',
-        }
-    },
-    themeSwitcher: {
-        position: 'fixed',
-        bottom: '20px',
-        right: '20px',
-        width: '40px',
-        height: '40px',
-        borderRadius: '50%',
-        background: 'var(--card-bg)',
-        boxShadow: 'var(--box-shadow)',
-        fontSize: '20px',
-        zIndex: 100,
-        transition: 'transform 0.3s ease',
-        hover: {
-            transform: 'scale(1.1)',
-        }
-    },
+// Add font family
+export const fontFamily = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif";
 
-    // Additional component styles
-    timeline: {
-        position: 'relative',
-        margin: 'var(--spacing-xl) 0',
-        beforeElement: {
-            content: "''",
-            position: 'absolute',
-            left: '20px',
-            top: 0,
-            bottom: 0,
-            width: '4px',
-            background: 'var(--primary)',
-            borderRadius: '4px',
-        },
-        day: {
-            position: 'relative',
-            marginLeft: '50px',
-            padding: 'var(--spacing-md)',
-            marginBottom: 'var(--spacing-md)',
-            borderRadius: 'var(--border-radius)',
-            background: 'var(--card-bg)',
-            boxShadow: 'var(--box-shadow)',
-            transition: 'transform var(--transition-speed), box-shadow var(--transition-speed)',
-            beforeElement: {
-                content: "''",
-                position: 'absolute',
-                left: '-30px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                width: '20px',
-                height: '20px',
-                borderRadius: '50%',
-                background: 'var(--primary)',
-            },
-            hovered: {
-                transform: 'translateX(10px)',
-                boxShadow: '0 6px 12px rgba(0, 0, 0, 0.15)',
-            }
-        }
-    },
-
-    codeBlock: {
-        margin: 'var(--spacing-md) 0',
-        borderRadius: 'var(--border-radius)',
-        overflow: 'hidden',
-        boxShadow: 'var(--box-shadow)',
-        header: {
-            background: 'var(--neutral-700)',
-            color: 'white',
-            padding: 'var(--spacing-xs) var(--spacing-md)',
-        },
-        copyButton: {
-            background: 'transparent',
-            border: '1px solid white',
-            color: 'white',
-            padding: '2px 8px',
-            borderRadius: '4px',
-            transition: 'all var(--transition-speed)',
-            hover: {
-                background: 'white',
-                color: 'var(--neutral-700)',
-            }
-        },
-        pre: {
-            margin: 0,
-            padding: 'var(--spacing-md)',
-            overflowX: 'auto',
-            backgroundColor: '#282c34',
-            color: '#abb2bf',
-        }
-    },
+// Refined animation transitions for more subtle, consistent motion
+export const animations = {
+    easeOutBack: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+    easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
+    springy: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+    quickEase: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
+    durations: {
+        fast: '0.15s',
+        normal: '0.25s', // Adjusted to match transitionSpeed
+        slow: '0.4s'     // Slightly faster for better response
+    }
+};
+export const technologyTagColors: { [key: string]: string } = {
+    React: "#61DAFB",
+    TypeScript: "#007ACC",
+    Firebase: "#FFA000",
+    Kanban: "#42B883",
+    JavaScript: "#F7DF1E",
+    CSS: "#1572B6",
+    HTML: "#E34F26",
+    Python: "#3776AB",
+    Django: "#092E20",
+    Node: "#339933",
+    Express: "#000000",
+    MongoDB: "#47A248",
+    SQL: "#4479A1",
+    "UI/UX": "#FF7262",
+    Figma: "#F24E1E",
+    Docker: "#2496ED",
+    AWS: "#FF9900",
+    GraphQL: "#E10098",
+    Testing: "#FF6C37",
+    Flutter: "#02569B",
+    Swift: "#FA7343",
+    Kotlin: "#7F52FF",
 };
 
-// Media queries
-export const mediaQueries = {
-    mobile: '@media (max-width: 768px)',
+// Refined shadow system with a more consistent and subtle approach
+export const shadows = {
+    none: 'none',
+    sm: '0 1px 3px rgba(0, 0, 0, 0.05)',
+    md: '0 2px 8px rgba(0, 0, 0, 0.08)', // Main default shadow, matches boxShadow
+    lg: '0 4px 12px rgba(0, 0, 0, 0.1)',
+    xl: '0 8px 16px rgba(0, 0, 0, 0.12)',
+    inner: 'inset 0 2px 4px rgba(0, 0, 0, 0.03)',
+    outline: '0 0 0 2px rgba(147, 51, 234, 0.25)',
+    focusRing: '0 0 0 3px rgba(147, 51, 234, 0.3)',
+    hover: '0 4px 10px rgba(0, 0, 0, 0.1)'
+};
+
+// Add a consistent elevation system for z-depth
+export const elevation = {
+    0: shadows.none,
+    1: shadows.sm,
+    2: shadows.md,
+    3: shadows.lg,
+    4: shadows.xl,
+    hover: shadows.hover,
+    focus: shadows.focusRing
 };
 
 export default {
@@ -299,6 +194,10 @@ export default {
     boxShadow,
     transitionSpeed,
     themeModes,
-    components,
-    mediaQueries,
+    zIndices,
+    fontFamily,
+    animations,
+    shadows,
+    technologyTagColors,
+    elevation
 };

@@ -38,11 +38,11 @@ const ModalBackdrop = styled.div`
 `;
 
 interface ModalContainerProps {
-    isEntering: boolean;
+    $isEntering: boolean;
 }
 
 const ModalContainer = styled.div<ModalContainerProps>`
-    background-color: ${theme.colors.cardBg};
+    background-color: rgba(255, 255, 255, 0.9);
     border-radius: ${theme.borderRadius};
     box-shadow: ${theme.boxShadow};
     padding: ${theme.spacing.lg};
@@ -63,14 +63,8 @@ const ModalContainer = styled.div<ModalContainerProps>`
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: ${theme.colors.cardBg};
         z-index: -1;
         border-radius: ${theme.borderRadius};
-    }
-
-    ${theme.mediaQueries.mobile} {
-        width: 95%;
-        padding: ${theme.spacing.md};
     }
 `;
 
@@ -292,12 +286,12 @@ const ButtonGroup = styled.div`
 `;
 
 interface ButtonProps {
-    primary?: boolean;
+    $primary?: boolean;
 }
 
 const Button = styled.button<ButtonProps>`
-    background-color: ${props => props.primary ? theme.colors.primary : 'transparent'};
-    color: ${props => props.primary ? 'white' : theme.colors.primary};
+    background-color: ${props => props.$primary ? theme.colors.primary : 'transparent'};
+    color: ${props => props.$primary ? 'white' : theme.colors.primary};
     border: 1px solid ${theme.colors.primary};
     padding: ${theme.spacing.sm} ${theme.spacing.lg};
     border-radius: ${theme.borderRadius};
@@ -306,7 +300,7 @@ const Button = styled.button<ButtonProps>`
     transition: all 0.2s ease;
 
     &:hover {
-        background-color: ${props => props.primary ? theme.colors.primaryDark : 'rgba(147, 51, 234, 0.1)'};
+        background-color: ${props => props.$primary ? theme.colors.primaryDark : 'rgba(147, 51, 234, 0.1)'};
         transform: translateY(-2px);
         box-shadow: ${theme.boxShadow};
     }
@@ -483,7 +477,7 @@ const ActualStandupModal: React.FC<StandupModalProps> = ({
 
     return (
         <ModalBackdrop onClick={handleBackdropClick}>
-            <ModalContainer isEntering={isEntering}>
+            <ModalContainer $isEntering={isEntering}>
                 <ModalHeader>
                     <ModalTitle>Daily Standup: {teammate?.name}</ModalTitle>
                     <CloseButton onClick={handleCancel}>&times;</CloseButton>
@@ -686,7 +680,7 @@ const ActualStandupModal: React.FC<StandupModalProps> = ({
 
                     <ButtonGroup>
                         <Button type="button" onClick={handleCancel}>Cancel</Button>
-                        <Button type="submit" primary>Submit Standup</Button>
+                        <Button type="submit" $primary>Submit Standup</Button>
                     </ButtonGroup>
                 </Form>
             </ModalContainer>

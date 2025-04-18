@@ -60,7 +60,7 @@ export interface Comment {
 export interface Teammate {
   id: string;
   name: string;
-  role: 'PM' | 'Developer' | 'Graphic Designer' | 'Marketing';
+  role: 'PM' | 'Developer' | 'Graphic Designer' | 'Marketing' | 'Team Member';
   helpRequests: HelpRequest[];
   email: string;
   avatarUrl: string;
@@ -95,3 +95,13 @@ export interface StandupData {
   tasksPlanned: Task[];
 }
 
+export interface ChatMessage {
+    id: string;
+    sender: {
+        name: string;
+        type: 'user' | 'ai' | 'system';
+        avatarUrl?: string;
+    };
+    content: string;
+    timestamp: Date;
+}
