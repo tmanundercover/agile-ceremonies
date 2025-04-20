@@ -78,10 +78,12 @@ The team consists of specialized AI agents with distinct roles:
     - Manages social media presence
     - Maintains email marketing lists
     - Generates leads and communicates with users
+
 ## There is one support Agent but there will be others:
-1. **Compass (HR Agent)**
+1. **Compass (HR Agent takes direction from Agent Nat and Agent Man-Man)**
     - Acts as the Message Router for the entire Multi-Agent Network
     - Interprets incoming prompts
+    - Answers questions about the agents and their Connections and Abilities
     - Scrapes internal documentation (README, prompt libraries, schemas) for Agent profiles
     - Determines correct Agent, required tools, prompts, and workflow steps
     - Packages and routes message to the correct Agent queue
@@ -103,13 +105,15 @@ We are using the Firebase(Firebase and Functions) Eco system but with a wix widg
 Agents communicate through a structured protocol that maintains context and ensures appropriate handoffs between specialized functions.
  
 
+## WorkFlow Prompt Generator
+```
 You are an early adopter of AI and have been following n8n since you came across them while you were building your first agent the day after n8n released it's Agent Node and MCP node. You specialize in designing the centralized communication of n8n AI Agents. You provide AI Agent schematics in a raw svg tag with an accompaning legend and outline of the agent schematic.
 The workflow should go somethin like this: 
 [Detailed Agent Workflow]
 
 I am new to designing AI Agents but with your experience i will have the opportunity to take plenty of notes since you have been building AI Agents since “The beginning of time…” for the AI Agent Universe. Give me the schematic with legend and outlined explanation of the schematic as a One Page react app model of an AI Agent design profile. The profile should completely outline the agent. it should include the n8n schematic image of the HR agent in raw svg, the agent name, The agents graphical representation to humans(an highly stylized sticker version image of the agent), An outlined definition of the schematics and it’s parts. Also describe the agent, how they communicate what inputs and prompts they need and respond to, and which agents they interact with and their communication protocols.
 [NOW GIVE A DETAILED DESCRIPTION OF THE AGENT]
-
+```
 
 ## 1. HR Agent Name and Role
 **Agent Name:** Compass  
@@ -126,22 +130,37 @@ I am new to designing AI Agents but with your experience i will have the opportu
 - Maintains access to the central Workflow & Prompt Library
 - Returns execution plan to Nat for delivery or approval
 
-## 2. "MCP Compass Workflow" – Centralized Routing Process
+## 2. "Workflows"
+### "MCP Compass Workflow" – Centralized Routing Process
+
 **Workflow Name:** MCP_COMPASS_ROUTING_WORKFLOW
 
 ### Workflow Steps:
 
-| Step | Action                                                                                                                                          | Agent |
-|------|-------------------------------------------------------------------------------------------------------------------------------------------------|-------|
-| 1 | Nat receives a new message (via chat UI/API/Webhook)                                                                                            | Nat |
-| 2 | Nat sends full message to Compass (HR)                                                                                                          | Compass |
-| 3 | Compass analyzes message context, user intent, agent capabilities, tool availability                                                            | Compass |
-| 4 | Compass checks agent roles, workflow definitions, prompt mappings, available tools & inputs                                                     | Compass |
-| 5 | Compass sends routing Expected output package(Agent name, Required tools, Workflow steps Inputs /parameters) back to Nat | Compass |
-| 6 | Nat sends message package to selected Agent via their message queue                                                                             | Nat |
-| 7 | If Agent declines or misrouted → bounce back to Compass for reroute and log                                                                     | All Agents |
-| 8 | Compass updates error handling/routing intelligence                                                                                             | Compass |
+| Step | Action                                                                                                                               | Agent      |
+|------|--------------------------------------------------------------------------------------------------------------------------------------|------------|
+| 1 | Nat receives a new project message (via chat UI/API/Webhook)                                                                         | Nat        |
+| 2 | Nat sends engineered message to Compass via Webhook (HR & Help Desk)                                                                 | Nat        |
+| 3 | Compass analyzes message context, user intent, agent capabilities, tool availability                                                 | Compass    |
+| 4 | Compass checks agent roles, workflow definitions, prompt mappings, available tools & inputs                                          | Compass    |
+| 5 | Compass sends routing Expected output package(Agent name, Required tools, Workflow steps Inputs /parameters) back to Nat as Response | Compass    |
+| 6 | Compass sends message package to selected Agent via their message queue                                                              | Compass    |
+| 7 | If Agent declines or misrouted → bounce back to Compass for reroute and log                                                          | All Agents |
+| 8 | Compass updates error handling/routing intelligence                                                                                  | Compass    | 
+### "MCP Compass Workflow" – Centralized Routing Process
 
+**Workflow Name:** MCP_COMPASS_HELP_DESK_WORKFLOW
+
+### Workflow Steps:
+
+| Step | Action                                                                                                    | Agent   |
+|------|-----------------------------------------------------------------------------------------------------------|---------|
+| 1 | Man-Man receives a help desk message (via chat UI/API/Webhook)                                            | Man-Man |
+| 2 | Man-Man sends engineered message to Compass via Webhook (Help Desk)                                       | Man-Man |
+| 3 | Compass analyzes message context, user intent, agent capabilities, tool availability                      | Compass |
+| 4 | Compass checks agent roles, workflow definitions, prompt mappings, available tools & inputs               | Compass |
+| 5 | Compass sends responds with Agent name, Required tools, Workflow steps Inputs /parameters back to Man-Man | Compass |
+| 6 | Man-Man sends message responds to Webhook                                                                 | Man-Man |
 ## 3. Centralized Prompt & Workflow Library
 
 ### Suggested Structure:
@@ -157,7 +176,7 @@ I am new to designing AI Agents but with your experience i will have the opportu
 
 ## 4. Best Storage Architecture for Multi-Agent Workflow System
 
-### Recommended Outside-Wix Stack:
+### Stack:
 
 #### Firebase / Firestore
 - Realtime syncing across agents
@@ -165,26 +184,19 @@ I am new to designing AI Agents but with your experience i will have the opportu
 - Pub/Sub integration for messaging queues
 - Integrated with Cloud Functions for n8n triggers
 
-#### Alternate: Supabase
-- SQL-like structure (if you need relations)
-- Realtime + row-level security
-- Great for UI dashboards
-
 #### Messaging Queue Options:
 - Firebase Cloud Messaging or Pub/Sub (for cloud-native apps)
-- RabbitMQ or Kafka (for more advanced deployments)
-- Wix Events only if you're fully embedded within Wix (limited scalability)
 
 ## 5. Agent Communication Protocol
 
 | Communication Type | Protocol |
-|-------------------|-----------|
-| Agent-to-Agent | Publish message to recipient's Queue. If invalid, bounce to Compass. |
-| Nat-to-Compass | Direct via API/Webhook (Chat, UI, etc.) |
-| Compass-to-Agent | Via message queues, based on tool+workflow |
-| Agent-to-Compass | Log feedback, invalid prompts, update training |
+|--------------------|-----------|
+| Nat-to-Compass     | Direct via API/Webhook (Chat, UI, etc.) |
+| Man-Man-to-Compass | Direct via API/Webhook (Chat, UI, etc.) |
+| Compass-to-Agent   | Via message queues, based on tool+workflow |
+| Agent-to-Compass   | Log feedback, invalid prompts, update training |
 | Compass-to-Library | Reads from + writes to centralized Library |
-| Agent-to-Workflow | Follows instructions from Compass' routing plan |
+| Agent-to-Workflow  | Follows instructions from Compass' routing plan |
 
 ## 6. Agent Profile React App (One Page Model)
 

@@ -24,7 +24,7 @@ export const Chat: React.FC<ChatProps> = ({ isOpen, onToggle }) => {
                             flex: 1,
                             overflowY: 'auto',
                             padding: '16px',
-                            display: 'flex',
+                            display: 'flex',cc
                             flexDirection: 'column',
                             gap: '16px'
                         }}>
