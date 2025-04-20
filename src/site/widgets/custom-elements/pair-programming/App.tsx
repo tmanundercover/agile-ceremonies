@@ -285,6 +285,7 @@ const App: React.FC = () => {
     const [showStandupModal, setShowStandupModal] = useState(false);
     const [selectedDesk, setSelectedDesk] = useState<Desk | null>(null);
     const [sidebarVisible, setSidebarVisible] = useState(true);
+    const [isTeammateDetailsModalOpen, setIsTeammateDetailsModalOpen] = useState<boolean>(false)
 
     const [desks, setDesks] = useState<Desk[]>([
         {
@@ -517,7 +518,7 @@ const App: React.FC = () => {
                                             <TeammateRole>{teammate.role}</TeammateRole>
                                             <ViewDetailsButton onClick={(e) => {
                                                 e.stopPropagation();
-                                                setSelectedTeammate(teammate);
+                                                setIsTeammateDetailsModalOpen(true);
                                             }}>
                                                 View Details
                                             </ViewDetailsButton>
@@ -661,10 +662,10 @@ const App: React.FC = () => {
                 )}
             </ContentContainer>
 
-            {selectedTeammate && (
+            {isTeammateDetailsModalOpen && selectedTeammate && (
                 <TeammateDetailsModal
                     teammate={selectedTeammate}
-                    onClose={() => setSelectedTeammate(null)}
+                    onClose={() => setIsTeammateDetailsModalOpen(false)}
                     onStandupClick={() => setShowStandupModal(true)}
                     isExiting={showStandupModal}
                 />

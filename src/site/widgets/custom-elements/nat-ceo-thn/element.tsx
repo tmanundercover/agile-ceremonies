@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import reactToWebComponent from 'react-to-webcomponent';
 import styled from 'styled-components';
 import AIAgentCompass from "./components/ai-agent-compass/AIAgentCompass";
-import AudioTranscriber from "./components/Audio Transcriber/AudioTranscriber";
 import {LandingPageBuilder} from "./components/landing-page-builder/LandingPageBuilder";
 
 const WidgetContainerStyled = styled.div`
@@ -23,7 +22,7 @@ const CustomElement: FC<Props> = ({
 }) => {
   return (
     <WidgetContainerStyled>
-      <LandingPageBuilder/>
+      <AIAgentCompass/>
     </WidgetContainerStyled>
   );
 };

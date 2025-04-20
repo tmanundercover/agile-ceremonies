@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import {ProjectMilestoneData} from '../data/ProjectMilestoneData';
+import TodoAccordion from './components/TodoAccordion';
 
 // Types
 interface TeamMemberType {
@@ -387,57 +388,17 @@ const TodoItem: React.FC<TodoItemProps> = ({
                                                onAssign,
                                                teamMembers
                                            }) => {
-    const [showAssignModal, setShowAssignModal] = useState(false);
-
-    const assignee = assignments.find(a => a.itemId === todoId && a.itemType === 'todo');
-    const assignedMember = assignee ? teamMembers.find(m => m.id === assignee.memberId) : null;
-
+    // Using the new TodoAccordion component
     return (
-        <TodoItemStyled>
-            <CheckboxStyled
-                type="checkbox"
-                checked={isCompleted}
-                onChange={(e) => onCheck(e.target.checked)}
-            />
-            <TodoTitleStyled $isCompleted={isCompleted}>{todo.title}</TodoTitleStyled>
-
-            {assignedMember && (
-                <AssigneeStyled>
-                    <AssigneeAvatarStyled>{assignedMember.name.charAt(0)}</AssigneeAvatarStyled>
-                    {assignedMember.name}
-                </AssigneeStyled>
-            )}
-
-            <AssignButtonStyled onClick={() => setShowAssignModal(true)}>
-                {assignedMember ? 'Reassign' : 'Assign'}
-            </AssignButtonStyled>
-
-            {showAssignModal && (
-                <AssignmentModalStyled onClick={() => setShowAssignModal(false)}>
-                    <ModalContentStyled onClick={(e) => e.stopPropagation()}>
-                        <ModalTitleStyled>Assign Todo</ModalTitleStyled>
-                        <TeamMemberListStyled>
-                            {teamMembers.map((member) => (
-                                <MemberItemStyled
-                                    key={member.id}
-                                    onClick={() => {
-                                        onAssign({
-                                            itemId: todoId,
-                                            itemType: 'todo',
-                                            memberId: member.id
-                                        });
-                                        setShowAssignModal(false);
-                                    }}
-                                >
-                                    <AssigneeAvatarStyled>{member.name.charAt(0)}</AssigneeAvatarStyled>
-                                    {member.name}
-                                </MemberItemStyled>
-                            ))}
-                        </TeamMemberListStyled>
-                    </ModalContentStyled>
-                </AssignmentModalStyled>
-            )}
-        </TodoItemStyled>
+        <TodoAccordion
+            todo={todo}
+            todoId={todoId}
+            isCompleted={isCompleted}
+            onCheck={onCheck}
+            assignments={assignments}
+            onAssign={onAssign}
+            teamMembers={teamMembers}
+        />
     );
 };
 
