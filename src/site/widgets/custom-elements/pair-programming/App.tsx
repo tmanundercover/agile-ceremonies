@@ -31,6 +31,7 @@ import styled from 'styled-components';
 import MilestoneTracker from "./task-track/MilestoneTracker";
 import AgentChatSidebar from "./task-track/components/AgentChatSidebar";
 import { ThemeProvider } from 'styled-components';
+import {Chat} from "../nat-ceo-thn/components/chat/Chat";
 
 // Create SVG icons for each tab
 const OfficeIcon = () => (
@@ -465,6 +466,7 @@ const App: React.FC = () => {
     const previousTeammate = () => {
         setCurrentTeammateIndex((prev) => (prev - 1 + teammates.length) % teammates.length);
     };
+    const [isChatOpen, setIsChatOpen] = useState<boolean>(false)
 
     return (
         <AppContainer>
@@ -497,9 +499,11 @@ const App: React.FC = () => {
                     <NetworkIcon/>
                     <IconLabel>Multi-Agent Network</IconLabel>
                 </IconTabButton>
+                <Chat onToggle={()=>{setIsChatOpen(state=>!state)}} isOpen={isChatOpen} />
             </IconTabContainer>
 
             <ContentContainer>
+
                 {activeTab === 'desks' && (
                     <OfficeContainer>
                         <Sidebar>
@@ -678,6 +682,7 @@ const App: React.FC = () => {
                     isEntering={false}
                 />
             )}
+
         </AppContainer>
     );
 };
