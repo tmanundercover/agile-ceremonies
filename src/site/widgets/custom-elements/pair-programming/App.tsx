@@ -32,6 +32,7 @@ import MilestoneTracker from "./task-track/MilestoneTracker";
 import AgentChatSidebar from "./task-track/components/AgentChatSidebar";
 import { ThemeProvider } from 'styled-components';
 import {Chat} from "../nat-ceo-thn/components/chat/Chat";
+import TeammateSelector from "./components/TeammateSelector";
 
 // Create SVG icons for each tab
 const OfficeIcon = () => (
@@ -509,44 +510,9 @@ const App: React.FC = () => {
                         <Sidebar>
                             <SidebarSection>
                                 <SectionTitle>Team</SectionTitle>
-                                <TeamSelectContainer>
-                                    {teammates.map((teammate, index) => (
-                                        <CarouselCard
-                                            key={teammate.id}
-                                            className={index === currentTeammateIndex ? 'active' :
-                                                index === (currentTeammateIndex - 1 + teammates.length) % teammates.length ? 'prev' :
-                                                    index === (currentTeammateIndex + 1) % teammates.length ? 'next' : ''}
-                                            onClick={() => setSelectedTeammate(teammate)}
-                                        >
-                                            <TeammateInfo>{teammate.name}</TeammateInfo>
-                                            <TeammateRole>{teammate.role}</TeammateRole>
-                                            <ViewDetailsButton onClick={(e) => {
-                                                e.stopPropagation();
-                                                setIsTeammateDetailsModalOpen(true);
-                                            }}>
-                                                View Details
-                                            </ViewDetailsButton>
-                                        </CarouselCard>
-                                    ))}
-
-                                    <CardNavigation>
-                                        <NavButton onClick={previousTeammate} aria-label="Previous teammate">
-                                            ←
-                                        </NavButton>
-                                        <TeamIndicator>
-                                            {teammates.map((_, index) => (
-                                                <IndicatorDot
-                                                    key={index}
-                                                    $active={index === currentTeammateIndex}
-                                                    onClick={() => setCurrentTeammateIndex(index)}
-                                                />
-                                            ))}
-                                        </TeamIndicator>
-                                        <NavButton onClick={nextTeammate} aria-label="Next teammate">
-                                            →
-                                        </NavButton>
-                                    </CardNavigation>
-                                </TeamSelectContainer>
+                                <TeammateSelector teammates={teammates} onSelectedTeammate={(teammate)=>{
+                                    setSelectedTeammate(teammate)
+                                }}/>
 
                                 <StandupButton
                                     onClick={() => {
