@@ -1,15 +1,11 @@
-import TeammateDetailsModal from './TeammateDetailsModal';
+import TeammateDetailsModal from './components/teammate-selector/TeammateDetailsModal';
 import React, {useEffect, useState} from "react";
-import {ChatMessage, Desk, Task, Teammate} from "./models";
+import {ChatMessage, Desk, Task} from "./models";
 import {
     AppContainer,
-    CardNavigation,
-    CarouselCard,
     DeskContainer,
     DeskTitle,
     EmptySeatLabel,
-    IndicatorDot,
-    NavButton,
     OfficeContainer,
     OfficeFloor,
     Seat,
@@ -17,22 +13,17 @@ import {
     Sidebar,
     SidebarSection,
     TaskDropdown,
-    TaskSelectionTitle,
-    TeamIndicator,
-    TeammateInfo,
-    TeammateRole,
-    TeamSelectContainer,
-    ViewDetailsButton
+    TaskSelectionTitle
 } from "./StyledComponents";
 import {CalendarIcon} from '@radix-ui/react-icons';
 import ActualStandupModal from "./standup/ActualStandupModal";
 import theme from './theme';
-import styled from 'styled-components';
+import styled, {ThemeProvider} from 'styled-components';
 import MilestoneTracker from "./task-track/MilestoneTracker";
 import AgentChatSidebar from "./task-track/components/AgentChatSidebar";
-import { ThemeProvider } from 'styled-components';
 import {Chat} from "../nat-ceo-thn/components/chat/Chat";
-import TeammateSelector from "./components/TeammateSelector";
+import TeammateSelector from "./components/teammate-selector/TeammateSelector";
+import { Teammate } from './components/teammate-selector/Teammate.types';
 
 // Create SVG icons for each tab
 const OfficeIcon = () => (
@@ -61,13 +52,20 @@ const StandupIcon = () => (
 
 const NetworkIcon = () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM15 12C15 13.66 13.66 15 12 15C10.34 15 9 13.66 9 12C9 10.34 10.34 9 12 9C13.66 9 15 10.34 15 12Z" fill="currentColor"/>
-        <path d="M6 12C6 13.1 5.1 14 4 14C2.9 14 2 13.1 2 12C2 10.9 2.9 10 4 10C5.1 10 6 10.9 6 12Z" fill="currentColor"/>
-        <path d="M22 12C22 13.1 21.1 14 20 14C18.9 14 18 13.1 18 12C18 10.9 18.9 10 20 10C21.1 10 22 10.9 22 12Z" fill="currentColor"/>
+        <path
+            d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM15 12C15 13.66 13.66 15 12 15C10.34 15 9 13.66 9 12C9 10.34 10.34 9 12 9C13.66 9 15 10.34 15 12Z"
+            fill="currentColor"/>
+        <path d="M6 12C6 13.1 5.1 14 4 14C2.9 14 2 13.1 2 12C2 10.9 2.9 10 4 10C5.1 10 6 10.9 6 12Z"
+              fill="currentColor"/>
+        <path d="M22 12C22 13.1 21.1 14 20 14C18.9 14 18 13.1 18 12C18 10.9 18.9 10 20 10C21.1 10 22 10.9 22 12Z"
+              fill="currentColor"/>
         <path d="M12 6C12 7.1 11.1 8 10 8C8.9 8 8 7.1 8 6C8 4.9 8.9 4 10 4C11.1 4 12 4.9 12 6Z" fill="currentColor"/>
-        <path d="M12 18C12 19.1 11.1 20 10 20C8.9 20 8 19.1 8 18C8 16.9 8.9 16 10 16C11.1 16 12 16.9 12 18Z" fill="currentColor"/>
-        <path d="M18 6C18 7.1 17.1 8 16 8C14.9 8 14 7.1 14 6C14 4.9 14.9 4 16 4C17.1 4 18 4.9 18 6Z" fill="currentColor"/>
-        <path d="M18 18C18 19.1 17.1 20 16 20C14.9 20 14 19.1 14 18C14 16.9 14.9 16 16 16C17.1 16 18 16.9 18 18Z" fill="currentColor"/>
+        <path d="M12 18C12 19.1 11.1 20 10 20C8.9 20 8 19.1 8 18C8 16.9 8.9 16 10 16C11.1 16 12 16.9 12 18Z"
+              fill="currentColor"/>
+        <path d="M18 6C18 7.1 17.1 8 16 8C14.9 8 14 7.1 14 6C14 4.9 14.9 4 16 4C17.1 4 18 4.9 18 6Z"
+              fill="currentColor"/>
+        <path d="M18 18C18 19.1 17.1 20 16 20C14.9 20 14 19.1 14 18C14 16.9 14.9 16 16 16C17.1 16 18 16.9 18 18Z"
+              fill="currentColor"/>
     </svg>
 );
 
@@ -235,23 +233,23 @@ const StandupButton = styled.button`
     font-weight: 500;
     width: 100%; /* Take full width */
     box-sizing: border-box;
-    
+
     &::before {
         content: '📅';
         margin-right: ${theme.spacing.sm};
         transition: transform 0.2s ease;
     }
-    
+
     &:hover {
         background-color: ${theme.colors.primaryDark};
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        
+
         &::before {
             transform: rotate(-10deg);
         }
     }
-    
+
     &:active {
         transform: translateY(1px);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
@@ -312,7 +310,7 @@ const App: React.FC = () => {
 
         const newMessage: ChatMessage = {
             id: Date.now().toString(),
-            sender: { name: 'User', type: 'user' },
+            sender: {name: 'User', type: 'user'},
             content: message,
             timestamp: new Date()
         };
@@ -324,7 +322,7 @@ const App: React.FC = () => {
             const agentResponse: ChatMessage = {
                 id: (Date.now() + 1).toString(),
                 sender: {
-                    name: selectedTeammate.name,
+                    name: selectedTeammate.persona.name,
                     type: 'ai'
                 },
                 content: `I received your message: "${message}". How can I help you with this?`,
@@ -335,19 +333,6 @@ const App: React.FC = () => {
         }, 1000);
     };
 
-
-    const [teammates, setTeammates] = useState<Teammate[]>([
-        {id: '1', name: 'John Dev', role: 'Developer', helpRequests: [], email: "email@thn.com", avatarUrl: ""},
-        {id: '2', name: 'Jane PM', role: 'PM', helpRequests: [], email: "email@thn.com", avatarUrl: ""},
-        {
-            id: '3',
-            name: 'Bob Designer',
-            role: 'Graphic Designer',
-            helpRequests: [],
-            email: "email@thn.com",
-            avatarUrl: ""
-        },
-    ]);
 
     const [tasks, setTasks] = useState<Task[]>([
         {
@@ -395,49 +380,49 @@ const App: React.FC = () => {
     const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
         {
             id: '1',
-            sender: { name: 'User', type: 'user' },
+            sender: {name: 'User', type: 'user'},
             content: 'I need help implementing the login functionality for our app.',
             timestamp: new Date(Date.now() - 3600000) // 1 hour ago
         },
         {
             id: '2',
-            sender: { name: 'DevAgent', type: 'ai' },
+            sender: {name: 'DevAgent', type: 'ai'},
             content: 'I can help with that. Could you specify what authentication method you prefer? OAuth, email/password, or something else?',
             timestamp: new Date(Date.now() - 3540000) // 59 minutes ago
         },
         {
             id: '3',
-            sender: { name: 'User', type: 'user' },
+            sender: {name: 'User', type: 'user'},
             content: 'Let\'s go with OAuth using Google and Facebook.',
             timestamp: new Date(Date.now() - 3480000) // 58 minutes ago
         },
         {
             id: '4',
-            sender: { name: 'DevAgent', type: 'ai' },
+            sender: {name: 'DevAgent', type: 'ai'},
             content: 'Great choice. I\'ll create the task and notify the security team. @SecurityAgent we need to implement OAuth with Google and Facebook.',
             timestamp: new Date(Date.now() - 3420000) // 57 minutes ago
         },
         {
             id: '5',
-            sender: { name: 'SecurityAgent', type: 'ai' },
+            sender: {name: 'SecurityAgent', type: 'ai'},
             content: 'I\'ve reviewed the requirements. We should use Firebase Authentication for this as it supports both providers and handles token management securely. I\'ll prepare the configuration and security rules.',
             timestamp: new Date(Date.now() - 3360000) // 56 minutes ago
         },
         {
             id: '6',
-            sender: { name: 'System', type: 'system' },
+            sender: {name: 'System', type: 'system'},
             content: 'Task created: "Implement OAuth with Google and Facebook" - Priority: High',
             timestamp: new Date(Date.now() - 3300000) // 55 minutes ago
         },
         {
             id: '7',
-            sender: { name: 'UIAgent', type: 'ai' },
+            sender: {name: 'UIAgent', type: 'ai'},
             content: "I'll create the login UI components with buttons for both providers. @DevAgent, can you share the color codes and sizes needed for the OAuth buttons?",
             timestamp: new Date(Date.now() - 1800000) // 30 minutes ago
         },
         {
             id: '8',
-            sender: { name: 'DevAgent', type: 'ai' },
+            sender: {name: 'DevAgent', type: 'ai'},
             content: 'Here are Google\'s brand guidelines for sign-in buttons: https://developers.google.com/identity/branding-guidelines. For Facebook, use #1877F2 with the official logo. Button height should be 40px to match our design system.',
             timestamp: new Date(Date.now() - 1740000) // 29 minutes ago
         }
@@ -448,25 +433,17 @@ const App: React.FC = () => {
         ? chatMessages.filter(message =>
             message.sender.type === 'user' ||
             message.sender.type === 'system' ||
-            message.sender.name === selectedTeammate.name)
+            message.sender.name === selectedTeammate.persona.name)
         : [];
 
 
     useEffect(() => {
         // Ensure that the desks and teammates are properly initialized
-        if (!desks || !teammates) {
+        if (!desks) {
             setDesks([]);
-            setTeammates([]);
         }
     }, []);
 
-    const nextTeammate = () => {
-        setCurrentTeammateIndex((prev) => (prev + 1) % teammates.length);
-    };
-
-    const previousTeammate = () => {
-        setCurrentTeammateIndex((prev) => (prev - 1 + teammates.length) % teammates.length);
-    };
     const [isChatOpen, setIsChatOpen] = useState<boolean>(false)
 
     return (
@@ -500,7 +477,9 @@ const App: React.FC = () => {
                     <NetworkIcon/>
                     <IconLabel>Multi-Agent Network</IconLabel>
                 </IconTabButton>
-                <Chat onToggle={()=>{setIsChatOpen(state=>!state)}} isOpen={isChatOpen} />
+                <Chat onToggle={() => {
+                    setIsChatOpen(state => !state)
+                }} isOpen={isChatOpen}/>
             </IconTabContainer>
 
             <ContentContainer>
@@ -510,18 +489,18 @@ const App: React.FC = () => {
                         <Sidebar>
                             <SidebarSection>
                                 <SectionTitle>Team</SectionTitle>
-                                <TeammateSelector teammates={teammates} onSelectedTeammate={(teammate)=>{
+                                <TeammateSelector onSelectedTeammate={(teammate) => {
                                     setSelectedTeammate(teammate)
                                 }}/>
 
-                                <StandupButton
-                                    onClick={() => {
-                                        setSelectedTeammate(teammates[currentTeammateIndex]);
-                                        setShowStandupModal(true);
-                                    }}
-                                >
-                                    Start Daily Standup
-                                </StandupButton>
+                                {/*<StandupButton*/}
+                                {/*    onClick={() => {*/}
+                                {/*        setSelectedTeammate(teammates[currentTeammateIndex]);*/}
+                                {/*        setShowStandupModal(true);*/}
+                                {/*    }}*/}
+                                {/*>*/}
+                                {/*    Start Daily Standup*/}
+                                {/*</StandupButton>*/}
                             </SidebarSection>
 
                             {/* Add the Chat Sidebar component */}
@@ -545,7 +524,8 @@ const App: React.FC = () => {
 
                                     {desk.developerSeats[0] ?
                                         <Seat style={{gridArea: 'dev1'}}>
-                                            {teammates.find(t => t.id === desk.developerSeats[0]?.id)?.name}
+                                            Dev1
+                                            {/*{teammates.find(t => t.id === desk.developerSeats[0]?.id)?.name}*/}
                                         </Seat> :
                                         <SeatOccupied style={{gridArea: 'dev1'}}>
                                             <EmptySeatLabel>Empty Seat</EmptySeatLabel>
@@ -554,7 +534,8 @@ const App: React.FC = () => {
 
                                     {desk.developerSeats[1] ?
                                         <Seat style={{gridArea: 'dev2'}}>
-                                            {teammates.find(t => t.id === desk.developerSeats[1]?.id)?.name}
+                                            Dev2
+                                            {/*{teammates.find(t => t.id === desk.developerSeats[1]?.id)?.name}*/}
                                         </Seat> :
                                         <SeatOccupied style={{gridArea: 'dev2'}}>
                                             <EmptySeatLabel>Empty Seat</EmptySeatLabel>
@@ -585,7 +566,9 @@ const App: React.FC = () => {
 
                                     {desk.endcapSeat ?
                                         <Seat style={{gridArea: 'endcap'}}>
-                                            {teammates.find(t => t.id === desk.endcapSeat?.id)?.name}
+                                            Endcap
+                                            {/*{desk.endcapSeat.name}*/}
+                                            {/*{teammates.find(t => t.id === desk.endcapSeat?.id)?.name}*/}
                                         </Seat> :
                                         <SeatOccupied style={{gridArea: 'endcap'}}>
                                             <EmptySeatLabel>Empty Seat</EmptySeatLabel>
@@ -599,7 +582,7 @@ const App: React.FC = () => {
 
                 {activeTab === 'taskTracker' && (
                     <ThemeProvider theme={theme}>
-                        <MilestoneTracker />
+                        <MilestoneTracker/>
                     </ThemeProvider>
                 )}
 
@@ -607,22 +590,22 @@ const App: React.FC = () => {
                     <StandupBoardContainer>
                         <SectionTitle>Standup Board Room</SectionTitle>
                         <StandupBoard>
-                            {teammates.map(teammate => (
-                                <StandupCard key={teammate.id}>
-                                    <StandupCardHeader>{teammate.name}</StandupCardHeader>
-                                    <StandupCardContent>
-                                        <StandupStatusItem>
-                                            <strong>Yesterday:</strong> No updates recorded.
-                                        </StandupStatusItem>
-                                        <StandupStatusItem>
-                                            <strong>Today:</strong> No plans recorded.
-                                        </StandupStatusItem>
-                                        <StandupStatusItem>
-                                            <strong>Blockers:</strong> None reported.
-                                        </StandupStatusItem>
-                                    </StandupCardContent>
-                                </StandupCard>
-                            ))}
+                            {/*{teammates.map(teammate => (*/}
+                            {/*    <StandupCard key={teammate.id}>*/}
+                            {/*        <StandupCardHeader>{teammate.name}</StandupCardHeader>*/}
+                            {/*        <StandupCardContent>*/}
+                            {/*            <StandupStatusItem>*/}
+                            {/*                <strong>Yesterday:</strong> No updates recorded.*/}
+                            {/*            </StandupStatusItem>*/}
+                            {/*            <StandupStatusItem>*/}
+                            {/*                <strong>Today:</strong> No plans recorded.*/}
+                            {/*            </StandupStatusItem>*/}
+                            {/*            <StandupStatusItem>*/}
+                            {/*                <strong>Blockers:</strong> None reported.*/}
+                            {/*            </StandupStatusItem>*/}
+                            {/*        </StandupCardContent>*/}
+                            {/*    </StandupCard>*/}
+                            {/*))}*/}
                         </StandupBoard>
                     </StandupBoardContainer>
                 )}

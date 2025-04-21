@@ -1,13 +1,14 @@
-import { IconProps } from '@radix-ui/react-icons';
 import { ComponentType } from 'react';
+import {Teammate} from './components/teammate-selector/Teammate.types';
 
-export interface Teammate {
+export interface AgentProfileType {
   id: string;
   name: string;
-  role: 'PM' | 'Developer' | 'Graphic Designer' | 'Marketing' | 'Team Member';
-  helpRequests: HelpRequest[];
-  email: string;
-  avatarUrl: string;
+  role: string;
+  capabilities: string[];
+  description: string;
+  domains: string[];
+  status: string;
 }
 
 export interface Desk {
@@ -42,7 +43,7 @@ export interface StandupData {
 export interface Task {
     id: string;
     priority: string;
-    icon: ComponentType<IconProps>;
+    icon: ComponentType<any>;
     title: string;
     type: string;
     status: string;
@@ -63,3 +64,4 @@ export interface ChatMessage {
     content: string;
     timestamp: Date;
 }
+

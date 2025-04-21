@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 import theme from './theme';
+// Add imports from StyledComponents.tsx
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 // App Container with fixed z-index and stacking context
 export const AppContainer = styled.div`
@@ -76,48 +79,7 @@ export const CarouselContainer = styled.div`
     height: 140px;
 `;
 
-export const CarouselCard = styled.div`
-    position: relative;
-    width: 100%;
-    max-width: 100%; /* Ensure the card doesn't exceed container width */
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    transform-origin: center center;
-    background-color: ${theme.colors.cardBg};
-    border-radius: ${theme.borderRadius};
-    padding: ${theme.spacing.md};
-    box-shadow: ${theme.boxShadow};
-    margin-bottom: ${theme.spacing.sm};
-    border-left: 4px solid ${theme.colors.primary};
-    overflow: hidden;
-    cursor: pointer;
-    box-sizing: border-box; /* Include padding in width calculation */
-    
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(to right, ${theme.colors.primary}10, transparent 20%);
-        pointer-events: none;
-    }
-    
-    &.active {
-        transform: scale(1) translateY(0);
-        opacity: 1;
-        z-index: 2;
-    }
-    
-    &.prev, &.next {
-        position: absolute;
-        top: 0;
-        left: 0;
-        opacity: 0;
-        pointer-events: none;
-        transform: scale(0.85) translateY(10px);
-    }
-`;
+
 
 export const NavButton = styled.button`
     background-color: ${theme.colors.primary};
@@ -306,36 +268,8 @@ export const CardNavigation = styled.div`
     margin-top: ${theme.spacing.xs};
 `;
 
-export const TeammateInfo = styled.h3`
-    margin: 0 0 ${theme.spacing.xs} 0;
-    font-size: ${theme.typography.body.fontSize};
-    color: ${theme.colors.primary};
-    display: flex;
-    align-items: center;
-    word-break: break-word; /* Allow long names to break properly */
-    
-    &::before {
-        content: '👤';
-        margin-right: ${theme.spacing.xs};
-        font-size: 16px;
-    }
-`;
 
-export const TeammateRole = styled.div`
-    font-size: ${theme.typography.small.fontSize};
-    color: ${theme.colors.neutral700};
-    margin-bottom: ${theme.spacing.xs};
-    padding-left: ${theme.spacing.md};
-    position: relative;
-    
-    &::before {
-        content: '🔹';
-        position: absolute;
-        left: 0;
-        font-size: 10px;
-        color: ${theme.colors.primary};
-    }
-`;
+
 
 export const ViewDetailsButton = styled.button`
     background-color: transparent;
@@ -557,11 +491,7 @@ export const CarouselNavButton = styled.button`
     }
 `;
 
-export const TeamSelectContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin-bottom: ${theme.spacing.md};
-`;
+
 
 export const TeamIndicator = styled.div`
     display: flex;
@@ -933,6 +863,345 @@ export const SidebarToggleButton = styled.button<{ $sidebarVisible: boolean }>`
     
     &:hover {
         background-color: ${theme.colors.primaryDark};
+    }
+`;
+
+// Newly added components from StyledComponents.tsx
+
+// Add new styled components for AI badge and detailed info
+export const AIBadge = styled.span`
+  display: inline-block;
+  background-color: ${theme.colors.primary};
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: ${theme.borderRadius};
+  margin-left: ${theme.spacing.xs};
+  vertical-align: middle;
+`;
+
+export const DetailSection = styled.div`
+  margin-bottom: ${theme.spacing.md};
+  
+  h3 {
+    font-size: 16px;
+    margin-bottom: ${theme.spacing.xs};
+    color: ${theme.colors.primary};
+  }
+`;
+
+export const DetailList = styled.ul`
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+`;
+
+// Renamed to avoid conflict with existing DetailItem in original file
+export const DetailListItem = styled.li`
+  padding: ${theme.spacing.xs} 0;
+  border-bottom: 1px solid ${theme.colors.neutral200};
+  
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+export const BoardRoomStyled = styled.div`
+  display: flex;
+`;
+
+export const SidebarAltStyled = styled.div`
+  width: 200px;
+  background-color: var(--secondary-text-color);
+`;
+
+export const TeammateStyled = styled.div`
+  padding: 10px;
+  border-bottom: 1px solid var(--background-color);
+`;
+
+export const MainContentStyled = styled.div`
+  flex: 1;
+  padding: 20px;
+`;
+
+export const OfficeViewStyled = styled.div`
+  display: flex;
+`;
+
+export const OfficeFloorAltStyled = styled.div`
+  flex: 1;
+  padding: 20px;
+`;
+
+export const FormStyled = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+`;
+
+export const InputStyled = styled.input`
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+
+  &:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+`;
+
+export const TextAreaStyled = styled.textarea`
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  resize: vertical;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+
+  &:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+`;
+
+export const SelectStyled = styled.select`
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+
+  &:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+`;
+
+export const ButtonStyled = styled.button`
+  padding: 12px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  align-self: center;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+
+export const BlockerSectionStyled = styled.div`
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  color: #333;
+`;
+
+export const BlockerListStyled = styled.ul`
+  list-style: none;
+  padding: 0;
+  color: #333;
+`;
+
+export const BlockerItemStyled = styled.li`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 5px;
+  color: #333;
+`;
+
+export const RemoveButtonStyled = styled.button`
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+  font-size: 16px;
+`;
+
+export const SwimlaneSectionStyled = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+
+  .slick-slider {
+    margin-bottom: 15px;
+  }
+
+  .slick-dots {
+    bottom: -30px;
+  }
+
+  .slick-prev, .slick-next {
+    z-index: 1;
+  }
+`;
+
+export const SwimlaneStyled = styled.div`
+  flex: 1;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  border-radius: 4px;
+  margin: 0 10px;
+
+  h3 {
+    color: #333;
+  }
+`;
+
+export const VerticalLineStyled = styled.div`
+  width: 1px;
+  background-color: #ccc;
+  margin: 0 10px;
+`;
+
+export const TaskListStyled = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+`;
+
+export const TaskItemStyled = styled.li`
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const DropdownStyled = styled.select`
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+
+  &:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+`;
+
+export const AddTaskButtonStyled = styled.button`
+  padding: 10px 15px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 100%;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #218838;
+  }
+`;
+
+export const ToggleSwitchStyled = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
+export const RadioButtonLabelStyled = styled.label`
+  font-size: 14px;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #f9f9f9;
+  color: #333;
+
+  input {
+    margin-right: 5px;
+  }
+
+  &:hover {
+    background-color: #e9e9e9;
+  }
+
+  input:checked + & {
+    background-color: #007bff;
+    color: white;
+  }
+`;
+
+export const ModalContent = styled.div`
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 600px;
+`;
+
+export const BacklogSection = styled.div`
+    height: 60%;
+    overflow-y: auto;
+    padding: 1rem;
+`;
+
+export const DraggableTeammate = styled.div`
+    flex: 1;
+    padding: 30px 20px;
+    background: #7FCF87;
+    color: #000000;
+    font-weight: bold;
+    font-size: 1.2em;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-align: center;
+    
+    &:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+`;
+
+export const TeammateRole = styled.div`
+    font-size: ${theme.typography.small.fontSize};
+    color: ${theme.colors.neutral700};
+    margin-bottom: ${theme.spacing.xs};
+    padding-left: ${theme.spacing.md};
+    position: relative;
+    
+    &::before {
+        content: '🔹';
+        position: absolute;
+        left: 0;
+        font-size: 10px;
+        color: ${theme.colors.primary};
     }
 `;
 
