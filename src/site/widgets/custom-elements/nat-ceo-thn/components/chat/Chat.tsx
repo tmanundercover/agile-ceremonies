@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button, Dialog, Text } from '@radix-ui/themes';
 import { ChatButtonStyled, ChatFooterStyled, ChatInputStyled } from "../../styledComponents";
 import styled from 'styled-components';
@@ -158,6 +158,11 @@ const ChatMessages = styled.div`
   background-color: white;
 `;
 
+interface Message {
+  text: string;
+  isUser: boolean;
+}
+
 interface ChatProps {
     isOpen: boolean;
     onToggle: () => void;
@@ -165,15 +170,72 @@ interface ChatProps {
 
 export const Chat: React.FC<ChatProps> = ({ isOpen, onToggle }) => {
     const [message, setMessage] = useState('');
+    const [messages, setMessages] = useState<Message[]>([
+        { text: "Hi! I'm Josh, your design assistant. How can I help you with your sticker today?", isUser: false }
+    ]);
+    const [isLoading, setIsLoading] = useState(false);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
 
-    // Sample messages for demonstration
-    const sampleMessages = [
-        { text: "Hi! I'm Josh, your design assistant. How can I help you with your sticker today?", isUser: false },
-        { text: "I need to create a logo for my coffee shop. Can you help me?", isUser: true },
-        { text: "Absolutely! I'd be happy to help with your coffee shop logo. Could you tell me about the style you're looking for? Modern, vintage, minimalist?", isUser: false },
-        { text: "I'm thinking something vintage with warm colors.", isUser: true },
-        { text: "Great choice! Vintage styles work well for coffee shops. I'll create a few concepts with warm, earthy tones, maybe some retro typography and coffee motifs. Any specific elements you want to include?", isUser: false },
-    ];
+    // Scroll to bottom of messages when new messages are added
+    useEffect(() => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [messages]);
+
+    const handleSendMessage = async () => {
+        if (!message.trim()) return;
+
+        // Add user message to chat
+        const userMessage = { text: message, isUser: true };
+        setMessages(prev => [...prev, userMessage]);
+
+        // Clear input
+        setMessage('');
+
+        // Set loading state
+        setIsLoading(true);
+
+        try {
+            // Call the API
+            const response = await fetch(
+                'http://127.0.0.1:5001/youtube-and-other-connections/us-central1/handleHelpDeskRequest',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: message.trim() }),
+                }
+            );
+
+            const data = await response.json();
+
+            // Format the response - replace \n with actual line breaks
+            const formattedResponse = data.helpDeskResp.output.replace(/\\n/g, '\n');
+
+            // Add Josh's response to chat
+            const joshMessage = { text: formattedResponse, isUser: false };
+            setMessages(prev => [...prev, joshMessage]);
+
+        } catch (error) {
+            console.error('Error sending message:', error);
+            // Add error message to chat
+            setMessages(prev => [...prev, {
+                text: "Sorry, I'm having trouble connecting. Please try again later.",
+                isUser: false
+            }]);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleKeyPress = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSendMessage();
+        }
+    };
 
     return (
         <>
@@ -194,7 +256,7 @@ export const Chat: React.FC<ChatProps> = ({ isOpen, onToggle }) => {
                         }}>
                             <ChatHeader>Chat with Josh</ChatHeader>
                             <ChatMessages>
-                                {sampleMessages.map((msg, index) => (
+                                {messages.map((msg, index) => (
                                     <MessageGroup key={index} isUser={msg.isUser}>
                                         <Avatar isUser={msg.isUser}>
                                             {msg.isUser ? 'You' : 'J'}
@@ -206,16 +268,34 @@ export const Chat: React.FC<ChatProps> = ({ isOpen, onToggle }) => {
                                         </MessageContainer>
                                     </MessageGroup>
                                 ))}
+                                {isLoading && (
+                                    <MessageGroup isUser={false}>
+                                        <Avatar isUser={false}>J</Avatar>
+                                        <MessageContainer>
+                                            <MessageBubble isUser={false}>
+                                                <span>Thinking...</span>
+                                            </MessageBubble>
+                                        </MessageContainer>
+                                    </MessageGroup>
+                                )}
+                                <div ref={messagesEndRef} />
                             </ChatMessages>
                             <EnhancedChatFooter>
                                 <EnhancedChatInput
                                     placeholder="Type your message..."
                                     value={message}
                                     onChange={(e) => setMessage(e.target.value)}
+                                    onKeyPress={handleKeyPress}
+                                    disabled={isLoading}
                                 />
-                                <SendButton>Send</SendButton>
+                                <SendButton
+                                    onClick={handleSendMessage}
+                                    disabled={isLoading || !message.trim()}
+                                >
+                                    Send
+                                </SendButton>
                             </EnhancedChatFooter>
-                            <CloseButton variant="soft">
+                            <CloseButton variant="soft" onClick={onToggle}>
                                 Close Chat
                             </CloseButton>
                         </StyledDialogContent>
@@ -225,3 +305,4 @@ export const Chat: React.FC<ChatProps> = ({ isOpen, onToggle }) => {
         </>
     );
 };
+
