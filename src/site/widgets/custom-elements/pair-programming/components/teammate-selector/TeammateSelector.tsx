@@ -16,6 +16,7 @@ export const TeamSelectContainer = styled.div`
     flex-direction: column;
     margin-bottom: ${theme.spacing.sm};
 `;
+
 export const TeammateInfo = styled.h3`
     margin: 0 0 ${theme.spacing.xs} 0;
     font-size: ${theme.typography.body.fontSize};

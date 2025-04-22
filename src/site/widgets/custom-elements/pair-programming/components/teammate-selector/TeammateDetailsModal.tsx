@@ -1,6 +1,6 @@
 import React from 'react';
 import {DetailItem, ModalStyled, AIBadge, DetailSection, DetailList} from '../../StyledComponents';
-import {Teammate} from '../../models';
+import {Teammate} from './Teammate.types';
 import {isAITeammate} from '../../services/AgentService';
 
 interface TeammateDetailsModalProps {
