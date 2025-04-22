@@ -10,8 +10,6 @@ import {
     OfficeFloor,
     Seat,
     SeatOccupied,
-    Sidebar,
-    SidebarSection,
     TaskDropdown,
     TaskSelectionTitle
 } from "./StyledComponents";
@@ -153,6 +151,16 @@ const TaskTrackerContent = styled.div<{ $sidebarVisible: boolean }>`
     transition: all 0.3s ease;
     margin-left: ${props => props.$sidebarVisible ? '0' : '-280px'};
 `;
+const Sidebar = styled.div`
+    width: 280px;
+    height: 100%;
+    background-color: ${theme.colors.sidebarBg || '#f9fafb'};
+    border-right: 1px solid ${theme.colors.neutral300};
+    padding: ${theme.spacing.sm};
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+`;
 
 const TaskTrackerSidebar = styled(Sidebar)`
     width: 280px;
@@ -275,6 +283,18 @@ const SectionTitle = styled.h2`
         left: 0;
         background: ${theme.colors.primary};
         border-radius: 2px;
+    }
+`;
+
+
+
+const SidebarSection = styled.div`
+    margin-bottom: ${theme.spacing.sm};
+    &:last-child {
+        flex: 1;
+        min-height: 0; /* Important to allow proper flex shrinking */
+        display: flex;
+        flex-direction: column;
     }
 `;
 

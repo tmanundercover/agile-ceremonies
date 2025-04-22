@@ -1,9 +1,9 @@
 import React from 'react';
 import {AIBadge, TeammateRole} from '../../StyledComponents';
+import {Teammate} from './Teammate.types';
 import {isAITeammate} from '../../services/AgentService';
-import styled from "styled-components";
-import theme from "../../theme";
-import {Teammate} from "./Teammate.types";
+import theme from '../../theme';
+import styled from 'styled-components';
 
 interface TeammateCardProps {
     teammate: Teammate;

@@ -3,9 +3,7 @@ import { Button, Dialog, Text } from '@radix-ui/themes';
 import { ChatButtonStyled, ChatFooterStyled, ChatInputStyled } from "../../styledComponents";
 import styled from 'styled-components';
 import theme, { aiAgentColors } from '../../../pair-programming/theme';
-
-// Josh's color from the theme
-const JOSH_COLOR = aiAgentColors.Josh;
+import { Teammate } from '../../../pair-programming/components/teammate-selector/Teammate.types';
 
 // Styled components for messages
 const MessageContainer = styled.div`
@@ -14,7 +12,7 @@ const MessageContainer = styled.div`
   width: 100%;
 `;
 
-const MessageBubble = styled.div<{ isUser?: boolean }>`
+const MessageBubble = styled.div<{ isUser?: boolean; accentColor?: string }>`
   padding: ${theme.spacing.md};
   border-radius: ${theme.borderRadius};
   max-width: 80%;
@@ -45,13 +43,13 @@ const MessageBubble = styled.div<{ isUser?: boolean }>`
   }
 `;
 
-const Avatar = styled.div<{ isUser?: boolean }>`
+const Avatar = styled.div<{ isUser?: boolean; accentColor?: string }>`
   width: 32px;
   height: 32px;
   border-radius: 50%;
   margin-right: ${props => props.isUser ? '0' : theme.spacing.sm};
   margin-left: ${props => props.isUser ? theme.spacing.sm : '0'};
-  background-color: ${props => props.isUser ? theme.colors.primaryLight : JOSH_COLOR};
+  background-color: ${props => props.isUser ? theme.colors.primaryLight : props.accentColor || '#6E7B8B'};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -67,8 +65,8 @@ const MessageGroup = styled.div<{ isUser?: boolean }>`
   margin-bottom: ${theme.spacing.md};
 `;
 
-const EnhancedChatButton = styled(ChatButtonStyled)`
-  background-color: ${JOSH_COLOR};
+const EnhancedChatButton = styled(ChatButtonStyled)<{ accentColor?: string }>`
+  background-color: ${props => props.accentColor || '#6E7B8B'};
   color: white;
   width: 60px;
   height: 60px;
@@ -100,8 +98,8 @@ const StyledDialogContent = styled(Dialog.Content)`
   overflow: hidden;
 `;
 
-const ChatHeader = styled(Dialog.Title)`
-  background-color: ${JOSH_COLOR};
+const ChatHeader = styled(Dialog.Title)<{ accentColor?: string; emoji?: string }>`
+  background-color: ${props => props.accentColor || '#6E7B8B'};
   color: white;
   padding: ${theme.spacing.md};
   margin: 0;
@@ -111,7 +109,7 @@ const ChatHeader = styled(Dialog.Title)`
   align-items: center;
   
   &:before {
-    content: '👨‍🎨';
+    content: '${props => props.emoji || '👤'}';
     margin-right: ${theme.spacing.sm};
   }
 `;
@@ -122,24 +120,24 @@ const EnhancedChatFooter = styled(ChatFooterStyled)`
   background-color: ${theme.colors.neutral100};
 `;
 
-const EnhancedChatInput = styled(ChatInputStyled)`
+const EnhancedChatInput = styled(ChatInputStyled)<{ accentColor?: string }>`
   border-radius: 20px;
   border: 1px solid ${theme.colors.neutral300};
   transition: border-color 0.2s ease;
   
   &:focus {
-    border-color: ${JOSH_COLOR};
-    box-shadow: 0 0 0 2px rgba(226, 85, 116, 0.2);
+    border-color: ${props => props.accentColor || '#6E7B8B'};
+    box-shadow: 0 0 0 2px ${props => props.accentColor ? `${props.accentColor}33` : 'rgba(110, 123, 139, 0.2)'};
   }
 `;
 
-const SendButton = styled(Button)`
-  background-color: ${JOSH_COLOR} !important;
+const SendButton = styled(Button)<{ accentColor?: string }>`
+  background-color: ${props => props.accentColor || '#6E7B8B'} !important;
   border-radius: 20px;
   padding: 0 ${theme.spacing.md};
   
   &:hover {
-    background-color: ${theme.colors.primaryDark} !important;
+    background-color: ${props => props.accentColor ? `${props.accentColor}DD` : theme.colors.primaryDark} !important;
   }
 `;
 
@@ -166,15 +164,33 @@ interface Message {
 interface ChatProps {
     isOpen: boolean;
     onToggle: () => void;
+    teammate?: Teammate;
 }
 
-export const Chat: React.FC<ChatProps> = ({ isOpen, onToggle }) => {
+export const Chat: React.FC<ChatProps> = ({ isOpen, onToggle, teammate }) => {
     const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState<Message[]>([
-        { text: "Hi! I'm Josh, your design assistant. How can I help you with your sticker today?", isUser: false }
-    ]);
+    const [messages, setMessages] = useState<Message[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    // Get accent color based on teammate or default
+    const getAccentColor = () => {
+        if (!teammate) return '#6E7B8B'; // Default color
+        const name = teammate.persona.name;
+        return (aiAgentColors as Record<string, string>)[name] || '#6E7B8B';
+    };
+
+    const accentColor = getAccentColor();
+
+    // Set initial message when teammate changes
+    useEffect(() => {
+        if (teammate) {
+            const initialMessage = `Hi! I'm ${teammate.persona.name}, your ${teammate.persona.role.toLowerCase()}. How can I help you today?`;
+            setMessages([{ text: initialMessage, isUser: false }]);
+        } else {
+            setMessages([{ text: "Hi! I'm your assistant. How can I help you today?", isUser: false }]);
+        }
+    }, [teammate]);
 
     // Scroll to bottom of messages when new messages are added
     useEffect(() => {
@@ -197,7 +213,7 @@ export const Chat: React.FC<ChatProps> = ({ isOpen, onToggle }) => {
         setIsLoading(true);
 
         try {
-            // Call the API
+            // Call the API with teammate information
             const response = await fetch(
                 'http://127.0.0.1:5001/youtube-and-other-connections/us-central1/handleHelpDeskRequest',
                 {
@@ -205,7 +221,14 @@ export const Chat: React.FC<ChatProps> = ({ isOpen, onToggle }) => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ message: message.trim() }),
+                    body: JSON.stringify({
+                        message: message.trim(),
+                        teammate: teammate ? {
+                            name: teammate.persona.name,
+                            role: teammate.persona.role,
+                            capabilities: teammate.persona.capabilities
+                        } : null
+                    }),
                 }
             );
 
@@ -214,9 +237,9 @@ export const Chat: React.FC<ChatProps> = ({ isOpen, onToggle }) => {
             // Format the response - replace \n with actual line breaks
             const formattedResponse = data.helpDeskResp.output.replace(/\\n/g, '\n');
 
-            // Add Josh's response to chat
-            const joshMessage = { text: formattedResponse, isUser: false };
-            setMessages(prev => [...prev, joshMessage]);
+            // Add teammate's response to chat
+            const teammateMessage = { text: formattedResponse, isUser: false };
+            setMessages(prev => [...prev, teammateMessage]);
 
         } catch (error) {
             console.error('Error sending message:', error);
@@ -237,10 +260,32 @@ export const Chat: React.FC<ChatProps> = ({ isOpen, onToggle }) => {
         }
     };
 
+    const getTeammateName = () => teammate?.persona.name || "Assistant";
+    const getTeammateInitial = () => teammate?.persona.name.charAt(0) || "A";
+
+    // Role-based emoji
+    const getRoleEmoji = () => {
+        if (!teammate) return '👤';
+
+        switch(teammate.persona.role) {
+            case 'Developer': return '👨‍💻';
+            case 'Graphic Designer': return '🎨';
+            case 'PM': return '📊';
+            case 'Requirements': return '📝';
+            case 'CEO': return '👔';
+            case 'Testing': return '🧪';
+            case 'Dev Ops': return '🔧';
+            case 'Async Teammate': return '⏰';
+            default: return '👤';
+        }
+    };
+
+    const emojiForHeader = getRoleEmoji();
+
     return (
         <>
-            <EnhancedChatButton onClick={onToggle}>
-                <span role="img" aria-label="Chat with Josh">💬</span>
+            <EnhancedChatButton onClick={onToggle} accentColor={accentColor}>
+                <span role="img" aria-label={`Chat with ${getTeammateName()}`}>💬</span>
             </EnhancedChatButton>
 
             {isOpen && (
@@ -254,15 +299,20 @@ export const Chat: React.FC<ChatProps> = ({ isOpen, onToggle }) => {
                             bottom: '20px',
                             right: '20px'
                         }}>
-                            <ChatHeader>Chat with Josh</ChatHeader>
+                            <ChatHeader
+                                accentColor={accentColor}
+                                emoji={emojiForHeader}
+                            >
+                                Chat with {getTeammateName()}
+                            </ChatHeader>
                             <ChatMessages>
                                 {messages.map((msg, index) => (
                                     <MessageGroup key={index} isUser={msg.isUser}>
-                                        <Avatar isUser={msg.isUser}>
-                                            {msg.isUser ? 'You' : 'J'}
+                                        <Avatar isUser={msg.isUser} accentColor={accentColor}>
+                                            {msg.isUser ? 'You' : getTeammateInitial()}
                                         </Avatar>
                                         <MessageContainer>
-                                            <MessageBubble isUser={msg.isUser}>
+                                            <MessageBubble isUser={msg.isUser} accentColor={accentColor}>
                                                 {msg.text}
                                             </MessageBubble>
                                         </MessageContainer>
@@ -270,7 +320,9 @@ export const Chat: React.FC<ChatProps> = ({ isOpen, onToggle }) => {
                                 ))}
                                 {isLoading && (
                                     <MessageGroup isUser={false}>
-                                        <Avatar isUser={false}>J</Avatar>
+                                        <Avatar isUser={false} accentColor={accentColor}>
+                                            {getTeammateInitial()}
+                                        </Avatar>
                                         <MessageContainer>
                                             <MessageBubble isUser={false}>
                                                 <span>Thinking...</span>
@@ -287,10 +339,12 @@ export const Chat: React.FC<ChatProps> = ({ isOpen, onToggle }) => {
                                     onChange={(e) => setMessage(e.target.value)}
                                     onKeyPress={handleKeyPress}
                                     disabled={isLoading}
+                                    accentColor={accentColor}
                                 />
                                 <SendButton
                                     onClick={handleSendMessage}
                                     disabled={isLoading || !message.trim()}
+                                    accentColor={accentColor}
                                 >
                                     Send
                                 </SendButton>

@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {
     AIBadge,
-    CardNavigation,
     IndicatorDot,
     NavButton,
     TeamIndicator, TeammateRole,
@@ -22,7 +21,7 @@ interface TeammateSelectorProps {
 export const TeamSelectContainer = styled.div`
     display: flex;
     flex-direction: column;
-    margin-bottom: ${theme.spacing.md};
+    margin-bottom: ${theme.spacing.sm};
 `;
 
 export const CarouselCard = styled.div`
@@ -33,9 +32,9 @@ export const CarouselCard = styled.div`
     transform-origin: center center;
     background-color: ${theme.colors.cardBg};
     border-radius: ${theme.borderRadius};
-    padding: ${theme.spacing.md};
+    padding: ${theme.spacing.sm}; /* Reduce padding */
     box-shadow: ${theme.boxShadow};
-    margin-bottom: ${theme.spacing.sm};
+    margin-bottom: ${theme.spacing.xs}; /* Reduce margin */
     border-left: 4px solid ${theme.colors.primary};
     overflow: hidden;
     cursor: pointer;
@@ -63,7 +62,6 @@ const TeammateSelector: React.FC<TeammateSelectorProps> = ({onSelectedTeammate})
     const [teammates, setTeammates] = useState<Teammate[]>([])
 
     useEffect(() => {
-
         // Convert AI agent profiles to teammate personas
         const convertedTeammates = aiAgents.map(agent => ({
             id: agent.id,
@@ -95,6 +93,14 @@ const TeammateSelector: React.FC<TeammateSelectorProps> = ({onSelectedTeammate})
         });
     }, []);
 
+    // Update current teammate when selection changes
+    useEffect(() => {
+        if (teammates.length > 0) {
+            const currentTeammate = teammates[currentTeammateIndex];
+            onSelectedTeammate(currentTeammate);
+        }
+    }, [currentTeammateIndex, teammates, onSelectedTeammate]);
+
     const nextTeammate = () => {
         setCurrentTeammateIndex((prev) => (prev + 1) % teammates.length);
     };
@@ -106,12 +112,17 @@ const TeammateSelector: React.FC<TeammateSelectorProps> = ({onSelectedTeammate})
     // Get the current teammate to display
     const currentTeammate = teammates[currentTeammateIndex];
 
+    const handleTeammateSelect = (teammate: Teammate) => {
+        setSelectedTeammate(teammate);
+        onSelectedTeammate(teammate);
+    };
+
     return (
         <TeamSelectContainer>
             {teammates.length > 0 && (
                 <CarouselCard
                     key={currentTeammate.id}
-                    onClick={() => setSelectedTeammate(currentTeammate)}
+                    onClick={() => handleTeammateSelect(currentTeammate)}
                 >
                     <TeammateInfo>
                         {currentTeammate.persona.name}
@@ -158,6 +169,13 @@ const TeammateSelector: React.FC<TeammateSelectorProps> = ({onSelectedTeammate})
         </TeamSelectContainer>
     );
 };
+
+const CardNavigation = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: ${theme.spacing.xs}; /* Reduce margin */
+`;
 
 export default TeammateSelector;
 

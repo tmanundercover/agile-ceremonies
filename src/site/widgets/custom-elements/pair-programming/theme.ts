@@ -24,6 +24,7 @@ export const colors = {
     textSecondary: '#666666',  // Secondary text color, slightly lighter
     bgColor: '#F8F9FA',        // Default background color (matches neutral100)
     cardBg: '#FFFFFF',         // Default card background (white)
+    sidebarBg: '#f9fafb',      // Sidebar background color
 };
 
 
