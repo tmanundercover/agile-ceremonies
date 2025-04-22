@@ -1,18 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {
-    AIBadge,
-    IndicatorDot,
-    NavButton,
-    TeamIndicator, TeammateRole,
-    ViewDetailsButton
-} from "../../StyledComponents";
 import {AgentProfileType} from "../../models";
 import TeammateDetailsModal from "./TeammateDetailsModal";
 import {fetchAgentProfiles, isAITeammate} from "../../services/AgentService";
 import styled from "styled-components";
 import theme from "../../theme";
-import {TeammateInfo} from "./TeammateCard";
 import { Teammate } from "./Teammate.types";
+import {AIBadge} from "./Teammate.styled";
 
 interface TeammateSelectorProps {
     onSelectedTeammate: (teammate: Teammate) => void;
@@ -22,6 +15,20 @@ export const TeamSelectContainer = styled.div`
     display: flex;
     flex-direction: column;
     margin-bottom: ${theme.spacing.sm};
+`;
+export const TeammateInfo = styled.h3`
+    margin: 0 0 ${theme.spacing.xs} 0;
+    font-size: ${theme.typography.body.fontSize};
+    color: ${theme.colors.primary};
+    display: flex;
+    align-items: center;
+    word-break: break-word; /* Allow long names to break properly */
+
+    &::before {
+        content: '👤';
+        margin-right: ${theme.spacing.xs};
+        font-size: 16px;
+    }
 `;
 
 export const CarouselCard = styled.div`
@@ -50,6 +57,95 @@ export const CarouselCard = styled.div`
         background: linear-gradient(to right, ${theme.colors.primary}10, transparent 20%);
         pointer-events: none;
     }
+`;
+
+export const IndicatorDot = styled.div<{ $active: boolean }>`
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: ${props => props.$active ? theme.colors.primary : theme.colors.neutral300};
+    transition: all 0.3s ease;
+    
+    &:hover {
+        transform: ${props => props.$active ? 'none' : 'scale(1.2)'};
+    }
+`;
+
+export const NavButton = styled.button`
+    background-color: ${theme.colors.primary};
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all ${theme.transitionSpeed};
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+
+    &:hover {
+        background-color: ${theme.colors.primaryDark};
+        transform: scale(1.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px ${theme.colors.primaryLight}, 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+`;
+
+export const TeamIndicator = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-top: ${theme.spacing.xs};
+    gap: ${theme.spacing.xs};
+`;
+
+export const TeammateRole = styled.div`
+    font-size: ${theme.typography.small.fontSize};
+    color: ${theme.colors.neutral700};
+    margin-bottom: ${theme.spacing.xs};
+    padding-left: ${theme.spacing.md};
+    position: relative;
+    
+    &::before {
+        content: '🔹';
+        position: absolute;
+        left: 0;
+        font-size: 10px;
+        color: ${theme.colors.primary};
+    }
+`;
+
+export const ViewDetailsButton = styled.button`
+    background-color: transparent;
+    color: ${theme.colors.primary};
+    border: 1px solid ${theme.colors.primary};
+    border-radius: ${theme.borderRadius};
+    padding: ${theme.spacing.xs} ${theme.spacing.sm};
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: ${theme.spacing.xs};
+    text-align: center;
+    width: 100%;
+    
+    &:hover {
+        background-color: ${theme.colors.primary}15;
+        transform: translateY(-1px);
+    }
+`;
+
+export const CardNavigation = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: ${theme.spacing.xs}; /* Reduce margin */
 `;
 
 const TeammateSelector: React.FC<TeammateSelectorProps> = ({onSelectedTeammate}) => {
@@ -169,13 +265,6 @@ const TeammateSelector: React.FC<TeammateSelectorProps> = ({onSelectedTeammate})
         </TeamSelectContainer>
     );
 };
-
-const CardNavigation = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: ${theme.spacing.xs}; /* Reduce margin */
-`;
 
 export default TeammateSelector;
 
